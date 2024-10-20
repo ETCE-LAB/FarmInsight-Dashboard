@@ -10,9 +10,7 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-const theme = createTheme({
-    /** Put your mantine theme override here */
-});
+
 
 root.render(
     <MantineProvider defaultColorScheme="dark">
