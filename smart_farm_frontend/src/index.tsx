@@ -6,6 +6,11 @@ import reportWebVitals from './reportWebVitals';
 import {createTheme, darken, MantineProvider} from "@mantine/core";
 import '@mantine/core/styles.css';
 
+
+import { Provider} from "react-redux"
+import {store} from "./state/store";
+import MainAppProvider from "./providers/MainAppProvider";
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
@@ -13,11 +18,15 @@ const root = ReactDOM.createRoot(
 
 
 root.render(
-    <MantineProvider defaultColorScheme="dark">
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>
-    </MantineProvider>
+
+    <MainAppProvider>
+          <React.StrictMode>
+            <App />
+          </React.StrictMode>
+    </MainAppProvider>
+
+
+
 );
 
 // If you want to start measuring performance in your app, pass a function
