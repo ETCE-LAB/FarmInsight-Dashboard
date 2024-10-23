@@ -6,6 +6,7 @@ import { store } from '../state/store';  // importiere deinen Redux-Store
 
 const MainAppProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     return (
+        //Auth Provider goes here too
         //Redux Provider
         <Provider store={store}>
             <MantineProvider defaultColorScheme="dark">

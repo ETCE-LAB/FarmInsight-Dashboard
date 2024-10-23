@@ -11,6 +11,8 @@ const initialState: AuthState = {
     isLoggedIn: false
 }
 
+//Über reducer Events verschicken
+//reducer wäre der "Event-Bus"
 
 const authSlice = createSlice({
     name: 'auth',
@@ -21,7 +23,7 @@ const authSlice = createSlice({
         login(state){
             state.isLoggedIn = true
         },
-        //TODO: Remove TOken (?), logout and remove userProfile
+        //TODO: Remove Token (?), logout and remove userProfile
         logout(state){
             state.isLoggedIn=false
         }
