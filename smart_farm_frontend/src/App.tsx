@@ -1,10 +1,11 @@
 import React from 'react';
 
-import AuthButton from './ui/components/authButton'
+
 
 import { Button } from '@mantine/core';
 
-import AreaChartExample from "./example/AreaChartExample"; // Beispiel für die Nutzung von Mantine Charts
+import AreaChartExample from "./example/AreaChartExample";
+import {LoginButton} from "./ui/components/loginButton"; // Beispiel für die Nutzung von Mantine Charts
 
 //Login or Logout
 const loginButtonDescription = "Login"
@@ -13,7 +14,7 @@ const loginButtonDescription = "Login"
 const App = () => {
     return (
     <div>
-        <AuthButton/>
+        <LoginButton/>
         <AreaChartExample/>
     </div>
 
