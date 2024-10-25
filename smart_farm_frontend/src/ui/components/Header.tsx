@@ -3,6 +3,7 @@ import { Group, Menu, Button } from '@mantine/core';
 import {LoginButton} from "./loginButton";
 import {LogoutButton} from "./logoutButton";
 import {useAuth} from "react-oidc-context";
+import  {UserProfileComponent} from "../../features/userProfile/ui/UserProfileComponent"
 
 const Header = () => {
     const [opened, setOpened] = useState(false);
@@ -29,7 +30,8 @@ const Header = () => {
                 </Menu>
             </Group>
             <Group>
-                {!auth.isAuthenticated ? <LoginButton /> : <LogoutButton/>}
+                <UserProfileComponent/>
+                <LoginButton /><LogoutButton/>
             </Group>
         </header>
     );

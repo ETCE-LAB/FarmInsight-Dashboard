@@ -8,7 +8,6 @@ export const LoginButton = () => {
     const auth = useAuth();
 
     const onClick = () => {
-        console.log("Login triggered")
         void auth.signinRedirect()
     }
 
@@ -20,7 +19,6 @@ export const LoginButton = () => {
             !auth.isAuthenticated &&
             (<Button onClick={() => onClick() } variant="filled" color="green">Login</Button>)
         }
-            {console.log(useAuth())}
         </>
     )
 }

@@ -1,0 +1,67 @@
+import { HoverCard, Button, Text, Group } from '@mantine/core';
+import {useEffect, useState} from "react";
+import {UserProfile} from "../models/UserProfile"
+import {useAppSelector} from "../../../Hooks";
+import {receivedUserProfileEvent} from "../state/UserProfileState";
+import {useAuth} from "react-oidc-context";
+import APIClient from "../../../utils/APIClient";
+
+
+
+const UserProfileComponent = () => {
+    const auth = useAuth()
+    const apiClient = new APIClient()
+
+    const [userProfile, setUserProfile] = useState<UserProfile | null>(null)
+    const userProfileReceivedEventListener = useAppSelector(receivedUserProfileEvent)
+
+
+    useEffect(() => {
+
+        const fetchdata = async () => {
+            try {
+
+                const response = await apiClient.get("/userprofiles");
+
+                console.log(response)
+
+                let userProfileTemp = {
+                    id:response.id,
+                    name:response.name,
+                    email: response.email,
+                    systemRole:response.systemRole}
+                setUserProfile(userProfileTemp)
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        if(auth.user){
+            fetchdata()
+        }
+
+
+    }, [auth.user,userProfileReceivedEventListener]);
+
+    const editProfile = () => {
+        console.log("editing Profile")
+    }
+
+    return (
+        <Group justify="center">
+            <HoverCard width={280} shadow="md">
+                <HoverCard.Target>
+                    <Button onClick={() => editProfile()}>E-Mail: {userProfile?.email}</Button>
+                </HoverCard.Target>
+                <HoverCard.Dropdown>
+                    <Text size="sm">
+                        E-Mail: {userProfile?.email}
+                    </Text>
+                </HoverCard.Dropdown>
+
+            </HoverCard>
+        </Group>
+    );
+}
+
+export {UserProfileComponent}
