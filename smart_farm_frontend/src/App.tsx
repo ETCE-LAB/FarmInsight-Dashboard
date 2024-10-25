@@ -1,20 +1,17 @@
 import React from 'react';
+import { Button, MantineProvider } from '@mantine/core';
+import {LoginButton} from "./ui/components/loginButton";
+import Header from './ui/components/Header';
 
-import { Button } from '@mantine/core';
-
-import {LoginButton} from "./ui/components/loginButton"; // Beispiel für die Nutzung von Mantine Charts
-
-//Login or Logout
-const loginButtonDescription = "Login"
-
+//const loginButtonDescription = "Login"
 
 const App = () => {
     return (
-    <div>
+        <MantineProvider>
+            <Header/>
+        </MantineProvider>
 
-    </div>
-
-)
+    )
 }
 
 export default App;
