@@ -1,8 +1,6 @@
 import React from 'react';
 import {Button} from "@mantine/core";
 import {useAuth} from "react-oidc-context";
-import axios from "axios";
-
 
 export const LogoutButton = () => {
     const auth = useAuth();
