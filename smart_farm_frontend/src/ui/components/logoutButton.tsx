@@ -24,13 +24,7 @@ export const LogoutButton = () => {
         <>
         {
             auth.isAuthenticated &&
-            (<>
-                <Button onClick={() => {
-                void auth.signoutRedirect()
-            }} variant="filled" color="green">Logout</Button>
-            <Button onClick={fetchData} variant="filled" color="green">getUserprofile</Button>
-                </>
-            )
+            (<Button onClick={() => { void auth.signoutRedirect()}} variant="filled" color="green">Logout</Button>)
         }
         </>
     )
