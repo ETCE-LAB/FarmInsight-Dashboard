@@ -9,7 +9,8 @@ import { Provider} from "react-redux"
 import {store} from "./store";
 import MainAppProvider from "./MainAppProvider";
 import {Router} from "./Router";
-import Header from './ui/components/Header';
+import {Header_Tabs} from "./ui/components/Header_Tabs";
+
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -20,7 +21,7 @@ const root = ReactDOM.createRoot(
 root.render(
 
     <MainAppProvider>
-        <Header/>
+        <Router></Router>
     </MainAppProvider>
 
 

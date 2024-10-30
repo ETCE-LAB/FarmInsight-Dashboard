@@ -1,0 +1,53 @@
+.header {
+    background-color: #ffffff;
+    padding: 8px 0;
+    border-bottom: 2px groove #8d9395;
+}
+.mainSection {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.user {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+/*
+Could be used for styling boxes if added later
+ */
+.userActive {
+    background-color: #199ff4;
+}
+
+.tabs {
+    margin-top: 10px;
+}
+
+.tabsList {
+    display: flex;
+    gap: 16px;
+    border-bottom: 1px solid #ddd;
+}
+
+.tab {
+    padding: 8px 16px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: color 0.3s;
+    color: #000000;
+}
+
+.tab[data-active="false"]:hover {
+    background-color: #8d9395;
+    color: #000000;
+}
+
+.tab[data-active="true"] {
+    background-color: #125486;
+    color: #000000;
+}

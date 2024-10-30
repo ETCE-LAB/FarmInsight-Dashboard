@@ -1,16 +1,15 @@
 import React from 'react';
 import { Button, MantineProvider } from '@mantine/core';
 import {LoginButton} from "./ui/components/loginButton";
-import Header from './ui/components/Header';
+import {Header_Tabs} from "./ui/components/Header_Tabs";
 
 //const loginButtonDescription = "Login"
 
 const App = () => {
     return (
         <MantineProvider>
-            <Header/>
+            <Header_Tabs/>
         </MantineProvider>
-
     )
 }
 
