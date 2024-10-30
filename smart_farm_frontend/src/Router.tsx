@@ -32,7 +32,7 @@ export const Router = () =>{
             <Route path={AuthRoutes.signout_callback} element={<AuthenticationSignoutCallbackPage/>}></Route>
             <Route path={AuthRoutes.signin} element={<SignIn />}></Route>
             <Route path="/my-organizations" element={<PlaceholderPage name="My Organizations" />} />
-            <Route path={AppRoutes.base} element={<div><LoginButton/><LogoutButton/></div>}></Route>
+
         </Routes>
     </BrowserRouter>
 }
