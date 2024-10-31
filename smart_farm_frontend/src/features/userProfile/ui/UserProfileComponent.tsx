@@ -19,15 +19,12 @@ const UserProfileComponent = () => {
 
     useEffect(() => {
 
-        //React does not allow to await the promised return from receiveUSerProfile
-        //Instead I HAVE to creat a function where i await the return und than set the received UserProfile
-        const fetchUserProfile = async () => {
-        const userProfile = await receiveUserProfile()
-        setUserProfile(userProfile)
-        }
         if(auth.user != null) {
-            fetchUserProfile()
+            receiveUserProfile().then(resp => {
+                setUserProfile(resp)
+            })
         }
+
 
     }, [auth.user, userProfileReceivedEventListener]);
 
