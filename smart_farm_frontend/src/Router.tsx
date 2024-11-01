@@ -16,12 +16,6 @@ export class AuthRoutes {
 export class AppRoutes {
     static base = "/"
 }
-const PlaceholderPage = ({ name }: { name: string }) => (
-    <div>
-        <h1>{name}</h1>
-        <p>This page is under construction.</p>
-    </div>
-);
 
 
 export const Router = () =>{
@@ -31,8 +25,6 @@ export const Router = () =>{
             <Route path={AuthRoutes.callback} element={<AuthenticationCallbackPage/>}></Route>
             <Route path={AuthRoutes.signout_callback} element={<AuthenticationSignoutCallbackPage/>}></Route>
             <Route path={AuthRoutes.signin} element={<SignIn />}></Route>
-            <Route path="/my-organizations" element={<PlaceholderPage name="My Organizations" />} />
-
         </Routes>
     </BrowserRouter>
 }
