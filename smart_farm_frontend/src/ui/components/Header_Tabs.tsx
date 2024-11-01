@@ -8,23 +8,18 @@ import classes from './HeaderTabs.module.css';
 import {useNavigate} from "react-router-dom";
 import {UserProfileComponent} from "../../features/userProfile/ui/UserProfileComponent";
 
-const user = {
-    name: 'Test User',
-    email: 'example@mail.de'
-};
 
 const tabs = [
     { name: 'My Organizations', link: './my-organizations', submenu: ['Organization 1', 'Organization 2', 'Organization 3'] },
 ];
 
 export function Header_Tabs() {
-    const navigate = useNavigate();
     const [opened, { toggle }] = useDisclosure(false);
     const [mainMenuOpened, setMainMenuOpened] = useState(false);
 
     const handleTabClick = (link = '/') => {
         if (link) {
-            navigate(link);
+            console.log(link);
         } else {
             console.warn('No link provided for this tab.');
         }

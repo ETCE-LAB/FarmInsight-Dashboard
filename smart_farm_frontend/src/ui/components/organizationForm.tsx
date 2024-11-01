@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, TextInput, Checkbox, Box } from "@mantine/core";
 import { useAuth } from "react-oidc-context";
-import { ReceiveUserProfile } from "../../features/userProfile/usaCase/ReceiveUserProfile";
+import { receiveUserProfile } from "../../features/userProfile/useCase/receiveUserProfile";
 
 interface OrganizationFormProps {
     initialData?: { name: string; isPublic: boolean };
@@ -19,13 +19,13 @@ export const OrganizationForm: React.FC<OrganizationFormProps> = ({ initialData,
 
     useEffect(() => {
         if (auth.isAuthenticated) {
-            ReceiveUserProfile();
+            receiveUserProfile();
         }
     }, [auth.isAuthenticated]);
 
     return (
         <>
-            {auth.isAuthenticated ? (  // TODO: This is a bug, should be !auth.isAuthenticated
+            {!auth.isAuthenticated ? (
                 <Button onClick={() => auth.signinRedirect()} variant="filled" color="green">
                     Login to manage organization
                 </Button>

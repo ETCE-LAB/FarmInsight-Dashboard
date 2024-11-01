@@ -1,10 +1,18 @@
 import  APIClient from "../../../utils/APIClient";
+import {getUser} from "../../../utils/getUser";
 
 export const createOrganization = async (data: { name: string; isPublic: boolean }) => {
     try {
         //const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/organizations`, {
-        const apiClient = new APIClient();
-        const response = await apiClient.post("/organizations", data);
+        const apiClient = new APIClient()
+
+        const user = getUser();
+        const token = user?.access_token;
+
+        const headers =
+            {'Authorization': `Bearer ${token}`}
+        const url = `${process.env.REACT_APP_BACKEND_URL}/api/organizations`;
+        const response = await apiClient.post(url, data, headers);
 }
     catch (error) {
         console.error("Error: " + error);
