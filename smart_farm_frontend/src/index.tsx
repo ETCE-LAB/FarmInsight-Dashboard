@@ -7,9 +7,10 @@ import MainAppProvider from "./MainAppProvider";
 import {Router} from "./Router";
 import {OrganizationForm} from "./ui/components/organizationForm";
 import {FoodProductionFacilityForm} from "./ui/components/fpfForm";
-import {createOrganization} from "./features/organization/useCase/createOrganization";
+
 import {createFpf} from "./features/fpf/useCase/createFpf";
 import {Header_Tabs} from "./ui/components/Header_Tabs";
+import {createOrganization} from "./features/organization/usecase/createOrganization";
 
 
 const root = ReactDOM.createRoot(
