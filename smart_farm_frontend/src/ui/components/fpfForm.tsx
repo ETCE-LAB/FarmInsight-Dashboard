@@ -48,7 +48,7 @@ export const FoodProductionFacilityForm: React.FC<FoodProductionFacilityFormProp
 
     return (
         <>
-            {auth.isAuthenticated ? (
+            {auth.isAuthenticated ? (  // TODO: This is a bug, should be !auth.isAuthenticated
                 <Button onClick={() => auth.signinRedirect()} variant="filled" color="green">
                     Login to manage Facility
                 </Button>

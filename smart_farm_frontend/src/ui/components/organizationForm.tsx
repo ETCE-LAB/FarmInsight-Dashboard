@@ -25,7 +25,7 @@ export const OrganizationForm: React.FC<OrganizationFormProps> = ({ initialData,
 
     return (
         <>
-            {auth.isAuthenticated ? (
+            {auth.isAuthenticated ? (  // TODO: This is a bug, should be !auth.isAuthenticated
                 <Button onClick={() => auth.signinRedirect()} variant="filled" color="green">
                     Login to manage organization
                 </Button>
