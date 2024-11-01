@@ -5,6 +5,7 @@ import {useAppSelector} from "../../../Hooks";
 import {receivedUserProfileEvent} from "../state/UserProfileState";
 import {useAuth} from "react-oidc-context";
 import APIClient from "../../../utils/APIClient";
+import {receiveUserProfile} from "../useCase/receiveUserProfile";
 
 
 
@@ -18,30 +19,14 @@ const UserProfileComponent = () => {
 
     useEffect(() => {
 
-        const fetchdata = async () => {
-            try {
-
-                const response = await apiClient.get("/userprofiles");
-
-                console.log(response)
-
-                let userProfileTemp = {
-                    id:response.id,
-                    name:response.name,
-                    email: response.email,
-                    systemRole:response.systemRole}
-                setUserProfile(userProfileTemp)
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        };
-
-        if(auth.user){
-            fetchdata()
+        if(auth.user != null) {
+            receiveUserProfile().then(resp => {
+                setUserProfile(resp)
+            })
         }
 
 
-    }, [auth.user,userProfileReceivedEventListener]);
+    }, [auth.user, userProfileReceivedEventListener]);
 
     const editProfile = () => {
         console.log("editing Profile")
@@ -51,7 +36,7 @@ const UserProfileComponent = () => {
         <Group justify="center">
             <HoverCard width={280} shadow="md">
                 <HoverCard.Target>
-                    <Button onClick={() => editProfile()}>E-Mail: {userProfile?.email}</Button>
+                    <Button variant="filled" color="green" onClick={() => editProfile()}>E-Mail: {userProfile?.email}</Button >
                 </HoverCard.Target>
                 <HoverCard.Dropdown>
                     <Text size="sm">

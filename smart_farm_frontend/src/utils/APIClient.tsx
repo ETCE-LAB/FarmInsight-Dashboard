@@ -1,29 +1,23 @@
 import {useAuth} from "react-oidc-context";
 
 class APIClient {
-      public auth = useAuth()
 
 
-    async get(APIEndpoint:string){
+    async get(URL:string, header:{Authorization:string}){
 
-        const token = this.auth.user?.access_token
         try {
-
-            //const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api${APIEndpoint}`, {
-                const response = await fetch(`http://127.0.0.1:8000/api${APIEndpoint}`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
+                const response = await fetch(URL, {
+                    headers: header
                 }
             )
 
             if(!response.ok){
                 throw new Error("Network response not ok")
             }
-            return response.json()
+            return await response.json()
         }
         catch (error){
-            console.error("Failed to receive UserProfile: " + error)
+            console.error("Failed to receive Response: " + error)
         }
 
     }
