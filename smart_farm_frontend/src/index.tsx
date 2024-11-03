@@ -10,7 +10,8 @@ import {FoodProductionFacilityForm} from "./ui/components/fpfForm";
 
 import {createFpf} from "./features/fpf/useCase/createFpf";
 import {Header_Tabs} from "./ui/components/Header_Tabs";
-import {createOrganization} from "./features/organization/usecase/createOrganization";
+import {CreateOrganization} from "./features/organization/ui/components/CreateOrganization";
+import {UserOrganizations} from "./ui/components/myOrganizations";
 
 
 const root = ReactDOM.createRoot(
@@ -25,12 +26,13 @@ root.render(
         <Router></Router>
         <OrganizationForm onSave={async (data) => {
             console.log("saving", data);
-            await createOrganization(data)
+            await CreateOrganization
         }} />
         <FoodProductionFacilityForm organization={"test123"} onSave={async (data) => {
             console.log("saving", data)
             await createFpf(data)
         }} />
+        <UserOrganizations />
     </MainAppProvider>
 
 
