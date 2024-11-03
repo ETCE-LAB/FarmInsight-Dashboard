@@ -12,6 +12,7 @@ import {createFpf} from "./features/fpf/useCase/createFpf";
 import {Header_Tabs} from "./ui/components/Header_Tabs";
 import {CreateOrganization} from "./features/organization/ui/components/CreateOrganization";
 import {UserOrganizations} from "./ui/components/myOrganizations";
+import {TimeseriesGraph} from "./features/fpf/ui/components/timeseriesGraph";
 
 
 const root = ReactDOM.createRoot(
@@ -33,6 +34,7 @@ root.render(
             await createFpf(data)
         }} />
         <UserOrganizations />
+        <TimeseriesGraph />
     </MainAppProvider>
 
 
