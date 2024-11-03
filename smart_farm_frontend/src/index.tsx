@@ -26,7 +26,7 @@ root.render(
         <Router></Router>
         <OrganizationForm onSave={async (data) => {
             console.log("saving", data);
-            await CreateOrganization
+            await CreateOrganization()
         }} />
         <FoodProductionFacilityForm organization={"test123"} onSave={async (data) => {
             console.log("saving", data)
