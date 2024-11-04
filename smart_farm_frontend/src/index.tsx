@@ -9,7 +9,7 @@ import {OrganizationForm} from "./ui/components/organizationForm";
 import {FoodProductionFacilityForm} from "./ui/components/fpfForm";
 
 import {createFpf} from "./features/fpf/useCase/createFpf";
-import {Header_Tabs} from "./ui/components/Header_Tabs";
+import {Header_Tabs} from "./ui/components/header/Header_Tabs";
 import {CreateOrganization} from "./features/organization/ui/components/CreateOrganization";
 import {UserOrganizations} from "./ui/components/myOrganizations";
 import {TimeseriesGraph} from "./features/fpf/ui/components/timeseriesGraph";
