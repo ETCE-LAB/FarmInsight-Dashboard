@@ -1,5 +1,5 @@
 import {configureStore} from "@reduxjs/toolkit";
-import authReducer from "./state/slices/authSlice"
+import authReducer from "./features/auth/state/authSlice"
 import UserProfileSlice from "./features/userProfile/state/UserProfileState";
 import OrganizationSlice from "./features/organization/state/OrganizationSlice";
 

@@ -9,8 +9,8 @@ import {OrganizationForm} from "./ui/components/organizationForm";
 import {FoodProductionFacilityForm} from "./ui/components/fpfForm";
 
 import {createFpf} from "./features/fpf/useCase/createFpf";
-import {Header_Tabs} from "./ui/components/Header_Tabs";
-import {createOrganization} from "./features/organization/usecase/createOrganization";
+import {Header_Tabs} from "./ui/components/header/Header_Tabs";
+import {createOrganization} from "./features/organization/useCase/createOrganization";
 
 
 const root = ReactDOM.createRoot(
