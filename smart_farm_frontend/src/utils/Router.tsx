@@ -1,11 +1,11 @@
 
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import {AuthenticationCallbackPage} from "./features/auth/ui/AuthenticationCallbackPage";
-import {AuthenticationSignoutCallbackPage} from "./features/auth/ui/AuthenticationSignoutCallbackPage";
-import {SignIn} from "./features/auth/ui/SignIn";
-import {LoginButton} from "./ui/components/header/loginButton";
-import {LogoutButton} from "./ui/components/header/logoutButton";
-import { Header_Tabs } from "./ui/components/header/Header_Tabs";
+import {AuthenticationCallbackPage} from "../features/auth/ui/AuthenticationCallbackPage";
+import {AuthenticationSignoutCallbackPage} from "../features/auth/ui/AuthenticationSignoutCallbackPage";
+import {SignIn} from "../features/auth/ui/SignIn";
+import {LoginButton} from "../ui/components/header/loginButton";
+import {LogoutButton} from "../ui/components/header/logoutButton";
+import { Header_Tabs } from "../ui/components/header/Header_Tabs";
 
 export class AuthRoutes {
     static callback = "auth/callback";

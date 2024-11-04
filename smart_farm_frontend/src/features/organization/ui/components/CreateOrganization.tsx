@@ -1,4 +1,4 @@
-import {useAppDispatch} from "../../../../Hooks";
+import {useAppDispatch} from "../../../../utils/Hooks";
 import {createdOrganization} from "../../state/OrganizationSlice";
 
 

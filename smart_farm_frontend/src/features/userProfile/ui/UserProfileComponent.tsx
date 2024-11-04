@@ -1,7 +1,7 @@
 import { HoverCard, Button, Text, Group } from '@mantine/core';
 import {useEffect, useState} from "react";
 import {UserProfile} from "../models/UserProfile"
-import {useAppSelector} from "../../../Hooks";
+import {useAppSelector} from "../../../utils/Hooks";
 import {receivedUserProfileEvent} from "../state/UserProfileState";
 import {useAuth} from "react-oidc-context";
 import APIClient from "../../../utils/APIClient";

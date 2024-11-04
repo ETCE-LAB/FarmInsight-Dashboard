@@ -1,6 +1,6 @@
 import {useAuth} from "react-oidc-context";
 import {Navigate} from "react-router-dom";
-import {AppRoutes} from "../../../Router";
+import {AppRoutes} from "../../../utils/Router";
 import React from "react";
 import {Flex, Loader, Text} from "@mantine/core";
 

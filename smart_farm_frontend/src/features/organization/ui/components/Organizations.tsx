@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {Organization} from "../../models/Organization";
-import {useAppSelector} from "../../../../Hooks";
+import {useAppSelector} from "../../../../utils/Hooks";
 import {selectCreatedOrganizationEvent} from "../../state/OrganizationSlice";
 
 

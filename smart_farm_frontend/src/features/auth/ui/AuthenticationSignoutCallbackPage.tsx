@@ -1,6 +1,6 @@
 import {Navigate, useNavigate} from "react-router-dom";
 import {useAuth} from "react-oidc-context";
-import {AppRoutes} from "../../../Router";
+import {AppRoutes} from "../../../utils/Router";
 import React from "react";
 
 export const AuthenticationSignoutCallbackPage = () => {

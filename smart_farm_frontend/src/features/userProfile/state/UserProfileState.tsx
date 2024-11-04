@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {RootState} from "../../../store";
+import {RootState} from "../../../utils/store";
 
 
 //Currently: 2 States, Logged in and not logged in
