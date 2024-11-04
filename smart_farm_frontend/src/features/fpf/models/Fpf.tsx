@@ -11,4 +11,5 @@ export interface Fpf {
     address:string,
     Sensors: Sensor[],
     Cameras: Camera[]
+    //TODO: Growing Circle
 }

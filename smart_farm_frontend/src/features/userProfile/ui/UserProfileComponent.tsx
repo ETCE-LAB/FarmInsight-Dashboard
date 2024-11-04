@@ -2,7 +2,7 @@ import { HoverCard, Button, Text, Group } from '@mantine/core';
 import {useEffect, useState} from "react";
 import {UserProfile} from "../models/UserProfile"
 import {useAppSelector} from "../../../utils/Hooks";
-import {receivedUserProfileEvent} from "../state/UserProfileState";
+import {receivedUserProfileEvent} from "../state/UserProfileSlice";
 import {useAuth} from "react-oidc-context";
 import APIClient from "../../../utils/APIClient";
 import {receiveUserProfile} from "../useCase/receiveUserProfile";
@@ -24,8 +24,6 @@ const UserProfileComponent = () => {
                 setUserProfile(resp)
             })
         }
-
-
     }, [auth.user, userProfileReceivedEventListener]);
 
     const editProfile = () => {

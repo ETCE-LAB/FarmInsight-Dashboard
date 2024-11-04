@@ -1,5 +1,5 @@
-import {useAppDispatch} from "../../../../utils/Hooks";
-import {createdOrganization} from "../../state/OrganizationSlice";
+import {useAppDispatch} from "../../../utils/Hooks";
+import {createdOrganization} from "../state/OrganizationSlice";
 
 
 export const CreateOrganization = () => {

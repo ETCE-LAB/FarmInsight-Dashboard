@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, TextInput, Checkbox, Box } from "@mantine/core";
 import { useAuth } from "react-oidc-context";
-import { receiveUserProfile } from "../../features/userProfile/useCase/receiveUserProfile";
+import { receiveUserProfile } from "../../userProfile/useCase/receiveUserProfile";
 
 interface OrganizationFormProps {
     initialData?: { name: string; isPublic: boolean };

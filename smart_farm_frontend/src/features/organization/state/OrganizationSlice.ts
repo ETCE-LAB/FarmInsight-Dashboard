@@ -12,14 +12,10 @@ const initialState: OrganizationState = {
     createdOrganizationEvent: 0
 }
 
-//Über reducer Events verschicken
-//reducer wäre der "Event-Bus"
-
 const organizationSlice = createSlice({
     name: 'organization',
     initialState,
-    //There are 2 Actions: Login and Logout
-    //TODO: Trigger switch to Login Page, get Token, send token to backen
+
     reducers: {
         createdOrganization(state){
             state.createdOrganizationEvent += 1

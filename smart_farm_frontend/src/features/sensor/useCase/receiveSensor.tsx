@@ -17,5 +17,3 @@ export const receiveSensor = (sensorID:number) => {
 
     return result
 }
-
-

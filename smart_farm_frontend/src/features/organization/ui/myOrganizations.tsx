@@ -15,6 +15,8 @@ export const UserOrganizations: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
+
+        //TODO: Dat gät so nät
         const fetchOrganizations = async () => {
             try {
                 if (auth.isAuthenticated) {

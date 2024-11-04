@@ -3,17 +3,16 @@ import {RootState} from "../../../utils/store";
 
 
 //Currently: 2 States, Logged in and not logged in
-interface UserProfileState{
+interface UserProfileSlice {
     receivedUserProfileEvent: number;
 }
 
 //At beginning, the suer is not logged in
-const initialState: UserProfileState = {
+const initialState: UserProfileSlice = {
     receivedUserProfileEvent: 0
 }
 
-//Über reducer Events verschicken
-//reducer wäre der "Event-Bus"
+
 
 const userProfileSlice = createSlice({
     name: 'userProfile',
