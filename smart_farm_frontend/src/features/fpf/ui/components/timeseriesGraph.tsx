@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { LineChart } from '@mantine/charts';
 import {DateTimePicker} from "@mantine/dates";
 import { Box, Notification, Text } from '@mantine/core';
-
+import '@mantine/dates/styles.css';
 // Mock temperature data
 const allData = [
     { date: '2024-10-01 08:00', Temperature: 15 },
@@ -106,7 +106,7 @@ export const TimeseriesGraph: React.FC = () => {
     };
 
     return (
-        <Box style={{ padding: '20px', backgroundColor: '#FAF9F6', borderRadius: '9px', margin: '30px' }}>
+        <Box style={{ padding: '20px', borderRadius: '9px', margin: '30px' }}>
             {/* Date pickers */}
             <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
                 <DateTimePicker
@@ -164,7 +164,6 @@ export const TimeseriesGraph: React.FC = () => {
                     //curveType="linear" // TODO: decide on curve type
                     curveType="natural"
                     style={{
-                        backgroundColor: '#e9e9e9',
                         borderRadius: '3px',
                         padding: '15px',
                         boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3',
