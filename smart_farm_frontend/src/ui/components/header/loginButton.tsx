@@ -14,7 +14,7 @@ export const LoginButton = () => {
         <>
         {
             !auth.isAuthenticated &&
-            (<Button onClick={() => onClick() } variant="filled" color="green">Login</Button>)
+            (<Button onClick={() => onClick() } variant="filled" color= '#03A9F4' >Login</Button>)
         }
         </>
     )
