@@ -34,10 +34,10 @@ const UserProfileComponent = () => {
         <Group justify="center">
             <HoverCard width={280} shadow="md">
                 <HoverCard.Target>
-                    <Button variant="filled" color="green" onClick={() => editProfile()}>E-Mail: {userProfile?.email}</Button >
+                    <Button variant="filled" onClick={() => editProfile()}>E-Mail: {userProfile?.email}</Button >
                 </HoverCard.Target>
                 <HoverCard.Dropdown>
-                    <Text size="sm">
+                    <Text style={{color: '#105385', }}>
                         E-Mail: {userProfile?.email}
                     </Text>
                 </HoverCard.Dropdown>

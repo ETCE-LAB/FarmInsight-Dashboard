@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { LineChart } from '@mantine/charts';
-import { DateTimePicker } from '@mantine/dates';
+import {DateTimePicker} from "@mantine/dates";
 import { Box, Notification, Text } from '@mantine/core';
 
 // Mock temperature data
