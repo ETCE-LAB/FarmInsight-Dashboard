@@ -8,8 +8,8 @@ const allData = [
     { date: '2024-10-01 08:00', Temperature: 15 },
     { date: '2024-10-01 14:00', Temperature: 17 },
     { date: '2024-10-01 20:00', Temperature: 16 },
-    { date: '2024-10-02 08:00', Temperature: 14 },
-    { date: '2024-10-02 14:00', Temperature: 16 },
+    { date: '2024-10-02 08:00', Temperature: 7 },
+    { date: '2024-10-02 14:00', Temperature: 20 },
     { date: '2024-10-02 20:00', Temperature: 15 },
     { date: '2024-10-03 08:00', Temperature: 13 },
     { date: '2024-10-03 14:00', Temperature: 18 },
@@ -29,9 +29,9 @@ const allData = [
     { date: '2024-10-08 08:00', Temperature: 21 },
     { date: '2024-10-08 14:00', Temperature: 23 },
     { date: '2024-10-08 20:00', Temperature: 22 },
-    { date: '2024-10-09 08:00', Temperature: 22 },
-    { date: '2024-10-09 14:00', Temperature: 24 },
-    { date: '2024-10-09 20:00', Temperature: 23 },
+    { date: '2024-10-09 08:00', Temperature: 32 },
+    { date: '2024-10-09 14:00', Temperature: 30 },
+    { date: '2024-10-09 20:00', Temperature: 20 },
     { date: '2024-10-10 08:00', Temperature: 23 },
     { date: '2024-10-10 14:00', Temperature: 25 },
     { date: '2024-10-10 20:00', Temperature: 24 },
@@ -41,12 +41,12 @@ const allData = [
     { date: '2024-10-12 08:00', Temperature: 23 },
     { date: '2024-10-12 14:00', Temperature: 25 },
     { date: '2024-10-12 20:00', Temperature: 24 },
-    { date: '2024-10-13 08:00', Temperature: 22 },
-    { date: '2024-10-13 14:00', Temperature: 24 },
+    { date: '2024-10-13 08:00', Temperature: 20 },
+    { date: '2024-10-13 14:00', Temperature: 17 },
     { date: '2024-10-13 20:00', Temperature: 23 },
-    { date: '2024-10-14 08:00', Temperature: 21 },
-    { date: '2024-10-14 14:00', Temperature: 23 },
-    { date: '2024-10-14 20:00', Temperature: 22 },
+    { date: '2024-10-14 08:00', Temperature: 14 },
+    { date: '2024-10-14 14:00', Temperature: 3 },
+    { date: '2024-10-14 20:00', Temperature: 10 },
 ];
 
 
@@ -58,11 +58,22 @@ export const TimeseriesGraph: React.FC = () => {
 
     // Function to filter data based on selected date range
     const filterDataByRange = () => {
+        if (startDate) {
+            const start = startDate.toISOString().split('T')[0]; // Extract date part (YYYY-MM-DD)
+
+            // Filter data to match the selected day (ignoring time)
+            const filteredData = allData.filter((item) => {
+                const itemDate = item.date.split(' ')[0]; // Extract date part from the data (YYYY-MM-DD)
+                return itemDate === start;
+            });
+
+            setData(filteredData);
+        }
+
         if (startDate && endDate) {
             const start = startDate.toISOString();
             const end = endDate.toISOString();
 
-            // Check if the selected range is valid
             const isValidRange = allData.some((item) => {
                 const itemDate = new Date(item.date).toISOString();
                 return itemDate >= start && itemDate <= end;
@@ -82,14 +93,28 @@ export const TimeseriesGraph: React.FC = () => {
         }
     };
 
+    // Function to calculate y-axis domain
+    const calculateDomain = () => {
+        if (data.length === 0) return [0, 10]; // Default domain if no data
+
+        const temperatures = data.map((item) => item.Temperature);
+        const minTemp = Math.min(...temperatures);
+        const maxTemp = Math.max(...temperatures);
+
+        const padding = 2;
+        return [minTemp - padding, maxTemp + padding];
+    };
+
     return (
-        <Box style={{ padding: '20px', backgroundColor: '#FAF9F6', borderRadius: '8px', marginTop: '30px' }}>
+        <Box style={{ padding: '20px', backgroundColor: '#FAF9F6', borderRadius: '9px', margin: '30px' }}>
             {/* Date pickers */}
             <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
                 <DateTimePicker
                     label="Start Date and Time"
                     placeholder="Select start date and time"
                     value={startDate}
+                    clearable={true}
+                    required={true}
                     onChange={(value) => {
                         setStartDate(value);
                         filterDataByRange();
@@ -104,6 +129,7 @@ export const TimeseriesGraph: React.FC = () => {
                     label="End Date and Time"
                     placeholder="Select end date and time"
                     value={endDate}
+                    clearable={true}
                     onChange={(value) => {
                         setEndDate(value);
                         filterDataByRange();
@@ -122,34 +148,39 @@ export const TimeseriesGraph: React.FC = () => {
                     title="Invalid Date Range"
                     color="red"
                     onClose={() => setError(null)}
-                    style={{ marginBottom: '20px' }}
+                    style={{ margin: '20px' }}
                 >
                     {error}
                 </Notification>
             )}
 
-            {/* LineChart */}
-            <LineChart
-                h={300}
-                data={data}
-                dataKey="date"
-                series={[{ name: 'Temperature', color: '#199ff4' }]}
-                curveType="linear"
-                style={{
-                    backgroundColor: '#e9e9e9',
-                    borderRadius: '5px',
-                    padding: '15px',
-                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-                }}
-                xAxisProps={{
-                    color: '#333333',
-                    fontSize: '12px',
-                }}
-                yAxisProps={{
-                    color: '#333333',
-                    fontSize: '12px',
-                }}
-            />
+            {/* Conditional rendering of LineChart */}
+            {!error && data.length > 0 && (
+                <LineChart
+                    h={400}
+                    data={data}
+                    dataKey="date"
+                    series={[{ name: 'Temperature', color: '#199ff4' }]}
+                    //curveType="linear" // TODO: decide on curve type
+                    curveType="natural"
+                    style={{
+                        backgroundColor: '#e9e9e9',
+                        borderRadius: '3px',
+                        padding: '15px',
+                        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3',
+                    }}
+                    xAxisProps={{
+                        color: '#105385',
+                        fontSize: '12px',
+                        padding: { left: 30, right: 30 }
+                    }}
+                    yAxisProps={{
+                        color: '#105385',
+                        fontSize: '12px',
+                        domain: calculateDomain(),
+                    }}
+                />
+            )}
         </Box>
     );
 };
