@@ -26,7 +26,7 @@ export const OrganizationForm: React.FC<OrganizationFormProps> = ({ initialData,
     return (
         <>
             {!auth.isAuthenticated ? (
-                <Button onClick={() => auth.signinRedirect()} variant="filled" color="green">
+                <Button onClick={() => auth.signinRedirect()} variant="filled" color="#105385" style={{ margin: '10px' }}>
                     Login to manage organization
                 </Button>
             ) : (
@@ -45,7 +45,7 @@ export const OrganizationForm: React.FC<OrganizationFormProps> = ({ initialData,
                         mt="md"
                     />
                     <Box mt="md" style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                        <Button type="submit" variant="filled" color="blue">
+                        <Button type="submit" variant="filled" color="#105385" style={{ margin: '10px' }}>
                             {initialData ? "Save Changes" : "Create Organization"}
                         </Button>
                     </Box>

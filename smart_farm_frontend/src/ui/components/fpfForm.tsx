@@ -49,7 +49,7 @@ export const FoodProductionFacilityForm: React.FC<FoodProductionFacilityFormProp
     return (
         <>
             {!auth.isAuthenticated ? (
-                <Button onClick={() => auth.signinRedirect()} variant="filled" color="green">
+                <Button onClick={() => auth.signinRedirect()} variant="filled" color="#105385" style={{ margin: '10px' }}>
                     Login to manage Facility
                 </Button>
             ) : (
@@ -93,8 +93,8 @@ export const FoodProductionFacilityForm: React.FC<FoodProductionFacilityFormProp
                         required
                         mt="md"
                     />
-                    <Box mt="md" style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                        <Button type="submit" variant="filled" color="blue">
+                    <Box mt="md" style={{ display: 'flex', justifyContent: 'flex-end', margin: '10px'}}>
+                        <Button type="submit" variant="filled" color="#105385" style={{ margin: '10px' }}>
                             Create Facility
                         </Button>
                     </Box>

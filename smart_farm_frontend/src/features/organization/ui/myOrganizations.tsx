@@ -39,7 +39,7 @@ export const UserOrganizations: React.FC = () => {
 
     if (!auth.isAuthenticated) {
         return (
-            <Button onClick={() => auth.signinRedirect()} variant="filled" color="green">
+            <Button onClick={() => auth.signinRedirect()} variant="filled" color="#105385" style={{ margin: '0 10px' }}>
                 Login to see your organizations
             </Button>
         );
