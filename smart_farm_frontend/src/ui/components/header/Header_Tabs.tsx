@@ -6,7 +6,7 @@ import {LogoutButton} from "./logoutButton";
 import {LoginButton} from "./loginButton";
 import classes from './HeaderTabs.module.css';
 import {useNavigate} from "react-router-dom";
-import {UserProfileComponent} from "../../features/userProfile/ui/UserProfileComponent";
+import {UserProfileComponent} from "../../../features/userProfile/ui/UserProfileComponent";
 
 
 const tabs = [
