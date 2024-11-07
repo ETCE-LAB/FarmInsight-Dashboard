@@ -1,8 +1,21 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { LineChart } from '@mantine/charts';
 import {DateTimePicker} from "@mantine/dates";
 import { Box, Notification, Text } from '@mantine/core';
 import '@mantine/dates/styles.css';
+import {receiveUserProfile} from "../../userProfile/useCase/receiveUserProfile";
+import {requestMeasuremnt} from "../useCase/requestMeasurements";
+import {receivedMeasurement, receivedMeasurementEvent} from "../state/measurementSlice";
+import {useAppSelector} from "../../../utils/Hooks";
+import {receivedUserProfileEvent} from "../../userProfile/state/UserProfileSlice";
+import {UserProfile} from "../../userProfile/models/UserProfile";
+import {Measurement} from "../models/measurement";
+import {start} from "node:repl";
+
+
+
+
+
 // Mock temperature data
 const allData = [
     { date: '2024-10-01 08:00', Temperature: 15 },
@@ -49,12 +62,33 @@ const allData = [
     { date: '2024-10-14 20:00', Temperature: 10 },
 ];
 
+interface Measurment {
+    measuredAt: string
+    value: number
+}
 
 export const TimeseriesGraph: React.FC = () => {
+
     const [data, setData] = useState(allData);
     const [startDate, setStartDate] = useState<Date | null>(null);
     const [endDate, setEndDate] = useState<Date | null>(null);
     const [error, setError] = useState<string | null>(null);
+
+    const measurementReceivedEventListener = useAppSelector(receivedMeasurementEvent)
+    const [measurements, setMeasurements] = useState<Measurement[] >([])
+
+    useEffect(() => {
+
+        //"2017-07-21T17:32:28Z
+        requestMeasuremnt("8250f7569a3047ea8decf4cc101003da", "2024-11-07T17:32:28Z", "2024-10-11T00:00:00Z").then(resp => {
+            console.log(resp)
+            setMeasurements(resp)
+        })
+
+    }, [measurementReceivedEventListener, startDate, endDate]);
+
+
+
 
     // Function to filter data based on selected date range
     const filterDataByRange = () => {
@@ -62,7 +96,7 @@ export const TimeseriesGraph: React.FC = () => {
             const start = startDate.toISOString().split('T')[0]; // Extract date part (YYYY-MM-DD)
 
             // Filter data to match the selected day (ignoring time)
-            const filteredData = allData.filter((item) => {
+            const filteredData = data.filter((item) => {
                 const itemDate = item.date.split(' ')[0]; // Extract date part from the data (YYYY-MM-DD)
                 return itemDate === start;
             });
@@ -97,7 +131,7 @@ export const TimeseriesGraph: React.FC = () => {
     const calculateDomain = () => {
         if (data.length === 0) return [0, 10]; // Default domain if no data
 
-        const temperatures = data.map((item) => item.Temperature);
+        const temperatures = measurements.map((item) => item.value);
         const minTemp = Math.min(...temperatures);
         const maxTemp = Math.max(...temperatures);
 
@@ -158,7 +192,7 @@ export const TimeseriesGraph: React.FC = () => {
             {!error && data.length > 0 && (
                 <LineChart
                     h={400}
-                    data={data}
+                    data={measurements}
                     dataKey="date"
                     series={[{ name: 'Temperature', color: '#199ff4' }]}
                     //curveType="linear" // TODO: decide on curve type

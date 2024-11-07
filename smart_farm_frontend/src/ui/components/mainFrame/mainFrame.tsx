@@ -4,7 +4,7 @@ import {CreateOrganization} from "../../../features/organization/ui/CreateOrgani
 import {FoodProductionFacilityForm} from "../fpfForm";
 import {createFpf} from "../../../features/fpf/useCase/createFpf";
 import {UserOrganizations} from "../../../features/organization/ui/myOrganizations";
-import {TimeseriesGraph} from "../../../features/fpf/ui/components/timeseriesGraph";
+import {TimeseriesGraph} from "../../../features/measurements/ui/timeseriesGraph";
 import {useDisclosure} from "@mantine/hooks";
 import {Container, Menu, rem, Text, TextInput} from "@mantine/core";
 import {IconChevronDown} from "@tabler/icons-react";
