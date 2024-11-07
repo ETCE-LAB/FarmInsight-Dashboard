@@ -11,6 +11,7 @@ import {FoodProductionFacilityForm} from "./ui/components/fpfForm";
 import {createFpf} from "./features/fpf/useCase/createFpf";
 import {Header_Tabs} from "./ui/components/header/Header_Tabs";
 import {createOrganization} from "./features/organization/useCase/createOrganization";
+import {UserOrganizations} from "./ui/components/myOrganizations";
 
 
 const root = ReactDOM.createRoot(

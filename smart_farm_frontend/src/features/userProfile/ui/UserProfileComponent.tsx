@@ -18,7 +18,6 @@ const UserProfileComponent = () => {
 
 
     useEffect(() => {
-
         if(auth.user != null) {
             receiveUserProfile().then(resp => {
                 setUserProfile(resp)
