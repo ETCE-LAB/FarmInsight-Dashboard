@@ -80,7 +80,10 @@ export const TimeseriesGraph: React.FC = () => {
     useEffect(() => {
 
         //"2017-07-21T17:32:28Z
-        requestMeasuremnt("8250f7569a3047ea8decf4cc101003da", "2024-11-07T17:32:28Z", "2024-10-11T00:00:00Z").then(resp => {
+        // Jahr Monat Tag
+        // "2024-11-01"
+        //"2024-10-10
+        requestMeasuremnt("8250f7569a3047ea8decf4cc101003da", "2024-10-10", "2024-11-01").then(resp => {
             console.log(resp)
             setMeasurements(resp)
         })
