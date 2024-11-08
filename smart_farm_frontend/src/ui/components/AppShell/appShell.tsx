@@ -5,16 +5,38 @@ import {LoginButton} from "../../../features/auth/ui/loginButton";
 import {LogoutButton} from "../../../features/auth/ui/logoutButton";
 import {MainFrame} from "../mainFrame/mainFrame";
 import {IconChevronDown} from "@tabler/icons-react";
-import React, {PropsWithChildren, useState} from "react";
+import React, {PropsWithChildren, useEffect, useState} from "react";
 import * as child_process from "node:child_process";
+import {getMyOrganizations} from "../../../features/organization/useCase/getMyOrganizations";
+import {receiveUserProfile} from "../../../features/userProfile/useCase/receiveUserProfile";
+import {UserProfile} from "../../../features/userProfile/models/UserProfile";
+import {Organization} from "../../../features/organization/models/Organization";
+import {createdOrganizationEvent} from "../../../features/organization/state/OrganizationSlice";
+import {useAuth} from "react-oidc-context";
 
 export const BasicAppShell: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     const [opened, { toggle }] = useDisclosure();
     const [value, setValue] = useState('');
+    const auth = useAuth()
+
+    const [organizations, setOrganisations] = useState<Organization[]>([])
+    useEffect(() => {
+
+        if(auth.user != null) {
+            getMyOrganizations().then(resp => {
+                setOrganisations(resp)
+            })
+        }
+    }, [auth.user, createdOrganizationEvent]);
+
+
 
     //Dropdown menu for organizations
     const tabs = [
-        { name: 'My Organizations', color: '#000000', link: './my-organizations', submenu: ['Organization 1', 'Organization 2', 'Organization 3'] },
+        { name: 'My Organizations',
+            color: '#000000',
+            link: './my-organizations',
+            submenu: organizations.map((org) => ({ name: org.name, link: `./organization/${org.id}` })) },
     ];
 
     const handleTabClick = (link = '/') => {
@@ -36,8 +58,8 @@ export const BasicAppShell: React.FC<PropsWithChildren<{}>> = ({ children }) => 
                 </Menu.Target>
                 <Menu.Dropdown>
                     {tab.submenu.map((option) => (
-                        <Menu.Item key={option} onClick={() => alert(`${option} clicked`)}>
-                            {option}
+                        <Menu.Item key={option.link} onClick={() => alert(`${option.name} clicked`)}>
+                            {option.name}
                         </Menu.Item>
                     ))}
                 </Menu.Dropdown>

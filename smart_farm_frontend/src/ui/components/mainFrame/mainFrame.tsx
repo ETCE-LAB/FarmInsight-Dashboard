@@ -3,11 +3,8 @@ import {OrganizationForm} from "../../../features/organization/ui/organizationFo
 import {CreateOrganization} from "../../../features/organization/ui/CreateOrganization";
 import {FoodProductionFacilityForm} from "../../../features/fpf/ui/fpfForm";
 import {createFpf} from "../../../features/fpf/useCase/createFpf";
-import {UserOrganizations} from "../../../features/organization/ui/myOrganizations";
+import {MyOrganizations} from "../../../features/organization/ui/myOrganizations";
 import TimeseriesGraph from "../../../features/measurements/ui/timeseriesGraph";
-import {useDisclosure} from "@mantine/hooks";
-import {Container, Menu, rem, Text, TextInput} from "@mantine/core";
-import {IconChevronDown} from "@tabler/icons-react";
 import temperatureData from "../../../temperatureData.json";
 import humidityData from "../../../humidityData.json";
 import lightData from "../../../lightData.json";
@@ -39,7 +36,6 @@ export const MainFrame = () => {
                             console.log('saving', data);
                             await createFpf(data);
                         }} />
-                        <UserOrganizations />
                     </div>
                 </div>
             </div>

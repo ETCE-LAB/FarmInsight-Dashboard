@@ -2,13 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Button, List, Loader, Box } from '@mantine/core';
 import { useAuth } from 'react-oidc-context';
 import axios from 'axios';
+import {getMyOrganizations} from "../useCase/getMyOrganizations";
+import {Organization} from "../models/Organization";
 
-interface Organization {
-    id: string;
-    name: string;
-}
-
-export const UserOrganizations: React.FC = () => {
+export const MyOrganizations: React.FC = () => {
     const auth = useAuth();
     const [organizations, setOrganizations] = useState<Organization[]>([]);
     const [loading, setLoading] = useState(true);
@@ -16,26 +13,20 @@ export const UserOrganizations: React.FC = () => {
 
     useEffect(() => {
 
-        //TODO: Dat gät so nät
-        const fetchOrganizations = async () => {
-            try {
-                if (auth.isAuthenticated) {
-                    const response = await axios.get<Organization[]>('/organizations/own', {
-                        headers: {
-                            Authorization: `Bearer ${auth.user?.access_token}`,
-                        },
-                    });
-                    setOrganizations(response.data);
+            if (auth.isAuthenticated) {
+                try {
+                    getMyOrganizations().then(resp => {
+                        setOrganizations(resp)
+                    })
+                } catch (err) {
+                    setError('Failed to load organizations');
+                } finally {
+                    setLoading(false);
                 }
-            } catch (err) {
-                setError('Failed to load organizations');
-            } finally {
-                setLoading(false);
-            }
-        };
 
-        fetchOrganizations();
-    }, [auth.isAuthenticated]);
+            }
+        },[auth.isAuthenticated])
+
 
     if (!auth.isAuthenticated) {
         return (

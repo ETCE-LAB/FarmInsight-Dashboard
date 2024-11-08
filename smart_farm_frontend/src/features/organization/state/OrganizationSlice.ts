@@ -24,7 +24,7 @@ const organizationSlice = createSlice({
 })
 
 export const {createdOrganization} = organizationSlice.actions
-export const selectCreatedOrganizationEvent = (state:RootState) => state.organization.createdOrganizationEvent;
+export const createdOrganizationEvent = (state:RootState) => state.organization.createdOrganizationEvent;
 export default organizationSlice.reducer
 
 

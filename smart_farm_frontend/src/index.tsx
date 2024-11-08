@@ -7,7 +7,7 @@ import {OrganizationForm} from "./features/organization/ui/organizationForm";
 import {FoodProductionFacilityForm} from "./features/fpf/ui/fpfForm";
 import {createFpf} from "./features/fpf/useCase/createFpf";
 import {CreateOrganization} from "./features/organization/ui/CreateOrganization";
-import {UserOrganizations} from "./features/organization/ui/myOrganizations";
+import {MyOrganizations} from "./features/organization/ui/myOrganizations";
 import TimeseriesGraph from "./features/measurements/ui/timeseriesGraph";
 
 const root = ReactDOM.createRoot(
