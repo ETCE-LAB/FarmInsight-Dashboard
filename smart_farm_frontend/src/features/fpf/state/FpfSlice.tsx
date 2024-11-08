@@ -29,7 +29,3 @@ const fpfSlice = createSlice({
 export const {receivedFpf} = fpfSlice.actions
 export const receivedUserProfileEvent = (state:RootState) => state.fpf.receivedFpfEvent;
 export default fpfSlice.reducer
-
-
-
-

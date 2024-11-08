@@ -18,7 +18,7 @@ const authSlice = createSlice({
     name: 'auth',
     initialState,
     //There are 2 Actions: Login and Logout
-    //TODO: Trigger switch to Login Page, get Token, send token to backen
+    //TODO: Trigger switch to Login Page, get Token, send token to backend
     reducers: {
         login(state){
             state.isLoggedIn = true
