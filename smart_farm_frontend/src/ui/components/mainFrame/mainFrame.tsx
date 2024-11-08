@@ -4,10 +4,14 @@ import {CreateOrganization} from "../../../features/organization/ui/CreateOrgani
 import {FoodProductionFacilityForm} from "../fpfForm";
 import {createFpf} from "../../../features/fpf/useCase/createFpf";
 import {UserOrganizations} from "../../../features/organization/ui/myOrganizations";
-import {TimeseriesGraph} from "../../../features/measurements/ui/timeseriesGraph";
+import TimeseriesGraph from "../../../features/measurements/ui/timeseriesGraph";
 import {useDisclosure} from "@mantine/hooks";
 import {Container, Menu, rem, Text, TextInput} from "@mantine/core";
 import {IconChevronDown} from "@tabler/icons-react";
+import temperatureData from "../../../temperatureData.json";
+import humidityData from "../../../humidityData.json";
+import lightData from "../../../lightData.json";
+import phLevelData from "../../../phLevelData.json";
 
 export const MainFrame = () => {
     const [opened, { toggle }] = useDisclosure(false);
@@ -47,8 +51,8 @@ export const MainFrame = () => {
     ));
 
     return (
-        <div style={{ display: 'flex', height: '100vh', width: '100vw' }}>
-            <Container size="sm" style={{ backgroundColor: '#ffffff', padding: '20px', width: '10%', borderRight: '2px solid #8d9395' }}>
+        <div style={{ display: 'flex', height: 'auto', width: '100vw' }}>
+            <Container size="sm" style={{ backgroundColor: '#ffffff', padding: '20px', width: '15vw', borderRight: '2px solid #8d9395' }}>
                 <div style={{ marginBottom: '20px' }}>
                     {items}
                     <TextInput style={{ backgroundColor: '#000000', color: '#ffffff', marginBottom: '20px' }} value={value} onChange={(event) => setValue(event.currentTarget.value)} placeholder="Search name" />
@@ -59,11 +63,11 @@ export const MainFrame = () => {
             </Container>
             <div style={{ flexGrow: 1, padding: '20px', display: 'flex', flexDirection: 'column' }}>
                 <div style={{ display: 'flex', flexGrow: 1 }}>
-                    <div style={{ flex: 1, marginRight: '20px' }}>
-                        <TimeseriesGraph />
-                        <TimeseriesGraph />
-                        <TimeseriesGraph />
-                        <TimeseriesGraph />
+                    <div style={{ flex: 1, marginRight: '20px', overflowY: "scroll", maxHeight: "85vh" }}>
+                        <TimeseriesGraph data={temperatureData} title="Temperature" />
+                        <TimeseriesGraph data={humidityData} title="Humidity" />
+                        <TimeseriesGraph data={lightData} title={"Light"} />
+                        <TimeseriesGraph data={phLevelData} title={"PH Level"} />
                     </div>
                     <div style={{ width: '30%', display: 'flex', flexDirection: 'column' }}>
                         <div style={{ backgroundColor: '#f0f0f0', height: '50vh', marginBottom: '20px' }}>
