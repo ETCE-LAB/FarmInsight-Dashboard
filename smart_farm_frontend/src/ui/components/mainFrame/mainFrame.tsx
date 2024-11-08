@@ -12,6 +12,7 @@ import temperatureData from "../../../temperatureData.json";
 import humidityData from "../../../humidityData.json";
 import lightData from "../../../lightData.json";
 import phLevelData from "../../../phLevelData.json";
+import placeholderImage from "../../../placeholder.png";
 
 export const MainFrame = () => {
     const [opened, { toggle }] = useDisclosure(false);
@@ -70,9 +71,9 @@ export const MainFrame = () => {
                         <TimeseriesGraph data={phLevelData} title={"PH Level"} />
                     </div>
                     <div style={{ width: '30%', display: 'flex', flexDirection: 'column' }}>
-                        <div style={{ backgroundColor: '#f0f0f0', height: '50vh', marginBottom: '20px' }}>
+                        <div style={{backgroundColor: '#f0f0f0', height: 'auto', marginBottom: '20px'}}>
                             {/* Camera feed placeholder */}
-                            Camera Feed
+                            <img src={placeholderImage} alt="Placeholder" style={{width: '100%', height: 'auto'}}/>
                         </div>
                         <OrganizationForm onSave={async (data) => {
                             console.log('saving', data);
