@@ -23,7 +23,7 @@ const MainAppProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
         //Redux Provider
         <AuthProvider {...oidcConfig}>
             <Provider store={store}>
-                <MantineProvider defaultColorScheme="dark">
+                <MantineProvider defaultColorScheme="auto">
                     {children}
                 </MantineProvider>
             </Provider>
