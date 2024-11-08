@@ -13,6 +13,8 @@ import {UserProfile} from "../../../features/userProfile/models/UserProfile";
 import {Organization} from "../../../features/organization/models/Organization";
 import {createdOrganizationEvent} from "../../../features/organization/state/OrganizationSlice";
 import {useAuth} from "react-oidc-context";
+import {useSelector} from "react-redux";
+import {RootState} from "../../../utils/store";
 
 export const BasicAppShell: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     const [opened, { toggle }] = useDisclosure();
@@ -20,6 +22,8 @@ export const BasicAppShell: React.FC<PropsWithChildren<{}>> = ({ children }) => 
     const auth = useAuth()
 
     const [organizations, setOrganisations] = useState<Organization[]>([])
+    const organizationEventListener = useSelector((state: RootState) => state.organization.createdOrganizationEvent);
+    
     useEffect(() => {
 
         if(auth.user != null) {
@@ -27,7 +31,7 @@ export const BasicAppShell: React.FC<PropsWithChildren<{}>> = ({ children }) => 
                 setOrganisations(resp)
             })
         }
-    }, [auth.user, createdOrganizationEvent]);
+    }, [auth.user, organizationEventListener]);
 
 
 

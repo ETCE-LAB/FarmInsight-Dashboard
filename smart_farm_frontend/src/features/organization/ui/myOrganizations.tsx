@@ -4,15 +4,18 @@ import { useAuth } from 'react-oidc-context';
 import axios from 'axios';
 import {getMyOrganizations} from "../useCase/getMyOrganizations";
 import {Organization} from "../models/Organization";
+import {createdOrganizationEvent} from "../state/OrganizationSlice";
+import {useSelector} from "react-redux";
+import {RootState} from "../../../utils/store";
 
 export const MyOrganizations: React.FC = () => {
     const auth = useAuth();
     const [organizations, setOrganizations] = useState<Organization[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const organizationEventListener = useSelector((state: RootState) => state.organization.createdOrganizationEvent);
 
     useEffect(() => {
-
             if (auth.isAuthenticated) {
                 try {
                     getMyOrganizations().then(resp => {
@@ -25,7 +28,7 @@ export const MyOrganizations: React.FC = () => {
                 }
 
             }
-        },[auth.isAuthenticated])
+        },[auth.isAuthenticated, organizationEventListener])
 
 
     if (!auth.isAuthenticated) {

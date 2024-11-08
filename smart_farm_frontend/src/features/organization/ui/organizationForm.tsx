@@ -1,27 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { Button, TextInput, Checkbox, Box } from "@mantine/core";
 import { useAuth } from "react-oidc-context";
-import { receiveUserProfile } from "../../userProfile/useCase/receiveUserProfile";
+import {createOrganization} from "../useCase/createOrganization";
+import {useDispatch} from "react-redux";
+import {createdOrganization} from "../state/OrganizationSlice";
 
-interface OrganizationFormProps {
-    initialData?: { name: string; isPublic: boolean };
-    onSave: (data: { name: string; isPublic: boolean }) => void;
-}
 
-export const OrganizationForm: React.FC<OrganizationFormProps> = ({ initialData, onSave }) => {
+export const OrganizationForm: React.FC = () => {
     const auth = useAuth();
-    const [name, setName] = useState(initialData?.name || "");
-    const [isPublic, setIsPublic] = useState(initialData?.isPublic || false);
+    const [name, setName] = useState("");
+    const [isPublic, setIsPublic] = useState(false);
+    const dispatch = useDispatch();
 
     const handleSave = () => {
-        onSave({ name, isPublic });
-    };
+        createOrganization({name, isPublic}).then(r =>
+            dispatch(createdOrganization())
+        );
 
-    useEffect(() => {
-        if (auth.isAuthenticated) {
-            receiveUserProfile();
-        }
-    }, [auth.isAuthenticated]);
+    };
 
     return (
         <>
@@ -46,7 +42,7 @@ export const OrganizationForm: React.FC<OrganizationFormProps> = ({ initialData,
                     />
                     <Box mt="md" style={{ display: 'flex', justifyContent: 'flex-end' }}>
                         <Button type="submit" variant="filled" color="#105385" style={{ margin: '10px' }}>
-                            {initialData ? "Save Changes" : "Create Organization"}
+                            {"Create Organization"}
                         </Button>
                     </Box>
                 </form>

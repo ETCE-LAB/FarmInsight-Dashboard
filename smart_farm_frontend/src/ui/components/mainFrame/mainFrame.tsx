@@ -3,7 +3,6 @@ import {OrganizationForm} from "../../../features/organization/ui/organizationFo
 import {CreateOrganization} from "../../../features/organization/ui/CreateOrganization";
 import {FoodProductionFacilityForm} from "../../../features/fpf/ui/fpfForm";
 import {createFpf} from "../../../features/fpf/useCase/createFpf";
-import {MyOrganizations} from "../../../features/organization/ui/myOrganizations";
 import TimeseriesGraph from "../../../features/measurements/ui/timeseriesGraph";
 import temperatureData from "../../../temperatureData.json";
 import humidityData from "../../../humidityData.json";
@@ -28,10 +27,7 @@ export const MainFrame = () => {
                             {/* Camera feed placeholder */}
                             <img src={placeholderImage} alt="Placeholder" style={{width: '100%', height: 'auto'}}/>
                         </div>
-                        <OrganizationForm onSave={async (data) => {
-                            console.log('saving', data);
-                            await CreateOrganization();
-                        }} />
+                        <OrganizationForm/>
                         <FoodProductionFacilityForm organization={'test123'} onSave={async (data) => {
                             console.log('saving', data);
                             await createFpf(data);

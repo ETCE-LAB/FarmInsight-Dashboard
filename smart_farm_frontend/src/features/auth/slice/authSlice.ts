@@ -17,13 +17,11 @@ const initialState: AuthState = {
 const authSlice = createSlice({
     name: 'auth',
     initialState,
-    //There are 2 Actions: Login and Logout
-    //TODO: Trigger switch to Login Page, get Token, send token to backend
+
     reducers: {
         login(state){
             state.isLoggedIn = true
         },
-        //TODO: Remove Token (?), logout and remove userProfile
         logout(state){
             state.isLoggedIn=false
         }
@@ -33,7 +31,3 @@ const authSlice = createSlice({
 export const {login, logout} = authSlice.actions
 
 export default authSlice.reducer
-
-
-
-

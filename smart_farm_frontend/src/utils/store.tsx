@@ -1,14 +1,14 @@
 import {configureStore} from "@reduxjs/toolkit";
-import authReducer from "../state/slices/authSlice"
 import UserProfileSlice from "../features/userProfile/state/UserProfileSlice";
 import OrganizationSlice from "../features/organization/state/OrganizationSlice";
 import FpfSlice from "../features/fpf/state/FpfSlice";
 import SensorSlice from "../features/sensor/state/SensorSlice";
 import measurementSlice from "../features/measurements/state/measurementSlice";
+import authSlice from "../features/auth/slice/authSlice";
 
 export const store = configureStore({
     reducer: {
-        auth: authReducer,
+        auth: authSlice,
         userProfile : UserProfileSlice,
         organization :OrganizationSlice,
         sensor: SensorSlice,
