@@ -17,14 +17,15 @@ export class AppRoutes {
 
 export const Router = () => {
     return (
-        <BrowserRouter>
-            <BasicAppShell/>
-            <Routes>
-                <Route path={AuthRoutes.callback} element={<AuthenticationCallbackPage />} />
-                <Route path={AuthRoutes.signout_callback} element={<AuthenticationSignoutCallbackPage />} />
-                <Route path={AuthRoutes.signin} element={<SignIn />} />
-                <Route path={AppRoutes.base} element={<MainFrame />} />
-            </Routes>
-        </BrowserRouter>
+        <BasicAppShell>
+            <BrowserRouter>
+                <Routes>
+                    <Route path={AuthRoutes.callback} element={<AuthenticationCallbackPage />} />
+                    <Route path={AuthRoutes.signout_callback} element={<AuthenticationSignoutCallbackPage />} />
+                    <Route path={AuthRoutes.signin} element={<SignIn />} />
+                    <Route path={AppRoutes.base} element={<MainFrame />} />
+                </Routes>
+            </BrowserRouter>
+        </BasicAppShell>
     );
 };

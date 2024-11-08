@@ -20,14 +20,14 @@ export const MainFrame = () => {
         <div style={{ display: 'flex', height: 'auto', width: '100vw' }}>
             <div style={{ flexGrow: 1, padding: '20px', display: 'flex', flexDirection: 'column' }}>
                 <div style={{ display: 'flex', flexGrow: 1 }}>
-                    <div style={{ flex: 1, marginRight: '20px', overflowY: "scroll", maxHeight: "85vh" }}>
+                    <div style={{ flex: 1, marginRight: '20px', overflowY: "scroll", maxHeight: "85vh", maxWidth: "50vw" }}>
                         <TimeseriesGraph data={temperatureData} title="Temperature" />
                         <TimeseriesGraph data={humidityData} title="Humidity" />
-                        <TimeseriesGraph data={lightData} title={"Light"} />
-                        <TimeseriesGraph data={phLevelData} title={"PH Level"} />
+                        <TimeseriesGraph data={lightData} title="Light" />
+                        <TimeseriesGraph data={phLevelData} title="PH Level" />
                     </div>
                     <div style={{ width: '30%', display: 'flex', flexDirection: 'column' }}>
-                        <div style={{backgroundColor: '#f0f0f0', height: 'auto', marginBottom: '20px'}}>
+                        <div style={{ height: 'auto', marginBottom: '20px'}}>
                             {/* Camera feed placeholder */}
                             <img src={placeholderImage} alt="Placeholder" style={{width: '100%', height: 'auto'}}/>
                         </div>

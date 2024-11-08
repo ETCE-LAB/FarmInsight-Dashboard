@@ -1,13 +1,14 @@
-import {AppShell, Container, Flex, Group, Menu, rem, Skeleton, Text, TextInput} from '@mantine/core';
+import {AppShell, Card, Container, Flex, Group, Menu, rem, Skeleton, Text, TextInput} from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import {UserProfileComponent} from "../../../features/userProfile/ui/UserProfileComponent";
 import {LoginButton} from "../../../features/auth/ui/loginButton";
 import {LogoutButton} from "../../../features/auth/ui/logoutButton";
 import {MainFrame} from "../mainFrame/mainFrame";
 import {IconChevronDown} from "@tabler/icons-react";
-import React, {useState} from "react";
+import React, {PropsWithChildren, useState} from "react";
+import * as child_process from "node:child_process";
 
-export function BasicAppShell() {
+export const BasicAppShell: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     const [opened, { toggle }] = useDisclosure();
     const [value, setValue] = useState('');
 
@@ -65,18 +66,53 @@ export function BasicAppShell() {
                 </Group>
             </AppShell.Header>
             <AppShell.Navbar p="md">
-                <Container size="sm" style={{ backgroundColor: '#ffffff'}}>
-                    <div style={{ marginBottom: '20px' }}>
+                <Container size="sm" >
                         {items}
-                        <TextInput style={{ backgroundColor: '#000000', color: '#ffffff', marginBottom: '20px' }} value={value} onChange={(event) => setValue(event.currentTarget.value)} placeholder="Search name" />
-                        <Text style={{ display: 'flex', backgroundColor: '#ffffff', padding: '8px 16px', color: '#105385', fontSize: '30px', borderRadius: '6px', border: '1px solid #ffffff' }}>
-                            FPF 1
-                        </Text>
-                    </div>
+                        <TextInput style={{ marginBottom: '20px' }} value={value} onChange={(event) => setValue(event.currentTarget.value)} placeholder="Search name" />
+                    <Card
+                        shadow="sm"
+                        padding="lg"
+                        radius="md"
+                        withBorder
+                        style={{ margin: '16px', cursor: 'pointer' }}
+                    >
+                        <Card.Section>
+                            <Text style={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                padding: '8px 16px',
+                                color: '#105385',
+                                fontSize: '30px',
+                            }}>
+                                FPF 1
+                            </Text>
+                        </Card.Section>
+                    </Card>
+                    <Card
+                        shadow="sm"
+                        padding="lg"
+                        radius="md"
+                        withBorder
+                        style={{ margin: '16px', cursor: 'pointer' }}
+                    >
+                        <Card.Section>
+                            <Text style={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                padding: '8px 16px',
+                                color: '#105385',
+                                fontSize: '30px',
+                            }}>
+                                FPF 2
+                            </Text>
+                        </Card.Section>
+                    </Card>
                 </Container>
             </AppShell.Navbar>
             <AppShell.Main>
-                <MainFrame/>
+                {children}
             </AppShell.Main>
         </AppShell>
     );
