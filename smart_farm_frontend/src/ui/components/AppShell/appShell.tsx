@@ -26,7 +26,7 @@ export const BasicAppShell: React.FC<PropsWithChildren<{}>> = ({ children }) => 
     
     useEffect(() => {
 
-        if(auth.user != null) {
+        if(auth.isAuthenticated) {
             getMyOrganizations().then(resp => {
                 setOrganisations(resp)
             })
