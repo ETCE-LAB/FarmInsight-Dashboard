@@ -1,10 +1,10 @@
-import {AppShell, Card, Container, Flex, Group, Menu, rem, Skeleton, Text, TextInput} from '@mantine/core';
+import {AppShell, Card, Container, Flex, Group, Menu, rem, Text, TextInput} from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import {UserProfileComponent} from "../../../features/userProfile/ui/UserProfileComponent";
 import {LoginButton} from "../../../features/auth/ui/loginButton";
 import {LogoutButton} from "../../../features/auth/ui/logoutButton";
 import {IconChevronDown} from "@tabler/icons-react";
-import React, {PropsWithChildren, useEffect, useState} from "react";
+import React, {PropsWithChildren, useContext, useEffect, useState} from "react";
 import {getMyOrganizations} from "../../../features/organization/useCase/getMyOrganizations";
 import {Organization} from "../../../features/organization/models/Organization";
 import {useAuth} from "react-oidc-context";
@@ -12,23 +12,37 @@ import {useSelector} from "react-redux";
 import {RootState} from "../../../utils/store";
 import {AppRoutes} from "../../../utils/appRoutes";
 import {useNavigate} from "react-router-dom";
+import {SocketContext} from "../../../utils/Context";
 
 export const BasicAppShell: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     const [opened, { toggle }] = useDisclosure();
     const [value, setValue] = useState('');
     const auth = useAuth()
     const navigate = useNavigate()
-    const [organizations, setOrganisations] = useState<Organization[]>([])
+    const [organizations, setMyOrganisations] = useState<Organization[]>([])
     const organizationEventListener = useSelector((state: RootState) => state.organization.createdOrganizationEvent);
-    
-    useEffect(() => {
+    const socket = useContext(SocketContext)
 
+
+    useEffect(() => {
         if(auth.isAuthenticated) {
             getMyOrganizations().then(resp => {
-                setOrganisations(resp)
+                setMyOrganisations(resp)
             })
         }
     }, [auth.user, organizationEventListener]);
+
+    useEffect(() => {
+        if(auth.isAuthenticated) {
+            socket.on('CreatedOrganisation', (data) => {
+                getMyOrganizations().then(resp => setMyOrganisations(resp))
+            })
+        }
+
+        return () => {
+            socket.off("CreatedOrganisation")
+        }
+    }, [socket]);
 
 
 
