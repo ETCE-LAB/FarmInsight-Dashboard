@@ -4,6 +4,9 @@ import { AuthenticationSignoutCallbackPage } from "../features/auth/ui/Authentic
 import { SignIn } from "../features/auth/ui/SignIn";
 import { MainFrame } from "../ui/components/mainFrame/mainFrame";
 import {BasicAppShell} from "../ui/components/AppShell/appShell";
+import LandingPage from "../ui/components/landingPage/landingPage";
+import {OrganizationForm} from "../features/organization/ui/organizationForm";
+import {AppRoutes} from "./appRoutes";
 
 export class AuthRoutes {
     static callback = "auth/callback";
@@ -11,21 +14,21 @@ export class AuthRoutes {
     static signin = "auth/signin"
 }
 
-export class AppRoutes {
-    static base = "/"
-}
 
 export const Router = () => {
     return (
-        <BasicAppShell>
+
             <BrowserRouter>
-                <Routes>
-                    <Route path={AuthRoutes.callback} element={<AuthenticationCallbackPage />} />
-                    <Route path={AuthRoutes.signout_callback} element={<AuthenticationSignoutCallbackPage />} />
-                    <Route path={AuthRoutes.signin} element={<SignIn />} />
-                    <Route path={AppRoutes.base} element={<MainFrame />} />
-                </Routes>
+                <BasicAppShell>
+                    <Routes>
+                        <Route path={AuthRoutes.callback} element={<AuthenticationCallbackPage />} />
+                        <Route path={AuthRoutes.signout_callback} element={<AuthenticationSignoutCallbackPage />} />
+                        <Route path={AuthRoutes.signin} element={<SignIn />} />
+                        <Route path={AppRoutes.base} element={<LandingPage />} />
+                        <Route path={AppRoutes.createOrganization} element={<OrganizationForm />} />
+                        <Route path={AppRoutes.organization} element={<MainFrame />} />
+                    </Routes>
+                </BasicAppShell>
             </BrowserRouter>
-        </BasicAppShell>
-    );
+            );
 };

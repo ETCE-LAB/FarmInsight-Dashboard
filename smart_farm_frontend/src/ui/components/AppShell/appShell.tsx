@@ -3,24 +3,21 @@ import { useDisclosure } from '@mantine/hooks';
 import {UserProfileComponent} from "../../../features/userProfile/ui/UserProfileComponent";
 import {LoginButton} from "../../../features/auth/ui/loginButton";
 import {LogoutButton} from "../../../features/auth/ui/logoutButton";
-import {MainFrame} from "../mainFrame/mainFrame";
 import {IconChevronDown} from "@tabler/icons-react";
 import React, {PropsWithChildren, useEffect, useState} from "react";
-import * as child_process from "node:child_process";
 import {getMyOrganizations} from "../../../features/organization/useCase/getMyOrganizations";
-import {receiveUserProfile} from "../../../features/userProfile/useCase/receiveUserProfile";
-import {UserProfile} from "../../../features/userProfile/models/UserProfile";
 import {Organization} from "../../../features/organization/models/Organization";
-import {createdOrganizationEvent} from "../../../features/organization/state/OrganizationSlice";
 import {useAuth} from "react-oidc-context";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../utils/store";
+import {AppRoutes} from "../../../utils/appRoutes";
+import {useNavigate} from "react-router-dom";
 
 export const BasicAppShell: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     const [opened, { toggle }] = useDisclosure();
     const [value, setValue] = useState('');
     const auth = useAuth()
-
+    const navigate = useNavigate()
     const [organizations, setOrganisations] = useState<Organization[]>([])
     const organizationEventListener = useSelector((state: RootState) => state.organization.createdOrganizationEvent);
     
@@ -78,12 +75,34 @@ export const BasicAppShell: React.FC<PropsWithChildren<{}>> = ({ children }) => 
             padding="md"
         >
             <AppShell.Header>
-                <Group h="100%" px="md">
-                    <Flex justify={"space-between"} align={"center"}>
-                        <Text style={{ display: 'flex', backgroundColor: '#105385', padding: '8px 16px', color: '#ffffff', borderRadius: '4px' }}>
-                            FARM INSIGHT
-                        </Text>
-                        <Group>
+                <Group h="100%" px="md" style={{ width: '100%' }}>
+                    <Flex w="100%" justify="space-between" align="center">
+                        <Card
+                            shadow="sm"
+                            padding="lg"
+                            radius="md"
+                            withBorder
+                            style={{
+                                cursor: 'pointer',
+                                backgroundColor: '#105385',
+                            }}
+                            onClick={() => navigate(AppRoutes.base)}
+                        >
+                            <Card.Section>
+                                <Text style={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    padding: '8px 16px',
+                                    fontSize: '20px',
+                                    fontFamily: 'Open Sans, sans-serif',
+                                    fontWeight: 'bold',
+                                }}>
+                                    FARM INSIGHT
+                                </Text>
+                            </Card.Section>
+                        </Card>
+                        <Group gap="md">
                             <UserProfileComponent />
                             <LoginButton />
                             <LogoutButton />

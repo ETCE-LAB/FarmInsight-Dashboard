@@ -19,7 +19,8 @@ export const MyOrganizations: React.FC = () => {
             if (auth.isAuthenticated) {
                 try {
                     getMyOrganizations().then(resp => {
-                        setOrganizations(resp)
+                        if (resp !== undefined)
+                            setOrganizations(resp)
                     })
                 } catch (err) {
                     setError('Failed to load organizations');

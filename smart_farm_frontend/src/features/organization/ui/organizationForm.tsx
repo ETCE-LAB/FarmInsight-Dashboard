@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Button, TextInput, Checkbox, Box } from "@mantine/core";
+import { Button, TextInput, Switch, Box } from "@mantine/core";
 import { useAuth } from "react-oidc-context";
-import {createOrganization} from "../useCase/createOrganization";
-import {useDispatch} from "react-redux";
-import {createdOrganization} from "../state/OrganizationSlice";
-
+import { createOrganization } from "../useCase/createOrganization";
+import { useDispatch } from "react-redux";
+import { createdOrganization } from "../state/OrganizationSlice";
 
 export const OrganizationForm: React.FC = () => {
     const auth = useAuth();
@@ -13,16 +12,20 @@ export const OrganizationForm: React.FC = () => {
     const dispatch = useDispatch();
 
     const handleSave = () => {
-        createOrganization({name, isPublic}).then(r =>
+        createOrganization({ name, isPublic }).then(() =>
             dispatch(createdOrganization())
         );
-
     };
 
     return (
         <>
             {!auth.isAuthenticated ? (
-                <Button onClick={() => auth.signinRedirect()} variant="filled" color="#105385" style={{ margin: '10px' }}>
+                <Button
+                    onClick={() => auth.signinRedirect()}
+                    variant="filled"
+                    color="#105385"
+                    style={{ margin: '10px' }}
+                >
                     Login to manage organization
                 </Button>
             ) : (
@@ -33,16 +36,25 @@ export const OrganizationForm: React.FC = () => {
                         value={name}
                         onChange={(e) => setName(e.currentTarget.value)}
                         required
+                        mt="xs" // margin-top
+                        mb="md" // margin-bottom
+                        style={{ width: '100%' }}
                     />
-                    <Checkbox
-                        label="Public"
+                    <Switch
+                        label="Set Public"
                         checked={isPublic}
                         onChange={(e) => setIsPublic(e.currentTarget.checked)}
-                        mt="md"
+                        mt="sm" // margin-top
+                        mb="md" // margin-bottom
                     />
                     <Box mt="md" style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                        <Button type="submit" variant="filled" color="#105385" style={{ margin: '10px' }}>
-                            {"Create Organization"}
+                        <Button
+                            type="submit"
+                            variant="filled"
+                            color="#105385"
+                            style={{ margin: '10px' }}
+                        >
+                            Create
                         </Button>
                     </Box>
                 </form>
