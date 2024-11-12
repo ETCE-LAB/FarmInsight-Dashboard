@@ -3,7 +3,7 @@ import { useDisclosure } from '@mantine/hooks';
 import {UserProfileComponent} from "../../../features/userProfile/ui/UserProfileComponent";
 import {LoginButton} from "../../../features/auth/ui/loginButton";
 import {LogoutButton} from "../../../features/auth/ui/logoutButton";
-import {IconChevronDown} from "@tabler/icons-react";
+import {IconChevronDown, IconSettings} from "@tabler/icons-react";
 import React, {PropsWithChildren, useContext, useEffect, useState} from "react";
 import {getMyOrganizations} from "../../../features/organization/useCase/getMyOrganizations";
 import {Organization} from "../../../features/organization/models/Organization";
@@ -25,9 +25,11 @@ export const BasicAppShell: React.FC<PropsWithChildren<{}>> = ({ children }) => 
 
 
     useEffect(() => {
+
         if(auth.isAuthenticated) {
             getMyOrganizations().then(resp => {
-                setMyOrganisations(resp)
+                if (resp)
+                    setMyOrganisations(resp)
             })
         }
     }, [auth.user, organizationEventListener]);
@@ -126,6 +128,12 @@ export const BasicAppShell: React.FC<PropsWithChildren<{}>> = ({ children }) => 
             </AppShell.Header>
             <AppShell.Navbar p="md">
                 <Container size="sm" >
+                        <IconSettings
+                            style={{ width: rem(20), height: rem(20) }}
+                            stroke={2}
+                            cursor={'pointer'}
+                            onClick={() => navigate(AppRoutes.editOrganization)}
+                        />
                         {items}
                         <TextInput style={{ marginBottom: '20px' }} value={value} onChange={(event) => setValue(event.currentTarget.value)} placeholder="Search name" />
                     <Card

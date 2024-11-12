@@ -24,7 +24,7 @@ export const LogoutButton = () => {
         <>
         {
             auth.isAuthenticated &&
-            (<Button onClick={() => { void auth.signoutRedirect()}} variant="filled" color="#03A9F4">Logout</Button>)
+            (<Button onClick={() => { void auth.signoutRedirect()}} variant="filled" color="red">Logout</Button>)
         }
         </>
     )

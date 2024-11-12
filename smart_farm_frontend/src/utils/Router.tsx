@@ -7,6 +7,7 @@ import {BasicAppShell} from "../ui/components/AppShell/appShell";
 import LandingPage from "../ui/components/landingPage/landingPage";
 import {OrganizationForm} from "../features/organization/ui/organizationForm";
 import {AppRoutes} from "./appRoutes";
+import {EditOrganization} from "../features/organization/ui/editOrganization";
 
 export class AuthRoutes {
     static callback = "auth/callback";
@@ -27,6 +28,7 @@ export const Router = () => {
                         <Route path={AppRoutes.base} element={<LandingPage />} />
                         <Route path={AppRoutes.createOrganization} element={<OrganizationForm />} />
                         <Route path={AppRoutes.organization} element={<MainFrame />} />
+                        <Route path={AppRoutes.editOrganization} element={<EditOrganization />} />
                     </Routes>
                 </BasicAppShell>
             </BrowserRouter>
