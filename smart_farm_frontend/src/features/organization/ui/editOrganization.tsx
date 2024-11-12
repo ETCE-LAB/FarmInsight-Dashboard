@@ -6,7 +6,7 @@ import {Button, Card, Modal, Notification, Paper, Title, Text} from "@mantine/co
 import { SearchUserProfile } from "../../userProfile/ui/searchUserProfile";
 import { UserProfile } from "../../userProfile/models/UserProfile";
 import { addUserToOrganization } from "../useCase/addUserToOrganization";
-import {IconUsersPlus} from "@tabler/icons-react";
+import {IconPlus, IconUsersPlus} from "@tabler/icons-react";
 import {FpfForm} from "../../fpf/ui/fpfForm";
 
 
@@ -98,7 +98,7 @@ export const EditOrganization = () => {
                         color="#105385"
                         style={{ margin: '10px' }}
                     >
-                        <IconUsersPlus size={18} style={{ marginRight: "8px" }} />
+                        <IconPlus size={18} style={{ marginRight: "8px" }} />
                         Add Users
                     </Button>
                     <Card>
@@ -136,6 +136,7 @@ export const EditOrganization = () => {
                         color="#105385"
                         style={{ margin: '10px' }}
                     >
+                        <IconPlus size={18} style={{ marginRight: "8px" }} />
                         Add FPF
                     </Button>
                     {/*Add User */ }
@@ -176,9 +177,7 @@ export const EditOrganization = () => {
                     </Modal>
 
                 </>
-            ) : (
-                <p>Loading...</p>
-            )}
+            ) : null}
         </>
     );
 };
