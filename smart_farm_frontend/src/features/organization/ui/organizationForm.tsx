@@ -4,16 +4,23 @@ import { useAuth } from "react-oidc-context";
 import { createOrganization } from "../useCase/createOrganization";
 import { useDispatch } from "react-redux";
 import { createdOrganization } from "../state/OrganizationSlice";
+import { useNavigate } from "react-router-dom";
+import {AppRoutes} from "../../../utils/appRoutes";
 
 export const OrganizationForm: React.FC = () => {
     const auth = useAuth();
     const [name, setName] = useState("");
     const [isPublic, setIsPublic] = useState(false);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const handleSave = () => {
-        createOrganization({ name, isPublic }).then(() =>
-            dispatch(createdOrganization())
+        createOrganization({ name, isPublic }).then((org) =>
+        {
+            dispatch(createdOrganization());
+            if (org)
+                navigate(AppRoutes.editOrganization.replace(":name", org.name));
+        }
         );
     };
 
@@ -44,8 +51,8 @@ export const OrganizationForm: React.FC = () => {
                         label="Set Public"
                         checked={isPublic}
                         onChange={(e) => setIsPublic(e.currentTarget.checked)}
-                        mt="sm" // margin-top
-                        mb="md" // margin-bottom
+                        mt="sm"
+                        mb="md"
                     />
                     <Box mt="md" style={{ display: 'flex', justifyContent: 'flex-end' }}>
                         <Button

@@ -27,7 +27,6 @@ export const MainFrame = () => {
                             {/* Camera feed placeholder */}
                             <img src={placeholderImage} alt="Placeholder" style={{width: '100%', height: 'auto'}}/>
                         </div>
-                        <OrganizationForm/>
                         <FoodProductionFacilityForm organization={'test123'} onSave={async (data) => {
                             console.log('saving', data);
                             await createFpf(data);
