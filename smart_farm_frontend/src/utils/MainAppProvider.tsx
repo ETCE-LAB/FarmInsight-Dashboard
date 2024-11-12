@@ -5,7 +5,7 @@ import { MantineProvider } from '@mantine/core';
 import { store } from './store';  // importiere deinen Redux-Store
 import {WebStorageStateStore} from "oidc-client-ts";
 import {AuthProvider} from "react-oidc-context";
-import {SocketProvider} from "./SocketProvider";
+//import {SocketProvider} from "./SocketProvider";
 
 export const oidcConfig = {
     authority: "https://development-isse-identityserver.azurewebsites.net",
@@ -24,11 +24,11 @@ const MainAppProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
         //Redux Provider
         <AuthProvider {...oidcConfig}>
             <Provider store={store}>
-                <SocketProvider>
+                {/* <SocketProvider> */}
                     <MantineProvider defaultColorScheme="auto">
                         {children}
                     </MantineProvider>
-                </SocketProvider>
+               {/* </SocketProvider>*/}
             </Provider>
         </AuthProvider>
     );

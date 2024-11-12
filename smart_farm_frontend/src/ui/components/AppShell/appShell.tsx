@@ -12,7 +12,7 @@ import {useSelector} from "react-redux";
 import {RootState} from "../../../utils/store";
 import {AppRoutes} from "../../../utils/appRoutes";
 import {useNavigate} from "react-router-dom";
-import {SocketContext} from "../../../utils/Context";
+//import {SocketContext} from "../../../utils/Context";
 
 export const BasicAppShell: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     const [opened, { toggle }] = useDisclosure();
@@ -21,7 +21,7 @@ export const BasicAppShell: React.FC<PropsWithChildren<{}>> = ({ children }) => 
     const navigate = useNavigate()
     const [organizations, setMyOrganisations] = useState<Organization[]>([])
     const organizationEventListener = useSelector((state: RootState) => state.organization.createdOrganizationEvent);
-    const socket = useContext(SocketContext)
+    //const socket = useContext(SocketContext)
 
 
     useEffect(() => {
@@ -34,7 +34,7 @@ export const BasicAppShell: React.FC<PropsWithChildren<{}>> = ({ children }) => 
         }
     }, [auth.user, organizationEventListener]);
 
-    useEffect(() => {
+   /* useEffect(() => {
         if(auth.isAuthenticated) {
             socket.on('CreatedOrganisation', (data) => {
                 getMyOrganizations().then(resp => setMyOrganisations(resp))
@@ -45,7 +45,7 @@ export const BasicAppShell: React.FC<PropsWithChildren<{}>> = ({ children }) => 
             socket.off("CreatedOrganisation")
         }
     }, [socket]);
-
+*/
 
 
     //Dropdown menu for organizations
@@ -75,7 +75,7 @@ export const BasicAppShell: React.FC<PropsWithChildren<{}>> = ({ children }) => 
                 </Menu.Target>
                 <Menu.Dropdown>
                     {tab.submenu.map((option) => (
-                        <Menu.Item key={option.link} onClick={() => alert(`${option.name} clicked`)}>
+                        <Menu.Item key={option.link} onClick={() => navigate(AppRoutes.editOrganization.replace(":name", option.name))}>
                             {option.name}
                         </Menu.Item>
                     ))}

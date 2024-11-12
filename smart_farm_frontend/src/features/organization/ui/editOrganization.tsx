@@ -5,12 +5,14 @@ import { Organization } from "../models/Organization";
 import { Button, Modal, TextInput } from "@mantine/core";
 import {SearchUserProfile} from "../../userProfile/ui/searchUserProfile";
 import {UserProfile} from "../../userProfile/models/UserProfile";
+import {FpfForm} from "../../fpf/ui/fpfForm";
 
 
 export const EditOrganization = () => {
     const { name } = useParams<{ name: string }>();
     const [organization, setOrganization] = useState<Organization | null>(null);
-    const [modalOpen, setModalOpen] = useState(false); // State to manage modal visibility
+    const [userModalOpen, setUserModalOpen] = useState(false); // State to manage modal visibility
+    const [fpfModalOpen, setFpFModalOpen] = useState(false); // State to manage FpF modal visibility
     const [usersToAdd, setUsersToAdd] = useState<UserProfile[]>([])
     useEffect(() => {
         if (name) {
@@ -36,22 +38,40 @@ export const EditOrganization = () => {
                         <p>{organization.isPublic ? "Public" : "Private"}</p>
                     </div>
                     <Button
-                        onClick={() => setModalOpen(true)} // Open modal on button click
+                        onClick={() => setUserModalOpen(true)} // Open modal on button click
                         variant="filled"
                         color="#105385"
                         style={{ margin: '10px' }}
                     >
                         Add User
                     </Button>
-                    {/* Modal component */}
+                    <Button
+                        onClick={() => setFpFModalOpen(true)} // Open modal on button click
+                        variant="filled"
+                        color="#105385"
+                        style={{ margin: '10px' }}
+                    >
+                        Add FPF
+                    </Button>
+                    {/*Add User */ }
                     <Modal
-                        opened={modalOpen}
-                        onClose={() => setModalOpen(false)}
+                        opened={userModalOpen}
+                        onClose={() => setUserModalOpen(false)}
                         title="Add User to Organization"
                         centered
                     >
                         <SearchUserProfile onUserSelected = {userSelected} />
                     </Modal>
+                    {/*Add FpF */ }
+                    <Modal
+                        opened={fpfModalOpen}
+                        onClose={() => setFpFModalOpen(false)}
+                        title="Create FpF"
+                        centered
+                    >
+                        <FpfForm  inputOrganization={organization}></FpfForm>
+                    </Modal>
+
                 </>
             ) : (
                 <p>Loading...</p>
