@@ -1,20 +1,18 @@
 import React, { useState } from 'react';
-import { Button, TextInput, Checkbox, Box } from "@mantine/core";
+import {Button, TextInput, Checkbox, Box, Switch} from "@mantine/core";
 import { useAuth } from "react-oidc-context";
+import {createFpf} from "../useCase/createFpf";
+import {receiveVisibleFpfs} from "../useCase/receiveVisibleFpfs";
+import {Organization} from "../../organization/models/Organization";
+import {Organizations} from "../../organization/ui/Organizations";
+import {createdOrganization} from "../../organization/state/OrganizationSlice";
+import {useDispatch} from "react-redux";
+import {AppRoutes} from "../../../utils/appRoutes";
+import {createdFpf} from "../state/FpfSlice";
+import {useNavigate} from "react-router-dom";
 
-interface FoodProductionFacilityFormProps {
-    organization: string;
-    onSave: (data: {
-        name: string;
-        isPublic: boolean;
-        sensorServiceIp: string;
-        cameraServiceIp: string;
-        address: string;
-        organization: string;
-    }) => void;
-}
 
-export const FoodProductionFacilityForm: React.FC<FoodProductionFacilityFormProps> = ({ organization, onSave }) => {
+export const FpfForm: React.FC<{inputOrganization:Organization}> = ({ inputOrganization }) => {
     const auth = useAuth();
     const [name, setName] = useState("");
     const [isPublic, setIsPublic] = useState(false);
@@ -22,6 +20,8 @@ export const FoodProductionFacilityForm: React.FC<FoodProductionFacilityFormProp
     const [cameraServiceIp, setCameraServiceIp] = useState("");
     const [address, setAddress] = useState("");
     const [errors, setErrors] = useState<{ sensorServiceIp?: string; cameraServiceIp?: string }>({});
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const ipv4Regex = /^(25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})\.(25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})\.(25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})\.(25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})$/;
 
@@ -42,7 +42,14 @@ export const FoodProductionFacilityForm: React.FC<FoodProductionFacilityFormProp
 
     const handleSave = () => {
         if (validateIps()) {
-            onSave({ name, isPublic, sensorServiceIp, cameraServiceIp, address, organization });
+            const organization = inputOrganization.id
+            createFpf({name, isPublic, sensorServiceIp, cameraServiceIp, address, organization }).then(fpf =>
+            {
+                dispatch(createdFpf())
+                if (fpf)
+                    navigate(AppRoutes.editFpf.replace(":organizationName", inputOrganization.name).replace(":fpfName", fpf.name));
+            }
+            )
         }
     };
 
@@ -61,7 +68,7 @@ export const FoodProductionFacilityForm: React.FC<FoodProductionFacilityFormProp
                         onChange={(e) => setName(e.currentTarget.value)}
                         required
                     />
-                    <Checkbox
+                    <Switch
                         label="Public"
                         checked={isPublic}
                         onChange={(e) => setIsPublic(e.currentTarget.checked)}

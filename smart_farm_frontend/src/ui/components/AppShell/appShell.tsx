@@ -1,10 +1,10 @@
-import {AppShell, Card, Container, Flex, Group, Menu, rem, Skeleton, Text, TextInput} from '@mantine/core';
+import {AppShell, Card, Container, Flex, Group, Menu, rem, Text, TextInput} from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import {UserProfileComponent} from "../../../features/userProfile/ui/UserProfileComponent";
 import {LoginButton} from "../../../features/auth/ui/loginButton";
 import {LogoutButton} from "../../../features/auth/ui/logoutButton";
 import {IconChevronDown, IconSettings} from "@tabler/icons-react";
-import React, {PropsWithChildren, useEffect, useState} from "react";
+import React, {PropsWithChildren, useContext, useEffect, useState} from "react";
 import {getMyOrganizations} from "../../../features/organization/useCase/getMyOrganizations";
 import {Organization} from "../../../features/organization/models/Organization";
 import {useAuth} from "react-oidc-context";
@@ -12,25 +12,40 @@ import {useSelector} from "react-redux";
 import {RootState} from "../../../utils/store";
 import {AppRoutes} from "../../../utils/appRoutes";
 import {useNavigate} from "react-router-dom";
+//import {SocketContext} from "../../../utils/Context";
 
 export const BasicAppShell: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     const [opened, { toggle }] = useDisclosure();
     const [value, setValue] = useState('');
     const auth = useAuth()
     const navigate = useNavigate()
-    const [organizations, setOrganisations] = useState<Organization[]>([])
+    const [organizations, setMyOrganisations] = useState<Organization[]>([])
     const organizationEventListener = useSelector((state: RootState) => state.organization.createdOrganizationEvent);
-    
+    //const socket = useContext(SocketContext)
+
+
     useEffect(() => {
 
         if(auth.isAuthenticated) {
             getMyOrganizations().then(resp => {
                 if (resp)
-                    setOrganisations(resp)
+                    setMyOrganisations(resp)
             })
         }
     }, [auth.user, organizationEventListener]);
 
+   /* useEffect(() => {
+        if(auth.isAuthenticated) {
+            socket.on('CreatedOrganisation', (data) => {
+                getMyOrganizations().then(resp => setMyOrganisations(resp))
+            })
+        }
+
+        return () => {
+            socket.off("CreatedOrganisation")
+        }
+    }, [socket]);
+*/
 
 
     //Dropdown menu for organizations
@@ -60,7 +75,7 @@ export const BasicAppShell: React.FC<PropsWithChildren<{}>> = ({ children }) => 
                 </Menu.Target>
                 <Menu.Dropdown>
                     {tab.submenu.map((option) => (
-                        <Menu.Item key={option.link} onClick={() => alert(`${option.name} clicked`)}>
+                        <Menu.Item key={option.link} onClick={() => navigate(AppRoutes.editOrganization.replace(":name", option.name))}>
                             {option.name}
                         </Menu.Item>
                     ))}

@@ -4,12 +4,12 @@ import {RootState} from "../../../utils/store";
 
 //Currently: 2 States, Logged in and not logged in
 interface FpfSlice {
-    receivedFpfEvent: number;
+    createdFpfEvent: number;
 }
 
 //At beginning, the suer is not logged in
 const initialState: FpfSlice = {
-    receivedFpfEvent: 0
+    createdFpfEvent: 0
 }
 
 //Über reducer Events verschicken
@@ -20,12 +20,12 @@ const fpfSlice = createSlice({
     initialState,
 
     reducers: {
-        receivedFpf(state){
-            state.receivedFpfEvent += 1
+        createdFpf(state){
+            state.createdFpfEvent += 1
         }
     }
 })
 
-export const {receivedFpf} = fpfSlice.actions
-export const receivedUserProfileEvent = (state:RootState) => state.fpf.receivedFpfEvent;
+export const {createdFpf} = fpfSlice.actions
+export const receivedUserProfileEvent = (state:RootState) => state.fpf.createdFpfEvent;
 export default fpfSlice.reducer

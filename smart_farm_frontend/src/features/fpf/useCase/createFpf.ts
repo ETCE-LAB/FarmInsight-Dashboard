@@ -1,7 +1,9 @@
 import  APIClient from "../../../utils/APIClient";
 import {getUser} from "../../../utils/getUser";
+import {Organization} from "../../organization/models/Organization";
+import {Fpf} from "../models/Fpf";
 
-export const createFpf = async (data: { name: string; isPublic: boolean }) => {
+export const createFpf = async (data: { name:string, isPublic:boolean, sensorServiceIp:string, cameraServiceIp:string, address:string, organization:string }) => {
     try {
         //const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/organizations`, {
         const apiClient = new APIClient()
@@ -11,8 +13,10 @@ export const createFpf = async (data: { name: string; isPublic: boolean }) => {
 
         const headers =
             {'Authorization': `Bearer ${token}`}
-        const url = `${process.env.REACT_APP_BACKEND_URL}/api/fpf`;
-        const response = await apiClient.post(url, data, headers);
+        const url = `${process.env.REACT_APP_BACKEND_URL}/api/fpfs`;
+        const response:Fpf = await apiClient.post(url, data, headers);
+
+        return response
     }
     catch (error) {
         console.error("Error: " + error);

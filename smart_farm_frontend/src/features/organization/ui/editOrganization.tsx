@@ -7,14 +7,16 @@ import { SearchUserProfile } from "../../userProfile/ui/searchUserProfile";
 import { UserProfile } from "../../userProfile/models/UserProfile";
 import { addUserToOrganization } from "../useCase/addUserToOrganization";
 import {IconUsersPlus} from "@tabler/icons-react";
+import {FpfForm} from "../../fpf/ui/fpfForm";
+
 
 export const EditOrganization = () => {
     const { name } = useParams<{ name: string }>();
     const [organization, setOrganization] = useState<Organization | null>(null);
-    const [modalOpen, setModalOpen] = useState(false);
     const [usersToAdd, setUsersToAdd] = useState<UserProfile[]>([]);
     const [notification, setNotification] = useState<{ type: 'success' | 'error', message: string } | null>(null);
-
+    const [userModalOpen, setUserModalOpen] = useState(false); // State to manage modal visibility
+    const [fpfModalOpen, setFpFModalOpen] = useState(false); // State to manage FpF modal visibility
     useEffect(() => {
         if (name) {
             getOrganization(name)
@@ -91,7 +93,7 @@ export const EditOrganization = () => {
                         </Text>
                     </Paper>
                     <Button
-                        onClick={() => setModalOpen(true)}
+                        onClick={() => setUserModalOpen(true)} // Open modal on button click
                         variant="filled"
                         color="#105385"
                         style={{ margin: '10px' }}
@@ -128,9 +130,18 @@ export const EditOrganization = () => {
                             </Button>
                         )}
                     </Card>
+                    <Button
+                        onClick={() => setFpFModalOpen(true)} // Open modal on button click
+                        variant="filled"
+                        color="#105385"
+                        style={{ margin: '10px' }}
+                    >
+                        Add FPF
+                    </Button>
+                    {/*Add User */ }
                     <Modal
-                        opened={modalOpen}
-                        onClose={() => setModalOpen(false)}
+                        opened={userModalOpen}
+                        onClose={() => setUserModalOpen(false)}
                         title="Add User to Organization"
                         centered
                     >
@@ -154,6 +165,16 @@ export const EditOrganization = () => {
                             {notification.message}
                         </Notification>
                     )}
+                    {/*Add FpF */ }
+                    <Modal
+                        opened={fpfModalOpen}
+                        onClose={() => setFpFModalOpen(false)}
+                        title="Create FpF"
+                        centered
+                    >
+                        <FpfForm  inputOrganization={organization}></FpfForm>
+                    </Modal>
+
                 </>
             ) : (
                 <p>Loading...</p>
