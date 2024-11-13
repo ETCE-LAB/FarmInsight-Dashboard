@@ -42,8 +42,8 @@ export const FpfForm: React.FC<{inputOrganization:Organization}> = ({ inputOrgan
 
     const handleSave = () => {
         if (validateIps()) {
-            const organization = inputOrganization.id
-            createFpf({name, isPublic, sensorServiceIp, cameraServiceIp, address, organization }).then(fpf =>
+            const organizationId = inputOrganization.id
+            createFpf({name, isPublic, sensorServiceIp, cameraServiceIp, address, organizationId }).then(fpf =>
             {
                 dispatch(createdFpf())
                 if (fpf)
