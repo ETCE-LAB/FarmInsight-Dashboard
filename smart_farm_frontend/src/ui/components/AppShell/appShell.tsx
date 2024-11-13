@@ -1,59 +1,43 @@
-import {AppShell, Card, Container, Flex, Group, Menu, rem, Text, TextInput} from '@mantine/core';
+import { AppShell, Card, Container, Flex, Group, Menu, rem, Text, TextInput } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import {UserProfileComponent} from "../../../features/userProfile/ui/UserProfileComponent";
-import {LoginButton} from "../../../features/auth/ui/loginButton";
-import {LogoutButton} from "../../../features/auth/ui/logoutButton";
-import {IconChevronDown, IconSettings} from "@tabler/icons-react";
-import React, {PropsWithChildren, useContext, useEffect, useState} from "react";
-import {getMyOrganizations} from "../../../features/organization/useCase/getMyOrganizations";
-import {Organization} from "../../../features/organization/models/Organization";
-import {useAuth} from "react-oidc-context";
-import {useSelector} from "react-redux";
-import {RootState} from "../../../utils/store";
-import {AppRoutes} from "../../../utils/appRoutes";
-import {useNavigate} from "react-router-dom";
-//import {SocketContext} from "../../../utils/Context";
+import { UserProfileComponent } from "../../../features/userProfile/ui/UserProfileComponent";
+import { LoginButton } from "../../../features/auth/ui/loginButton";
+import { LogoutButton } from "../../../features/auth/ui/logoutButton";
+import { IconChevronDown, IconSettings } from "@tabler/icons-react";
+import React, { PropsWithChildren, useEffect, useState } from "react";
+import { getMyOrganizations } from "../../../features/organization/useCase/getMyOrganizations";
+import { Organization } from "../../../features/organization/models/Organization";
+import { useAuth } from "react-oidc-context";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../utils/store";
+import { AppRoutes } from "../../../utils/appRoutes";
+import { useNavigate } from "react-router-dom";
 
 export const BasicAppShell: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     const [opened, { toggle }] = useDisclosure();
     const [value, setValue] = useState('');
-    const auth = useAuth()
-    const navigate = useNavigate()
-    const [organizations, setMyOrganisations] = useState<Organization[]>([])
+    const [selectedOrganization, setSelectedOrganization] = useState<string>('My Organizations');
+    const auth = useAuth();
+    const navigate = useNavigate();
+    const [organizations, setMyOrganizations] = useState<Organization[]>([]);
     const organizationEventListener = useSelector((state: RootState) => state.organization.createdOrganizationEvent);
-    //const socket = useContext(SocketContext)
-
 
     useEffect(() => {
-
-        if(auth.isAuthenticated) {
+        if (auth.isAuthenticated) {
             getMyOrganizations().then(resp => {
-                if (resp)
-                    setMyOrganisations(resp)
-            })
+                if (resp) setMyOrganizations(resp);
+            });
         }
     }, [auth.user, organizationEventListener]);
 
-   /* useEffect(() => {
-        if(auth.isAuthenticated) {
-            socket.on('CreatedOrganisation', (data) => {
-                getMyOrganizations().then(resp => setMyOrganisations(resp))
-            })
-        }
-
-        return () => {
-            socket.off("CreatedOrganisation")
-        }
-    }, [socket]);
-*/
-
-
-    //Dropdown menu for organizations
+    // Dropdown menu for organizations
     const tabs = [
-        { name: 'My Organizations',
+        {
+            name: selectedOrganization,
             color: '#000000',
             link: './my-organizations',
-            submenu: organizations.map((org) => ({ name: org.name, link: `./organization/${org.id}` })) },
+            submenu: organizations.map((org) => ({ name: org.name, link: `./organization/${org.id}` }))
+        },
     ];
 
     const handleTabClick = (link = '/') => {
@@ -64,18 +48,26 @@ export const BasicAppShell: React.FC<PropsWithChildren<{}>> = ({ children }) => 
         }
     };
 
+    const handleOrganizationSelect = (name: string, link: string) => {
+        setSelectedOrganization(name); // Update selected organization name
+        navigate(link);
+    };
+
     const items = tabs.map((tab) => (
         <div key={tab.name} style={{ marginBottom: '20px' }}>
             <Menu trigger="hover" openDelay={100} closeDelay={100} withinPortal>
                 <Menu.Target>
-                    <Text onClick={() => handleTabClick(tab.link)} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center'}}>
+                    <Text onClick={() => handleTabClick(tab.link)} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
                         {tab.name}
                         <IconChevronDown style={{ width: rem(16), height: rem(16) }} stroke={2} />
                     </Text>
                 </Menu.Target>
                 <Menu.Dropdown>
                     {tab.submenu.map((option) => (
-                        <Menu.Item key={option.link} onClick={() => navigate(AppRoutes.editOrganization.replace(":name", option.name))}>
+                        <Menu.Item
+                            key={option.link}
+                            onClick={() => handleOrganizationSelect(option.name, option.link)}
+                        >
                             {option.name}
                         </Menu.Item>
                     ))}
@@ -87,7 +79,7 @@ export const BasicAppShell: React.FC<PropsWithChildren<{}>> = ({ children }) => 
     return (
         <AppShell
             header={{ height: 60 }}
-            navbar={{ width: "15vw", breakpoint: 'sm'}}
+            navbar={{ width: "15vw", breakpoint: 'sm' }}
             padding="md"
         >
             <AppShell.Header>
@@ -127,15 +119,15 @@ export const BasicAppShell: React.FC<PropsWithChildren<{}>> = ({ children }) => 
                 </Group>
             </AppShell.Header>
             <AppShell.Navbar p="md">
-                <Container size="sm" >
-                        <IconSettings
-                            style={{ width: rem(20), height: rem(20) }}
-                            stroke={2}
-                            cursor={'pointer'}
-                            onClick={() => navigate(AppRoutes.editOrganization)}
-                        />
-                        {items}
-                        <TextInput style={{ marginBottom: '20px' }} value={value} onChange={(event) => setValue(event.currentTarget.value)} placeholder="Search name" />
+                <Container size="sm">
+                    <IconSettings
+                        style={{ width: rem(20), height: rem(20) }}
+                        stroke={2}
+                        cursor={'pointer'}
+                        onClick={() => navigate(AppRoutes.organization)}
+                    />
+                    {items}
+                    <TextInput style={{ marginBottom: '20px' }} value={value} onChange={(event) => setValue(event.currentTarget.value)} placeholder="Search name" />
                     <Card
                         shadow="sm"
                         padding="lg"
@@ -183,4 +175,4 @@ export const BasicAppShell: React.FC<PropsWithChildren<{}>> = ({ children }) => 
             </AppShell.Main>
         </AppShell>
     );
-}
+};

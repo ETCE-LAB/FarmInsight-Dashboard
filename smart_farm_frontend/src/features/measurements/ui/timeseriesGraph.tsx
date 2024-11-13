@@ -5,8 +5,8 @@ import { requestMeasuremnt } from "../useCase/requestMeasurements";
 import { receivedMeasurementEvent } from "../state/measurementSlice";
 import { useAppSelector } from "../../../utils/Hooks";
 import { Measurement } from "../models/measurement";
-import { Button } from "@mantine/core";
-import {IconPlus, IconZoomScan} from "@tabler/icons-react";
+import { Button, Card, Flex, Text, Title } from "@mantine/core";
+import { IconZoomScan } from "@tabler/icons-react";
 
 interface TimeseriesGraphProps {
     data: { date: string; value: number }[];
@@ -34,26 +34,19 @@ const TimeseriesGraph: React.FC<TimeseriesGraphProps> = ({ data, title }) => {
     };
 
     return (
-        <div style={{ padding: '20px', borderRadius: '9px', margin: '30px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h3 style={{ color: '#199ff4', marginBottom: '10px' }}>{title}</h3>
-                {/* TODO: Add function to open detailedGraph */}
+        <Card p="lg" shadow="sm" radius="md" style={{ margin: '30px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)' }}>
+            <Flex justify="space-between" align="center" mb="md">
+                <Title order={3} style={{ color: '#199ff4' }}>{title}</Title>
                 <Button
-                    style={{
-                        backgroundColor: '#105385',
-                        color: 'white',
-                        borderRadius: '5px',
-                        padding: '8px 16px',
-                        fontWeight: 'bold',
-                        cursor: 'pointer',
-                        transition: 'background-color 0.2s',
-                    }}
+                    variant="filled"
+                    color="blue"
+                    style={{ backgroundColor: '#105385' }}
                     onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#0c4065'}
                     onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#105385'}
                 >
                     <IconZoomScan size={20} />
                 </Button>
-            </div>
+            </Flex>
 
             <LineChart
                 data={data}
@@ -74,7 +67,7 @@ const TimeseriesGraph: React.FC<TimeseriesGraphProps> = ({ data, title }) => {
                 }}
                 h={185}
             />
-        </div>
+        </Card>
     );
 };
 

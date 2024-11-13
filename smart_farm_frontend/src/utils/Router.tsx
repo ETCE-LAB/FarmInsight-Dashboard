@@ -27,8 +27,7 @@ export const Router = () => {
                         <Route path={AuthRoutes.signin} element={<SignIn />} />
                         <Route path={AppRoutes.base} element={<LandingPage />} />
                         <Route path={AppRoutes.createOrganization} element={<OrganizationForm />} />
-                        <Route path={AppRoutes.organization} element={<MainFrame />} />
-                        <Route path={AppRoutes.editOrganization} element={<EditOrganization />} />
+                        <Route path={AppRoutes.organization} element={<EditOrganization />} />
                     </Routes>
                 </BasicAppShell>
             </BrowserRouter>

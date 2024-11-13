@@ -15,13 +15,13 @@ export const OrganizationForm: React.FC = () => {
     const navigate = useNavigate();
 
     const handleSave = () => {
-        createOrganization({ name, isPublic }).then((org) =>
-        {
+        createOrganization({ name, isPublic }).then((org) => {
             dispatch(createdOrganization());
-            if (org)
-                navigate(AppRoutes.editOrganization.replace(":name", org.name));
-        }
-        );
+            if (org) {
+                const encodedName = encodeURI(org.name);
+                navigate(AppRoutes.organization.replace(":name", encodedName));
+            }
+        });
     };
 
     return (
