@@ -5,6 +5,7 @@
   "dependencies": {
     "@mantine/charts": "^7.13.3",
     "@mantine/core": "^7.13.3",
+    "@mantine/dates": "^7.13.4",
     "@mantine/hooks": "^7.13.3",
     "@reduxjs/toolkit": "^2.3.0",
     "@tabler/icons-react": "^3.20.0",
@@ -26,6 +27,7 @@
     "react-scripts": "5.0.1",
     "recharts": "^2.13.0",
     "redux": "^5.0.1",
+    "socket.io-client": "^4.8.1",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },

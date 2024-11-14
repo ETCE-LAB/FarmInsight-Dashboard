@@ -1,4 +1,5 @@
 export interface Organization{
-    id:number
+    id:string
     name:string
+    isPublic:boolean
 }

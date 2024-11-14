@@ -1,7 +1,7 @@
 
 
 export interface UserProfile{
-    id:number,
+    id:string,
     name:string,
     email:string
     systemRole:string

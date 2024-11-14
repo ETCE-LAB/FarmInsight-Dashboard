@@ -1,5 +1,5 @@
 import {User} from "oidc-client-ts";
-import {oidcConfig} from "../MainAppProvider";
+import {oidcConfig} from "./MainAppProvider";
 
 export function getUser() {
 
