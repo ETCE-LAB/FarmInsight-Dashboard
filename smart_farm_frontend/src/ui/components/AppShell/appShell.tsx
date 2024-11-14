@@ -11,10 +11,10 @@ export const BasicAppShell: React.FC<PropsWithChildren<{}>> = ({ children }) => 
             padding="md"
         >
             <AppShell.Header>
-                <AppShell_Header /> {/* Use the extracted header component */}
+                <AppShell_Header />
             </AppShell.Header>
             <AppShell.Navbar p="md">
-                <AppShell_Navbar /> {/* Use the extracted navbar component */}
+                <AppShell_Navbar />
             </AppShell.Navbar>
             <AppShell.Main>
                 {children}
