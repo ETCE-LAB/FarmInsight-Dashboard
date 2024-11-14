@@ -1,13 +1,11 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { Button, List, Loader, Box } from '@mantine/core';
 import { useAuth } from 'react-oidc-context';
-import axios from 'axios';
 import {getMyOrganizations} from "../useCase/getMyOrganizations";
 import {Organization} from "../models/Organization";
-import {createdOrganizationEvent} from "../state/OrganizationSlice";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../utils/store";
-//import {SocketContext} from "../../../utils/Context";
+
 
 export const MyOrganizations: React.FC = () => {
     const auth = useAuth();

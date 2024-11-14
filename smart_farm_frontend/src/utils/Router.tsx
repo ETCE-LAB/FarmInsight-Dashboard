@@ -2,7 +2,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AuthenticationCallbackPage } from "../features/auth/ui/AuthenticationCallbackPage";
 import { AuthenticationSignoutCallbackPage } from "../features/auth/ui/AuthenticationSignoutCallbackPage";
 import { SignIn } from "../features/auth/ui/SignIn";
-import { MainFrame } from "../ui/components/mainFrame/mainFrame";
 import {BasicAppShell} from "../ui/components/AppShell/appShell";
 import LandingPage from "../ui/components/landingPage/landingPage";
 import {OrganizationForm} from "../features/organization/ui/organizationForm";

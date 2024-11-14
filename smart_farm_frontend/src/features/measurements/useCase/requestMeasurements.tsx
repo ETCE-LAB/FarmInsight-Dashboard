@@ -1,6 +1,5 @@
 import APIClient from "../../../utils/APIClient";
 import {getUser} from "../../../utils/getUser";
-import {Fpf} from "../../fpf/models/Fpf";
 import {Measurement} from "../models/measurement";
 
 //8250f7569a3047ea8decf4cc101003da

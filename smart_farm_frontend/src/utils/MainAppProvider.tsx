@@ -1,8 +1,7 @@
-// src/MainAppProvider.tsx
 import React, {PropsWithChildren} from 'react';
 import { Provider } from 'react-redux';
 import { MantineProvider } from '@mantine/core';
-import { store } from './store';  // importiere deinen Redux-Store
+import { store } from './store';
 import {WebStorageStateStore} from "oidc-client-ts";
 import {AuthProvider} from "react-oidc-context";
 //import {SocketProvider} from "./SocketProvider";

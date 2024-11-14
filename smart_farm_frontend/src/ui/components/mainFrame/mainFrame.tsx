@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import TimeseriesGraph from "../../../features/measurements/ui/timeseriesGraph";
 import temperatureData from "../../../temperatureData.json";
 import humidityData from "../../../humidityData.json";

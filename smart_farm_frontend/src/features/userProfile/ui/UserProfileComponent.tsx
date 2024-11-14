@@ -1,4 +1,4 @@
-import { HoverCard, Button, Text, Group } from '@mantine/core';
+import { Text, Group } from '@mantine/core';
 import React, {useEffect, useState} from "react";
 import {UserProfile} from "../models/UserProfile"
 import {useAppSelector} from "../../../utils/Hooks";

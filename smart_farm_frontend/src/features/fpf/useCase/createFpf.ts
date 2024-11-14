@@ -1,6 +1,6 @@
 import  APIClient from "../../../utils/APIClient";
 import {getUser} from "../../../utils/getUser";
-import {Organization} from "../../organization/models/Organization";
+
 import {Fpf} from "../models/Fpf";
 
 export const createFpf = async (data: { name:string, isPublic:boolean, sensorServiceIp:string, cameraServiceIp:string, address:string, organizationId:string }) => {
