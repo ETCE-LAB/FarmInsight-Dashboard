@@ -22,5 +22,3 @@ export const receiveFpfData = (fpfID:number, from:Date, to:Date) => {
 
     return result
 }
-
-
