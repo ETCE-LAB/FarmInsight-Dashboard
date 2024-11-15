@@ -6,7 +6,7 @@ import {Button, Card, Modal, Notification, Paper, Title, Text} from "@mantine/co
 import { SearchUserProfile } from "../../userProfile/ui/searchUserProfile";
 import { UserProfile } from "../../userProfile/models/UserProfile";
 import { addUserToOrganization } from "../useCase/addUserToOrganization";
-import {IconPlus} from "@tabler/icons-react";
+import {IconPlus} from '@tabler/icons-react';
 import {FpfForm} from "../../fpf/ui/fpfForm";
 
 

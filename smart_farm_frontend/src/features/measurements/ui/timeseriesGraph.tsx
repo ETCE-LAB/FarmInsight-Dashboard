@@ -6,6 +6,7 @@ import { receivedMeasurementEvent } from "../state/measurementSlice";
 import { useAppSelector } from "../../../utils/Hooks";
 import { Measurement } from "../models/measurement";
 import { Button, Card, Flex, Text, Title } from "@mantine/core";
+// @ts-ignore
 import { IconZoomScan } from "@tabler/icons-react";
 
 interface TimeseriesGraphProps {

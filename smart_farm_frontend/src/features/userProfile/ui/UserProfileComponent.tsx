@@ -6,6 +6,7 @@ import {receivedUserProfileEvent} from "../state/UserProfileSlice";
 import {useAuth} from "react-oidc-context";
 import APIClient from "../../../utils/APIClient";
 import {receiveUserProfile} from "../useCase/receiveUserProfile";
+// @ts-ignore
 import {IconUserCog} from "@tabler/icons-react";
 
 

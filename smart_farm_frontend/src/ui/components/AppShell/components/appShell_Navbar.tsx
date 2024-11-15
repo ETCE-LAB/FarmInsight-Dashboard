@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Card, Container, Menu, TextInput, Text } from '@mantine/core';
+// @ts-ignore
 import { IconSettings } from "@tabler/icons-react";
 import { rem } from "@mantine/core";
 import { Organization } from "../../../../features/organization/models/Organization";
