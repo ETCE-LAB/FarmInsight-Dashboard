@@ -1,4 +1,3 @@
-import {useAuth} from "react-oidc-context";
 
 class APIClient {
 

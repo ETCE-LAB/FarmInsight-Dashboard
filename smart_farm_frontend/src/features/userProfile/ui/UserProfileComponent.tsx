@@ -1,12 +1,13 @@
-import { HoverCard, Button, Text, Group } from '@mantine/core';
-import {useEffect, useState} from "react";
+import { Text, Group } from '@mantine/core';
+import React, {useEffect, useState} from "react";
 import {UserProfile} from "../models/UserProfile"
-import {useAppSelector} from "../../../Hooks";
-import {receivedUserProfileEvent} from "../state/UserProfileState";
+import {useAppSelector} from "../../../utils/Hooks";
+import {receivedUserProfileEvent} from "../state/UserProfileSlice";
 import {useAuth} from "react-oidc-context";
 import APIClient from "../../../utils/APIClient";
 import {receiveUserProfile} from "../useCase/receiveUserProfile";
-
+// @ts-ignore
+import {IconUserCog} from "@tabler/icons-react";
 
 
 const UserProfileComponent = () => {
@@ -18,14 +19,11 @@ const UserProfileComponent = () => {
 
 
     useEffect(() => {
-
         if(auth.user != null) {
             receiveUserProfile().then(resp => {
                 setUserProfile(resp)
             })
         }
-
-
     }, [auth.user, userProfileReceivedEventListener]);
 
     const editProfile = () => {
@@ -33,19 +31,26 @@ const UserProfileComponent = () => {
     }
 
     return (
-        <Group justify="center">
-            <HoverCard width={280} shadow="md">
-                <HoverCard.Target>
-                    <Button variant="filled" color="green" onClick={() => editProfile()}>E-Mail: {userProfile?.email}</Button >
-                </HoverCard.Target>
-                <HoverCard.Dropdown>
-                    <Text size="sm">
-                        E-Mail: {userProfile?.email}
+        <>
+            {auth.isAuthenticated && userProfile != null && (
+                <Group gap="center">
+                    <IconUserCog size={25} cursor="pointer"/>
+                    <Text
+                        variant="filled"
+                        style={{
+                            backgroundColor: "#199ff4",
+                            borderRadius: "6px",
+                            padding: "6px 10px",
+                            color: "white",
+                        }}
+                        onClick={editProfile}
+                    >
+                        {userProfile?.email}
                     </Text>
-                </HoverCard.Dropdown>
-
-            </HoverCard>
-        </Group>
+                </Group>
+            )
+            }
+        </>
     );
 }
 
