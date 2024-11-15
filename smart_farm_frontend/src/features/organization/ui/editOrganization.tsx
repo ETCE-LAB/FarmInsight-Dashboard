@@ -126,7 +126,7 @@ export const EditOrganization = () => {
                                     </div>
                                 ))
                             ) : (
-                                <Text color="dimmed">
+                                <Text>
                                     No users selected yet
                                 </Text>
                             )}
