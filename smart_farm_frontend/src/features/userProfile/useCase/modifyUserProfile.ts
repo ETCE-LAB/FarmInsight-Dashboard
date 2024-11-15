@@ -8,7 +8,7 @@ interface UserProfile {
     role: string;
 }
 
-export const modifyUserProfile = async (data: { name: string; role: string }) => {
+export const modifyUserProfile = async (data: { name: string }) => {
     try {
         const apiClient = new APIClient();
         const user = getUser();
@@ -23,7 +23,7 @@ export const modifyUserProfile = async (data: { name: string; role: string }) =>
             'Content-Type': 'application/json', // Ensure proper content type for JSON payload
         };
 
-        const url = `${process.env.REACT_APP_BACKEND_URL}/api/userprofiles`; // Check if the URL matches the backend API
+        const url = `${process.env.REACT_APP_BACKEND_URL}/api/userprofiles/`+user?.profile.sub; // Check if the URL matches the backend API
 
         // Use PUT for updates
         const response: UserProfile = await apiClient.put(url, data, headers);
