@@ -14,13 +14,13 @@ const membershipSlice = createSlice({
     initialState,
 
     reducers: {
-        changeMembership(state){
+        changedMembership(state){
             state.changeMembershipEvent += 1
         }
     }
 })
 
-export const {changeMembership} = membershipSlice.actions
+export const {changedMembership} = membershipSlice.actions
 export const changeMembershipEvent = (state:RootState) => state.membership.changeMembershipEvent;
 export default membershipSlice.reducer
 

@@ -10,7 +10,9 @@ import {IconPlus} from '@tabler/icons-react';
 import {FpfForm} from "../../fpf/ui/fpfForm";
 import {MembershipList} from "../../membership/ui/MembershipList";
 import {useAppDispatch} from "../../../utils/Hooks";
-import {changeMembership} from "../../membership/state/MembershipSlice";
+import {changedMembership} from "../../membership/state/MembershipSlice";
+import {useSelector} from "react-redux";
+import {RootState} from "../../../utils/store";
 
 
 export const EditOrganization = () => {
@@ -20,6 +22,7 @@ export const EditOrganization = () => {
     const [notification, setNotification] = useState<{ type: 'success' | 'error', message: string } | null>(null);
     const [userModalOpen, setUserModalOpen] = useState(false); // State to manage modal visibility
     const [fpfModalOpen, setFpFModalOpen] = useState(false); // State to manage FpF modal visibility
+    const membershipEventListener = useSelector((state: RootState) => state.membership.changeMembershipEvent);
 
     const dispatch = useAppDispatch()
 
@@ -34,7 +37,8 @@ export const EditOrganization = () => {
                     console.error("Failed to fetch organization:", error);
                 });
         }
-    }, [name]);
+    }, [name, membershipEventListener]);
+
 
     const userSelected = (user: UserProfile) => {
         if (!usersToAdd.includes(user)) {
@@ -61,7 +65,7 @@ export const EditOrganization = () => {
                 });
                 // Clear the user list
                 setUsersToAdd([]);
-                dispatch(changeMembership())
+                dispatch(changedMembership())
             })
             .catch((error) => {
                 // Show error notification

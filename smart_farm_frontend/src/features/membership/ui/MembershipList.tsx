@@ -15,11 +15,8 @@ import {KickMemberButton} from "./KickMemberButton";
 export  const MembershipList: React.FC<{members:Membership[]}> = ( {members} ) => {
     const [memberList, setMembers] = useState<Membership[] >(members);
     const [isAdmin, setIsAdmin] = useState(false);
-    const membershipEventListener = useSelector((state: RootState) => state.membership.changeMembershipEvent);
-
 
     useEffect(() => {
-        console.log(members)
         receiveUserProfile().then( (user) => {
             const userIsAdmin = members.some(
                 (member) => member.userprofile.id === user.id && member.membershipRole === "admin"
@@ -27,7 +24,7 @@ export  const MembershipList: React.FC<{members:Membership[]}> = ( {members} ) =
             setIsAdmin(userIsAdmin);
             }
         )
-    }, [members, membershipEventListener]);
+    }, [members]);
 
 
     const rows = members.map((member:Membership) => (
