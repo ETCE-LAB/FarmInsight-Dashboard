@@ -14,8 +14,7 @@ import {changedUserProfile, receivedUserProfileEvent} from "../state/UserProfile
 export const EditUserProfile = () => {
     const [editableProfile, setEditableProfile] = useState({
         email: '',
-        name: '',
-        role: '',
+        name: ''
     });
     const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
     const auth = useAuth();
@@ -30,7 +29,6 @@ export const EditUserProfile = () => {
         try {
             const response = await modifyUserProfile({
                 name: editableProfile.name,
-                role: editableProfile.role,
             });
             dispatch(changedUserProfile());
             console.log('Profile updated:', response);
@@ -72,7 +70,6 @@ export const EditUserProfile = () => {
                         setEditableProfile({
                             email: resp.email || '',
                             name: resp.name || '',
-                            role: resp.systemRole || '',
                         });
                     } else {
                         console.warn('No user profile data received');
