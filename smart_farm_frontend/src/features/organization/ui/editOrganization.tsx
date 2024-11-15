@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import {useLocation, useParams} from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getOrganization } from "../useCase/getOrganization";
 import { Organization } from "../models/Organization";
@@ -11,21 +11,21 @@ import {FpfForm} from "../../fpf/ui/fpfForm";
 
 
 export const EditOrganization = () => {
-    const { name } = useParams<{ name: string }>();
+    const { id } = useLocation().state;
     const [organization, setOrganization] = useState<Organization | null>(null);
     const [usersToAdd, setUsersToAdd] = useState<UserProfile[]>([]);
     const [notification, setNotification] = useState<{ type: 'success' | 'error', message: string } | null>(null);
     const [userModalOpen, setUserModalOpen] = useState(false); // State to manage modal visibility
     const [fpfModalOpen, setFpFModalOpen] = useState(false); // State to manage FpF modal visibility
     useEffect(() => {
-        if (name) {
-            getOrganization(name)
+        if (id) {
+            getOrganization(id)
                 .then((org) => setOrganization(org))
                 .catch((error) => {
                     console.error("Failed to fetch organization:", error);
                 });
         }
-    }, [name]);
+    }, [id]);
 
     const userSelected = (user: UserProfile) => {
         if (!usersToAdd.includes(user)) {

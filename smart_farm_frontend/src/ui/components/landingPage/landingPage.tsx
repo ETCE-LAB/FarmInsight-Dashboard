@@ -40,7 +40,7 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
             name: 'Organization',
             color: '#000000',
             link: './my-organizations',
-            submenu: organizations.map((org) => ({ name: org.name, link: `./organization/${org.id}` }))
+            submenu: organizations.map((org) => ({ name: org.name, id: org.id }))
         },
     ];
 
@@ -72,8 +72,8 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
             <Menu.Dropdown>
                 {tab.submenu.map((option) => (
                     <Menu.Item
-                        key={option.link}
-                        onClick={() => navigate(AppRoutes.organization)}
+                        key={option.id}
+                        onClick={() => navigate(AppRoutes.organization.replace(':name', option.name), {state : { id: option.id }})}
                         style={{ padding: '10px 16px', fontSize: '14px' }}
                     >
                         {option.name}

@@ -12,7 +12,7 @@ import { RootState } from "../../../../utils/store";
 
 export const AppShell_Navbar: React.FC = () => {
     const [value, setValue] = useState('');
-    const [selectedOrganization, setSelectedOrganization] = useState<string>('My Organizations');
+    const [selectedOrganization, setSelectedOrganization] = useState<{name: string, id: string}>({name: 'My Organizations', id: ''});
     const [organizations, setMyOrganizations] = useState<Organization[]>([]);
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
     const navigate = useNavigate();
@@ -29,10 +29,10 @@ export const AppShell_Navbar: React.FC = () => {
 
     const tabs = [
         {
-            name: selectedOrganization,
+            org: selectedOrganization,
             color: '#000000',
             link: './my-organizations',
-            submenu: organizations.map((org) => ({ name: org.name, link: `./organization/${org.id}` })),
+            submenu: organizations.map((org) => ({ name: org.name, id: org.id })),
         },
     ];
 
@@ -44,25 +44,25 @@ export const AppShell_Navbar: React.FC = () => {
         }
     };
 
-    const handleOrganizationSelect = (name: string, link: string) => {
-        setSelectedOrganization(name);
-        navigate(link);
+    const handleOrganizationSelect = (name: string, id: string) => {
+        setSelectedOrganization({ name, id });
+        navigate(AppRoutes.organization.replace(':name', name), { state : { id: id}});
     };
 
     const items = tabs.map((tab) => (
-        <div key={tab.name} style={{ marginBottom: '20px' }}>
+        <div key={tab.org.name} style={{ marginBottom: '20px' }}>
             <Menu trigger="hover" openDelay={100} closeDelay={100} withinPortal>
                 <Menu.Target>
                     <Text onClick={() => handleTabClick(tab.link)} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
-                        {tab.name}
+                        {tab.org.name}
                         <IconChevronDown style={{ width: rem(16), height: rem(16) }} stroke={2} />
                     </Text>
                 </Menu.Target>
                 <Menu.Dropdown>
                     {tab.submenu.map((option) => (
                         <Menu.Item
-                            key={option.link}
-                            onClick={() => handleOrganizationSelect(option.name, option.link)}
+                            key={option.id}
+                            onClick={() => handleOrganizationSelect(option.name, option.id)}
                         >
                             {option.name}
                         </Menu.Item>
@@ -79,7 +79,7 @@ export const AppShell_Navbar: React.FC = () => {
                     style={{ width: rem(20), height: rem(20), marginRight: '15px', display: 'flex' }}
                     stroke={2}
                     cursor={'pointer'}
-                    onClick={() => navigate(AppRoutes.organization)}
+                    onClick={() => navigate(AppRoutes.organization.replace(':name', selectedOrganization.name), { state: { id: selectedOrganization.id }})}
                 />
                 {items}
             </Container>

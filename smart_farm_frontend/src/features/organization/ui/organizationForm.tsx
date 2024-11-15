@@ -19,7 +19,7 @@ export const OrganizationForm: React.FC = () => {
             dispatch(createdOrganization());
             if (org) {
                 const encodedName = encodeURI(org.name);
-                navigate(AppRoutes.organization.replace(":name", encodedName));
+                navigate(AppRoutes.organization.replace(":name", encodedName), {state: { id: org.id }});
             }
         });
     };
