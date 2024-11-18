@@ -15,7 +15,7 @@ pipeline {
         withCredentials([file(credentialsId: 'farminsight-env',
                               variable: 'ENV_FILE')]){
           sh '''
-            mkdir app
+            mkdir -p app
             cp ${ENV_FILE} app/.env.development
           '''
         }
