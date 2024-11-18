@@ -24,7 +24,7 @@ pipeline {
     stage('Build react APP') {
         steps{
         sh '''
-          source app/.env.development
+          load app/.env.development
           cp -R smart_farm_frontend/* app/
           cd app
           npm install
