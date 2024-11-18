@@ -10,10 +10,20 @@ pipeline {
             branch: 'Infrastructure-Setup'
       }
     }
+    stage('Set environment variables'){
+      steps {
+        withCredentials([file(credentialsId: 'farminsight-env',
+                              variable: 'ENV_FILE')]){
+          sh '''
+            mkdir app
+            cp ${ENV_FILE} app/.env.development
+          '''
+        }
+      }
+    }
     stage('Build react APP') {
         steps{
         sh '''
-          mkdir -p app
           cp -R smart_farm_frontend/* app/
           cd app
           npm install
