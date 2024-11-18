@@ -7,7 +7,7 @@ import {WebStorageStateStore} from "oidc-client-ts";
 import {AuthProvider} from "react-oidc-context";
 
 export const oidcConfig = {
-    authority: "https://development-isse-identityserver.azurewebsites.net",
+    authority: process.env.REACT_APP_IDENTITY_SERVER_URL,
     client_id: "interactive",
     redirect_uri: window.location.origin + "/auth/callback",
     post_logout_redirect_uri: window.location.origin + "/auth/signout-callback",
