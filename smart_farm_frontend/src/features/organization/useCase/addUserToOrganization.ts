@@ -1,6 +1,5 @@
 import  APIClient from "../../../utils/APIClient";
 import {getUser} from "../../../utils/getUser";
-import organizationSlice from "../state/OrganizationSlice";
 import {Organization} from "../models/Organization";
 
 export const addUserToOrganization = async (data: { organizationId:string, userprofileId:string, membershipRole:string }) => {
