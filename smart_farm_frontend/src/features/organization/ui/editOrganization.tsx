@@ -2,21 +2,21 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getOrganization } from "../useCase/getOrganization";
 import { Organization } from "../models/Organization";
-import {Button, Card, Modal, Notification, Paper, Title, Text} from "@mantine/core";
+import { Button, Card, Modal, Notification, Paper, Title, Text } from "@mantine/core";
 import { SearchUserProfile } from "../../userProfile/ui/searchUserProfile";
 import { UserProfile } from "../../userProfile/models/UserProfile";
 import { addUserToOrganization } from "../useCase/addUserToOrganization";
-import {IconPlus} from '@tabler/icons-react';
-import {FpfForm} from "../../fpf/ui/fpfForm";
-
+import { IconPlus } from "@tabler/icons-react";
+import { FpfForm } from "../../fpf/ui/fpfForm";
 
 export const EditOrganization = () => {
     const { name } = useParams<{ name: string }>();
     const [organization, setOrganization] = useState<Organization | null>(null);
     const [usersToAdd, setUsersToAdd] = useState<UserProfile[]>([]);
     const [notification, setNotification] = useState<{ type: 'success' | 'error', message: string } | null>(null);
-    const [userModalOpen, setUserModalOpen] = useState(false); // State to manage modal visibility
-    const [fpfModalOpen, setFpFModalOpen] = useState(false); // State to manage FpF modal visibility
+    const [userModalOpen, setUserModalOpen] = useState(false); // Manage user modal visibility
+    const [fpfModalOpen, setFpFModalOpen] = useState(false); // Manage FpF modal visibility
+
     useEffect(() => {
         if (name) {
             getOrganization(name)
@@ -34,7 +34,6 @@ export const EditOrganization = () => {
     };
 
     const handleAddUsers = () => {
-        // Add users to organization
         Promise.all(
             usersToAdd.map((user) =>
                 addUserToOrganization({
@@ -45,16 +44,13 @@ export const EditOrganization = () => {
             )
         )
             .then(() => {
-                // Show success notification
                 setNotification({
                     type: 'success',
                     message: `${usersToAdd.length} users have been added to the organization.`,
                 });
-                // Clear the user list
-                setUsersToAdd([]);
+                setUsersToAdd([]); // Clear the selected users
             })
             .catch((error) => {
-                // Show error notification
                 setNotification({
                     type: 'error',
                     message: 'There was an error adding the users.',
@@ -101,35 +97,6 @@ export const EditOrganization = () => {
                         <IconPlus size={18} style={{ marginRight: "8px" }} />
                         Add Users
                     </Button>
-                    <Card>
-                        {usersToAdd.length > 0 ? (
-                            usersToAdd.map((user, index) => (
-                                <div key={index}>
-                                    <p>{user.name || user.email}</p>
-                                </div>
-                            ))
-                        ) : (
-                            <p
-                                style={{
-                                    justifySelf: "center",
-                                    justifyContent: "center",
-                                    display: "flex",
-                                }}
-                            >
-                                No users to add
-                            </p>
-                        )}
-                        {usersToAdd.length > 0 && (
-                            <Button
-                                onClick={handleAddUsers}
-                                style={{
-                                    marginTop: "10px",
-                                }}
-                            >
-                                Add Users
-                            </Button>
-                        )}
-                    </Card>
                     <Button
                         onClick={() => setFpFModalOpen(true)} // Open modal on button click
                         variant="filled"
@@ -139,17 +106,54 @@ export const EditOrganization = () => {
                         <IconPlus size={18} style={{ marginRight: "8px" }} />
                         Add FPF
                     </Button>
-                    {/*Add User */ }
+
+                    {/* Add User Modal */}
                     <Modal
                         opened={userModalOpen}
                         onClose={() => setUserModalOpen(false)}
                         title="Add User to Organization"
                         centered
                     >
+                        {/* Search and select users */}
                         <SearchUserProfile onUserSelected={userSelected} />
+
+                        {/* Display selected users */}
+                        <Card withBorder style={{ marginTop: '20px' }}>
+                            {usersToAdd.length > 0 ? (
+                                usersToAdd.map((user, index) => (
+                                    <div key={index} style={{ padding: '5px 0' }}>
+                                        <Text>{user.name || user.email}</Text>
+                                    </div>
+                                ))
+                            ) : (
+                                <Text>
+                                    No users selected yet
+                                </Text>
+                            )}
+                            {usersToAdd.length > 0 && (
+                                <Button
+                                    onClick={handleAddUsers}
+                                    fullWidth
+                                    style={{ marginTop: '15px' }}
+                                    variant="filled"
+                                >
+                                    Add Selected Users
+                                </Button>
+                            )}
+                        </Card>
                     </Modal>
 
-                    {/* Notification component */}
+                    {/* Add FpF Modal */}
+                    <Modal
+                        opened={fpfModalOpen}
+                        onClose={() => setFpFModalOpen(false)}
+                        title="Create FpF"
+                        centered
+                    >
+                        <FpfForm inputOrganization={organization}></FpfForm>
+                    </Modal>
+
+                    {/* Notification */}
                     {notification && (
                         <Notification
                             color={notification.type === 'success' ? 'green' : 'red'}
@@ -166,16 +170,6 @@ export const EditOrganization = () => {
                             {notification.message}
                         </Notification>
                     )}
-                    {/*Add FpF */ }
-                    <Modal
-                        opened={fpfModalOpen}
-                        onClose={() => setFpFModalOpen(false)}
-                        title="Create FpF"
-                        centered
-                    >
-                        <FpfForm  inputOrganization={organization}></FpfForm>
-                    </Modal>
-
                 </>
             ) : null}
         </>
