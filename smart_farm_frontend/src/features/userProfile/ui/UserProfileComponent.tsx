@@ -64,7 +64,7 @@ const UserProfileComponent = () => {
                             color: 'white',
                         }}
                     >
-                        {userProfile.email + userProfile.name}
+                        {userProfile.email}
                     </Text>
                 </Group>
             )}
