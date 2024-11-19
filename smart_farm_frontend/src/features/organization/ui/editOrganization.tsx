@@ -6,8 +6,6 @@ import { Button, Card, Modal, Notification, Paper, Title, Text } from "@mantine/
 import { SearchUserProfile } from "../../userProfile/ui/searchUserProfile";
 import { UserProfile } from "../../userProfile/models/UserProfile";
 import { addUserToOrganization } from "../useCase/addUserToOrganization";
-import { IconPlus } from "@tabler/icons-react";
-import { FpfForm } from "../../fpf/ui/fpfForm";
 import {IconPlus} from '@tabler/icons-react';
 import {FpfForm} from "../../fpf/ui/fpfForm";
 import {MembershipList} from "../../membership/ui/MembershipList";
@@ -21,9 +19,6 @@ export const EditOrganization = () => {
     const [organization, setOrganization] = useState<Organization | null>(null);
     const [usersToAdd, setUsersToAdd] = useState<UserProfile[]>([]);
     const [notification, setNotification] = useState<{ type: 'success' | 'error', message: string } | null>(null);
-    const [userModalOpen, setUserModalOpen] = useState(false); // Manage user modal visibility
-    const [fpfModalOpen, setFpFModalOpen] = useState(false); // Manage FpF modal visibility
-
     const [userModalOpen, setUserModalOpen] = useState(false); // State to manage modal visibility
     const [fpfModalOpen, setFpFModalOpen] = useState(false); // State to manage FpF modal visibility
     const membershipEventListener = useSelector((state: RootState) => state.membership.changeMembershipEvent);

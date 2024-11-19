@@ -14,6 +14,5 @@ export const getOrganization = (identifier:string) => {
 
     const url = `${process.env.REACT_APP_BACKEND_URL}/api/organizations/${identifier}`;
     const result:  Promise<Organization> = apiClient.get(url, headers)
-    console.log(result)
     return result
 }

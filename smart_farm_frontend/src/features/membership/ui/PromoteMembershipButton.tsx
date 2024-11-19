@@ -11,7 +11,6 @@ export const PromoteMembershipButton:React.FC<{member:Membership}> = ({member}) 
     const dispatch = useDispatch();
 
     function handlePromote(id: string, membershipRole:string) {
-        console.log(membershipRole)
         promoteMember({id, membershipRole}).then(r =>
             dispatch(changedMembership())
         )

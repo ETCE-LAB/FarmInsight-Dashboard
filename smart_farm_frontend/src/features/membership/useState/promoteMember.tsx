@@ -1,6 +1,5 @@
 import APIClient from "../../../utils/APIClient";
 import {getUser} from "../../../utils/getUser";
-import {Fpf} from "../../fpf/models/Fpf";
 
 
 export const promoteMember = async (data: { id:string, membershipRole:string }) => {
@@ -13,11 +12,14 @@ export const promoteMember = async (data: { id:string, membershipRole:string }) 
         const headers =
             {'Authorization': `Bearer ${token}`}
         const url = `${process.env.REACT_APP_BACKEND_URL}/api/memberships/${data.id}`;
-        const response:Fpf = await apiClient.put(url, data, headers);
 
-        console.log(url)
 
-        return response
+        const response = await apiClient.put(url, data, headers)
+
+        console.log(response)
+
+        return
+
     }
     catch (error) {
         console.error("Error: " + error);
