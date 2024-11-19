@@ -60,11 +60,11 @@ const UserProfileComponent = () => {
                         style={{
                             backgroundColor: '#199ff4',
                             borderRadius: '6px',
-                            padding: '6px 10px',
+                            padding: '6px',
                             color: 'white',
                         }}
                     >
-                        {userProfile.email + userProfile.name}
+                        {userProfile.email}
                     </Text>
                 </Group>
             )}
