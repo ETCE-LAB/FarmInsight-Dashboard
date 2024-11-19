@@ -1,18 +1,16 @@
-
 class APIClient {
-
     async get(URL: string, header: { Authorization: string }) {
         try {
             const response = await fetch(URL, {
-                headers: header
+                headers: header,
             });
 
             if (!response.ok) {
-                throw new Error("Network response not ok");
+                throw new Error(`Network response not ok. Status: ${response.status}`);
             }
             return await response.json();
         } catch (error) {
-            console.error("Failed to receive Response: " + error);
+            console.error("Failed to receive response: " + error);
         }
     }
 
@@ -21,18 +19,39 @@ class APIClient {
             const response = await fetch(URL, {
                 headers: {
                     ...header,
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
                 },
                 method: 'POST',
-                body: JSON.stringify(data)
+                body: JSON.stringify(data),
             });
 
             if (!response.ok) {
-                throw new Error("Network response not ok");
+                throw new Error(`Network response not ok. Status: ${response.status}`);
             }
             return await response.json();
         } catch (error) {
-            console.error("Failed to receive Response: " + error);
+            console.error("Failed to receive response: " + error);
+        }
+    }
+
+    async put(URL: string, data: any, header: { Authorization: string; "Content-Type": string }) {
+        try {
+            const response = await fetch(URL, {
+                headers: {
+                    ...header,
+                    'Content-Type': 'application/json',
+                },
+                method: 'PUT',
+                body: JSON.stringify(data),
+            });
+
+            if (!response.ok) {
+                throw new Error(`Network response not ok. Status: ${response.status}`);
+            }
+            return await response.json();
+        } catch (error) {
+            console.error("Failed to receive response: " + error);
+            throw error; // Re-throw the error for higher-level handling
         }
     }
 

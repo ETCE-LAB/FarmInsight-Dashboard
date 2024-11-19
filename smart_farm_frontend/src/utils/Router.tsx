@@ -7,6 +7,7 @@ import LandingPage from "../ui/components/landingPage/landingPage";
 import {OrganizationForm} from "../features/organization/ui/organizationForm";
 import {AppRoutes} from "./appRoutes";
 import {EditOrganization} from "../features/organization/ui/editOrganization";
+import {EditUserProfile} from "../features/userProfile/ui/editUserProfile";
 import {MainFrame} from "../ui/components/mainFrame/mainFrame";
 
 export class AuthRoutes {
@@ -18,19 +19,19 @@ export class AuthRoutes {
 
 export const Router = () => {
     return (
-
-            <BrowserRouter>
-                <BasicAppShell>
-                    <Routes>
-                        <Route path={AuthRoutes.callback} element={<AuthenticationCallbackPage />} />
-                        <Route path={AuthRoutes.signout_callback} element={<AuthenticationSignoutCallbackPage />} />
-                        <Route path={AuthRoutes.signin} element={<SignIn />} />
-                        <Route path={AppRoutes.base} element={<LandingPage />} />
-                        <Route path={AppRoutes.createOrganization} element={<OrganizationForm />} />
-                        <Route path={AppRoutes.organization} element={<EditOrganization />} />
-                        <Route path={AppRoutes.editFpf} element={<MainFrame />} />
-                    </Routes>
-                </BasicAppShell>
-            </BrowserRouter>
-            );
+        <BrowserRouter>
+            <BasicAppShell>
+                <Routes>
+                    <Route path={AuthRoutes.callback} element={<AuthenticationCallbackPage />} />
+                    <Route path={AuthRoutes.signout_callback} element={<AuthenticationSignoutCallbackPage />} />
+                    <Route path={AuthRoutes.signin} element={<SignIn />} />
+                    <Route path={AppRoutes.base} element={<LandingPage />} />
+                    <Route path={AppRoutes.createOrganization} element={<OrganizationForm />} />
+                    <Route path={AppRoutes.organization} element={<EditOrganization />} />
+                    <Route path={AppRoutes.editUserProfile} element={<EditUserProfile />} />
+                    <Route path={AppRoutes.editFpf} element={<MainFrame />} />
+                </Routes>
+            </BasicAppShell>
+        </BrowserRouter>
+    );
 };
