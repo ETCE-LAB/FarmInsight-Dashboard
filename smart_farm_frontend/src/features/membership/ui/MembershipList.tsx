@@ -27,7 +27,7 @@ export  const MembershipList: React.FC<{members:Membership[]}> = ( {members} ) =
                 <Table.Tr>
                     <th style={{ textAlign: "left"}}>Name</th>
                     <th style={{ textAlign: "left"}}>Email</th>
-                    <th style={{ textAlign: "center"}}>System Role</th>
+                    <th style={{ textAlign: "center"}}>Role</th>
                     <th style={{ textAlign: "center"}}>Promote</th>
                     <th style={{ textAlign: "center"}}>Kick</th>
                 </Table.Tr>
