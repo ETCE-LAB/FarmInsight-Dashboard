@@ -2,10 +2,7 @@ import React, { useState } from 'react';
 import {Button, TextInput, Checkbox, Box, Switch} from "@mantine/core";
 import { useAuth } from "react-oidc-context";
 import {createFpf} from "../useCase/createFpf";
-import {receiveVisibleFpfs} from "../useCase/receiveVisibleFpfs";
 import {Organization} from "../../organization/models/Organization";
-import {Organizations} from "../../organization/ui/Organizations";
-import {createdOrganization} from "../../organization/state/OrganizationSlice";
 import {useDispatch} from "react-redux";
 import {AppRoutes} from "../../../utils/appRoutes";
 import {createdFpf} from "../state/FpfSlice";
@@ -47,7 +44,9 @@ export const FpfForm: React.FC<{inputOrganization:Organization}> = ({ inputOrgan
             {
                 dispatch(createdFpf())
                 if (fpf)
-                    navigate(AppRoutes.editFpf.replace(":organizationName", inputOrganization.name).replace(":fpfName", fpf.name));
+                {
+                    navigate(AppRoutes.editFpf.replace(":organizationName", inputOrganization.name).replace(":fpfName", fpf.name), {state: { id: fpf.id }});
+                }
             }
             )
         }

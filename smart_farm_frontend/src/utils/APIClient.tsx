@@ -28,13 +28,14 @@ class APIClient {
             if (!response.ok) {
                 throw new Error(`Network response not ok. Status: ${response.status}`);
             }
+
             return await response.json();
         } catch (error) {
             console.error("Failed to receive response: " + error);
         }
     }
 
-    async put(URL: string, data: any, header: { Authorization: string; "Content-Type": string }) {
+    async put(URL: string, data: any, header: { Authorization: string }) {
         try {
             const response = await fetch(URL, {
                 headers: {
@@ -51,9 +52,30 @@ class APIClient {
             return await response.json();
         } catch (error) {
             console.error("Failed to receive response: " + error);
-            throw error; // Re-throw the error for higher-level handling
+            throw error;
         }
     }
+
+    async delete(URL: string, header: { Authorization: string }) {
+        try {
+            const response = await fetch(URL, {
+                headers: {
+                    ...header,
+                    'Content-Type': 'application/json'
+                },
+                method: 'DELETE'
+            });
+
+            if (!response.ok) {
+                throw new Error("Network response not ok");
+            }
+            return await response.json();
+        } catch (error) {
+            console.error("Failed to receive Response: " + error);
+        }
+    }
+
+
 }
 
 export default APIClient;

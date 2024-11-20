@@ -1,10 +1,7 @@
-// appShell_Navbar.tsx
-
 import React, { useState, useEffect } from "react";
-import { Card, Container, Menu, TextInput, Text } from '@mantine/core';
-// @ts-ignore
-import { IconSettings } from "@tabler/icons-react";
-import { rem } from "@mantine/core";
+import {Card, Container, Menu, TextInput, Text, List, Flex} from '@mantine/core';
+import {IconSettings, IconChevronDown, IconCircleCheck, IconCircleMinus, IconUsers} from "@tabler/icons-react";
+import { rem, Divider } from "@mantine/core";
 import { Organization } from "../../../../features/organization/models/Organization";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../../../utils/appRoutes";
@@ -12,14 +9,20 @@ import { getMyOrganizations } from "../../../../features/organization/useCase/ge
 import { useAuth } from "react-oidc-context";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../utils/store";
+import {Fpf} from "../../../../features/fpf/models/Fpf";
+import {getOrganization} from "../../../../features/organization/useCase/getOrganization";
 
 export const AppShell_Navbar: React.FC = () => {
     const [value, setValue] = useState('');
-    const [selectedOrganization, setSelectedOrganization] = useState<string>('My Organizations');
+    const [selectedOrganization, setSelectedOrganization] = useState<{name: string, id: string}>({name: 'My Organizations', id: ''});
     const [organizations, setMyOrganizations] = useState<Organization[]>([]);
+    const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+    const [fpfList, setFpfList] = useState<Fpf[]>([])
+
     const navigate = useNavigate();
     const auth = useAuth();
     const organizationEventListener = useSelector((state: RootState) => state.organization.createdOrganizationEvent);
+    const fpfEventListener = useSelector((state: RootState) => state.fpf.createdFpfEvent)
 
     useEffect(() => {
         if (auth.isAuthenticated) {
@@ -29,12 +32,25 @@ export const AppShell_Navbar: React.FC = () => {
         }
     }, [auth.user, organizationEventListener]);
 
+
+    useEffect(() => {
+        if(auth.isAuthenticated) {
+            getOrganization(selectedOrganization.id).then(resp => {
+                if (resp) {
+                    setFpfList(resp.FPFs)
+                }
+            }
+        )
+        }
+    }, [organizationEventListener, fpfEventListener, selectedOrganization]);
+
+
     const tabs = [
         {
-            name: selectedOrganization,
+            org: selectedOrganization,
             color: '#000000',
             link: './my-organizations',
-            submenu: organizations.map((org) => ({ name: org.name, link: `./organization/${org.id}` })),
+            submenu: organizations.map((org) => ({ name: org.name, id: org.id })),
         },
     ];
 
@@ -46,88 +62,123 @@ export const AppShell_Navbar: React.FC = () => {
         }
     };
 
-    const handleOrganizationSelect = (name: string, link: string) => {
-        setSelectedOrganization(name);
-        navigate(link);
+    const handleOrganizationSelect = (name: string, id: string) => {
+        setSelectedOrganization({ name, id });
+        navigate(AppRoutes.organization.replace(':name', name), { state : { id: id}});
     };
 
+    const handleFpfSelect = (name: string, id: string, index:number) => {
+        setSelectedIndex(index);
+        if(id)
+        {
+            navigate(AppRoutes.editFpf.replace(':organizationName', selectedOrganization.name).replace(':fpfName', name), {state: {id: id}});
+        }
+    }
+
     const items = tabs.map((tab) => (
-        <div key={tab.name} style={{ marginBottom: '20px' }}>
-            <Menu trigger="hover" openDelay={100} closeDelay={100} withinPortal>
+        <Flex key={tab.org.name} style={{ marginBottom: '1vh' }}>
+            <Menu trigger="hover" openDelay={100} closeDelay={100} withinPortal >
                 <Menu.Target>
-                    <Text onClick={() => handleTabClick(tab.link)} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
-                        {tab.name}
+                    <Text onClick={() => handleTabClick(tab.link)} style={{ marginBottom:'1vh', cursor: 'pointer', display: 'flex', alignItems: 'center',  gap: '0.5rem', fontSize: '40px' }}>
+                        {tab.org.name}
+                        <IconChevronDown style={{ width: rem(16), height: rem(16) }} stroke={2} />
                     </Text>
                 </Menu.Target>
-                <Menu.Dropdown>
+                <Menu.Dropdown >
                     {tab.submenu.map((option) => (
                         <Menu.Item
-                            key={option.link}
-                            onClick={() => handleOrganizationSelect(option.name, option.link)}
+                            key={option.id}
+                            onClick={() => handleOrganizationSelect(option.name, option.id)}
                         >
                             {option.name}
                         </Menu.Item>
                     ))}
                 </Menu.Dropdown>
             </Menu>
-        </div>
+        </Flex>
     ));
 
     return (
-        <Container size="sm">
-            <IconSettings
-                style={{ width: rem(20), height: rem(20) }}
-                stroke={2}
-                cursor={'pointer'}
-                onClick={() => navigate(AppRoutes.organization)}
-            />
-            {items}
+        <Container size="fluid" style={{ display: 'flex', flexDirection: 'column', width: "100%" }}>
+            <Flex
+                style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'auto 1fr', // Zwei Spalten: erste für das Icon, zweite für die Items
+
+                    gap: '1vw', // Abstand zwischen den Spalten
+                    marginBottom: '20px',
+                    marginTop: '2vh',
+                    width: '100%',
+                }}
+            >
+                <IconSettings
+                    size={35}
+                    style={{
+                        cursor: 'pointer',
+                    }}
+                    stroke={2}
+                    onClick={() =>
+                        navigate(AppRoutes.organization.replace(':name', selectedOrganization.name), {
+                            state: { id: selectedOrganization.id },
+                        })
+                    }
+                />
+            </Flex>
+            <Flex justify={"center"} >
+                {items}
+            </Flex>
+            <Divider my="lg" style={{ width: '100%' }} />
+
             <TextInput
-                style={{ marginBottom: '20px' }}
+                variant="unstyled"
+                style={{ display: 'flex', marginBottom: '5vh', width: '100%' }}
                 value={value}
                 onChange={(event) => setValue(event.currentTarget.value)}
-                placeholder="Search name"
+                placeholder="Search FPFs.."
             />
-            <Card
-                shadow="sm"
-                padding="lg"
-                radius="md"
-                withBorder
-                style={{ margin: '16px', cursor: 'pointer' }}
-            >
-                <Card.Section>
-                    <Text style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        padding: '8px 16px',
-                        color: '#105385',
-                        fontSize: '30px',
-                    }}>
-                        FPF 1
-                    </Text>
-                </Card.Section>
-            </Card>
-            <Card
-                shadow="sm"
-                padding="lg"
-                radius="md"
-                withBorder
-                style={{ margin: '16px', cursor: 'pointer' }}
-            >
-                <Card.Section>
-                    <Text style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        padding: '8px 16px',
-                        color: '#105385',
-                        fontSize: '30px',
-                    }}>
-                        FPF 2
-                    </Text>
-                </Card.Section>
-            </Card>
+
+            <List style={{ width: '100%', marginTop: '1vh' }}>
+                {fpfList &&
+                    fpfList.map((fpf, index) => (
+                        <List.Item
+                            key={index}
+                            style={{
+                                cursor: 'pointer',
+                                backgroundColor:
+                                    selectedIndex === index ? 'rgba(255, 255, 255, 0.1)' : '',
+                                borderRadius: '6px',
+                                border: 'none',
+                                marginBottom: '16px',
+                                listStyleType: 'none',
+                            }}
+                            onClick={() => {
+                                handleFpfSelect(fpf.name, fpf.id, index);
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    color: selectedIndex === index ? '#199ff4' : '',
+                                    fontSize: '20px',
+                                    padding: '8px 16px',
+                                }}
+                            >
+                                {selectedIndex === index ? (
+                                    <IconCircleCheck
+                                        style={{ marginRight: '10px', color: '#16A34A' }}
+                                    />
+                                ) : (
+                                    <IconCircleMinus
+                                        style={{ marginRight: '10px', color: '#D97400' }}
+                                    />
+                                )}
+                                {fpf.name}
+                            </Text>
+                        </List.Item>
+                    ))}
+            </List>
         </Container>
     );
 };

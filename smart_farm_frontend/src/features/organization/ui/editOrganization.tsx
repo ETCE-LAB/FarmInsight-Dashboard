@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import {useLocation, useParams} from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getOrganization } from "../useCase/getOrganization";
 import { Organization } from "../models/Organization";
@@ -6,26 +6,34 @@ import { Button, Card, Modal, Notification, Paper, Title, Text } from "@mantine/
 import { SearchUserProfile } from "../../userProfile/ui/searchUserProfile";
 import { UserProfile } from "../../userProfile/models/UserProfile";
 import { addUserToOrganization } from "../useCase/addUserToOrganization";
-import { IconPlus } from "@tabler/icons-react";
-import { FpfForm } from "../../fpf/ui/fpfForm";
+import {IconPlus} from '@tabler/icons-react';
+import {FpfForm} from "../../fpf/ui/fpfForm";
+import {MembershipList} from "../../membership/ui/MembershipList";
+import {useAppDispatch} from "../../../utils/Hooks";
+import {changedMembership} from "../../membership/state/MembershipSlice";
+import {useSelector} from "react-redux";
+import {RootState} from "../../../utils/store";
 
 export const EditOrganization = () => {
-    const { name } = useParams<{ name: string }>();
+    const { id } = useLocation().state;
     const [organization, setOrganization] = useState<Organization | null>(null);
     const [usersToAdd, setUsersToAdd] = useState<UserProfile[]>([]);
     const [notification, setNotification] = useState<{ type: 'success' | 'error', message: string } | null>(null);
-    const [userModalOpen, setUserModalOpen] = useState(false); // Manage user modal visibility
-    const [fpfModalOpen, setFpFModalOpen] = useState(false); // Manage FpF modal visibility
+    const [userModalOpen, setUserModalOpen] = useState(false); // State to manage modal visibility
+    const [fpfModalOpen, setFpFModalOpen] = useState(false); // State to manage FpF modal visibility
+    const membershipEventListener = useSelector((state: RootState) => state.membership.changeMembershipEvent);
+
+    const dispatch = useAppDispatch()
 
     useEffect(() => {
-        if (name) {
-            getOrganization(name)
+        if (id) {
+            getOrganization(id)
                 .then((org) => setOrganization(org))
                 .catch((error) => {
                     console.error("Failed to fetch organization:", error);
                 });
         }
-    }, [name]);
+    }, [id, membershipEventListener]);
 
     const userSelected = (user: UserProfile) => {
         if (!usersToAdd.includes(user)) {
@@ -48,7 +56,10 @@ export const EditOrganization = () => {
                     type: 'success',
                     message: `${usersToAdd.length} users have been added to the organization.`,
                 });
-                setUsersToAdd([]); // Clear the selected users
+                // Clear the user list
+                setUsersToAdd([]);
+                dispatch(changedMembership());
+                setUserModalOpen(false);
             })
             .catch((error) => {
                 setNotification({
@@ -88,6 +99,8 @@ export const EditOrganization = () => {
                             {organization.isPublic ? "Public" : "Private"}
                         </Text>
                     </Paper>
+                    <MembershipList members={organization.memberships} />
+
                     <Button
                         onClick={() => setUserModalOpen(true)} // Open modal on button click
                         variant="filled"

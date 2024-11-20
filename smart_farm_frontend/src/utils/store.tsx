@@ -5,6 +5,7 @@ import FpfSlice from "../features/fpf/state/FpfSlice";
 import SensorSlice from "../features/sensor/state/SensorSlice";
 import measurementSlice from "../features/measurements/state/measurementSlice";
 import authSlice from "../features/auth/slice/authSlice";
+import MembershipSlice from "../features/membership/state/MembershipSlice";
 
 export const store = configureStore({
     reducer: {
@@ -13,7 +14,8 @@ export const store = configureStore({
         organization :OrganizationSlice,
         sensor: SensorSlice,
         fpf : FpfSlice,
-        measurement: measurementSlice
+        measurement: measurementSlice,
+        membership: MembershipSlice
     }
 })
 

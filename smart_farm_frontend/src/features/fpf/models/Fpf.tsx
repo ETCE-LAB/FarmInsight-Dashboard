@@ -3,7 +3,7 @@ import {Camera} from "../../camera/models/camera";
 
 
 export interface Fpf {
-    id:number,
+    id:string,
     name:string
     isPublic:boolean,
     sensorServiceIp:string,

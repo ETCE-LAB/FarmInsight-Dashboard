@@ -1,9 +1,9 @@
 import {getUser} from "../../../utils/getUser";
 import APIClient from "../../../utils/APIClient";
-import {Sensor} from "../models/Sensor";
+import {Fpf} from "../models/Fpf";
 
 
-export const receiveSensor = (sensorID:string) => {
+export const getFpf = (fpfID: string) => {
     const apiClient = new APIClient()
 
     const user = getUser();
@@ -12,8 +12,9 @@ export const receiveSensor = (sensorID:string) => {
     const headers =
         {'Authorization': `Bearer ${token}`}
 
-    const url = `${process.env.REACT_APP_BACKEND_URL}/api/sensors/${sensorID}`;
-    const result:  Promise<Sensor> = apiClient.get(url, headers)
+
+    const url = `${process.env.REACT_APP_BACKEND_URL}/api/fpfs/${fpfID}`;
+    const result:  Promise<Fpf> = apiClient.get(url, headers)
 
     return result
 }

@@ -18,7 +18,6 @@ const organizationSlice = createSlice({
 
     reducers: {
         createdOrganization(state){
-            console.log("OrgaEvent triggered")
             state.createdOrganizationEvent += 1
         }
     }

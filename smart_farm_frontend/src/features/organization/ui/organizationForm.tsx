@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, TextInput, Switch, Box } from "@mantine/core";
+import {Button, TextInput, Switch, Box, Popover} from "@mantine/core";
 import { useAuth } from "react-oidc-context";
 import { createOrganization } from "../useCase/createOrganization";
 import { useDispatch } from "react-redux";
@@ -14,12 +14,18 @@ export const OrganizationForm: React.FC = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    const [createOrgaErrorListener , triggerCreateOrgaError] = useState(false)
+
     const handleSave = () => {
         createOrganization({ name, isPublic }).then((org) => {
-            dispatch(createdOrganization());
             if (org) {
+                dispatch(createdOrganization());
                 const encodedName = encodeURI(org.name);
-                navigate(AppRoutes.organization.replace(":name", encodedName));
+                triggerCreateOrgaError(false)
+                navigate(AppRoutes.organization.replace(":name", encodedName), {state: { id: org.id }});
+            }
+            else{
+                triggerCreateOrgaError(true)
             }
         });
     };
@@ -37,6 +43,8 @@ export const OrganizationForm: React.FC = () => {
                 </Button>
             ) : (
                 <form onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
+                    <Popover width={200} opened position="bottom-start" withArrow arrowPosition="side" arrowOffset={50} arrowSize={12}>
+                        <Popover.Target>
                     <TextInput
                         label="Organization Name"
                         placeholder="Enter organization name"
@@ -47,6 +55,12 @@ export const OrganizationForm: React.FC = () => {
                         mb="md" // margin-bottom
                         style={{ width: '100%' }}
                     />
+                        </Popover.Target>
+                        {createOrgaErrorListener && (<Popover.Dropdown>
+                           Organization Name already taken
+                        </Popover.Dropdown>
+                        )}
+                    </Popover>
                     <Switch
                         label="Set Public"
                         checked={isPublic}
