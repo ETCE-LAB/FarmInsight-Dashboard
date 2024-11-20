@@ -71,7 +71,7 @@ export const AppShell_Navbar: React.FC = () => {
         setSelectedIndex(index);
         if(id)
         {
-            navigate(AppRoutes.editFpf.replace(':organizationName', selectedOrganization.name).replace(':fpfName', name), {state: {id: id}});
+            navigate(AppRoutes.displayFpf.replace(':organizationName', selectedOrganization.name).replace(':fpfName', name), {state: {id: id}});
         }
     }
 
@@ -81,7 +81,7 @@ export const AppShell_Navbar: React.FC = () => {
                 <Menu.Target>
                     <Text onClick={() => handleTabClick(tab.link)} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
                         {tab.org.name}
-                        <IconChevronDown style={{ width: rem(16), height: rem(16) }} stroke={2} />
+                        <IconChevronDown style={{ width: rem(16), height: rem(16) }} stroke={1} />
                     </Text>
                 </Menu.Target>
                 <Menu.Dropdown>
@@ -99,8 +99,8 @@ export const AppShell_Navbar: React.FC = () => {
     ));
 
     return (
-        <Container size="fluid" style={{ padding: 0, display: 'flex', flexDirection: 'column' }}>
-            <Container style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
+        <Container size="fluid" style={{ display: 'flex', flexDirection: 'column' }}>
+            <Container style={{ display: 'flex', marginBottom: '20px' }}>
                 <IconSettings
                     style={{ width: rem(20), height: rem(20), marginRight: '15px', display: 'flex' }}
                     stroke={2}
@@ -150,6 +150,17 @@ export const AppShell_Navbar: React.FC = () => {
                                 <IconCircleMinus style={{ marginRight: '10px', color: '#D97400' }} />
                             )}
                             {fpf.name}
+                            <IconSettings
+                                style={{ width: rem(20), height: rem(20), marginRight: '15px', display: 'flex'}}
+                                stroke={2}
+                                cursor={'pointer'}
+                                onClick={(event) => {
+                                    event.stopPropagation()
+                                    navigate(AppRoutes.editFpf.replace(':organizationName', selectedOrganization.name)
+                                    .replace(":fpfName", fpf.name),
+                                    { state: { id: fpf.id }})}
+                                }
+                            />
                         </Text>
                     </List.Item>
                 ))}

@@ -9,6 +9,7 @@ import {AppRoutes} from "./appRoutes";
 import {EditOrganization} from "../features/organization/ui/editOrganization";
 import {EditUserProfile} from "../features/userProfile/ui/editUserProfile";
 import {MainFrame} from "../ui/components/mainFrame/mainFrame";
+import {EditFPF} from "../features/auth/ui/EditFPF";
 
 export class AuthRoutes {
     static callback = "auth/callback";
@@ -29,7 +30,8 @@ export const Router = () => {
                     <Route path={AppRoutes.createOrganization} element={<OrganizationForm />} />
                     <Route path={AppRoutes.organization} element={<EditOrganization />} />
                     <Route path={AppRoutes.editUserProfile} element={<EditUserProfile />} />
-                    <Route path={AppRoutes.editFpf} element={<MainFrame />} />
+                    <Route path={AppRoutes.displayFpf} element={<MainFrame />} />
+                    <Route path={AppRoutes.editFpf} element={<EditFPF />} />
                 </Routes>
             </BasicAppShell>
         </BrowserRouter>
