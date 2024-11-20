@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, Container, Menu, TextInput, Text, List } from '@mantine/core';
+import {Card, Container, Menu, TextInput, Text, List, Flex} from '@mantine/core';
 import {IconSettings, IconChevronDown, IconCircleCheck, IconCircleMinus, IconUsers} from "@tabler/icons-react";
 import { rem, Divider } from "@mantine/core";
 import { Organization } from "../../../../features/organization/models/Organization";
@@ -76,15 +76,15 @@ export const AppShell_Navbar: React.FC = () => {
     }
 
     const items = tabs.map((tab) => (
-        <div key={tab.org.name} style={{ marginBottom: '20px' }}>
-            <Menu trigger="hover" openDelay={100} closeDelay={100} withinPortal>
+        <Flex key={tab.org.name} style={{ marginBottom: '1vh' }}>
+            <Menu trigger="hover" openDelay={100} closeDelay={100} withinPortal >
                 <Menu.Target>
-                    <Text onClick={() => handleTabClick(tab.link)} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+                    <Text onClick={() => handleTabClick(tab.link)} style={{ marginBottom:'1vh', cursor: 'pointer', display: 'flex', alignItems: 'center',  gap: '0.5rem', fontSize: '40px' }}>
                         {tab.org.name}
                         <IconChevronDown style={{ width: rem(16), height: rem(16) }} stroke={2} />
                     </Text>
                 </Menu.Target>
-                <Menu.Dropdown>
+                <Menu.Dropdown >
                     {tab.submenu.map((option) => (
                         <Menu.Item
                             key={option.id}
@@ -95,21 +95,38 @@ export const AppShell_Navbar: React.FC = () => {
                     ))}
                 </Menu.Dropdown>
             </Menu>
-        </div>
+        </Flex>
     ));
 
     return (
         <Container size="fluid" style={{ display: 'flex', flexDirection: 'column', width: "100%" }}>
-            <Container style={{ display: 'flex', alignItems: 'center', marginBottom: '20px', width: '100%' }}>
-                <IconSettings
-                    style={{ width: rem(20), height: rem(20), marginRight: '15px', display: 'flex' }}
-                    stroke={2}
-                    cursor={'pointer'}
-                    onClick={() => navigate(AppRoutes.organization.replace(':name', selectedOrganization.name), { state: { id: selectedOrganization.id }})}
-                />
-                {items}
-            </Container>
+            <Flex
+                style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'auto 1fr', // Zwei Spalten: erste für das Icon, zweite für die Items
 
+                    gap: '1vw', // Abstand zwischen den Spalten
+                    marginBottom: '20px',
+                    marginTop: '2vh',
+                    width: '100%',
+                }}
+            >
+                <IconSettings
+                    size={35}
+                    style={{
+                        cursor: 'pointer',
+                    }}
+                    stroke={2}
+                    onClick={() =>
+                        navigate(AppRoutes.organization.replace(':name', selectedOrganization.name), {
+                            state: { id: selectedOrganization.id },
+                        })
+                    }
+                />
+            </Flex>
+            <Flex justify={"center"} >
+                {items}
+            </Flex>
             <Divider my="lg" style={{ width: '100%' }} />
 
             <TextInput
@@ -121,19 +138,22 @@ export const AppShell_Navbar: React.FC = () => {
             />
 
             <List style={{ width: '100%', marginTop: '1vh' }}>
-                {
-                    fpfList && fpfList.map((fpf, index) => (
+                {fpfList &&
+                    fpfList.map((fpf, index) => (
                         <List.Item
                             key={index}
                             style={{
                                 cursor: 'pointer',
-                                backgroundColor: selectedIndex === index ? 'rgba(255, 255, 255, 0.1)' : '',
+                                backgroundColor:
+                                    selectedIndex === index ? 'rgba(255, 255, 255, 0.1)' : '',
                                 borderRadius: '6px',
                                 border: 'none',
                                 marginBottom: '16px',
                                 listStyleType: 'none',
                             }}
-                            onClick={() => {handleFpfSelect(fpf.name, fpf.id, index)}}
+                            onClick={() => {
+                                handleFpfSelect(fpf.name, fpf.id, index);
+                            }}
                         >
                             <Text
                                 style={{
@@ -146,17 +166,19 @@ export const AppShell_Navbar: React.FC = () => {
                                 }}
                             >
                                 {selectedIndex === index ? (
-                                    <IconCircleCheck style={{ marginRight: '10px', color: '#16A34A' }} />
+                                    <IconCircleCheck
+                                        style={{ marginRight: '10px', color: '#16A34A' }}
+                                    />
                                 ) : (
-                                    <IconCircleMinus style={{ marginRight: '10px', color: '#D97400' }} />
+                                    <IconCircleMinus
+                                        style={{ marginRight: '10px', color: '#D97400' }}
+                                    />
                                 )}
                                 {fpf.name}
                             </Text>
                         </List.Item>
-                    ))
-                }
+                    ))}
             </List>
-
         </Container>
     );
 };
