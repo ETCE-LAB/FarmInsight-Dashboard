@@ -38,7 +38,6 @@ export const AppShell_Navbar: React.FC = () => {
             getOrganization(selectedOrganization.id).then(resp => {
                 if (resp) {
                     setFpfList(resp.FPFs)
-
                 }
             }
         )
@@ -70,8 +69,10 @@ export const AppShell_Navbar: React.FC = () => {
 
     const handleFpfSelect = (name: string, id: string, index:number) => {
         setSelectedIndex(index);
-        navigate(AppRoutes.editFpf.replace(':organizationName', selectedOrganization.name).replace(':fpfName', name), {state: {id: selectedOrganization.name}});
-
+        if(id)
+        {
+            navigate(AppRoutes.editFpf.replace(':organizationName', selectedOrganization.name).replace(':fpfName', name), {state: {id: id}});
+        }
     }
 
     const items = tabs.map((tab) => (
@@ -131,10 +132,7 @@ export const AppShell_Navbar: React.FC = () => {
                             marginBottom: '16px',
                             listStyleType: 'none',
                         }}
-                        onClick={() => {
-                            handleFpfSelect(fpf.name, fpf.id, index)
-
-                            }
+                        onClick={() => {handleFpfSelect(fpf.name, fpf.id, index)}
                         }
                     >
                         <Text

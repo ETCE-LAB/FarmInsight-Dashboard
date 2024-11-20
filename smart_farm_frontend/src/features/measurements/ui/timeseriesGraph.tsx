@@ -11,11 +11,11 @@ import { IconZoomScan } from "@tabler/icons-react";
 import {Sensor} from "../../sensor/models/Sensor";
 import {receiveSensor} from "../../sensor/useCase/receiveSensor";
 
-const TimeseriesGraph: React.FC = () => {
+const TimeseriesGraph: React.FC<{sensor:Sensor}> = ({sensor}) => {
 
     const measurementReceivedEventListener = useAppSelector(receivedMeasurementEvent);
     const [measurements, setMeasurements] = useState<Measurement[]>([]);
-    const [sensor, setSensor] = useState<Sensor>()
+
 
 
     useEffect(() => {
@@ -30,13 +30,6 @@ const TimeseriesGraph: React.FC = () => {
         });
     }, [measurementReceivedEventListener]);
 
-    useEffect(() => {
-        receiveSensor("8250f7569a3047ea8decf4cc101003da").then(resp => {
-            setSensor(resp)
-        })
-
-    })
-
     const calculateDomain = () => {
         if (measurements.length === 0) return [-10, 10];
         const values = measurements.map((item) => item.value);
@@ -49,7 +42,7 @@ const TimeseriesGraph: React.FC = () => {
     return (
         <Card p="lg" shadow="sm" radius="md" style={{ margin: '30px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)' }}>
             <Flex justify="space-between" align="center" mb="md">
-                <Title order={3} style={{ color: '#199ff4' }}>{sensor?.unit}</Title>
+                <Title order={3} style={{ color: '#199ff4' }}>{sensor?.name}</Title>
                 <Button
                     variant="filled"
                     color="blue"

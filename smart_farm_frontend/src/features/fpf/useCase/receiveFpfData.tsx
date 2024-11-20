@@ -8,7 +8,7 @@ import {Fpf} from "../models/Fpf";
 
 
 
-export const receiveFpfData = (fpfID: string, from: number, to: number) => {
+export const receiveFpfData = (fpfID: string, from: string, to: string) => {
     const apiClient = new APIClient()
 
     const user = getUser();
@@ -17,10 +17,10 @@ export const receiveFpfData = (fpfID: string, from: number, to: number) => {
     const headers =
         {'Authorization': `Bearer ${token}`}
 
-    const fromTest = "2024-09-20T"
-    const toTest = "2024-11-20T17"
-    const url = `${process.env.REACT_APP_BACKEND_URL}/api/fpfs/${fpfID}/data?from=${from}&to=${to}`;
-    const result:  Promise<Fpf[]> = apiClient.get(url, headers)
+    const fromTest = "2024-09-20"
+    const toTest = "2024-11-20"
+    const url = `${process.env.REACT_APP_BACKEND_URL}/api/fpfs/${fpfID}/data?from=${fromTest}&to=${toTest}`;
+    const result:  Promise<Fpf> = apiClient.get(url, headers)
 
     return result
 }
