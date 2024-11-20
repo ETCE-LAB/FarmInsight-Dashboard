@@ -37,6 +37,7 @@ export const EditOrganization = () => {
 
     const userSelected = (user: UserProfile) => {
         if (!usersToAdd.includes(user)) {
+            console.log(usersToAdd)
             setUsersToAdd((prevUsers) => [...prevUsers, user]);
         }
     };
