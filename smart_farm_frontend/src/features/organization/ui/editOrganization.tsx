@@ -63,7 +63,8 @@ export const EditOrganization = () => {
                 });
                 // Clear the user list
                 setUsersToAdd([]);
-                dispatch(changedMembership())
+                dispatch(changedMembership());
+                setUserModalOpen(false);
             })
             .catch((error) => {
                 setNotification({
