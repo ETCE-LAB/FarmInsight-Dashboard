@@ -99,8 +99,8 @@ export const AppShell_Navbar: React.FC = () => {
     ));
 
     return (
-        <Container size="fluid" style={{ padding: 0, display: 'flex', flexDirection: 'column' }}>
-            <Container style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
+        <Container size="fluid" style={{ display: 'flex', flexDirection: 'column', width: "100%" }}>
+            <Container style={{ display: 'flex', alignItems: 'center', marginBottom: '20px', width: '100%' }}>
                 <IconSettings
                     style={{ width: rem(20), height: rem(20), marginRight: '15px', display: 'flex' }}
                     stroke={2}
@@ -120,40 +120,43 @@ export const AppShell_Navbar: React.FC = () => {
                 placeholder="Search FPFs.."
             />
 
-            <List style={{ paddingLeft: 0, width: '100%', marginTop: '1vh' }}>
+            <List style={{ width: '100%', marginTop: '1vh' }}>
                 {
-                   fpfList && fpfList.map((fpf, index) => (
-                    <List.Item
-                        key={index}
-                        style={{
-                            cursor: 'pointer',
-                            backgroundColor: selectedIndex === index ? '#D7F3FF' : 'white',
-                            border: 'none',
-                            marginBottom: '16px',
-                            listStyleType: 'none',
-                        }}
-                        onClick={() => {handleFpfSelect(fpf.name, fpf.id, index)}
-                        }
-                    >
-                        <Text
+                    fpfList && fpfList.map((fpf, index) => (
+                        <List.Item
+                            key={index}
                             style={{
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                color: selectedIndex === index ? '#105385' : 'black',
-                                fontSize: '20px',
+                                cursor: 'pointer',
+                                backgroundColor: selectedIndex === index ? 'rgba(255, 255, 255, 0.1)' : '',
+                                borderRadius: '6px',
+                                border: 'none',
+                                marginBottom: '16px',
+                                listStyleType: 'none',
                             }}
+                            onClick={() => {handleFpfSelect(fpf.name, fpf.id, index)}}
                         >
-                            {selectedIndex === index ? (
-                                <IconCircleCheck style={{ marginRight: '10px', color: '#16A34A' }} />
-                            ) : (
-                                <IconCircleMinus style={{ marginRight: '10px', color: '#D97400' }} />
-                            )}
-                            {fpf.name}
-                        </Text>
-                    </List.Item>
-                ))}
+                            <Text
+                                style={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    color: selectedIndex === index ? '#199ff4' : '',
+                                    fontSize: '20px',
+                                    padding: '8px 16px',
+                                }}
+                            >
+                                {selectedIndex === index ? (
+                                    <IconCircleCheck style={{ marginRight: '10px', color: '#16A34A' }} />
+                                ) : (
+                                    <IconCircleMinus style={{ marginRight: '10px', color: '#D97400' }} />
+                                )}
+                                {fpf.name}
+                            </Text>
+                        </List.Item>
+                    ))
+                }
             </List>
+
         </Container>
     );
 };
