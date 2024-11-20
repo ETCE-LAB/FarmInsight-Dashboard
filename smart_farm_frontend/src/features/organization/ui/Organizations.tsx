@@ -9,7 +9,7 @@ export const Organizations = () => {
     const organizationCreatedEventListener = useAppSelector(createdOrganizationEvent)
     useEffect(() => {
        // Use case Get organizations, ergebnis rein in set organizations
-        let organizationsTemp:Organization[] = [{id:"1", name:"name", isPublic:true, fpfs:[]}]
+        let organizationsTemp:Organization[] = [{id:"1", name:"name", isPublic:true, FPFs:[]}]
         setOrganizations(organizationsTemp)
     }, [organizationCreatedEventListener]);
 }

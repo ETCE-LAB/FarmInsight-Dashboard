@@ -3,7 +3,7 @@ import APIClient from "../../../utils/APIClient";
 import {Sensor} from "../models/Sensor";
 
 
-export const receiveSensor = (sensorID:number) => {
+export const receiveSensor = (sensorID:string) => {
     const apiClient = new APIClient()
 
     const user = getUser();

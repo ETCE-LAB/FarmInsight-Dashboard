@@ -9,15 +9,20 @@ import { getMyOrganizations } from "../../../../features/organization/useCase/ge
 import { useAuth } from "react-oidc-context";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../utils/store";
+import {Fpf} from "../../../../features/fpf/models/Fpf";
+import {getOrganization} from "../../../../features/organization/useCase/getOrganization";
 
 export const AppShell_Navbar: React.FC = () => {
     const [value, setValue] = useState('');
     const [selectedOrganization, setSelectedOrganization] = useState<{name: string, id: string}>({name: 'My Organizations', id: ''});
     const [organizations, setMyOrganizations] = useState<Organization[]>([]);
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+    const [fpfList, setFpfList] = useState<Fpf[]>([])
+
     const navigate = useNavigate();
     const auth = useAuth();
     const organizationEventListener = useSelector((state: RootState) => state.organization.createdOrganizationEvent);
+    const fpfEventListener = useSelector((state: RootState) => state.fpf.createdFpfEvent)
 
     useEffect(() => {
         if (auth.isAuthenticated) {
@@ -26,6 +31,20 @@ export const AppShell_Navbar: React.FC = () => {
             });
         }
     }, [auth.user, organizationEventListener]);
+
+
+    useEffect(() => {
+        if(auth.isAuthenticated) {
+            getOrganization(selectedOrganization.id).then(resp => {
+                if (resp) {
+                    setFpfList(resp.FPFs)
+
+                }
+            }
+        )
+        }
+    }, [organizationEventListener, fpfEventListener, selectedOrganization]);
+
 
     const tabs = [
         {
@@ -48,6 +67,12 @@ export const AppShell_Navbar: React.FC = () => {
         setSelectedOrganization({ name, id });
         navigate(AppRoutes.organization.replace(':name', name), { state : { id: id}});
     };
+
+    const handleFpfSelect = (name: string, id: string, index:number) => {
+        setSelectedIndex(index);
+        navigate(AppRoutes.editFpf.replace(':organizationName', selectedOrganization.name).replace(':fpfName', name), {state: {id: selectedOrganization.name}});
+
+    }
 
     const items = tabs.map((tab) => (
         <div key={tab.org.name} style={{ marginBottom: '20px' }}>
@@ -95,7 +120,8 @@ export const AppShell_Navbar: React.FC = () => {
             />
 
             <List style={{ paddingLeft: 0, width: '100%', marginTop: '1vh' }}>
-                {['FPF 1', 'FPF 2', 'FPF 3', 'FPF 4', 'FPF 5'].map((fpf, index) => (
+                {
+                   fpfList && fpfList.map((fpf, index) => (
                     <List.Item
                         key={index}
                         style={{
@@ -106,11 +132,10 @@ export const AppShell_Navbar: React.FC = () => {
                             listStyleType: 'none',
                         }}
                         onClick={() => {
-                            setSelectedIndex(index);
-                            if (fpf === 'FPF 1') {
-                                navigate(AppRoutes.editFpf);
+                            handleFpfSelect(fpf.name, fpf.id, index)
+
                             }
-                        }}
+                        }
                     >
                         <Text
                             style={{
@@ -126,7 +151,7 @@ export const AppShell_Navbar: React.FC = () => {
                             ) : (
                                 <IconCircleMinus style={{ marginRight: '10px', color: '#D97400' }} />
                             )}
-                            {fpf}
+                            {fpf.name}
                         </Text>
                     </List.Item>
                 ))}
