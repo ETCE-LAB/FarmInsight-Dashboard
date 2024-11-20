@@ -2,13 +2,17 @@ import {useLocation, useParams} from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getOrganization } from "../useCase/getOrganization";
 import { Organization } from "../models/Organization";
-import {Button, Card, Modal, Notification, Paper, Title, Text} from "@mantine/core";
+import { Button, Card, Modal, Notification, Paper, Title, Text } from "@mantine/core";
 import { SearchUserProfile } from "../../userProfile/ui/searchUserProfile";
 import { UserProfile } from "../../userProfile/models/UserProfile";
 import { addUserToOrganization } from "../useCase/addUserToOrganization";
 import {IconPlus} from '@tabler/icons-react';
 import {FpfForm} from "../../fpf/ui/fpfForm";
-
+import {MembershipList} from "../../membership/ui/MembershipList";
+import {useAppDispatch} from "../../../utils/Hooks";
+import {changedMembership} from "../../membership/state/MembershipSlice";
+import {useSelector} from "react-redux";
+import {RootState} from "../../../utils/store";
 
 export const EditOrganization = () => {
     const { id } = useLocation().state;
@@ -17,6 +21,10 @@ export const EditOrganization = () => {
     const [notification, setNotification] = useState<{ type: 'success' | 'error', message: string } | null>(null);
     const [userModalOpen, setUserModalOpen] = useState(false); // State to manage modal visibility
     const [fpfModalOpen, setFpFModalOpen] = useState(false); // State to manage FpF modal visibility
+    const membershipEventListener = useSelector((state: RootState) => state.membership.changeMembershipEvent);
+
+    const dispatch = useAppDispatch()
+
     useEffect(() => {
         if (id) {
             getOrganization(id)
@@ -25,7 +33,7 @@ export const EditOrganization = () => {
                     console.error("Failed to fetch organization:", error);
                 });
         }
-    }, [id]);
+    }, [id, membershipEventListener]);
 
     const userSelected = (user: UserProfile) => {
         if (!usersToAdd.includes(user)) {
@@ -52,6 +60,8 @@ export const EditOrganization = () => {
                 });
                 // Clear the user list
                 setUsersToAdd([]);
+                dispatch(changedMembership());
+                setUserModalOpen(false);
             })
             .catch((error) => {
                 // Show error notification
@@ -92,6 +102,8 @@ export const EditOrganization = () => {
                             {organization.isPublic ? "Public" : "Private"}
                         </Text>
                     </Paper>
+                    <MembershipList members={organization.memberships} />
+
                     <Button
                         onClick={() => setUserModalOpen(true)} // Open modal on button click
                         variant="filled"
@@ -101,35 +113,6 @@ export const EditOrganization = () => {
                         <IconPlus size={18} style={{ marginRight: "8px" }} />
                         Add Users
                     </Button>
-                    <Card>
-                        {usersToAdd.length > 0 ? (
-                            usersToAdd.map((user, index) => (
-                                <div key={index}>
-                                    <p>{user.name || user.email}</p>
-                                </div>
-                            ))
-                        ) : (
-                            <p
-                                style={{
-                                    justifySelf: "center",
-                                    justifyContent: "center",
-                                    display: "flex",
-                                }}
-                            >
-                                No users to add
-                            </p>
-                        )}
-                        {usersToAdd.length > 0 && (
-                            <Button
-                                onClick={handleAddUsers}
-                                style={{
-                                    marginTop: "10px",
-                                }}
-                            >
-                                Add Users
-                            </Button>
-                        )}
-                    </Card>
                     <Button
                         onClick={() => setFpFModalOpen(true)} // Open modal on button click
                         variant="filled"
@@ -139,17 +122,54 @@ export const EditOrganization = () => {
                         <IconPlus size={18} style={{ marginRight: "8px" }} />
                         Add FPF
                     </Button>
-                    {/*Add User */ }
+
+                    {/* Add User Modal */}
                     <Modal
                         opened={userModalOpen}
                         onClose={() => setUserModalOpen(false)}
                         title="Add User to Organization"
                         centered
                     >
+                        {/* Search and select users */}
                         <SearchUserProfile onUserSelected={userSelected} />
+
+                        {/* Display selected users */}
+                        <Card withBorder style={{ marginTop: '20px' }}>
+                            {usersToAdd.length > 0 ? (
+                                usersToAdd.map((user, index) => (
+                                    <div key={index} style={{ padding: '5px 0' }}>
+                                        <Text>{user.name || user.email}</Text>
+                                    </div>
+                                ))
+                            ) : (
+                                <Text>
+                                    No users selected yet
+                                </Text>
+                            )}
+                            {usersToAdd.length > 0 && (
+                                <Button
+                                    onClick={handleAddUsers}
+                                    fullWidth
+                                    style={{ marginTop: '15px' }}
+                                    variant="filled"
+                                >
+                                    Add Selected Users
+                                </Button>
+                            )}
+                        </Card>
                     </Modal>
 
-                    {/* Notification component */}
+                    {/* Add FpF Modal */}
+                    <Modal
+                        opened={fpfModalOpen}
+                        onClose={() => setFpFModalOpen(false)}
+                        title="Create FpF"
+                        centered
+                    >
+                        <FpfForm inputOrganization={organization}></FpfForm>
+                    </Modal>
+
+                    {/* Notification */}
                     {notification && (
                         <Notification
                             color={notification.type === 'success' ? 'green' : 'red'}
@@ -166,16 +186,6 @@ export const EditOrganization = () => {
                             {notification.message}
                         </Notification>
                     )}
-                    {/*Add FpF */ }
-                    <Modal
-                        opened={fpfModalOpen}
-                        onClose={() => setFpFModalOpen(false)}
-                        title="Create FpF"
-                        centered
-                    >
-                        <FpfForm  inputOrganization={organization}></FpfForm>
-                    </Modal>
-
                 </>
             ) : null}
         </>
