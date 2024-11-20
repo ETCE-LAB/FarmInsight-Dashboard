@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import {useLocation, useParams} from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getOrganization } from "../useCase/getOrganization";
 import { Organization } from "../models/Organization";
@@ -15,7 +15,7 @@ import {useSelector} from "react-redux";
 import {RootState} from "../../../utils/store";
 
 export const EditOrganization = () => {
-    const { name } = useParams<{ name: string }>();
+    const { id } = useLocation().state;
     const [organization, setOrganization] = useState<Organization | null>(null);
     const [usersToAdd, setUsersToAdd] = useState<UserProfile[]>([]);
     const [notification, setNotification] = useState<{ type: 'success' | 'error', message: string } | null>(null);
@@ -26,21 +26,18 @@ export const EditOrganization = () => {
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-        if (name) {
-            getOrganization(name)
-                .then((org) => {
-                    setOrganization(org)
-
-                })
+        if (id) {
+            getOrganization(id)
+                .then((org) => setOrganization(org))
                 .catch((error) => {
                     console.error("Failed to fetch organization:", error);
                 });
         }
-    }, [name, membershipEventListener]);
-
+    }, [id, membershipEventListener]);
 
     const userSelected = (user: UserProfile) => {
         if (!usersToAdd.includes(user)) {
+            console.log(usersToAdd)
             setUsersToAdd((prevUsers) => [...prevUsers, user]);
         }
     };
@@ -57,6 +54,7 @@ export const EditOrganization = () => {
             )
         )
             .then(() => {
+                // Show success notification
                 setNotification({
                     type: 'success',
                     message: `${usersToAdd.length} users have been added to the organization.`,
@@ -67,6 +65,7 @@ export const EditOrganization = () => {
                 setUserModalOpen(false);
             })
             .catch((error) => {
+                // Show error notification
                 setNotification({
                     type: 'error',
                     message: 'There was an error adding the users.',

@@ -28,6 +28,7 @@ class APIClient {
             if (!response.ok) {
                 throw new Error(`Network response not ok. Status: ${response.status}`);
             }
+
             return await response.json();
         } catch (error) {
             console.error("Failed to receive response: " + error);
@@ -57,7 +58,6 @@ class APIClient {
 
     async delete(URL: string, header: { Authorization: string }) {
         try {
-            console.log(header)
             const response = await fetch(URL, {
                 headers: {
                     ...header,

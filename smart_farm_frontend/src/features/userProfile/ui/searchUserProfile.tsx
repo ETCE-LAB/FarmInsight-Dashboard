@@ -2,6 +2,7 @@ import { Input } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { getUserProfilesBySearchString } from "../useCase/getUserProfilesBySearchString";
 import { UserProfile } from "../models/UserProfile";
+import {useLocation} from "react-router-dom";
 
 interface SearchUserProfileProps {
     onUserSelected: (user: UserProfile) => void;
@@ -11,10 +12,12 @@ export const SearchUserProfile = ({ onUserSelected }: SearchUserProfileProps) =>
     const [searchTerm, setSearchTerm] = useState("");
     const [userProfiles, setUserProfiles] = useState<UserProfile[]>([]);
 
+    const id = useLocation().state.id
+
     useEffect(() => {
         const delayDebounce = setTimeout(() => {
             if (searchTerm) {
-                getUserProfilesBySearchString(searchTerm).then((profiles) => {
+                getUserProfilesBySearchString(searchTerm, id).then((profiles) => {
                     if (profiles)
                         setUserProfiles(profiles);
                 });

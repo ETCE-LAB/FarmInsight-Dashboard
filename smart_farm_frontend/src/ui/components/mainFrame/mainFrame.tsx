@@ -1,22 +1,39 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import TimeseriesGraph from "../../../features/measurements/ui/timeseriesGraph";
-import temperatureData from "../../../temperatureData.json";
-import humidityData from "../../../humidityData.json";
-import lightData from "../../../lightData.json";
-import phLevelData from "../../../phLevelData.json";
 import placeholderImage from "../../../placeholder.png";
+import {Sensor} from "../../../features/sensor/models/Sensor";
+import {useLocation} from "react-router-dom";
+import {Fpf} from "../../../features/fpf/models/Fpf";
+import {receiveFpfData} from "../../../features/fpf/useCase/receiveFpfData";
+import {getFpf} from "../../../features/fpf/useCase/getFpf";
 
 export const MainFrame = () => {
+
+    const [sensors, setSensors] = useState<Sensor[]>([])
+    const [fpf, setFpf] = useState<Fpf>()
+
+    const { id } = useLocation().state;
+
+    useEffect(() => {
+
+        console.log(id)
+        getFpf(id).then( resp => {
+            setFpf(resp)
+            console.log(resp)
+        })
+    }, [id]);
+
 
     return (
         <div style={{ display: 'flex', height: 'auto', width: '100vw' }}>
             <div style={{ flexGrow: 1, padding: '20px', display: 'flex', flexDirection: 'column' }}>
                 <div style={{ display: 'flex', flexGrow: 1 }}>
                     <div style={{ flex: 1, marginRight: '20px', overflowY: "scroll", maxHeight: "85vh", maxWidth: "50vw" }}>
-                        <TimeseriesGraph data={temperatureData} title="Temperature" />
-                        <TimeseriesGraph data={humidityData} title="Humidity" />
-                        <TimeseriesGraph data={lightData} title="Light" />
-                        <TimeseriesGraph data={phLevelData} title="PH Level" />
+                        {fpf && fpf.Sensors.map((sensor) => (
+                            <div key={sensor.id}>
+                                <TimeseriesGraph sensor={sensor}/>
+                            </div>
+                        ))}
                     </div>
                     <div style={{ width: '30%', display: 'flex', flexDirection: 'column' }}>
                         <div style={{ height: 'auto', marginBottom: '20px'}}>
