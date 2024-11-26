@@ -1,25 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import TimeseriesGraph from "../../../features/measurements/ui/timeseriesGraph";
 import placeholderImage from "../../../placeholder.png";
-import { Sensor } from "../../../features/sensor/models/Sensor";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Fpf } from "../../../features/fpf/models/Fpf";
 import { getFpf } from "../../../features/fpf/useCase/getFpf";
 import { Container, Flex, Box, Image } from '@mantine/core';
 
 export const MainFrame = () => {
-    const [sensors, setSensors] = useState<Sensor[]>([]);
     const [fpf, setFpf] = useState<Fpf>();
 
-    const { id } = useLocation().state;
+    const params = useParams();
 
     useEffect(() => {
-        console.log(id);
-        getFpf(id).then(resp => {
-            setFpf(resp);
-            console.log(resp);
-        });
-    }, [id]);
+        if (params?.fpfId) {
+            getFpf(params.fpfId).then(resp => { setFpf(resp); });
+        }
+    }, [params]);
 
     return (
         <Container style={{ display: 'flex', height: 'auto', width: '100vw' }}>

@@ -3,7 +3,7 @@ import {getUser} from "../../../utils/getUser";
 import {UserProfile} from "../models/UserProfile";
 
 
-export const getUserProfilesBySearchString = (searchString:string, orgaID:string) => {
+export const getUserProfilesBySearchString = (searchString:string, orgaID:string | undefined) => {
     const apiClient = new APIClient()
 
     const user = getUser();
@@ -14,7 +14,12 @@ export const getUserProfilesBySearchString = (searchString:string, orgaID:string
 
     console.log(orgaID)
 
-    const url = `${process.env.REACT_APP_BACKEND_URL}/api/userprofiles/${searchString}?exclude_organization_id=${orgaID}`;
+    let exclude = "";
+    if (orgaID) {
+        exclude = `?exclude_organization_id=${orgaID}`
+    }
+
+    const url = `${process.env.REACT_APP_BACKEND_URL}/api/userprofiles/${searchString}${exclude}`;
 
     console.log(url)
 

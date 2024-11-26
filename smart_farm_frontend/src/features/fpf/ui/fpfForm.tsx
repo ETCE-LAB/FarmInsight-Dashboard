@@ -45,7 +45,7 @@ export const FpfForm: React.FC<{inputOrganization:Organization}> = ({ inputOrgan
                 dispatch(createdFpf())
                 if (fpf)
                 {
-                    navigate(AppRoutes.editFpf.replace(":organizationName", inputOrganization.name).replace(":fpfName", fpf.name), {state: { id: fpf.id }});
+                    navigate(AppRoutes.editFpf.replace(":organizationId", organizationId).replace(":fpfId", fpf.id));
                 }
             }
             )
