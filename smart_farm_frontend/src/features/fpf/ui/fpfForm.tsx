@@ -9,6 +9,7 @@ import {createdFpf} from "../state/FpfSlice";
 import {useNavigate} from "react-router-dom";
 import {Fpf} from "../models/Fpf";
 import {IconTrash} from "@tabler/icons-react";
+import {getAvailableHardwareConfiguration} from "../../hardwareConfiguration/useCase/getAvailableHardwareConfiguration";
 
 
 export const FpfForm: React.FC<{inputOrganization?:Organization, toEditFpf?:Fpf}> = ({ inputOrganization, toEditFpf }) => {

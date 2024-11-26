@@ -1,8 +1,9 @@
 import  APIClient from "../../../utils/APIClient";
 import {getUser} from "../../../utils/getUser";
 import {Sensor} from "../models/Sensor";
+import {HardwareConfiguration} from "../../hardwareConfiguration/models/HardwareConfiguration";
 
-export const addSensor = async (data: { name:string, location:string, unnit:string, modelNr:string, isActive:boolean, intervalSeconds:number, connection: {connectionType:string, additionalInformation:{}}, fpfID:string }) => {
+export const addSensor = async (data: { name:string, location:string, unit:string, modelNr:string, isActive:boolean, intervalSeconds:number, hardwareConfig:HardwareConfiguration, fpfID:string }) => {
     try {
         //const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/organizations`, {
         const apiClient = new APIClient()

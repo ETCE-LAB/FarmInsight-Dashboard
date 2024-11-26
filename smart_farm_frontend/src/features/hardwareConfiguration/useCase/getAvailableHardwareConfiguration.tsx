@@ -2,7 +2,7 @@ import {getUser} from "../../../utils/getUser";
 import APIClient from "../../../utils/APIClient";
 import {HardwareConfiguration} from "../models/HardwareConfiguration";
 
-export const getAvailableHardwareConfiguration = (fpfID: string) => {
+export const getAvailableHardwareConfiguration = (fpfId: string) => {
     const apiClient = new APIClient()
 
     const user = getUser();
@@ -10,7 +10,7 @@ export const getAvailableHardwareConfiguration = (fpfID: string) => {
 
     const headers =
         {'Authorization': `Bearer ${token}`}
-    const url = `${process.env.REACT_APP_BACKEND_URL}/api/sensors/types/available/${fpfID}`;
+    const url = `${process.env.REACT_APP_BACKEND_URL}/api/sensors/types/available/${fpfId}`;
     const result:  Promise<HardwareConfiguration> = apiClient.get(url, headers)
 
     return result
