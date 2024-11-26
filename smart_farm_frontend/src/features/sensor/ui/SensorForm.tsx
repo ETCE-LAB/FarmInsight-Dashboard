@@ -103,7 +103,7 @@ export const SensorForm:React.FC<{fpfID:string, toEditSensor?:Sensor}> = ({fpfID
 
                             {/*Add Button*/}
                             <Grid.Col span={12}>
-                                {toEditSensor  &&
+                                {!toEditSensor  &&
                                     <Box mt="md" style={{ display: 'flex', justifyContent: 'flex-end', margin: '10px'}}>
                                 <Button type="submit" variant="filled" color="#105385" style={{ margin: '10px' }}>
                                     Add Sensor
