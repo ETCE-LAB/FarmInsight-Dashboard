@@ -9,7 +9,7 @@ import {AppRoutes} from "./appRoutes";
 import {EditOrganization} from "../features/organization/ui/editOrganization";
 import {EditUserProfile} from "../features/userProfile/ui/editUserProfile";
 import {MainFrame} from "../ui/components/mainFrame/mainFrame";
-import {EditFPF} from "../features/auth/ui/EditFPF";
+import {EditFPF} from "../features/fpf/ui/EditFPF";
 
 export class AuthRoutes {
     static callback = "auth/callback";

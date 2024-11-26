@@ -2,12 +2,17 @@
 
 export interface Sensor{
     id:number,
-    name:string,
-    location:string,
-    unit:string,
-    modelNr:string,
-    isActive:boolean,
     intervallSeconds:number,
+    isActive:boolean,
+    location:string,
+    modelNr:string,
+    name:string,
+    unit:string,
+
+    connection: {
+        connectionID:string,
+        additionalInformation: {}
+    }
     measurements: [
         {
             measuredAt: Date

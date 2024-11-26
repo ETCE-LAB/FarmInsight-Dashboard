@@ -6,6 +6,7 @@ import {useLocation} from "react-router-dom";
 import {Fpf} from "../../../features/fpf/models/Fpf";
 import {receiveFpfData} from "../../../features/fpf/useCase/receiveFpfData";
 import {getFpf} from "../../../features/fpf/useCase/getFpf";
+import {receiveSensor} from "../../../features/sensor/useCase/receiveSensor";
 
 export const MainFrame = () => {
 
@@ -16,12 +17,19 @@ export const MainFrame = () => {
 
     useEffect(() => {
 
-        console.log(id)
         getFpf(id).then( resp => {
             setFpf(resp)
-            console.log(resp)
+
         })
     }, [id]);
+
+    useEffect(() => {
+        if(fpf?.Sensors && fpf.Sensors.length >= 1 ){
+            setSensors(fpf.Sensors)
+        }
+    }, [fpf]);
+
+
 
 
     return (
