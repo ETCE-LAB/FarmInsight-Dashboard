@@ -22,6 +22,7 @@ export const EditFPF: React.FC = () => {
         if(fpfID) {
             getFpf(fpfID).then(resp => {
                 setFpf(resp)
+                console.log(resp)
             })
         }
     }, [fpfID]);
