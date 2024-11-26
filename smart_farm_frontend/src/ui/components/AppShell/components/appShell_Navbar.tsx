@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
-import {Card, Container, Menu, TextInput, Text, List, Flex} from '@mantine/core';
+import { Container, Menu, TextInput, Text, List, Flex} from '@mantine/core';
 import {IconSettings, IconChevronDown, IconCircleCheck, IconCircleMinus, IconUsers} from "@tabler/icons-react";
 import { rem, Divider } from "@mantine/core";
 import { Organization } from "../../../../features/organization/models/Organization";
-import { useNavigate } from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import { AppRoutes } from "../../../../utils/appRoutes";
 import { getMyOrganizations } from "../../../../features/organization/useCase/getMyOrganizations";
 import { useAuth } from "react-oidc-context";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../../utils/store";
 import {Fpf} from "../../../../features/fpf/models/Fpf";
 import {getOrganization} from "../../../../features/organization/useCase/getOrganization";
 
@@ -16,13 +14,12 @@ export const AppShell_Navbar: React.FC = () => {
     const [value, setValue] = useState('');
     const [selectedOrganization, setSelectedOrganization] = useState<{name: string, id: string}>({name: 'My Organizations', id: ''});
     const [organizations, setMyOrganizations] = useState<Organization[]>([]);
-    const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+    const [selectedFPFId, setSelectedFPFId] = useState<string | null>(null);
     const [fpfList, setFpfList] = useState<Fpf[]>([])
 
     const navigate = useNavigate();
     const auth = useAuth();
-    const organizationEventListener = useSelector((state: RootState) => state.organization.createdOrganizationEvent);
-    const fpfEventListener = useSelector((state: RootState) => state.fpf.createdFpfEvent)
+    const location = useLocation();
 
     useEffect(() => {
         if (auth.isAuthenticated) {
@@ -30,20 +27,36 @@ export const AppShell_Navbar: React.FC = () => {
                 if (resp) setMyOrganizations(resp);
             });
         }
-    }, [auth.user, organizationEventListener]);
-
+    }, [auth.user]);
 
     useEffect(() => {
         if(auth.isAuthenticated) {
-            getOrganization(selectedOrganization.id).then(resp => {
-                if (resp) {
-                    setFpfList(resp.FPFs)
-                }
-            }
-        )
-        }
-    }, [organizationEventListener, fpfEventListener, selectedOrganization]);
+            const path = location.pathname.split('/');
+            const organizationPathIndex = path.indexOf('organization');
+            if (organizationPathIndex !== -1 && path.length > organizationPathIndex + 1) {
+                const organizationId = path[organizationPathIndex + 1];
+                getOrganization(organizationId).then(resp => {
+                    if (resp) {
+                        setFpfList(resp.FPFs)
+                        setSelectedOrganization({name: resp.name, id: resp.id});
 
+                        const fpfPathIndex = path.indexOf('fpf');
+                        if (fpfPathIndex !== -1 && path.length > fpfPathIndex + 1) {
+                            const fpfId = path[fpfPathIndex + 1];
+                            setSelectedFPFId(fpfId);
+                        }
+                    }
+                })
+            } else {
+                setSelectedFPFId(null);
+                setFpfList([]);
+                setSelectedOrganization({name: 'My Organizations', id: ''});
+                getMyOrganizations().then(resp => {
+                    if (resp) setMyOrganizations(resp);
+                });
+            }
+        }
+    }, [location]);
 
     const tabs = [
         {
@@ -64,15 +77,11 @@ export const AppShell_Navbar: React.FC = () => {
 
     const handleOrganizationSelect = (name: string, id: string) => {
         setSelectedOrganization({ name, id });
-        navigate(AppRoutes.organization.replace(':name', name), { state : { id: id}});
+        navigate(AppRoutes.organization.replace(':organizationId', id));
     };
 
-    const handleFpfSelect = (name: string, id: string, index:number) => {
-        setSelectedIndex(index);
-        if(id)
-        {
-            navigate(AppRoutes.displayFpf.replace(':organizationName', selectedOrganization.name).replace(':fpfName', name), {state: {id: id}});
-        }
+    const handleFpfSelect = (id: string) => {
+        navigate(AppRoutes.editFpf.replace(':organizationId', selectedOrganization.id).replace(':fpfId', id));
     }
 
     const items = tabs.map((tab) => (
@@ -117,11 +126,7 @@ export const AppShell_Navbar: React.FC = () => {
                         cursor: 'pointer',
                     }}
                     stroke={2}
-                    onClick={() =>
-                        navigate(AppRoutes.organization.replace(':name', selectedOrganization.name), {
-                            state: { id: selectedOrganization.id },
-                        })
-                    }
+                    onClick={() => navigate(AppRoutes.organization.replace(':organizationId', selectedOrganization.id))}
                 />
             </Flex>
             <Flex justify={"center"} >
@@ -145,14 +150,14 @@ export const AppShell_Navbar: React.FC = () => {
                             style={{
                                 cursor: 'pointer',
                                 backgroundColor:
-                                    selectedIndex === index ? 'rgba(255, 255, 255, 0.1)' : '',
+                                    selectedFPFId === fpf.id ? 'rgba(255, 255, 255, 0.1)' : '',
                                 borderRadius: '6px',
                                 border: 'none',
                                 marginBottom: '16px',
                                 listStyleType: 'none',
                             }}
                             onClick={() => {
-                                handleFpfSelect(fpf.name, fpf.id, index);
+                                handleFpfSelect(fpf.id);
                             }}
                         >
                             <Text
@@ -160,12 +165,12 @@ export const AppShell_Navbar: React.FC = () => {
                                     display: 'flex',
                                     justifyContent: 'center',
                                     alignItems: 'center',
-                                    color: selectedIndex === index ? '#199ff4' : '',
+                                    color: selectedFPFId === fpf.id ? '#199ff4' : '',
                                     fontSize: '20px',
                                     padding: '8px 16px',
                                 }}
                             >
-                                {selectedIndex === index ? (
+                                {selectedFPFId === fpf.id ? (
                                     <IconCircleCheck
                                         style={{ marginRight: '10px', color: '#16A34A' }}
                                     />
@@ -181,9 +186,8 @@ export const AppShell_Navbar: React.FC = () => {
                                     cursor={'pointer'}
                                     onClick={(event) => {
                                         event.stopPropagation()
-                                        navigate(AppRoutes.editFpf.replace(':organizationName', selectedOrganization.name)
-                                                .replace(":fpfName", fpf.name),
-                                            { state: { id: fpf.id }})}
+                                        navigate(AppRoutes.editFpf.replace(':organizationId', selectedOrganization.id)
+                                                .replace(":fpfId", fpf.id))}
                                     }
                                 />
                             </Text>

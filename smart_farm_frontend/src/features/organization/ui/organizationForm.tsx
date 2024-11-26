@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { createdOrganization } from "../state/OrganizationSlice";
 import { useNavigate } from "react-router-dom";
 import {AppRoutes} from "../../../utils/appRoutes";
+import {Organization} from "../models/Organization";
 
 export const OrganizationForm: React.FC = () => {
     const auth = useAuth();
@@ -17,12 +18,11 @@ export const OrganizationForm: React.FC = () => {
     const [createOrgaErrorListener , triggerCreateOrgaError] = useState(false)
 
     const handleSave = () => {
-        createOrganization({ name, isPublic }).then((org) => {
+        createOrganization({ name, isPublic }).then((org: Organization) => {
             if (org) {
                 dispatch(createdOrganization());
-                const encodedName = encodeURI(org.name);
                 triggerCreateOrgaError(false)
-                navigate(AppRoutes.organization.replace(":name", encodedName), {state: { id: org.id }});
+                navigate(AppRoutes.organization.replace(":organizationId", org.id));
             }
             else{
                 triggerCreateOrgaError(true)

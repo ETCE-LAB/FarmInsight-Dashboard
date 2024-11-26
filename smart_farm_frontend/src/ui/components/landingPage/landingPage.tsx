@@ -73,7 +73,7 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
                 {tab.submenu.map((option) => (
                     <Menu.Item
                         key={option.id}
-                        onClick={() => navigate(AppRoutes.organization.replace(':name', option.name), {state : { id: option.id }})}
+                        onClick={() => navigate(AppRoutes.organization.replace(':organizationId', option.id))}
                         style={{ padding: '10px 16px', fontSize: '14px' }}
                     >
                         {option.name}
