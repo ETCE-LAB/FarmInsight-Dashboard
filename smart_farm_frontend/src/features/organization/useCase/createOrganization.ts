@@ -1,6 +1,5 @@
 import  APIClient from "../../../utils/APIClient";
 import {getUser} from "../../../utils/getUser";
-import {Organization} from "../models/Organization";
 
 export const createOrganization = async (data: { name: string; isPublic: boolean }) => {
     try {

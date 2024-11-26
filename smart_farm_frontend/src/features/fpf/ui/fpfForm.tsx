@@ -59,11 +59,9 @@ export const FpfForm: React.FC<{inputOrganization?:Organization, toEditFpf?:Fpf}
             const organizationId = inputOrganization.id
             createFpf({name, isPublic, sensorServiceIp, cameraServiceIp, address, organizationId }).then(fpf =>
             {
-                dispatch(createdFpf())
+                dispatch(createdFpf());
                 if (fpf)
-                {
-                    navigate(AppRoutes.displayFpf.replace(":organizationName", inputOrganization.name).replace(":fpfName", fpf.name), {state: { fpfid: fpf.id, organizationId:organizationId }});
-                }
+                    navigate(AppRoutes.editFpf.replace(":organizationId", organizationId).replace(":fpfId", fpf.id));
             }
             )
         }

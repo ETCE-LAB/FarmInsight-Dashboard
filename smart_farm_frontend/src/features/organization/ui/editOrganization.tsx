@@ -15,7 +15,7 @@ import {useSelector} from "react-redux";
 import {RootState} from "../../../utils/store";
 
 export const EditOrganization = () => {
-    const { id } = useLocation().state;
+    const { organizationId } = useParams();
     const [organization, setOrganization] = useState<Organization | null>(null);
     const [usersToAdd, setUsersToAdd] = useState<UserProfile[]>([]);
     const [notification, setNotification] = useState<{ type: 'success' | 'error', message: string } | null>(null);
@@ -26,14 +26,13 @@ export const EditOrganization = () => {
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-        if (id) {
-            getOrganization(id)
+        if (organizationId)
+            getOrganization(organizationId)
                 .then((org) => setOrganization(org))
                 .catch((error) => {
                     console.error("Failed to fetch organization:", error);
                 });
-        }
-    }, [id, membershipEventListener]);
+    }, [organizationId, membershipEventListener]);
 
     const userSelected = (user: UserProfile) => {
         if (!usersToAdd.includes(user)) {

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Fpf} from "../models/Fpf";
-import {useLocation} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import {getFpf} from "../useCase/getFpf";
 import {FpfForm} from "./fpfForm";
 import {getOrganization} from "../../organization/useCase/getOrganization";
@@ -13,20 +13,19 @@ import {getAvailableHardwareConfiguration} from "../../hardwareConfiguration/use
 
 
 export const EditFPF: React.FC = () => {
-    const fpfID = useLocation().state.id
-    const organizationID = useLocation().state.organizationId
+    const { organizationId, fpfId } = useParams();
     const [organization, setOrganization] = useState<Organization>()
     const [fpf, setFpf] = useState<Fpf>({id:"0", name:"", isPublic:true, Sensors:[], Cameras:[], sensorServiceIp:"", address:"", cameraServiceIp:""});
     const [sensors, setSensor] = useState<Sensor[]>()
 
     useEffect(() => {
-        if(fpfID) {
-            getFpf(fpfID).then(resp => {
+        if(fpfId) {
+            getFpf(fpfId).then(resp => {
                 setFpf(resp)
                 console.log(getAvailableHardwareConfiguration(resp.id))
             })
         }
-    }, [fpfID]);
+    }, [fpfId]);
 
     useEffect(() => {
         if(fpf?.Sensors && fpf.Sensors.length >= 1 ){
@@ -35,12 +34,12 @@ export const EditFPF: React.FC = () => {
     }, [fpf]);
 
     useEffect(() => {
-        if(organizationID){
-            getOrganization(organizationID).then(resp => {
+        if(organizationId){
+            getOrganization(organizationId).then(resp => {
                 setOrganization(resp)
             })
         }
-    }, [organizationID]);
+    }, [organizationId]);
 
 
     const togglePublic = () => {
