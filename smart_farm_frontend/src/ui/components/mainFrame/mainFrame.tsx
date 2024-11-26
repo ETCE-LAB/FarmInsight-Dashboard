@@ -4,7 +4,6 @@ import placeholderImage from "../../../placeholder.png";
 import {Sensor} from "../../../features/sensor/models/Sensor";
 import {useLocation} from "react-router-dom";
 import {Fpf} from "../../../features/fpf/models/Fpf";
-import {receiveFpfData} from "../../../features/fpf/useCase/receiveFpfData";
 import {getFpf} from "../../../features/fpf/useCase/getFpf";
 
 export const MainFrame = () => {

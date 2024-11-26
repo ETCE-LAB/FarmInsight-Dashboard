@@ -26,7 +26,8 @@ export const FpfForm: React.FC<{inputOrganization?:Organization, toEditFpf?:Fpf}
 
     const validateIps = () => {
         const newErrors: { sensorServiceIp?: string; cameraServiceIp?: string } = {};
-
+        console.log(sensorServiceIp)
+        console.log(cameraServiceIp)
         if (!ipv4Regex.test(sensorServiceIp)) {
             newErrors.sensorServiceIp = "Invalid IPv4 address";
         }
@@ -34,6 +35,8 @@ export const FpfForm: React.FC<{inputOrganization?:Organization, toEditFpf?:Fpf}
         if (!ipv4Regex.test(cameraServiceIp)) {
             newErrors.cameraServiceIp = "Invalid IPv4 address";
         }
+
+        console.log(newErrors)
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -62,58 +65,52 @@ export const FpfForm: React.FC<{inputOrganization?:Organization, toEditFpf?:Fpf}
                 </Button>
             ) : (
                 <form onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
-                    <Grid gutter="md">
-                        {/* Title */}
-                        <Grid.Col span={12}
-                                  style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
-                                {toEditFpf &&
-                                    <ActionIcon size="lg" color="red" variant="transparent">
-                                        <IconTrash/>
-                                    </ActionIcon>
-                                }
-                        </Grid.Col>
-
-                        {/* Name Input */}
-                        <Grid.Col span={6}>
-                            <TextInput label="Name" placeholder="Enter name" required/>
-                        </Grid.Col>
-
-                        {/* Address Input */}
-                        <Grid.Col span={6}>
-                            <TextInput label="Address" placeholder="Enter address (optional)"/>
-                        </Grid.Col>
-
-                        {/* SensorServiceIP Input */}
-                        <Grid.Col span={6}>
-                            <TextInput label="SensorServiceIP" placeholder="Enter SensorServiceIP" required/>
-                        </Grid.Col>
-
-                        {/* CameraServiceIP Input */}
-                        <Grid.Col span={6}>
-                            <TextInput label="CameraServiceIP" placeholder="Enter CameraServiceIP"/>
-                        </Grid.Col>
-
-                        {/* Is Public Toggle */}
-                        <Grid.Col span={12}
-                                  style={{display: "flex", alignItems: "center", justifyContent: "space-between"}}>
-                            <Switch label="Is Public?" size="md"/>
-                        </Grid.Col>
-
-                         <Grid.Col span={12}>
-                             {inputOrganization &&
-                                 <Box mt="md" style={{ display: 'flex', justifyContent: 'flex-end', margin: '10px'}}>
-                                     <Button type="submit" variant="filled" color="#105385" style={{ margin: '10px' }}>
-                                         Create Facility
-                                     </Button>
-                                 </Box>
-                             }
-                        </Grid.Col>
-
-                    </Grid>
+                    <TextInput
+                        label="Facility Name"
+                        placeholder="Enter facility name"
+                        value={name}
+                        onChange={(e) => setName(e.currentTarget.value)}
+                        required
+                    />
+                    <Switch
+                        label="Public"
+                        checked={isPublic}
+                        onChange={(e) => setIsPublic(e.currentTarget.checked)}
+                        mt="md"
+                    />
+                    <TextInput
+                        label="Sensor Service IP"
+                        placeholder="Enter sensor service IP"
+                        value={sensorServiceIp}
+                        onChange={(e) => setSensorServiceIp(e.currentTarget.value)}
+                        error={errors.sensorServiceIp}
+                        required
+                        mt="md"
+                    />
+                    <TextInput
+                        label="Camera Service IP"
+                        placeholder="Enter camera service IP"
+                        value={cameraServiceIp}
+                        onChange={(e) => setCameraServiceIp(e.currentTarget.value)}
+                        error={errors.cameraServiceIp}
+                        required
+                        mt="md"
+                    />
+                    <TextInput
+                        label="Address"
+                        placeholder="Enter address"
+                        value={address}
+                        onChange={(e) => setAddress(e.currentTarget.value)}
+                        required
+                        mt="md"
+                    />
+                    <Box mt="md" style={{ display: 'flex', justifyContent: 'flex-end', margin: '10px'}}>
+                        <Button type="submit" variant="filled" color="#105385" style={{ margin: '10px' }}>
+                            Create Facility
+                        </Button>
+                    </Box>
                 </form>
-            )
-
-            }
+            )}
         </>
-    )
-}
+    );
+};

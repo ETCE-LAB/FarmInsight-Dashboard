@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
-import {Fpf} from "../../fpf/models/Fpf";
+import {Fpf} from "../models/Fpf";
 import {useLocation} from "react-router-dom";
-import {getFpf} from "../../fpf/useCase/getFpf";
-import {FpfForm} from "../../fpf/ui/fpfForm";
+import {getFpf} from "../useCase/getFpf";
+import {FpfForm} from "./fpfForm";
 import {getOrganization} from "../../organization/useCase/getOrganization";
 import {Organization} from "../../organization/models/Organization";
 import {Card} from "@mantine/core";
@@ -19,6 +19,7 @@ export const EditFPF: React.FC = () => {
         if(fpfID) {
             getFpf(fpfID).then(resp => {
                 setFpf(resp)
+                console.log(resp)
             })
         }
     }, []);
