@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Container, Menu, TextInput, Text, List, Flex} from '@mantine/core';
-import {IconSettings, IconChevronDown, IconCircleCheck, IconCircleMinus, IconUsers} from "@tabler/icons-react";
+import {IconSettings, IconChevronDown, IconCircleCheck, IconCircleMinus} from "@tabler/icons-react";
 import { rem, Divider } from "@mantine/core";
 import { Organization } from "../../../../features/organization/models/Organization";
-import {useLocation, useNavigate, useParams} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import { AppRoutes } from "../../../../utils/appRoutes";
 import { getMyOrganizations } from "../../../../features/organization/useCase/getMyOrganizations";
 import { useAuth } from "react-oidc-context";
@@ -81,7 +81,7 @@ export const AppShell_Navbar: React.FC = () => {
     };
 
     const handleFpfSelect = (id: string) => {
-        navigate(AppRoutes.editFpf.replace(':organizationId', selectedOrganization.id).replace(':fpfId', id));
+        navigate(AppRoutes.displayFpf.replace(':organizationId', selectedOrganization.id).replace(':fpfId', id));
     }
 
     const items = tabs.map((tab) => (

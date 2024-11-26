@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
-import {Fpf} from "../../fpf/models/Fpf";
-import {useLocation} from "react-router-dom";
-import {getFpf} from "../../fpf/useCase/getFpf";
-import {FpfForm} from "../../fpf/ui/fpfForm";
+import {Fpf} from "../models/Fpf";
+import {useParams} from "react-router-dom";
+import {getFpf} from "../useCase/getFpf";
+import {FpfForm} from "./fpfForm";
 import {getOrganization} from "../../organization/useCase/getOrganization";
 import {Organization} from "../../organization/models/Organization";
 import {Card} from "@mantine/core";
@@ -10,26 +10,25 @@ import {Card} from "@mantine/core";
 
 
 export const EditFPF: React.FC = () => {
-    const fpfID = useLocation().state.fpfid
-    const organizationID = useLocation().state.organizationId
+    const { organizationId, fpfId } = useParams();
     const [organization, setOrganization] = useState<Organization>()
     const [fpf, setFpf] = useState<Fpf>({id:"0", name:"", isPublic:true, Sensors:[], Cameras:[], sensorServiceIp:"", address:"", cameraServiceIp:""});
 
     useEffect(() => {
-        if(fpfID) {
-            getFpf(fpfID).then(resp => {
+        if(fpfId) {
+            getFpf(fpfId).then(resp => {
                 setFpf(resp)
             })
         }
-    }, []);
+    }, [fpfId]);
 
     useEffect(() => {
-        if(organizationID){
-            getOrganization(organizationID).then(resp => {
+        if(organizationId){
+            getOrganization(organizationId).then(resp => {
                 setOrganization(resp)
             })
         }
-    }, [organizationID]);
+    }, [organizationId]);
 
 
     const togglePublic = () => {

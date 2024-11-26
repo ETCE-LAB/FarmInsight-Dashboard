@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import TimeseriesGraph from "../../../features/measurements/ui/timeseriesGraph";
+import TimeseriesGraph from "../../measurements/ui/timeseriesGraph";
 import placeholderImage from "../../../placeholder.png";
 import { useParams } from "react-router-dom";
-import { Fpf } from "../../../features/fpf/models/Fpf";
-import { getFpf } from "../../../features/fpf/useCase/getFpf";
+import { Fpf } from "../models/Fpf";
+import { getFpf } from "../useCase/getFpf";
 import { Container, Flex, Box, Image } from '@mantine/core';
 
-export const MainFrame = () => {
+export const FpfOverview = () => {
     const [fpf, setFpf] = useState<Fpf>();
 
     const params = useParams();
