@@ -71,15 +71,12 @@ const SelectHardwareConfiguration:React.FC<{ fpfId: string, postHardwareConfigur
                         {configuration.sensorClassId === selectedSensorClassId &&
                             <Table.Tr key={`details`}>
                                 <Table.Td colSpan={4}>
-                                    <Paper p="md" shadow="sm" style={{ marginTop: "10px" }}>
-                                        <h4>Additional Information for {configuration.name}</h4>
-                                        {configuration.fields.map((field) => (
-                                            <TextInput label={`${capitalizeFirstLetter(field.name)}`}
-                                                type={field.type}
-                                                onChange={(e) => handleFieldInputChanged(field.name, e.target.value)}
-                                            />
-                                        ))}
-                                    </Paper>
+                                    {configuration.fields.map((field) => (
+                                        <TextInput label={`${capitalizeFirstLetter(field.name)}`}
+                                            type={field.type}
+                                            onChange={(e) => handleFieldInputChanged(field.name, e.target.value)}
+                                        />
+                                    ))}
                                 </Table.Td>
                             </Table.Tr>
                         }
