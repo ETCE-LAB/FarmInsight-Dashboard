@@ -51,7 +51,7 @@ export const EditFPF: React.FC = () => {
                 <FpfForm toEditFpf={fpf}/>
             </Card>
             <Card shadow="sm" padding="lg" radius="md" withBorder >
-                <SensorList sensorsToDisplay={sensors} fpfid={fpf.id}/>
+                <SensorList sensorsToDisplay={sensors} fpfId={fpf.id}/>
             </Card>
         </Stack>
     );

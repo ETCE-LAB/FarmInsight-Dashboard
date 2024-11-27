@@ -23,8 +23,6 @@ export const FpfForm: React.FC<{inputOrganization?:Organization, toEditFpf?:Fpf}
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const ipv4Regex = /^(25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})\.(25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})\.(25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})\.(25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})$/;
-
     useEffect(() => {
         if(toEditFpf){
             setName(toEditFpf.name)
@@ -40,14 +38,6 @@ export const FpfForm: React.FC<{inputOrganization?:Organization, toEditFpf?:Fpf}
         const newErrors: { sensorServiceIp?: string; cameraServiceIp?: string } = {};
         console.log(sensorServiceIp)
         console.log(cameraServiceIp)
-        if (!ipv4Regex.test(sensorServiceIp)) {
-            newErrors.sensorServiceIp = "Invalid IPv4 address";
-        }
-
-        if (!ipv4Regex.test(cameraServiceIp)) {
-            newErrors.cameraServiceIp = "Invalid IPv4 address";
-        }
-
         console.log(newErrors)
 
         setErrors(newErrors);

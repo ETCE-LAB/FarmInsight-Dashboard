@@ -7,7 +7,7 @@ import {addSensor} from "../useCase/addSensor";
 import {HardwareConfiguration} from "../../hardwareConfiguration/models/HardwareConfiguration";
 import SelectHardwareConfiguration from "../../hardwareConfiguration/ui/SelectHardwareConfiguration";
 
-export const SensorForm:React.FC<{fpfID:string, toEditSensor?:Sensor}> = ({fpfID, toEditSensor}) => {
+export const SensorForm:React.FC<{fpfId:string, toEditSensor?:Sensor}> = ({fpfId, toEditSensor}) => {
     const auth = useAuth();
     const [name, setName] = useState<string>("")
     const [unit, setUnit] = useState<string>("")
@@ -15,7 +15,7 @@ export const SensorForm:React.FC<{fpfID:string, toEditSensor?:Sensor}> = ({fpfID
     const [isActive, setIsActive] = useState<boolean>(false)
     const [intervalSeconds, setIntervalSeconds] = useState<string | number>(0)
     const [location, setLocation] = useState<string>("")
-    const [hardwareConfig, setHardwareConfig] = useState<HardwareConfiguration>()
+    const [hardwareConfiguration, setHardwareConfiguration] = useState<{ sensorClassId: string, additionalInformation: Record<string, any>}>()
 
 
     /*
@@ -37,6 +37,7 @@ export const SensorForm:React.FC<{fpfID:string, toEditSensor?:Sensor}> = ({fpfID
     const handleSave = () => {
         //addSensor({name, location, unit, modelNr, isActive, intervalSeconds, hardwareConfig, fpfID:fpf.id})
         console.log("Abfahrt Sensor")
+        console.dir(hardwareConfiguration)
     }
 
 
@@ -97,11 +98,11 @@ export const SensorForm:React.FC<{fpfID:string, toEditSensor?:Sensor}> = ({fpfID
                             {/* Is Active Toggle */}
                             <Grid.Col span={12}
                                       style={{display: "flex", alignItems: "center", justifyContent: "space-between"}}>
-                                <Switch label="Is Active?" size="md" />
+                                <Switch label="Is Active?" size="md" checked={isActive} onChange={() => setIsActive(!isActive)} />
                             </Grid.Col>
                             {/*HardwareConfiguration*/}
                             <Grid.Col span={12}>
-                                <SelectHardwareConfiguration/>
+                                <SelectHardwareConfiguration fpfId={fpfId} postHardwareConfiguration={setHardwareConfiguration}/>
                             </Grid.Col>
                             {/*Add Button*/}
                             <Grid.Col span={12}>

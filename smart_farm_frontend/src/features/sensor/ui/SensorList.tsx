@@ -7,7 +7,7 @@ import {SensorForm} from "./SensorForm";
 import {getFpf} from "../../fpf/useCase/getFpf";
 
 
-export const SensorList:React.FC<{sensorsToDisplay?:Sensor[], fpfid:string}> = ({sensorsToDisplay, fpfid}) => {
+export const SensorList:React.FC<{sensorsToDisplay?:Sensor[], fpfId:string}> = ({sensorsToDisplay, fpfId}) => {
     const [sensor, setSensor] = useState<Sensor[]>()
     const [sensorModalOpen, setSensorModalOpen] = useState(false);
 
@@ -29,7 +29,7 @@ export const SensorList:React.FC<{sensorsToDisplay?:Sensor[], fpfid:string}> = (
                 title="Create Sensor"
                 centered
             >
-                <SensorForm fpfID={fpfid}/>
+                <SensorForm fpfId={fpfId}/>
             </Modal>
 
             <Group mb="md">

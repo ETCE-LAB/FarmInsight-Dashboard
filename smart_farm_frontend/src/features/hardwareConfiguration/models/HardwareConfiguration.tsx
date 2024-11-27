@@ -1,12 +1,15 @@
 
+export interface FieldDescription {
+    name: string;
+    type: string;
+    rules: object[];
+}
 
 export interface HardwareConfiguration {
-    sensorClassID:string,
+    sensorClassId:string,
     name:string,
     connection:string,
     parameter:string,
-    tags:{
-        info: any;
-    }
-    fields: {}
+    tags: object,
+    fields: FieldDescription[]
 }

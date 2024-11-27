@@ -1,45 +1,45 @@
 import React, { useState, useEffect } from "react";
-import { Table, ScrollArea, TextInput, Button, Collapse, Paper } from "@mantine/core";
-import {HardwareConfiguration} from "../models/HardwareConfiguration";
+import { Table, ScrollArea, TextInput, Paper } from "@mantine/core";
+import {FieldDescription, HardwareConfiguration} from "../models/HardwareConfiguration";
 import {getAvailableHardwareConfiguration} from "../useCase/getAvailableHardwareConfiguration";
 import {useParams} from "react-router-dom";
 
-const SelectHardwareConfiguration = () => {
+function capitalizeFirstLetter(str: string): string {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+const SelectHardwareConfiguration:React.FC<{ fpfId: string, postHardwareConfiguration(data: { sensorClassId: string, additionalInformation: Record<string, any>}): any }> = ({fpfId, postHardwareConfiguration}) => {
     const [hardwareConfiguration, setHardwareConfiguration] = useState<HardwareConfiguration[]>([]);
-    const [expandedRow, setExpandedRow] = useState<string | number | null>(null);
-    const [additionalInfo, setAdditionalInfo] = useState({});
+    const [selectedSensorClassId, setSelectedSensorClassId] = useState<string | null>(null);
+    const [additionalInformation, setAdditionalInformation] = useState<Record<string, any>>([]);
 
-    const { organizationId, fpfId } = useParams();
-
-    // Beispiel-Daten holen (ersetze mit deinem API-Call)
     useEffect(() => {
-        if(fpfId) {
-            getAvailableHardwareConfiguration(fpfId).then(resp => {
-                console.log(resp)
-                    setHardwareConfiguration(resp)
-                }
-            )
-        }
+        getAvailableHardwareConfiguration(fpfId).then(resp => {
+                setHardwareConfiguration(resp)
+            }
+        )
     }, [fpfId]);
 
-    // Handler für zusätzliche Informationen
-    const handleAdditionalInfoChange = (id: string, field: string, value: string | number | boolean) => {
-        setAdditionalInfo((prev) => ({
+    useEffect(() => {
+        if (selectedSensorClassId) {
+            const config = hardwareConfiguration[hardwareConfiguration.findIndex((x) => x.sensorClassId === selectedSensorClassId)]
+            let info: Record<string, any> = {};
+            for (const field of config.fields) {
+                info[field.name] = undefined;
+            }
+            setAdditionalInformation(info);
+            postHardwareConfiguration({sensorClassId: selectedSensorClassId, additionalInformation: info});
+        }
+    }, [hardwareConfiguration, selectedSensorClassId, postHardwareConfiguration]);
 
-        }));
-    };
-
-    // Zeile auswählen und aufklappen
-    const handleRowClick = (id: string | number) => {
-        setExpandedRow((prev: string | number | null) => (prev === id ? null : id)); // Toggle
-    };
-
-
-    // Daten speichern
-    const handleSave = () => {
-        console.log("Additional Information:", additionalInfo);
-        // Hier könntest du die Informationen per API absenden
-    };
+    const handleFieldInputChanged = (name: string, value: string)=> {
+        if (selectedSensorClassId) {
+            let info = additionalInformation;
+            info[name] = value;
+            setAdditionalInformation(info);
+            postHardwareConfiguration({sensorClassId: selectedSensorClassId, additionalInformation: info});
+        }
+    }
 
     return (
         <ScrollArea>
@@ -53,37 +53,37 @@ const SelectHardwareConfiguration = () => {
                 </Table.Tr>
                 </Table.Thead>
                 <Table.Tbody>
-                {hardwareConfiguration.map((row,index) => (
-                    <React.Fragment key={`${row.sensorClassID}`}>
+                {hardwareConfiguration.map((configuration) => (
+                    <>
                         {/* Hauptzeile */}
-                        <Table.Tr key={`${row.sensorClassID}-main`} onClick={() => handleRowClick(row.sensorClassID)} style={{ cursor: "pointer" }}>
-                            <Table.Td>{row.name}</Table.Td>
-                            <Table.Td>{row.connection}</Table.Td>
-                            <Table.Td>{row.parameter}</Table.Td>
-                            <Table.Td>{row.tags.info}</Table.Td>
+                        <Table.Tr key={configuration.sensorClassId} onClick={() => setSelectedSensorClassId(configuration.sensorClassId)} style={{ cursor: "pointer" }}>
+                            <Table.Td>{configuration.name}</Table.Td>
+                            <Table.Td>{configuration.connection}</Table.Td>
+                            <Table.Td>{configuration.parameter}</Table.Td>
+                            <Table.Td>
+                                {Object.entries(configuration.tags).map((tag,value) => (
+                                    value
+                                ))}
+                            </Table.Td>
                         </Table.Tr>
 
                         {/* Ausklappbarer Bereich */}
-                        <Table.Tr key={`${row.sensorClassID}-details`}>
-                            <Table.Td colSpan={4}>
-                                <Collapse in={expandedRow === row.sensorClassID}>
+                        {configuration.sensorClassId === selectedSensorClassId &&
+                            <Table.Tr key={`details`}>
+                                <Table.Td colSpan={4}>
                                     <Paper p="md" shadow="sm" style={{ marginTop: "10px" }}>
-                                        <h4>Additional Information for {row.name}</h4>
-                                        <TextInput
-                                            label="Additional Details"
-                                            placeholder="Enter details"
-                                            value= "" //{additionalInfo[row.sensorClassID]?.details ||}
-                                            onChange={(e) => handleAdditionalInfoChange(row.sensorClassID, "details", e.target.value)}
-                                            style={{ marginBottom: "10px" }}
-                                        />
-                                        <Button variant="outline" onClick={handleSave}>
-                                            Save
-                                        </Button>
+                                        <h4>Additional Information for {configuration.name}</h4>
+                                        {configuration.fields.map((field) => (
+                                            <TextInput label={`${capitalizeFirstLetter(field.name)}`}
+                                                type={field.type}
+                                                onChange={(e) => handleFieldInputChanged(field.name, e.target.value)}
+                                            />
+                                        ))}
                                     </Paper>
-                                </Collapse>
-                            </Table.Td>
-                        </Table.Tr>
-                    </React.Fragment>
+                                </Table.Td>
+                            </Table.Tr>
+                        }
+                    </>
                 ))}
                 </Table.Tbody>
             </Table>
