@@ -1,24 +1,35 @@
 
 
-export interface Sensor{
-    id:number,
-    intervallSeconds:number,
+export interface Sensor {
+    id:string,
+    intervalSeconds:number,
     isActive:boolean,
     location:string,
     modelNr:string,
     name:string,
     unit:string,
-    fpfID:number,
+    fpfId:string,
 
-    connection: {
-        connectionID:string,
-        additionalInformation: {}
-    }
     measurements: [
         {
             measuredAt: Date
             value:number
         }
     ]
+}
 
+export interface EditSensor {
+    id: string,
+    name:string,
+    unit:string,
+    location:string,
+    modelNr:string,
+    intervalSeconds:number,
+    isActive:boolean,
+    fpfId:string,
+
+    hardwareConfiguration: {
+        sensorClassId:string,
+        additionalInformation: Record<string, any>
+    }
 }

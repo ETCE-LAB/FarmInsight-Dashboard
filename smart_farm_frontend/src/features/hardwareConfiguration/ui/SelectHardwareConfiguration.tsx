@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Table, ScrollArea, TextInput, Paper } from "@mantine/core";
-import {FieldDescription, HardwareConfiguration} from "../models/HardwareConfiguration";
+import {Table, ScrollArea, TextInput, Text, HoverCard} from "@mantine/core";
+import { HardwareConfiguration} from "../models/HardwareConfiguration";
 import {getAvailableHardwareConfiguration} from "../useCase/getAvailableHardwareConfiguration";
-import {useParams} from "react-router-dom";
 
 function capitalizeFirstLetter(str: string): string {
     return str.charAt(0).toUpperCase() + str.slice(1);
@@ -61,8 +60,17 @@ const SelectHardwareConfiguration:React.FC<{ fpfId: string, postHardwareConfigur
                             <Table.Td>{configuration.connection}</Table.Td>
                             <Table.Td>{configuration.parameter}</Table.Td>
                             <Table.Td>
-                                {Object.entries(configuration.tags).map((tag,value) => (
-                                    value
+                                {Object.entries(configuration.tags).map((tag) => (
+                                    <HoverCard width={280} shadow="md">
+                                        <HoverCard.Target>
+                                            <Text>{tag[1]}</Text>
+                                        </HoverCard.Target>
+                                        <HoverCard.Dropdown>
+                                            <Text size="sm">
+                                                {tag[0]}
+                                            </Text>
+                                        </HoverCard.Dropdown>
+                                    </HoverCard>
                                 ))}
                             </Table.Td>
                         </Table.Tr>

@@ -1,45 +1,28 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {Box, Button, Grid, NumberInput, Switch, TextInput} from "@mantine/core";
 import {useAuth} from "react-oidc-context";
-import {Fpf} from "../../fpf/models/Fpf";
-import {Sensor} from "../models/Sensor";
-import {addSensor} from "../useCase/addSensor";
-import {HardwareConfiguration} from "../../hardwareConfiguration/models/HardwareConfiguration";
+import {EditSensor} from "../models/Sensor";
 import SelectHardwareConfiguration from "../../hardwareConfiguration/ui/SelectHardwareConfiguration";
+import {createSensor} from "../useCase/createSensor";
 
-export const SensorForm:React.FC<{fpfId:string, toEditSensor?:Sensor}> = ({fpfId, toEditSensor}) => {
+export const SensorForm:React.FC<{fpfId:string, toEditSensor?:EditSensor}> = ({fpfId, toEditSensor}) => {
     const auth = useAuth();
     const [name, setName] = useState<string>("")
     const [unit, setUnit] = useState<string>("")
     const [modelNr, setModelNr] = useState<string>("")
     const [isActive, setIsActive] = useState<boolean>(false)
-    const [intervalSeconds, setIntervalSeconds] = useState<string | number>(0)
+    const [intervalSeconds, setIntervalSeconds] = useState<number | string>(0)
     const [location, setLocation] = useState<string>("")
     const [hardwareConfiguration, setHardwareConfiguration] = useState<{ sensorClassId: string, additionalInformation: Record<string, any>}>()
 
-
-    /*
-    {
-  "name": "string",
-  "location": "string",
-  "unit": "°C",
-  "modelNr": "string",
-  "isActive": true,
-  "intervalSeconds": 0,
-  "hardwareConfiguration": {
-    "sensorClassId": "string",
-    "additionalInformation": {}
-  },
-  "fpfId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-}
-    */
-
     const handleSave = () => {
-        //addSensor({name, location, unit, modelNr, isActive, intervalSeconds, hardwareConfig, fpfID:fpf.id})
-        console.log("Abfahrt Sensor")
-        console.dir(hardwareConfiguration)
+        if (hardwareConfiguration) {
+            const interval = +intervalSeconds;
+            createSensor({id:'', name, unit, location, modelNr, intervalSeconds:interval, isActive, fpfId, hardwareConfiguration,}).then((sensor) => {
+                console.dir(sensor)
+            })
+        }
     }
-
 
     return (
             <>

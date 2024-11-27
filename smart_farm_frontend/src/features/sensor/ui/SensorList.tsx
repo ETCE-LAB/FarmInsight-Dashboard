@@ -58,7 +58,7 @@ export const SensorList:React.FC<{sensorsToDisplay?:Sensor[], fpfId:string}> = (
                         <Table.Td>{sensor.location}</Table.Td>
                         <Table.Td>{sensor.unit}</Table.Td>
                         <Table.Td>{sensor.modelNr}</Table.Td>
-                        <Table.Td>{sensor.intervallSeconds}</Table.Td>
+                        <Table.Td>{sensor.intervalSeconds}</Table.Td>
                         <Table.Td>
                             <Switch checked={sensor.isActive} />
                         </Table.Td>
