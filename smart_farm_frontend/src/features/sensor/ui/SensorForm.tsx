@@ -5,6 +5,7 @@ import {Fpf} from "../../fpf/models/Fpf";
 import {Sensor} from "../models/Sensor";
 import {addSensor} from "../useCase/addSensor";
 import {HardwareConfiguration} from "../../hardwareConfiguration/models/HardwareConfiguration";
+import SelectHardwareConfiguration from "../../hardwareConfiguration/ui/SelectHardwareConfiguration";
 
 export const SensorForm:React.FC<{fpfID:string, toEditSensor?:Sensor}> = ({fpfID, toEditSensor}) => {
     const auth = useAuth();
@@ -99,8 +100,9 @@ export const SensorForm:React.FC<{fpfID:string, toEditSensor?:Sensor}> = ({fpfID
                                 <Switch label="Is Active?" size="md" />
                             </Grid.Col>
                             {/*HardwareConfiguration*/}
-
-
+                            <Grid.Col span={12}>
+                                <SelectHardwareConfiguration/>
+                            </Grid.Col>
                             {/*Add Button*/}
                             <Grid.Col span={12}>
                                 {!toEditSensor  &&

@@ -22,7 +22,6 @@ export const EditFPF: React.FC = () => {
         if(fpfId) {
             getFpf(fpfId).then(resp => {
                 setFpf(resp)
-                console.log(getAvailableHardwareConfiguration(resp.id))
             })
         }
     }, [fpfId]);

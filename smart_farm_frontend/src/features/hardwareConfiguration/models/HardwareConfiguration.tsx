@@ -2,5 +2,11 @@
 
 export interface HardwareConfiguration {
     sensorClassID:string,
-    additionalInformation: {}
+    name:string,
+    connection:string,
+    parameter:string,
+    tags:{
+        info: any;
+    }
+    fields: {}
 }
