@@ -24,7 +24,9 @@ export const FpfOverview = () => {
                     <Box style={{ flex: 1, marginRight: '20px', overflowY: "scroll", maxHeight: "85vh", maxWidth: "50vw" }}>
                         {fpf && fpf.Sensors.map((sensor) => (
                             <Box key={sensor.id}>
-                                <TimeseriesGraph sensor={sensor} />
+                                {sensor && (
+                                    <TimeseriesGraph sensor={sensor} />
+                                )}
                             </Box>
                         ))}
                     </Box>

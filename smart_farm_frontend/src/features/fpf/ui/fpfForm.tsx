@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, TextInput, Checkbox, Box, Switch, Card, Grid, Title, ActionIcon} from "@mantine/core";
 import { useAuth } from "react-oidc-context";
 import {createFpf} from "../useCase/createFpf";
@@ -9,6 +9,7 @@ import {createdFpf} from "../state/FpfSlice";
 import {useNavigate} from "react-router-dom";
 import {Fpf} from "../models/Fpf";
 import {IconTrash} from "@tabler/icons-react";
+import {getAvailableHardwareConfiguration} from "../../hardwareConfiguration/useCase/getAvailableHardwareConfiguration";
 
 
 export const FpfForm: React.FC<{inputOrganization?:Organization, toEditFpf?:Fpf}> = ({ inputOrganization, toEditFpf }) => {
@@ -22,18 +23,22 @@ export const FpfForm: React.FC<{inputOrganization?:Organization, toEditFpf?:Fpf}
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const ipv4Regex = /^(25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})\.(25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})\.(25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})\.(25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})$/;
+    useEffect(() => {
+        if(toEditFpf){
+            setName(toEditFpf.name)
+            setIsPublic(toEditFpf.isPublic)
+            setSensorServiceIp(toEditFpf.sensorServiceIp)
+            setCameraServiceIp(toEditFpf.cameraServiceIp)
+            setAddress(toEditFpf.address)
+        }
+    }, [toEditFpf]);
+
 
     const validateIps = () => {
         const newErrors: { sensorServiceIp?: string; cameraServiceIp?: string } = {};
-
-        if (!ipv4Regex.test(sensorServiceIp)) {
-            newErrors.sensorServiceIp = "Invalid IPv4 address";
-        }
-
-        if (!ipv4Regex.test(cameraServiceIp)) {
-            newErrors.cameraServiceIp = "Invalid IPv4 address";
-        }
+        console.log(sensorServiceIp)
+        console.log(cameraServiceIp)
+        console.log(newErrors)
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -64,31 +69,49 @@ export const FpfForm: React.FC<{inputOrganization?:Organization, toEditFpf?:Fpf}
                         {/* Title */}
                         <Grid.Col span={12}
                                   style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
-                                {toEditFpf &&
-                                    <ActionIcon size="lg" color="red" variant="transparent">
-                                        <IconTrash/>
-                                    </ActionIcon>
-                                }
+                            {toEditFpf &&
+                                <ActionIcon size="lg" color="red" variant="transparent">
+                                    <IconTrash/>
+                                </ActionIcon>
+                            }
                         </Grid.Col>
 
                         {/* Name Input */}
                         <Grid.Col span={6}>
-                            <TextInput label="Name" placeholder="Enter name" required/>
+                            <TextInput label="Name"
+                                       placeholder="Enter name"
+                                       required
+                                       value={name}
+                                       onChange={(e) => setName(e.currentTarget.value)}/>
                         </Grid.Col>
 
                         {/* Address Input */}
                         <Grid.Col span={6}>
-                            <TextInput label="Address" placeholder="Enter address (optional)"/>
+                            <TextInput label="Address"
+                                       placeholder="Enter address (optional)"
+                                       value={address}
+                                       onChange={(e) => setAddress(e.currentTarget.value)}/>
                         </Grid.Col>
 
                         {/* SensorServiceIP Input */}
                         <Grid.Col span={6}>
-                            <TextInput label="SensorServiceIP" placeholder="Enter SensorServiceIP" required/>
+                            <TextInput
+                                label="SensorServiceIP"
+                                placeholder="Enter SensorServiceIP"
+                                required
+                                value={sensorServiceIp}
+                                onChange={(e) => setSensorServiceIp(e.currentTarget.value)}
+                                error={errors.sensorServiceIp}/>
                         </Grid.Col>
 
                         {/* CameraServiceIP Input */}
                         <Grid.Col span={6}>
-                            <TextInput label="CameraServiceIP" placeholder="Enter CameraServiceIP"/>
+                            <TextInput
+                                label="CameraServiceIP"
+                                placeholder="Enter CameraServiceIP"
+                                value={cameraServiceIp}
+                                onChange={(e) => setCameraServiceIp(e.currentTarget.value)}
+                                error={errors.cameraServiceIp}/>
                         </Grid.Col>
 
                         {/* Is Public Toggle */}
@@ -97,14 +120,14 @@ export const FpfForm: React.FC<{inputOrganization?:Organization, toEditFpf?:Fpf}
                             <Switch label="Is Public?" size="md"/>
                         </Grid.Col>
 
-                         <Grid.Col span={12}>
-                             {inputOrganization &&
-                                 <Box mt="md" style={{ display: 'flex', justifyContent: 'flex-end', margin: '10px'}}>
-                                     <Button type="submit" variant="filled" color="#105385" style={{ margin: '10px' }}>
-                                         Create Facility
-                                     </Button>
-                                 </Box>
-                             }
+                        <Grid.Col span={12}>
+                            {inputOrganization &&
+                                <Box mt="md" style={{ display: 'flex', justifyContent: 'flex-end', margin: '10px'}}>
+                                    <Button type="submit" variant="filled" color="#105385" style={{ margin: '10px' }}>
+                                        Create Facility
+                                    </Button>
+                                </Box>
+                            }
                         </Grid.Col>
 
                     </Grid>
