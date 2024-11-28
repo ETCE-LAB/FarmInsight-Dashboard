@@ -8,7 +8,9 @@ import {Organization} from "../../organization/models/Organization";
 import {Card, Stack} from "@mantine/core";
 import {Sensor} from "../../sensor/models/Sensor";
 import {SensorList} from "../../sensor/ui/SensorList";
-import {getAvailableHardwareConfiguration} from "../../hardwareConfiguration/useCase/getAvailableHardwareConfiguration";
+import {useSelector} from "react-redux";
+import {RootState} from "../../../utils/store";
+
 
 
 
@@ -40,6 +42,17 @@ export const EditFPF: React.FC = () => {
         }
     }, [organizationId]);
 
+    const SensorEventListener = useSelector((state: RootState) => state.sensor.receivedSensorEvent);
+
+    useEffect(() => {
+        if(fpfId){
+            getFpf(fpfId).then((resp) => {
+                setSensor(resp.Sensors)
+
+            })
+        }
+    }, [SensorEventListener]);
+
 
     const togglePublic = () => {
         setFpf((prevFpf) => ({ ...prevFpf, isPublic: !prevFpf.isPublic }));
@@ -51,7 +64,7 @@ export const EditFPF: React.FC = () => {
                 <FpfForm toEditFpf={fpf}/>
             </Card>
             <Card shadow="sm" padding="lg" radius="md" withBorder >
-                <SensorList sensorsToDisplay={sensors} fpfId={fpf.id}/>
+                <SensorList sensorsToDisplay={sensors}/>
             </Card>
         </Stack>
     );

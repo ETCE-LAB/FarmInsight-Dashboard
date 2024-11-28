@@ -1,19 +1,23 @@
 import React, {useEffect, useState} from "react";
 import {Sensor} from "../models/Sensor";
-import {ActionIcon, Button, Group, Modal, Switch, Table} from "@mantine/core";
+import {ActionIcon, Group, Modal, Switch, Table} from "@mantine/core";
 import {IconEdit, IconPlus} from "@tabler/icons-react";
-import {FpfForm} from "../../fpf/ui/fpfForm";
 import {SensorForm} from "./SensorForm";
-import {getFpf} from "../../fpf/useCase/getFpf";
+import {useSelector} from "react-redux";
+import {RootState} from "../../../utils/store";
 
 
-export const SensorList:React.FC<{sensorsToDisplay?:Sensor[], fpfId:string}> = ({sensorsToDisplay, fpfId}) => {
+
+export const SensorList:React.FC<{sensorsToDisplay?:Sensor[]}> = ({sensorsToDisplay, }) => {
     const [sensor, setSensor] = useState<Sensor[]>()
     const [sensorModalOpen, setSensorModalOpen] = useState(false);
 
-    useEffect(() => {
+    const SensorEventListener = useSelector((state: RootState) => state.sensor.receivedSensorEvent);
 
-    }, []);
+    useEffect(() => {
+       setSensorModalOpen(false)
+    }, [SensorEventListener]);
+
 
 
     const onClickEdit = () => {

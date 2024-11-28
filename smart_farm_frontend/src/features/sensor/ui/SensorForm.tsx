@@ -5,9 +5,15 @@ import {EditSensor} from "../models/Sensor";
 import SelectHardwareConfiguration from "../../hardwareConfiguration/ui/SelectHardwareConfiguration";
 import {createSensor} from "../useCase/createSensor";
 import {useParams} from "react-router-dom";
+import {useAppDispatch} from "../../../utils/Hooks";
+import {receivedSensor} from "../state/SensorSlice";
+import {AppRoutes} from "../../../utils/appRoutes";
+import {useNavigate} from "react-router-dom";
 
 export const SensorForm:React.FC<{toEditSensor?:EditSensor}> = ({toEditSensor}) => {
     const auth = useAuth();
+    const { organizationId, fpfId } = useParams();
+    const dispatch = useAppDispatch()
     const [name, setName] = useState<string>("")
     const [unit, setUnit] = useState<string>("")
     const [modelNr, setModelNr] = useState<string>("")
@@ -15,15 +21,21 @@ export const SensorForm:React.FC<{toEditSensor?:EditSensor}> = ({toEditSensor}) 
     const [intervalSeconds, setIntervalSeconds] = useState<number | string>(0)
     const [location, setLocation] = useState<string>("")
     const [hardwareConfiguration, setHardwareConfiguration] = useState<{ sensorClassId: string, additionalInformation: Record<string, any>}>()
+    const navigate = useNavigate();
 
-    const { organizationId, fpfId } = useParams();
+
+
+
 
     const handleSave = () => {
-        if (hardwareConfiguration && fpfId) {
+        if (hardwareConfiguration && fpfId && organizationId) {
             const interval = +intervalSeconds;
             createSensor({id:'', name, unit, location, modelNr, intervalSeconds:interval, isActive, fpfId, hardwareConfiguration,}).then((sensor) => {
-                console.dir(sensor)
+                dispatch(receivedSensor())
+                console.log("Help")
+                navigate(AppRoutes.editFpf.replace(":organizationId", organizationId).replace(":fpfId", fpfId));
             })
+
         }
     }
 
@@ -104,8 +116,6 @@ export const SensorForm:React.FC<{toEditSensor?:EditSensor}> = ({toEditSensor}) 
                         </Grid.Col>
 
                         </Grid>
-
-
                     </form>
                 )}
             </>
