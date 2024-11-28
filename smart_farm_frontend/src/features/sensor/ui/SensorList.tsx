@@ -20,6 +20,7 @@ export const SensorList:React.FC<{sensorsToDisplay?:Sensor[], fpfId:string}> = (
   }, [sensorsToDisplay]);
 
 
+
     const onClickEdit = (sensor: Sensor) => {
         const editSensor: EditSensor = {
           id: sensor.id,
@@ -108,7 +109,7 @@ export const SensorList:React.FC<{sensorsToDisplay?:Sensor[], fpfId:string}> = (
                 ))}
                 </tbody>
             </Table>
-        </Box>
+        </div>
     );
 };
 
