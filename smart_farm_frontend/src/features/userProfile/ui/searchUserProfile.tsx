@@ -1,4 +1,4 @@
-import { Input } from "@mantine/core";
+import {Box, Card, Input, Text} from "@mantine/core";
 import { useEffect, useState } from "react";
 import { getUserProfilesBySearchString } from "../useCase/getUserProfilesBySearchString";
 import { UserProfile } from "../models/UserProfile";
@@ -36,10 +36,10 @@ export const SearchUserProfile = ({ onUserSelected }: SearchUserProfileProps) =>
                 onChange={(e) => setSearchTerm(e.target.value)}
             />
 
-            <div style={{ marginTop: '10px' }}>
+            <Box style={{ marginTop: '10px' }}>
                 {userProfiles.length > 0 ? (
                     userProfiles.map((profile, index) => (
-                        <div
+                        <Card
                             key={index}
                             onClick={() => onUserSelected(profile)} // Call `onUserSelected` when clicked
                             style={{
@@ -50,18 +50,18 @@ export const SearchUserProfile = ({ onUserSelected }: SearchUserProfileProps) =>
                                 cursor: 'pointer',
                             }}
                         >
-                            <p style={{ margin: '0', fontSize: '16px', fontWeight: 'bold' }}>
+                            <Text style={{ margin: '0', fontSize: '16px', fontWeight: 'bold' }}>
                                 {profile.name}
-                            </p>
-                            <p style={{ margin: '2px 0', fontSize: '14px', color: '#555' }}>
+                            </Text>
+                            <Text style={{ margin: '2px 0', fontSize: '14px', color: '#555' }}>
                                 {profile.email}
-                            </p>
-                        </div>
+                            </Text>
+                        </Card>
                     ))
                 ) : (
-                    <p style={{ color: '#888' }}>No user profiles found</p>
+                    <Text style={{ color: '#888' }}>No user profiles found</Text>
                 )}
-            </div>
+            </Box>
         </>
     );
 };

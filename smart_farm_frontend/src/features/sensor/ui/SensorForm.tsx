@@ -1,10 +1,11 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Box, Button, Grid, NumberInput, Switch, TextInput} from "@mantine/core";
 import {useAuth} from "react-oidc-context";
 import {EditSensor} from "../models/Sensor";
 import SelectHardwareConfiguration from "../../hardwareConfiguration/ui/SelectHardwareConfiguration";
 import {createSensor} from "../useCase/createSensor";
 import {useParams} from "react-router-dom";
+import {updateSensor} from "../useCase/updateSensor";
 
 export const SensorForm:React.FC<{toEditSensor?:EditSensor}> = ({toEditSensor}) => {
     const auth = useAuth();
@@ -12,11 +13,44 @@ export const SensorForm:React.FC<{toEditSensor?:EditSensor}> = ({toEditSensor}) 
     const [unit, setUnit] = useState<string>("")
     const [modelNr, setModelNr] = useState<string>("")
     const [isActive, setIsActive] = useState<boolean>(false)
-    const [intervalSeconds, setIntervalSeconds] = useState<number | string>(0)
+    const [intervalSeconds, setIntervalSeconds] = useState<number>(0)
     const [location, setLocation] = useState<string>("")
-    const [hardwareConfiguration, setHardwareConfiguration] = useState<{ sensorClassId: string, additionalInformation: Record<string, any>}>()
+    const [hardwareConfiguration, setHardwareConfiguration] = useState<{
+        sensorClassId: string,
+        additionalInformation: Record<string, any>
+    }>()
 
     const { organizationId, fpfId } = useParams();
+
+    useEffect(() => {
+        if (toEditSensor) {
+          setName(toEditSensor.name || "");
+          setUnit(toEditSensor.unit || "");
+          setModelNr(toEditSensor.modelNr || "");
+          setIsActive(toEditSensor.isActive || false);
+          setIntervalSeconds(toEditSensor.intervalSeconds || 1);
+          setLocation(toEditSensor.location || "");
+          setHardwareConfiguration(toEditSensor.hardwareConfiguration || undefined);
+        }
+    }, [toEditSensor]);
+
+    const handleEdit = () => {
+        if (toEditSensor && hardwareConfiguration) {
+          updateSensor({
+            id:toEditSensor.id,
+            name,
+            unit,
+            location,
+            modelNr,
+            intervalSeconds,
+            isActive,
+            fpfId: toEditSensor.fpfId,
+            hardwareConfiguration,
+          }).then((sensor) => {
+            console.dir(sensor);
+          });
+        }
+    };
 
     const handleSave = () => {
         if (hardwareConfiguration && fpfId) {
@@ -34,7 +68,12 @@ export const SensorForm:React.FC<{toEditSensor?:EditSensor}> = ({toEditSensor}) 
                         Login to manage Facility
                     </Button>
                 ) : (
-                    <form onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
+                    <form
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            toEditSensor ? handleEdit() : handleSave();
+                        }}
+                    >
                         <Grid gutter="md">
                             {/*Name*/}
                             <Grid.Col span={6}>
@@ -77,8 +116,9 @@ export const SensorForm:React.FC<{toEditSensor?:EditSensor}> = ({toEditSensor}) 
                                 <NumberInput  label="Interval in Seconds"
                                             placeholder="Enter Interval in Seconds"
                                             required
+                                            aria-valuemin={1}
                                             value={intervalSeconds}
-                                            onChange={setIntervalSeconds}
+                                            onChange={(value) => setIntervalSeconds(value as number ?? 1)}
                                 />
                             </Grid.Col>
                             {/* Is Active Toggle */}
@@ -89,18 +129,27 @@ export const SensorForm:React.FC<{toEditSensor?:EditSensor}> = ({toEditSensor}) 
                             {/*HardwareConfiguration*/}
                             <Grid.Col span={12}>
                                 { fpfId && (
-                                <SelectHardwareConfiguration fpfId={fpfId} postHardwareConfiguration={setHardwareConfiguration}/>
+                                <SelectHardwareConfiguration fpfId={fpfId} postHardwareConfiguration={setHardwareConfiguration}
+                                    selectedConfiguration={
+                                        toEditSensor?.hardwareConfiguration
+                                            ? {
+                                                  sensorClassId: toEditSensor.hardwareConfiguration.sensorClassId,
+                                                  additionalInformation: toEditSensor.hardwareConfiguration.additionalInformation,
+                                              }
+                                            : undefined // Pass undefined if hardwareConfiguration is not availabl
+                                    }
+                                 sensorId={toEditSensor?.id}/>
                                 )}
                             </Grid.Col>
                             {/*Add Button*/}
                             <Grid.Col span={12}>
-                                {!toEditSensor  &&
+
                                     <Box mt="md" style={{ display: 'flex', justifyContent: 'flex-end', margin: '10px'}}>
                                 <Button type="submit" variant="filled" color="#105385" style={{ margin: '10px' }}>
-                                    Add Sensor
+                                    {toEditSensor?.id ? "Save Changes" : "Add Sensor"}
                                 </Button>
                             </Box>
-                            }
+
                         </Grid.Col>
 
                         </Grid>

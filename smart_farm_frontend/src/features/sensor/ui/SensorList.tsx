@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
-import {Sensor} from "../models/Sensor";
-import {ActionIcon, Button, Group, Modal, Switch, Table} from "@mantine/core";
+import {EditSensor, Sensor} from "../models/Sensor";
+import {ActionIcon, Box, Button, Group, Modal, Switch, Table} from "@mantine/core";
 import {IconEdit, IconPlus} from "@tabler/icons-react";
 import {FpfForm} from "../../fpf/ui/fpfForm";
 import {SensorForm} from "./SensorForm";
@@ -10,18 +10,40 @@ import {getFpf} from "../../fpf/useCase/getFpf";
 export const SensorList:React.FC<{sensorsToDisplay?:Sensor[], fpfId:string}> = ({sensorsToDisplay, fpfId}) => {
     const [sensor, setSensor] = useState<Sensor[]>()
     const [sensorModalOpen, setSensorModalOpen] = useState(false);
+    const [editSensorModalOpen, setEditSensorModalOpen] = useState(false);
+    const [selectedSensor, setSelectedSensor] = useState<EditSensor | null>(null);
 
     useEffect(() => {
+    if (sensorsToDisplay) {
+      setSensor(sensorsToDisplay);
+    }
+  }, [sensorsToDisplay]);
 
-    }, []);
 
+    const onClickEdit = (sensor: Sensor) => {
+        const editSensor: EditSensor = {
+          id: sensor.id,
+          name: sensor.name,
+          unit: sensor.unit,
+          location: sensor.location,
+          modelNr: sensor.modelNr,
+          intervalSeconds: sensor.intervalSeconds,
+          isActive: sensor.isActive,
+          fpfId,
 
-    const onClickEdit = () => {
+          // Add hardwareConfiguration (either default or derived)
+          hardwareConfiguration: {
+              sensorClassId: "default-class-id",
+              additionalInformation: {},
+          }
+        };
 
+        setSelectedSensor(editSensor);
+        setEditSensorModalOpen(true)
     }
 
     return (
-        <div>
+        <Box>
             {/* Add FpF Modal */}
             <Modal
                 opened={sensorModalOpen}
@@ -30,6 +52,15 @@ export const SensorList:React.FC<{sensorsToDisplay?:Sensor[], fpfId:string}> = (
                 centered
             >
                 <SensorForm/>
+            </Modal>
+
+            <Modal
+                opened={editSensorModalOpen}
+                onClose={() => setEditSensorModalOpen(false)}
+                title="Edit Sensor"
+                centered
+            >
+                {selectedSensor && <SensorForm toEditSensor={selectedSensor} />}
             </Modal>
 
             <Group mb="md">
@@ -68,7 +99,7 @@ export const SensorList:React.FC<{sensorsToDisplay?:Sensor[], fpfId:string}> = (
                                     <IconEdit
                                         size={16}
                                         stroke={2}
-                                        onClick={onClickEdit}
+                                        onClick={() => onClickEdit(sensor)}
                                         style={{cursor:"pointer"}} />
                                 </ActionIcon>
                             </Group>
@@ -77,7 +108,7 @@ export const SensorList:React.FC<{sensorsToDisplay?:Sensor[], fpfId:string}> = (
                 ))}
                 </tbody>
             </Table>
-        </div>
+        </Box>
     );
 };
 
