@@ -29,7 +29,7 @@ export const SensorList:React.FC<{sensorsToDisplay?:Sensor[], fpfId:string}> = (
                 title="Create Sensor"
                 centered
             >
-                <SensorForm fpfId={fpfId}/>
+                <SensorForm/>
             </Modal>
 
             <Group mb="md">

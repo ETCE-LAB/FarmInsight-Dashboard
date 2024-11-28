@@ -4,8 +4,9 @@ import {useAuth} from "react-oidc-context";
 import {EditSensor} from "../models/Sensor";
 import SelectHardwareConfiguration from "../../hardwareConfiguration/ui/SelectHardwareConfiguration";
 import {createSensor} from "../useCase/createSensor";
+import {useParams} from "react-router-dom";
 
-export const SensorForm:React.FC<{fpfId:string, toEditSensor?:EditSensor}> = ({fpfId, toEditSensor}) => {
+export const SensorForm:React.FC<{toEditSensor?:EditSensor}> = ({toEditSensor}) => {
     const auth = useAuth();
     const [name, setName] = useState<string>("")
     const [unit, setUnit] = useState<string>("")
@@ -15,8 +16,10 @@ export const SensorForm:React.FC<{fpfId:string, toEditSensor?:EditSensor}> = ({f
     const [location, setLocation] = useState<string>("")
     const [hardwareConfiguration, setHardwareConfiguration] = useState<{ sensorClassId: string, additionalInformation: Record<string, any>}>()
 
+    const { organizationId, fpfId } = useParams();
+
     const handleSave = () => {
-        if (hardwareConfiguration) {
+        if (hardwareConfiguration && fpfId) {
             const interval = +intervalSeconds;
             createSensor({id:'', name, unit, location, modelNr, intervalSeconds:interval, isActive, fpfId, hardwareConfiguration,}).then((sensor) => {
                 console.dir(sensor)
@@ -85,7 +88,9 @@ export const SensorForm:React.FC<{fpfId:string, toEditSensor?:EditSensor}> = ({f
                             </Grid.Col>
                             {/*HardwareConfiguration*/}
                             <Grid.Col span={12}>
+                                { fpfId && (
                                 <SelectHardwareConfiguration fpfId={fpfId} postHardwareConfiguration={setHardwareConfiguration}/>
+                                )}
                             </Grid.Col>
                             {/*Add Button*/}
                             <Grid.Col span={12}>

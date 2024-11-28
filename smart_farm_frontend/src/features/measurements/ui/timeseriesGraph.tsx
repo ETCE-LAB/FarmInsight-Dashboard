@@ -20,13 +20,15 @@ const TimeseriesGraph: React.FC<{sensor:Sensor}> = ({sensor}) => {
 
     useEffect(() => {
         requestMeasuremnt("8250f7569a3047ea8decf4cc101003da", "2024-10-10", "2024-11-01").then(resp => {
-            // Round the values before setting them
-            const roundedMeasurements = resp.map((measurement) => ({
-                ...measurement,
-                //TODO: "We might have to change this"
-                value: parseFloat(measurement.value.toFixed(2)),
-            }));
-            setMeasurements(roundedMeasurements);
+            if(resp) {
+                // Round the values before setting them
+                const roundedMeasurements = resp.map((measurement) => ({
+                    ...measurement,
+                    //TODO: "We might have to change this"
+                    value: parseFloat(measurement.value.toFixed(2)),
+                }));
+                setMeasurements(roundedMeasurements);
+            }
         });
     }, [measurementReceivedEventListener]);
 
