@@ -109,7 +109,7 @@ export const SensorList:React.FC<{sensorsToDisplay?:Sensor[], fpfId:string}> = (
                 ))}
                 </tbody>
             </Table>
-        </div>
+        </Box>
     );
 };
 
