@@ -7,7 +7,6 @@ export interface Fpf {
     name:string
     isPublic:boolean,
     sensorServiceIp:string,
-    cameraServiceIp:string
     address:string,
     Sensors: Sensor[],
     Cameras: Camera[]

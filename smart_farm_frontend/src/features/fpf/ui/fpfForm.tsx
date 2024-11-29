@@ -17,7 +17,6 @@ export const FpfForm: React.FC<{inputOrganization?:Organization, toEditFpf?:Fpf}
     const [name, setName] = useState("");
     const [isPublic, setIsPublic] = useState(false);
     const [sensorServiceIp, setSensorServiceIp] = useState("");
-    const [cameraServiceIp, setCameraServiceIp] = useState("");
     const [address, setAddress] = useState("");
     const [errors, setErrors] = useState<{ sensorServiceIp?: string; cameraServiceIp?: string }>({});
     const dispatch = useDispatch();
@@ -28,7 +27,6 @@ export const FpfForm: React.FC<{inputOrganization?:Organization, toEditFpf?:Fpf}
             setName(toEditFpf.name)
             setIsPublic(toEditFpf.isPublic)
             setSensorServiceIp(toEditFpf.sensorServiceIp)
-            setCameraServiceIp(toEditFpf.cameraServiceIp)
             setAddress(toEditFpf.address)
         }
     }, [toEditFpf]);
@@ -37,7 +35,6 @@ export const FpfForm: React.FC<{inputOrganization?:Organization, toEditFpf?:Fpf}
     const validateIps = () => {
         const newErrors: { sensorServiceIp?: string; cameraServiceIp?: string } = {};
         console.log(sensorServiceIp)
-        console.log(cameraServiceIp)
         console.log(newErrors)
 
         setErrors(newErrors);
@@ -47,7 +44,7 @@ export const FpfForm: React.FC<{inputOrganization?:Organization, toEditFpf?:Fpf}
     const handleSave = () => {
         if (validateIps() && inputOrganization) {
             const organizationId = inputOrganization.id
-            createFpf({name, isPublic, sensorServiceIp, cameraServiceIp, address, organizationId }).then(fpf =>
+            createFpf({name, isPublic, sensorServiceIp, address, organizationId }).then(fpf =>
             {
                 dispatch(createdFpf());
                 if (fpf)
@@ -96,22 +93,12 @@ export const FpfForm: React.FC<{inputOrganization?:Organization, toEditFpf?:Fpf}
                         {/* SensorServiceIP Input */}
                         <Grid.Col span={6}>
                             <TextInput
-                                label="SensorServiceIP"
-                                placeholder="Enter SensorServiceIP"
+                                label="FPF Backend IP/URL"
+                                placeholder="Enter IP or URL"
                                 required
                                 value={sensorServiceIp}
                                 onChange={(e) => setSensorServiceIp(e.currentTarget.value)}
                                 error={errors.sensorServiceIp}/>
-                        </Grid.Col>
-
-                        {/* CameraServiceIP Input */}
-                        <Grid.Col span={6}>
-                            <TextInput
-                                label="CameraServiceIP"
-                                placeholder="Enter CameraServiceIP"
-                                value={cameraServiceIp}
-                                onChange={(e) => setCameraServiceIp(e.currentTarget.value)}
-                                error={errors.cameraServiceIp}/>
                         </Grid.Col>
 
                         {/* Is Public Toggle */}

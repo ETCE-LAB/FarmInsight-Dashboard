@@ -17,7 +17,7 @@ import {RootState} from "../../../utils/store";
 export const EditFPF: React.FC = () => {
     const { organizationId, fpfId } = useParams();
     const [organization, setOrganization] = useState<Organization>()
-    const [fpf, setFpf] = useState<Fpf>({id:"0", name:"", isPublic:true, Sensors:[], Cameras:[], sensorServiceIp:"", address:"", cameraServiceIp:""});
+    const [fpf, setFpf] = useState<Fpf>({id:"0", name:"", isPublic:true, Sensors:[], Cameras:[], sensorServiceIp:"", address:""});
     const [sensors, setSensor] = useState<Sensor[]>()
 
     useEffect(() => {
