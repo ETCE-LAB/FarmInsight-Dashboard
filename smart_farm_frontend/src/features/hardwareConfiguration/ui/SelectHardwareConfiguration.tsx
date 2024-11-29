@@ -51,22 +51,21 @@ const SelectHardwareConfiguration:React.FC<SelectHardwareConfigurationProps> = (
                 }
             });
         }
-    }, [sensorId, hardwareConfiguration]);
+    }, [sensorId, hardwareConfiguration, postHardwareConfiguration]);
 
-    useEffect(() => {
-        if (selectedSensorClassId) {
-            const config = hardwareConfiguration[hardwareConfiguration.findIndex((x) => x.sensorClassId === selectedSensorClassId)]
-            let info: Record<string, any> = {};
-            for (const field of config.fields) {
-                info[field.name] = undefined;
-            }
-            setAdditionalInformation(info);
-            if (config.unit !== 'manual')
-                setUnit(config.unit);
-            setModel(config.model);
-            postHardwareConfiguration({sensorClassId: selectedSensorClassId, additionalInformation: info});
+    const handleSensorClassSelected = (sensorClassId: string) => {
+        const config = hardwareConfiguration[hardwareConfiguration.findIndex((x) => x.sensorClassId === sensorClassId)]
+        let info: Record<string, any> = {};
+        for (const field of config.fields) {
+            info[field.name] = undefined;
         }
-    }, [hardwareConfiguration, selectedSensorClassId, postHardwareConfiguration, setUnit, setModel]);
+        setAdditionalInformation(info);
+        if (config.unit !== 'manual')
+            setUnit(config.unit);
+        setModel(config.model);
+        postHardwareConfiguration({sensorClassId: sensorClassId, additionalInformation: info});
+        setSelectedSensorClassId(sensorClassId);
+    }
 
     const handleFieldInputChanged = (name: string, value: string) => {
         if (selectedSensorClassId) {
@@ -94,7 +93,7 @@ const SelectHardwareConfiguration:React.FC<SelectHardwareConfigurationProps> = (
                 <Table.Tbody>
                 {additionalInformation && hardwareConfiguration.map((configuration) => (
                     <>
-                        <Table.Tr key={configuration.sensorClassId} onClick={() => setSelectedSensorClassId(configuration.sensorClassId)} style={{ cursor: "pointer" }}>
+                        <Table.Tr key={configuration.sensorClassId} onClick={() => handleSensorClassSelected(configuration.sensorClassId)} style={{ cursor: "pointer" }}>
                             <Table.Td>{configuration.model}</Table.Td>
                             <Table.Td>{configuration.connection}</Table.Td>
                             <Table.Td>{configuration.parameter}</Table.Td>
