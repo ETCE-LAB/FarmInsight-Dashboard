@@ -7,7 +7,14 @@ function capitalizeFirstLetter(str: string): string {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-const SelectHardwareConfiguration:React.FC<{ fpfId: string, postHardwareConfiguration(data: { sensorClassId: string, additionalInformation: Record<string, any>}): any }> = ({fpfId, postHardwareConfiguration}) => {
+interface SelectHardwareConfigurationProps {
+    fpfId: string,
+    postHardwareConfiguration(data: { sensorClassId: string, additionalInformation: Record<string, any>}): any,
+    setUnit(data: string): any,
+    setModel(data: string): any
+}
+
+const SelectHardwareConfiguration:React.FC<SelectHardwareConfigurationProps> = ({fpfId, postHardwareConfiguration, setUnit, setModel}) => {
     const [hardwareConfiguration, setHardwareConfiguration] = useState<HardwareConfiguration[]>([]);
     const [selectedSensorClassId, setSelectedSensorClassId] = useState<string | null>(null);
     const [additionalInformation, setAdditionalInformation] = useState<Record<string, any>>([]);
@@ -27,9 +34,12 @@ const SelectHardwareConfiguration:React.FC<{ fpfId: string, postHardwareConfigur
                 info[field.name] = undefined;
             }
             setAdditionalInformation(info);
+            if (config.unit !== 'manual')
+                setUnit(config.unit);
+            setModel(config.model);
             postHardwareConfiguration({sensorClassId: selectedSensorClassId, additionalInformation: info});
         }
-    }, [hardwareConfiguration, selectedSensorClassId, postHardwareConfiguration]);
+    }, [hardwareConfiguration, selectedSensorClassId, postHardwareConfiguration, setUnit, setModel]);
 
     const handleFieldInputChanged = (name: string, value: string)=> {
         if (selectedSensorClassId) {
@@ -45,20 +55,21 @@ const SelectHardwareConfiguration:React.FC<{ fpfId: string, postHardwareConfigur
             <Table striped highlightOnHover withColumnBorders>
                 <Table.Thead>
                 <Table.Tr>
-                    <Table.Th>Name</Table.Th>
+                    <Table.Th>Model</Table.Th>
                     <Table.Th>Connection</Table.Th>
                     <Table.Th>Parameter</Table.Th>
+                    <Table.Th>Unit</Table.Th>
                     <Table.Th>Tags</Table.Th>
                 </Table.Tr>
                 </Table.Thead>
                 <Table.Tbody>
                 {hardwareConfiguration.map((configuration) => (
                     <>
-                        {/* Hauptzeile */}
                         <Table.Tr key={configuration.sensorClassId} onClick={() => setSelectedSensorClassId(configuration.sensorClassId)} style={{ cursor: "pointer" }}>
-                            <Table.Td>{configuration.name}</Table.Td>
+                            <Table.Td>{configuration.model}</Table.Td>
                             <Table.Td>{configuration.connection}</Table.Td>
                             <Table.Td>{configuration.parameter}</Table.Td>
+                            <Table.Td>{configuration.unit}</Table.Td>
                             <Table.Td>
                                 {Object.entries(configuration.tags).map((tag) => (
                                     <HoverCard width={280} shadow="md">
@@ -74,19 +85,28 @@ const SelectHardwareConfiguration:React.FC<{ fpfId: string, postHardwareConfigur
                                 ))}
                             </Table.Td>
                         </Table.Tr>
-
-                        {/* Ausklappbarer Bereich */}
                         {configuration.sensorClassId === selectedSensorClassId &&
-                            <Table.Tr key={`details`}>
-                                <Table.Td colSpan={4}>
-                                    {configuration.fields.map((field) => (
-                                        <TextInput label={`${capitalizeFirstLetter(field.name)}`}
-                                            type={field.type}
-                                            onChange={(e) => handleFieldInputChanged(field.name, e.target.value)}
-                                        />
-                                    ))}
-                                </Table.Td>
-                            </Table.Tr>
+                            <>
+                                <Table.Tr key='details'>
+                                    <Table.Td colSpan={5}>
+                                        {configuration.fields.map((field) => (
+                                            <TextInput label={`${capitalizeFirstLetter(field.name)}`}
+                                                type={field.type}
+                                                onChange={(e) => handleFieldInputChanged(field.name, e.target.value)}
+                                            />
+                                        ))}
+                                    </Table.Td>
+                                </Table.Tr>
+                                {configuration.unit === 'manual' &&
+                                    <Table.Tr key='unit-input'>
+                                        <Table.Td colSpan={5}>
+                                            <TextInput label="Unit" type='text'
+                                                onChange={(e) => setUnit(e.target.value)}
+                                            />
+                                        </Table.Td>
+                                    </Table.Tr>
+                                }
+                            </>
                         }
                     </>
                 ))}
