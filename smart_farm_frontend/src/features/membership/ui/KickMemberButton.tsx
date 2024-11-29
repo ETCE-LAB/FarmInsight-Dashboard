@@ -22,7 +22,7 @@ export const KickMemberButton:React.FC<{id:string}> = ({id}) => {
 
     return (
         <Button onClick={() => handleKick(id)} variant="outline" size="xs" color="red">
-            Kick
+            Remove
         </Button>
     )
 
