@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect, useMemo} from "react";
 import {Table, ScrollArea, TextInput, Text, HoverCard} from "@mantine/core";
 import { HardwareConfiguration} from "../models/HardwareConfiguration";
 import {getAvailableHardwareConfiguration} from "../useCase/getAvailableHardwareConfiguration";
+import {getSensor} from "../../sensor/useCase/getSensor";
 
 function capitalizeFirstLetter(str: string): string {
     return str.charAt(0).toUpperCase() + str.slice(1);
@@ -10,21 +11,47 @@ function capitalizeFirstLetter(str: string): string {
 interface SelectHardwareConfigurationProps {
     fpfId: string,
     postHardwareConfiguration(data: { sensorClassId: string, additionalInformation: Record<string, any>}): any,
+    sensorId?:string,
     setUnit(data: string): any,
     setModel(data: string): any
 }
 
-const SelectHardwareConfiguration:React.FC<SelectHardwareConfigurationProps> = ({fpfId, postHardwareConfiguration, setUnit, setModel}) => {
+const SelectHardwareConfiguration:React.FC<SelectHardwareConfigurationProps> = ({fpfId, postHardwareConfiguration, sensorId, setUnit, setModel}) => {
     const [hardwareConfiguration, setHardwareConfiguration] = useState<HardwareConfiguration[]>([]);
-    const [selectedSensorClassId, setSelectedSensorClassId] = useState<string | null>(null);
-    const [additionalInformation, setAdditionalInformation] = useState<Record<string, any>>([]);
+    const [selectedSensorClassId, setSelectedSensorClassId] = useState<string|undefined>(undefined);
+    const [additionalInformation, setAdditionalInformation] = useState<Record<string, any>>({});
 
     useEffect(() => {
-        getAvailableHardwareConfiguration(fpfId).then(resp => {
-                setHardwareConfiguration(resp)
-            }
-        )
+        getAvailableHardwareConfiguration(fpfId).then((resp) => {
+            setHardwareConfiguration(resp);
+        });
     }, [fpfId]);
+
+    useEffect(() => {
+        if (sensorId && hardwareConfiguration) {
+            getSensor(sensorId).then((sensor) => {
+                if (sensor) {
+                    const matchingConfig = hardwareConfiguration.find(
+                        (config) => config.sensorClassId === sensor.hardwareConfiguration.sensorClassId
+                    );
+
+                    if (matchingConfig) {
+                        postHardwareConfiguration({
+                            sensorClassId: sensor.hardwareConfiguration.sensorClassId,
+                            additionalInformation: sensor.hardwareConfiguration.additionalInformation,
+                        });
+
+                        setSelectedSensorClassId(sensor.hardwareConfiguration.sensorClassId);
+                        setAdditionalInformation(sensor.hardwareConfiguration.additionalInformation);
+                    } else {
+                        console.warn(
+                            `No matching hardware configuration found for sensorClassId: ${sensor.hardwareConfiguration.sensorClassId}`
+                        );
+                    }
+                }
+            });
+        }
+    }, [sensorId, hardwareConfiguration]);
 
     useEffect(() => {
         if (selectedSensorClassId) {
@@ -41,14 +68,16 @@ const SelectHardwareConfiguration:React.FC<SelectHardwareConfigurationProps> = (
         }
     }, [hardwareConfiguration, selectedSensorClassId, postHardwareConfiguration, setUnit, setModel]);
 
-    const handleFieldInputChanged = (name: string, value: string)=> {
+    const handleFieldInputChanged = (name: string, value: string) => {
         if (selectedSensorClassId) {
-            let info = additionalInformation;
-            info[name] = value;
-            setAdditionalInformation(info);
-            postHardwareConfiguration({sensorClassId: selectedSensorClassId, additionalInformation: info});
+            const updatedInfo = {...additionalInformation, [name]: value};
+            setAdditionalInformation(updatedInfo);
+            postHardwareConfiguration({
+                sensorClassId: selectedSensorClassId,
+                additionalInformation: updatedInfo,
+            });
         }
-    }
+    };
 
     return (
         <ScrollArea>
@@ -63,7 +92,7 @@ const SelectHardwareConfiguration:React.FC<SelectHardwareConfigurationProps> = (
                 </Table.Tr>
                 </Table.Thead>
                 <Table.Tbody>
-                {hardwareConfiguration.map((configuration) => (
+                {additionalInformation && hardwareConfiguration.map((configuration) => (
                     <>
                         <Table.Tr key={configuration.sensorClassId} onClick={() => setSelectedSensorClassId(configuration.sensorClassId)} style={{ cursor: "pointer" }}>
                             <Table.Td>{configuration.model}</Table.Td>
@@ -92,6 +121,7 @@ const SelectHardwareConfiguration:React.FC<SelectHardwareConfigurationProps> = (
                                         {configuration.fields.map((field) => (
                                             <TextInput label={`${capitalizeFirstLetter(field.name)}`}
                                                 type={field.type}
+                                                       value={additionalInformation[field.name]}
                                                 onChange={(e) => handleFieldInputChanged(field.name, e.target.value)}
                                             />
                                         ))}
