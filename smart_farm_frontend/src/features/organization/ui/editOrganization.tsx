@@ -163,7 +163,7 @@ export const EditOrganization = () => {
                     <Modal
                         opened={fpfModalOpen}
                         onClose={() => setFpFModalOpen(false)}
-                        title="Create FpF"
+                        title="Create FPF"
                         centered
                     >
                         <FpfForm inputOrganization={organization}></FpfForm>

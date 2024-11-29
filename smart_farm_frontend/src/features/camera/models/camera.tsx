@@ -9,9 +9,10 @@ export interface Camera{
     resolution:string,
     isActive:boolean,
     intervalSeconds:number,
+    snapshotUrl:string,
+    livestreamUrl:string,
     images: [
         measuredAt: Date,
         url:string
     ]
-
 }

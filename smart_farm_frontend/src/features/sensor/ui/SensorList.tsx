@@ -10,16 +10,13 @@ import {getFpf} from "../../fpf/useCase/getFpf";
 export const SensorList:React.FC<{sensorsToDisplay?:Sensor[], fpfId:string}> = ({sensorsToDisplay, fpfId}) => {
     const [sensor, setSensor] = useState<Sensor[]>()
     const [sensorModalOpen, setSensorModalOpen] = useState(false);
-    const [editSensorModalOpen, setEditSensorModalOpen] = useState(false);
-    const [selectedSensor, setSelectedSensor] = useState<EditSensor | null>(null);
+    const [selectedSensor, setSelectedSensor] = useState<EditSensor | undefined>(undefined);
 
     useEffect(() => {
     if (sensorsToDisplay) {
       setSensor(sensorsToDisplay);
     }
   }, [sensorsToDisplay]);
-
-
 
     const onClickEdit = (sensor: Sensor) => {
         const editSensor: EditSensor = {
@@ -34,13 +31,13 @@ export const SensorList:React.FC<{sensorsToDisplay?:Sensor[], fpfId:string}> = (
 
           // Add hardwareConfiguration (either default or derived)
           hardwareConfiguration: {
-              sensorClassId: "default-class-id",
+              sensorClassId: "",
               additionalInformation: {},
           }
         };
 
         setSelectedSensor(editSensor);
-        setEditSensorModalOpen(true)
+        setSensorModalOpen(true)
     }
 
     return (
@@ -49,19 +46,10 @@ export const SensorList:React.FC<{sensorsToDisplay?:Sensor[], fpfId:string}> = (
             <Modal
                 opened={sensorModalOpen}
                 onClose={() => setSensorModalOpen(false)}
-                title="Create Sensor"
+                title={selectedSensor ? "Edit Sensor": "Create Sensor"}
                 centered
             >
-                <SensorForm/>
-            </Modal>
-
-            <Modal
-                opened={editSensorModalOpen}
-                onClose={() => setEditSensorModalOpen(false)}
-                title="Edit Sensor"
-                centered
-            >
-                {selectedSensor && <SensorForm toEditSensor={selectedSensor} />}
+                <SensorForm toEditSensor={selectedSensor} />
             </Modal>
 
             <Group mb="md">

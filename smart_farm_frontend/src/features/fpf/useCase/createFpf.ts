@@ -3,7 +3,7 @@ import {getUser} from "../../../utils/getUser";
 
 import {Fpf} from "../models/Fpf";
 
-export const createFpf = async (data: { name:string, isPublic:boolean, sensorServiceIp:string, cameraServiceIp:string, address:string, organizationId:string }) => {
+export const createFpf = async (data: { name:string, isPublic:boolean, sensorServiceIp:string, address:string, organizationId:string }) => {
     try {
         //const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/organizations`, {
         const apiClient = new APIClient()

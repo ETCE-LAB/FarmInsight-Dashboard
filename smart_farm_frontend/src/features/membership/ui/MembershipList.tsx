@@ -28,8 +28,12 @@ export  const MembershipList: React.FC<{members:Membership[]}> = ( {members} ) =
                     <th style={{ textAlign: "left"}}>Name</th>
                     <th style={{ textAlign: "left"}}>Email</th>
                     <th style={{ textAlign: "center"}}>Role</th>
-                    <th style={{ textAlign: "center"}}>Promote</th>
-                    <th style={{ textAlign: "center"}}>Kick</th>
+                    {isAdmin &&
+                        <>
+                            <th style={{ textAlign: "center"}}>Promote</th>
+                            <th style={{ textAlign: "center"}}>Remove</th>
+                        </>
+                    }
                 </Table.Tr>
             </Table.Thead>
             <Table.Tbody>
@@ -38,17 +42,20 @@ export  const MembershipList: React.FC<{members:Membership[]}> = ( {members} ) =
                         <Table.Td style={{ textAlign: "left"}}>{member.userprofile.name}</Table.Td>
                         <Table.Td style={{ textAlign: "left"}}>{member.userprofile.email}</Table.Td>
                         <Table.Td style={{ textAlign: "center"}} >{member.membershipRole}</Table.Td>
-                        <Table.Td style={{ textAlign: "center"}}>
-                            { isAdmin && member.membershipRole != "admin" && (
-
-                                <PromoteMembershipButton member={member}/>
-                            )}
-                        </Table.Td>
-                        <Table.Td style={{ textAlign: "center"}}>
-                            { isAdmin && member.membershipRole != "admin" && (
-                                <KickMemberButton id={member.id}/>
-                            )}
-                        </Table.Td>
+                        {isAdmin &&
+                            <>
+                                <Table.Td style={{ textAlign: "center"}}>
+                                    { member.membershipRole !== "admin" && (
+                                        <PromoteMembershipButton member={member}/>
+                                    )}
+                                </Table.Td>
+                                <Table.Td style={{ textAlign: "center"}}>
+                                    { member.membershipRole !== "admin" && (
+                                        <KickMemberButton id={member.id}/>
+                                    )}
+                                </Table.Td>
+                            </>
+                        }
                     </Table.Tr>
                 ))}
             </Table.Tbody>
