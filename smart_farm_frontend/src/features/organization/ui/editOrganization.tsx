@@ -2,7 +2,7 @@ import {useLocation, useParams} from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getOrganization } from "../useCase/getOrganization";
 import { Organization } from "../models/Organization";
-import { Button, Card, Modal, Notification, Paper, Title, Text } from "@mantine/core";
+import {Button, Card, Modal, Notification, Paper, Title, Text, Box} from "@mantine/core";
 import { SearchUserProfile } from "../../userProfile/ui/searchUserProfile";
 import { UserProfile } from "../../userProfile/models/UserProfile";
 import { addUserToOrganization } from "../useCase/addUserToOrganization";
@@ -137,9 +137,9 @@ export const EditOrganization = () => {
                         <Card withBorder style={{ marginTop: '20px' }}>
                             {usersToAdd.length > 0 ? (
                                 usersToAdd.map((user, index) => (
-                                    <div key={index} style={{ padding: '5px 0' }}>
+                                    <Box key={index} style={{ padding: '5px 0' }}>
                                         <Text>{user.name || user.email}</Text>
-                                    </div>
+                                    </Box>
                                 ))
                             ) : (
                                 <Text>

@@ -7,9 +7,10 @@ export interface FieldDescription {
 
 export interface HardwareConfiguration {
     sensorClassId:string,
-    name:string,
+    model:string,
     connection:string,
     parameter:string,
+    unit: string,
     tags: object,
     fields: FieldDescription[]
 }
