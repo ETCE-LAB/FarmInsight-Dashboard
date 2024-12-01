@@ -19,7 +19,7 @@ const TimeseriesGraph: React.FC<{sensor:Sensor}> = ({sensor}) => {
 
 
     useEffect(() => {
-        requestMeasuremnt("8250f7569a3047ea8decf4cc101003da", "2024-10-10", "2024-11-01").then(resp => {
+        requestMeasuremnt(sensor.id, "2024-10-10", "2024-11-01").then(resp => {
             if(resp) {
                 // Round the values before setting them
                 const roundedMeasurements = resp.map((measurement) => ({
