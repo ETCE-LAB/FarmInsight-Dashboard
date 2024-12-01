@@ -58,7 +58,6 @@ export const SensorForm:React.FC<{toEditSensor?:EditSensor}> = ({toEditSensor}) 
             const interval = +intervalSeconds;
             createSensor({id:'', name, unit, location, modelNr, intervalSeconds:interval, isActive, fpfId, hardwareConfiguration,}).then((sensor) => {
                 dispatch(receivedSensor())
-                console.log("Help")
                 navigate(AppRoutes.editFpf.replace(":organizationId", organizationId).replace(":fpfId", fpfId));
             })
 

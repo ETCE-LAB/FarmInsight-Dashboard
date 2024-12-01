@@ -10,8 +10,8 @@ import {Sensor} from "../../sensor/models/Sensor";
 import {SensorList} from "../../sensor/ui/SensorList";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../utils/store";
-
-
+import {CameraList} from "../../camera/ui/CameraList";
+import {Camera} from "../../camera/models/camera";
 
 
 export const EditFPF: React.FC = () => {
@@ -19,6 +19,11 @@ export const EditFPF: React.FC = () => {
     const [organization, setOrganization] = useState<Organization>()
     const [fpf, setFpf] = useState<Fpf>({id:"0", name:"", isPublic:true, Sensors:[], Cameras:[], sensorServiceIp:"", address:""});
     const [sensors, setSensor] = useState<Sensor[]>()
+    const [cameras, setCamera] = useState<Camera[]>()
+
+    const SensorEventListener = useSelector((state: RootState) => state.sensor.receivedSensorEvent);
+    const CameraEventListener = useSelector((state: RootState) => state.camera.createdCameraEvent);
+
 
     useEffect(() => {
         if(fpfId) {
@@ -42,7 +47,7 @@ export const EditFPF: React.FC = () => {
         }
     }, [organizationId]);
 
-    const SensorEventListener = useSelector((state: RootState) => state.sensor.receivedSensorEvent);
+
 
     useEffect(() => {
         if(fpfId){
@@ -52,6 +57,14 @@ export const EditFPF: React.FC = () => {
             })
         }
     }, [SensorEventListener]);
+
+    useEffect(() => {
+        if(fpfId){
+            getFpf(fpfId).then((resp) => {
+                setCamera(resp.Cameras)
+            })
+        }
+    }, [CameraEventListener]);
 
 
     const togglePublic = () => {
@@ -65,6 +78,9 @@ export const EditFPF: React.FC = () => {
             </Card>
             <Card shadow="sm" padding="lg" radius="md" withBorder >
                 <SensorList sensorsToDisplay={sensors} fpfId={fpf.id}/>
+            </Card>
+            <Card shadow="sm" padding="lg" radius="md" withBorder >
+                <CameraList camerasToDisplay={cameras}/>
             </Card>
         </Stack>
     );
