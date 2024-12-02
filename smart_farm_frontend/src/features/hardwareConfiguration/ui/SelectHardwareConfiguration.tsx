@@ -91,7 +91,7 @@ const SelectHardwareConfiguration:React.FC<SelectHardwareConfigurationProps> = (
                 </Table.Tr>
                 </Table.Thead>
                 <Table.Tbody>
-                {additionalInformation && hardwareConfiguration.map((configuration) => (
+                {additionalInformation && hardwareConfiguration && hardwareConfiguration.map((configuration) => (
                     <>
                         <Table.Tr key={configuration.sensorClassId} onClick={() => handleSensorClassSelected(configuration.sensorClassId)} style={{ cursor: "pointer" }}>
                             <Table.Td>{configuration.model}</Table.Td>

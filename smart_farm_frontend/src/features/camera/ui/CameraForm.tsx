@@ -4,7 +4,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {AppRoutes} from "../../../utils/appRoutes";
 import {Box, Button, Grid, NumberInput, Switch, TextInput} from "@mantine/core";
 import {useAppDispatch} from "../../../utils/Hooks";
-import {Camera, EditCamera} from "../models/camera";
+import {EditCamera} from "../models/camera";
 import {createCamera} from "../useCase/createCamera";
 import {updateCamera} from "../useCase/updateCamera";
 import {createdCamera} from "../state/CameraSlice";
@@ -18,7 +18,7 @@ export const CameraForm:React.FC<{toEditCamera?:EditCamera}> = ({toEditCamera}) 
     const [name, setName] = useState<string>("")
     const [modelNr, setModelNr] = useState<string>("")
     const [isActive, setIsActive] = useState<boolean>(false)
-    const [intervalSeconds, setIntervalSeconds] = useState<number>(0)
+    const [intervalSeconds, setIntervalSeconds] = useState<number>(3600)
     const [location, setLocation] = useState<string>("")
     const [resolution, setResolution] = useState<string>("")
     const [snapshotUrl, setSnapshotUrl] = useState<string>("")
@@ -58,7 +58,6 @@ export const CameraForm:React.FC<{toEditCamera?:EditCamera}> = ({toEditCamera}) 
 
     const handleSave = () => {
         if (fpfId && organizationId) {
-            const interval = +intervalSeconds;
             createCamera({fpfId, id:"", name, location, modelNr, resolution, isActive,  intervalSeconds, livestreamUrl, snapshotUrl}).then((camera) => {
                 dispatch(createdCamera())
                 navigate(AppRoutes.editFpf.replace(":organizationId", organizationId).replace(":fpfId", fpfId));
@@ -145,7 +144,7 @@ export const CameraForm:React.FC<{toEditCamera?:EditCamera}> = ({toEditCamera}) 
                         <Grid.Col span={12}>
                             <Box mt="md" style={{ display: 'flex', justifyContent: 'flex-end', margin: '10px'}}>
                                 <Button type="submit" variant="filled" color="#105385" style={{ margin: '10px' }}>
-                                    {toEditCamera?.id ? "Save Changes" : "Add Sensor"}
+                                    {toEditCamera?.id ? "Save Changes" : "Add Camera"}
                                 </Button>
                             </Box>
                         </Grid.Col>

@@ -9,7 +9,6 @@ import { Button, Card, Flex, Text, Title } from "@mantine/core";
 // @ts-ignore
 import { IconZoomScan } from "@tabler/icons-react";
 import {Sensor} from "../../sensor/models/Sensor";
-import {receiveSensor} from "../../sensor/useCase/receiveSensor";
 
 const TimeseriesGraph: React.FC<{sensor:Sensor}> = ({sensor}) => {
 
