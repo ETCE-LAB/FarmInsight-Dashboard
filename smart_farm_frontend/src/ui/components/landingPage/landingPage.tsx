@@ -7,8 +7,9 @@ import {
     rem,
     TextInput,
     Modal,
+    SimpleGrid, Card, Title, Image, Box, Pagination, Text
 } from '@mantine/core';
-import { IconChevronDown } from "@tabler/icons-react";
+import {IconChevronDown, IconZoomScan} from "@tabler/icons-react";
 import React, { PropsWithChildren, useEffect, useState } from "react";
 import { getMyOrganizations } from "../../../features/organization/useCase/getMyOrganizations";
 import { Organization } from "../../../features/organization/models/Organization";
@@ -18,6 +19,8 @@ import { RootState } from "../../../utils/store";
 import { OrganizationForm } from "../../../features/organization/ui/organizationForm";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../../utils/appRoutes";
+import {Fpf} from "../../../features/fpf/models/Fpf";
+import placeholderImage from "../../../placeholder.png";
 
 const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     const auth = useAuth();
@@ -25,6 +28,7 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     const [modalOpen, setModalOpen] = useState(false);
     const organizationEventListener = useSelector((state: RootState) => state.organization.createdOrganizationEvent);
     const navigate = useNavigate();
+    const [fpf, setFpf] = useState<Fpf>();
 
     useEffect(() => {
         if (auth.isAuthenticated) {
@@ -104,6 +108,24 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
                         ) : null}
                     </Group>
                 </Flex>
+            </Container>
+            <Container>
+                <SimpleGrid cols={4} spacing="sm" verticalSpacing="sm">
+                    <Card p="lg" shadow="sm" radius="md" style={{ margin: '30px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)' }}>
+                        <Flex justify="space-between" align="center" mb="md">
+                            <Title order={3} style={{ color: '#199ff4' }}>{fpf?.name}</Title>
+                            <Text c="blue">
+                                @ETCE
+                            </Text>
+                        </Flex>
+
+                        <Box style={{ height: 'auto', marginBottom: '20px' }}>
+                            {/* Camera feed placeholder */}
+                            <Image src={placeholderImage} alt="Placeholder" style={{ width: '100%', height: 'auto' }} />
+                        </Box>
+                    </Card>
+                </SimpleGrid>
+                <Pagination total={10} siblings={1} defaultValue={1} />
             </Container>
             <Modal
                 opened={modalOpen}
