@@ -19,7 +19,6 @@ export const AppShell_Header: React.FC = () => {
                     withBorder
                     style={{
                         cursor: 'pointer',
-                        backgroundColor: '#105385',
                     }}
                     onClick={() => navigate(AppRoutes.base)}
                 >
@@ -33,7 +32,7 @@ export const AppShell_Header: React.FC = () => {
                             fontFamily: 'Open Sans, sans-serif',
                             fontWeight: 'bold',
                         }}>
-                            FARM INSIGHT
+                            FARMINSIGHT
                         </Text>
                     </Card.Section>
                 </Card>

@@ -2,7 +2,7 @@ import {useLocation, useParams} from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getOrganization } from "../useCase/getOrganization";
 import { Organization } from "../models/Organization";
-import { Button, Card, Modal, Notification, Paper, Title, Text } from "@mantine/core";
+import {Button, Card, Modal, Notification, Paper, Title, Text, Box} from "@mantine/core";
 import { SearchUserProfile } from "../../userProfile/ui/searchUserProfile";
 import { UserProfile } from "../../userProfile/models/UserProfile";
 import { addUserToOrganization } from "../useCase/addUserToOrganization";
@@ -15,7 +15,7 @@ import {useSelector} from "react-redux";
 import {RootState} from "../../../utils/store";
 
 export const EditOrganization = () => {
-    const { id } = useLocation().state;
+    const { organizationId } = useParams();
     const [organization, setOrganization] = useState<Organization | null>(null);
     const [usersToAdd, setUsersToAdd] = useState<UserProfile[]>([]);
     const [notification, setNotification] = useState<{ type: 'success' | 'error', message: string } | null>(null);
@@ -26,14 +26,13 @@ export const EditOrganization = () => {
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-        if (id) {
-            getOrganization(id)
+        if (organizationId)
+            getOrganization(organizationId)
                 .then((org) => setOrganization(org))
                 .catch((error) => {
                     console.error("Failed to fetch organization:", error);
                 });
-        }
-    }, [id, membershipEventListener]);
+    }, [organizationId, membershipEventListener]);
 
     const userSelected = (user: UserProfile) => {
         if (!usersToAdd.includes(user)) {
@@ -134,9 +133,9 @@ export const EditOrganization = () => {
                         <Card withBorder style={{ marginTop: '20px' }}>
                             {usersToAdd.length > 0 ? (
                                 usersToAdd.map((user, index) => (
-                                    <div key={index} style={{ padding: '5px 0' }}>
+                                    <Box key={index} style={{ padding: '5px 0' }}>
                                         <Text>{user.name || user.email}</Text>
-                                    </div>
+                                    </Box>
                                 ))
                             ) : (
                                 <Text>
@@ -160,7 +159,7 @@ export const EditOrganization = () => {
                     <Modal
                         opened={fpfModalOpen}
                         onClose={() => setFpFModalOpen(false)}
-                        title="Create FpF"
+                        title="Create FPF"
                         centered
                     >
                         <FpfForm inputOrganization={organization}></FpfForm>
