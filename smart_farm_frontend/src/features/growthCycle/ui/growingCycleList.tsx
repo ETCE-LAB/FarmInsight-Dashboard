@@ -1,20 +1,66 @@
 import React, { useState } from "react";
-import { Card, Modal, Table } from "@mantine/core";
-import {IconCircleMinus, IconCirclePlus, IconSeeding} from "@tabler/icons-react";
+import {Card, Modal, Table, Notification, Group, Button, Text, Flex, Paper, Grid} from "@mantine/core";
+import { IconCircleMinus, IconCirclePlus, IconEdit, IconSeeding } from "@tabler/icons-react";
 import { GrowingCycleForm } from "./growingCycleForm";
+import { GrowingCycle } from "../models/growingCycle";
+import { deleteGrowingCycle } from "../useCase/deleteGrowingCycle";
+import { changedGrowingCycle } from "../state/GrowingCycleSlice";
+import { useAppDispatch } from "../../../utils/Hooks";
 
-const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
+// Helper function to truncate text
+const truncateText = (text: string, limit: number): string => {
+    if (text.length > limit) {
+        return `${text.slice(0, limit)}...`;
+    }
+    return text;
+};
+
+const GrowingCycleList: React.FC<{ fpfId: string; growingCycles: GrowingCycle[] }> = ({ fpfId, growingCycles }) => {
     const [showGrowingCycleForm, setShowGrowingCycleForm] = useState(false);
+    const [toEditGrowingCycle, setToEditGrowingCycle] = useState<GrowingCycle | null>(null);
+    const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false); // State for confirmation modal
+    const [cycleToDelete, setCycleToDelete] = useState<GrowingCycle | null>(null); // State to hold cycle to delete
+    const [selectedCycle, setSelectedCycle] = useState<GrowingCycle | null>(null); // State for the details modal
+    const [notification, setNotification] = useState<{ show: boolean; message: string; color: string }>({
+        show: false,
+        message: "",
+        color: "",
+    }); // State for managing the notification
+    const dispatch = useAppDispatch();
 
-    // Mock data for growing cycles
-    const [growingCycles, setGrowingCycles] = useState([
-        { id: 1, plant: "Cannabis", planted: "10-01-2024", harvested: "10-31-2024", notes: "Grows quickly." },
-        { id: 2, plant: "Tobacco", planted: "10-31-2024", harvested: "", notes: "" },
-    ]);
+    const closeModal = () => {
+        setShowGrowingCycleForm(false);
+        setToEditGrowingCycle(null);
+    };
 
-    // Function to handle deletion of a cycle
-    const deleteCycle = (id: number) => {
-        setGrowingCycles((prev) => prev.filter((cycle) => cycle.id !== id));
+    const handleDelete = (cycle: GrowingCycle) => {
+        setCycleToDelete(cycle);
+        setShowDeleteConfirmation(true);
+    };
+
+    const confirmDelete = () => {
+        if (cycleToDelete) {
+            deleteGrowingCycle(cycleToDelete.id)
+                .then(() => {
+                    dispatch(changedGrowingCycle());
+                    setNotification({
+                        show: true,
+                        message: `Growing cycle for ${cycleToDelete.plants} has been deleted successfully.`,
+                        color: "green",
+                    });
+                })
+                .catch(() => {
+                    setNotification({
+                        show: true,
+                        message: "Failed to delete the growing cycle.",
+                        color: "red",
+                    });
+                })
+                .finally(() => {
+                    setShowDeleteConfirmation(false);
+                    setCycleToDelete(null);
+                });
+        }
     };
 
     return (
@@ -22,11 +68,73 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
             {/* Modal for Adding Growing Cycles */}
             <Modal
                 opened={showGrowingCycleForm}
-                onClose={() => setShowGrowingCycleForm(false)}
-                title="Add Growing Cycle"
+                onClose={closeModal}
+                title={toEditGrowingCycle ? "Edit Growing Cycle" : "Add Growing Cycle"}
             >
-                <GrowingCycleForm fpfId={fpfId} />
+                <GrowingCycleForm fpfId={fpfId} toEditGrowingCycle={toEditGrowingCycle} />
             </Modal>
+
+            {/* Modal for Growing Cycle Details */}
+                <Modal
+                    opened={!!selectedCycle}
+                    onClose={() => setSelectedCycle(null)}
+                    title={`Growing Cycle Details for ${selectedCycle?.plants}`}
+                    centered
+                >
+                    {selectedCycle && (
+                        <Paper style={{ width: "100%" }}>
+                            <Grid>
+                                <Grid.Col span={6}>
+                                    <Text size="sm"><strong>Plant:</strong></Text>
+                                    <Text size="sm">{selectedCycle.plants}</Text>
+                                </Grid.Col>
+                                <Grid.Col span={6}>
+                                    <Text size="sm"><strong>Planted:</strong></Text>
+                                    <Text size="sm">{selectedCycle.startDate ? new Date(selectedCycle.startDate).toLocaleDateString() : "N/A"}</Text>
+                                </Grid.Col>
+                                <Grid.Col span={6}>
+                                    <Text size="sm"><strong>Harvested:</strong></Text>
+                                    <Text size="sm">{selectedCycle.endDate ? new Date(selectedCycle.endDate).toLocaleDateString() : "Still growing"}</Text>
+                                </Grid.Col>
+                                <Grid.Col span={6}>
+                                    <Text size="sm"><strong>Notes:</strong></Text>
+                                    <Text size="sm">{selectedCycle.note || "No notes available."}</Text>
+                                </Grid.Col>
+                            </Grid>
+                        </Paper>
+                    )}
+                </Modal>
+
+            {/* Modal for Delete Confirmation */}
+            <Modal
+                opened={showDeleteConfirmation}
+                onClose={() => setShowDeleteConfirmation(false)}
+                title="Are you sure you want to delete this growing cycle?"
+                centered
+            >
+                <Text style={{ fontSize: "14px", textAlign: "center", marginBottom: "1rem" }}>
+                    This action cannot be undone. Do you want to proceed with deleting this growing cycle?
+                </Text>
+                <Group gap="center" justify={"center"}>
+                    <Button color="red" onClick={confirmDelete}>
+                        Yes, Delete
+                    </Button>
+                    <Button variant="outline" onClick={() => setShowDeleteConfirmation(false)}>
+                        Cancel
+                    </Button>
+                </Group>
+            </Modal>
+
+            {/* Notification */}
+            {notification.show && (
+                <Notification
+                    color={notification.color}
+                    onClose={() => setNotification({ ...notification, show: false })}
+                    style={{ position: "fixed", bottom: 20, right: 20, zIndex: 999 }}
+                >
+                    {notification.message}
+                </Notification>
+            )}
 
             {/* Card Component */}
             <Card
@@ -35,7 +143,6 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
                 radius="md"
                 style={{ boxShadow: "0 2px 8px rgba(0, 0, 0, 0.3)", position: "relative" }}
             >
-                {/* Add Button */}
                 <IconCirclePlus
                     size={25}
                     onClick={() => setShowGrowingCycleForm(true)}
@@ -47,52 +154,65 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
                         left: "10px",
                     }}
                 />
-                {/* TODO: Replace mock table with real growing cycles */}
-                {/* Spacing and Table */}
-                <div style={{ marginTop: "2rem" }}>
+                <Flex style={{ marginTop: "2rem" }}>
                     <Table
                         style={{
-                            textAlign: "center",
+                            textAlign: "left",
                             borderCollapse: "collapse",
                             width: "100%",
                         }}
                     >
                         <thead>
                         <tr>
-                            <th style={{ textAlign: "center" }}></th>
-                            <th style={{ textAlign: "center" }}>Plant</th>
-                            <th style={{ textAlign: "center" }}>Planted</th>
-                            <th style={{ textAlign: "center" }}>Harvested</th>
-                            <th style={{ textAlign: "center" }}>Notes</th>
-                            <th style={{ textAlign: "center" }}></th>
+                            <th></th>
+                            <th>Name</th>
+                            <th>Planted</th>
+                            <th>Harvested</th>
+                            <th>Notes</th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
                         {growingCycles.map((cycle) => (
                             <tr key={cycle.id}>
-                                <IconSeeding
-                                    style={{
-                                        marginRight: "0.5rem",
-                                        color: cycle.harvested ? 'grey' : 'green'  // Grey if harvested, green if not
-                                    }}
-                                />
-                                <td style={{textAlign: "center"}}>{cycle.plant}</td>
-                                <td style={{textAlign: "center"}}>{cycle.planted}</td>
-                                <td style={{textAlign: "center"}}>{cycle.harvested || ""}</td>
-                                <td style={{textAlign: "center"}}>{cycle.notes}</td>
-                                <td style={{textAlign: "center"}}>
+                                <td>
+                                    <IconSeeding
+                                        style={{
+                                            marginRight: "0.5rem",
+                                            color: cycle.endDate ? "grey" : "green",
+                                        }}
+                                    />
+                                </td>
+                                <td
+                                    style={{ fontWeight:"normal", cursor: "pointer" }}
+                                    onClick={() => setSelectedCycle(cycle)}
+                                >
+                                    {truncateText(cycle.plants, 12)}
+                                </td>
+                                <td>{cycle.startDate ? new Date(cycle.startDate).toLocaleDateString() : ""}</td>
+                                <td>{cycle.endDate ? new Date(cycle.endDate).toLocaleDateString() : ""}</td>
+                                <td>{cycle.note ? truncateText(cycle.note, 12) : ""}</td>
+                                <td>
                                     <IconCircleMinus
+                                        onClick={() => handleDelete(cycle)}
                                         size={20}
-                                        style={{cursor: "pointer", color: "red"}}
-                                        onClick={() => deleteCycle(cycle.id)}
+                                        style={{ cursor: "pointer", color: "darkred" }}
+                                    />
+                                    <IconEdit
+                                        onClick={(e) => {
+                                            e.stopPropagation(); // Prevent triggering row click
+                                            setShowGrowingCycleForm(true);
+                                            setToEditGrowingCycle(cycle);
+                                        }}
+                                        size={20}
+                                        style={{ cursor: "pointer", color: "#105385", marginLeft: "1rem" }}
                                     />
                                 </td>
                             </tr>
-
                         ))}
                         </tbody>
                     </Table>
-                </div>
+                </Flex>
             </Card>
         </>
     );
