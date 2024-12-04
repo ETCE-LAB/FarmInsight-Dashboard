@@ -82,17 +82,6 @@ export const EditUserProfile = () => {
 
     return (
         <>
-            {/* Notification component from Mantine */}
-            {notification && (
-                <Notification
-                    color={notification.type === 'success' ? 'teal' : 'red'}
-                    title={notification.type === 'success' ? 'Success!' : 'Error'}
-                    onClose={() => setNotification(null)}
-                >
-                    {notification.message}
-                </Notification>
-            )}
-
             <TextInput
                 label="Email"
                 value={editableProfile.email}
