@@ -5,17 +5,27 @@ import { useParams } from "react-router-dom";
 import { Fpf } from "../models/Fpf";
 import { getFpf } from "../useCase/getFpf";
 import { Container, Flex, Box, Image } from '@mantine/core';
+import {getAllImages} from "../../measurements/useCase/getAllImages";
 
 export const FpfOverview = () => {
     const [fpf, setFpf] = useState<Fpf>();
-
+    const [images, setImages] = useState<[{url:string, measuredAt:string}]>()
     const params = useParams();
 
     useEffect(() => {
         if (params?.fpfId) {
             getFpf(params.fpfId).then(resp => { setFpf(resp); });
         }
-    }, [params]);
+    }, [params])
+
+    useEffect( () => {
+        if(fpf?.Cameras[0]) {
+            getAllImages(fpf?.Cameras[0].id).then( resp => {
+                setImages(resp)
+            })
+        }
+    },[fpf])
+
 
     return (
         <Container style={{ display: 'flex', height: 'auto', width: '100vw' }}>
@@ -33,7 +43,9 @@ export const FpfOverview = () => {
                     <Box style={{ width: '30%', display: 'flex', flexDirection: 'column' }}>
                         <Box style={{ height: 'auto', marginBottom: '20px' }}>
                             {/* Camera feed placeholder */}
-                            <Image src={placeholderImage} alt="Placeholder" style={{ width: '100%', height: 'auto' }} />
+                            {images?.length && images.length > 0 && (
+                            <Image src={images[0].url} alt="Placeholder" style={{ width: '100%', height: 'auto' }} />
+                                )}
                         </Box>
                     </Box>
                 </Flex>

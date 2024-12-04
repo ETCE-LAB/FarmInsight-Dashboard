@@ -34,8 +34,6 @@ export const FpfForm: React.FC<{inputOrganization?:Organization, toEditFpf?:Fpf}
 
     const validateIps = () => {
         const newErrors: { sensorServiceIp?: string; cameraServiceIp?: string } = {};
-        console.log(sensorServiceIp)
-        console.log(newErrors)
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
