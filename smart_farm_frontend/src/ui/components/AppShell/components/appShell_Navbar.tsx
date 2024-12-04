@@ -61,7 +61,6 @@ export const AppShell_Navbar: React.FC = () => {
     const tabs = [
         {
             org: selectedOrganization,
-            color: '#000000',
             link: './my-organizations',
             submenu: organizations.map((org) => ({ name: org.name, id: org.id })),
         },
