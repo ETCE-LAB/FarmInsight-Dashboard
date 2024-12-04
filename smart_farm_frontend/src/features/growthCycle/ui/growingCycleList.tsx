@@ -155,44 +155,44 @@ const GrowingCycleList: React.FC<{ fpfId: string; growingCycles: GrowingCycle[] 
                     }}
                 />
                 <Flex style={{ marginTop: "2rem" }}>
-                    <Table
+                    <Table striped highlightOnHover
                         style={{
                             textAlign: "left",
                             borderCollapse: "collapse",
                             width: "100%",
                         }}
                     >
-                        <thead>
-                        <tr>
-                            <th></th>
-                            <th>Name</th>
-                            <th>Planted</th>
-                            <th>Harvested</th>
-                            <th>Notes</th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody>
+                        <Table.Thead>
+                        <Table.Tr>
+                            <Table.Th></Table.Th>
+                            <Table.Th>Name</Table.Th>
+                            <Table.Th>Planted</Table.Th>
+                            <Table.Th>Harvested</Table.Th>
+                            <Table.Th>Notes</Table.Th>
+                            <Table.Th></Table.Th>
+                        </Table.Tr>
+                        </Table.Thead>
+                        <Table.Tbody>
                         {growingCycles.map((cycle) => (
-                            <tr key={cycle.id}>
-                                <td>
+                            <Table.Tr key={cycle.id}>
+                                <Table.Td>
                                     <IconSeeding
                                         style={{
                                             marginRight: "0.5rem",
                                             color: cycle.endDate ? "grey" : "green",
                                         }}
                                     />
-                                </td>
-                                <td
+                                </Table.Td>
+                                <Table.Td
                                     style={{ fontWeight:"normal", cursor: "pointer" }}
                                     onClick={() => setSelectedCycle(cycle)}
                                 >
                                     {truncateText(cycle.plants, 12)}
-                                </td>
-                                <td>{cycle.startDate ? new Date(cycle.startDate).toLocaleDateString() : ""}</td>
-                                <td>{cycle.endDate ? new Date(cycle.endDate).toLocaleDateString() : ""}</td>
-                                <td>{cycle.note ? truncateText(cycle.note, 12) : ""}</td>
-                                <td>
+                                </Table.Td>
+                                <Table.Td>{cycle.startDate ? new Date(cycle.startDate).toLocaleDateString() : ""}</Table.Td>
+                                <Table.Td>{cycle.endDate ? new Date(cycle.endDate).toLocaleDateString() : ""}</Table.Td>
+                                <Table.Td>{cycle.note ? truncateText(cycle.note, 12) : ""}</Table.Td>
+                                <Table.Td>
                                     <IconCircleMinus
                                         onClick={() => handleDelete(cycle)}
                                         size={20}
@@ -207,10 +207,10 @@ const GrowingCycleList: React.FC<{ fpfId: string; growingCycles: GrowingCycle[] 
                                         size={20}
                                         style={{ cursor: "pointer", color: "#105385", marginLeft: "1rem" }}
                                     />
-                                </td>
-                            </tr>
+                                </Table.Td>
+                            </Table.Tr>
                         ))}
-                        </tbody>
+                        </Table.Tbody>
                     </Table>
                 </Flex>
             </Card>
