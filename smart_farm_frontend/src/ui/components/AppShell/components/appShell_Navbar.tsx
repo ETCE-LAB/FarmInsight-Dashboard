@@ -9,9 +9,12 @@ import { getMyOrganizations } from "../../../../features/organization/useCase/ge
 import { useAuth } from "react-oidc-context";
 import {Fpf} from "../../../../features/fpf/models/Fpf";
 import {getOrganization} from "../../../../features/organization/useCase/getOrganization";
+import { useTranslation } from 'react-i18next';
+
 
 export const AppShell_Navbar: React.FC = () => {
     const [value, setValue] = useState('');
+    const { t } = useTranslation();
     const [selectedOrganization, setSelectedOrganization] = useState<{name: string, id: string}>({name: 'My Organizations', id: ''});
     const [organizations, setMyOrganizations] = useState<Organization[]>([]);
     const [selectedFPFId, setSelectedFPFId] = useState<string | null>(null);
@@ -138,7 +141,7 @@ export const AppShell_Navbar: React.FC = () => {
                 style={{ display: 'flex', marginBottom: '5vh', width: '100%' }}
                 value={value}
                 onChange={(event) => setValue(event.currentTarget.value)}
-                placeholder="Search FPFs.."
+                placeholder={t("header.search")}
             />
 
             <List style={{ width: '100%', marginTop: '1vh' }}>

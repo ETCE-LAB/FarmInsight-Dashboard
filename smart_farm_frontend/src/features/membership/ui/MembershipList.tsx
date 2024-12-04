@@ -4,11 +4,13 @@ import {receiveUserProfile} from "../../userProfile/useCase/receiveUserProfile";
 import {Membership} from "../models/membership";
 import {PromoteMembershipButton} from "./PromoteMembershipButton";
 import {KickMemberButton} from "./KickMemberButton";
+import { useTranslation } from 'react-i18next';
 
 
 export  const MembershipList: React.FC<{members:Membership[]}> = ( {members} ) => {
     const [memberList, setMembers] = useState<Membership[] >(members);
     const [isAdmin, setIsAdmin] = useState(false);
+    const { t } = useTranslation();
 
     useEffect(() => {
         receiveUserProfile().then( (user) => {
@@ -25,9 +27,9 @@ export  const MembershipList: React.FC<{members:Membership[]}> = ( {members} ) =
         <Table striped highlightOnHover withColumnBorders>
             <Table.Thead>
                 <Table.Tr>
-                    <th style={{ textAlign: "left"}}>Name</th>
-                    <th style={{ textAlign: "left"}}>Email</th>
-                    <th style={{ textAlign: "center"}}>Role</th>
+                    <th style={{ textAlign: "left"}}>{t("header.name")}</th>
+                    <th style={{ textAlign: "left"}}>{t("header.email")}</th>
+                    <th style={{ textAlign: "center"}}>{t("header.role")}</th>
                     {isAdmin &&
                         <>
                             <th style={{ textAlign: "center"}}></th>
