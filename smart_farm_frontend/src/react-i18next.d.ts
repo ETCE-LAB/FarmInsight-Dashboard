@@ -13,6 +13,10 @@ declare module 'react-i18next' {
                     email: string;
                     name: string;
                     role: string;
+                    organization: string;
+                    addUser: string;
+                    addSelectedUser: string;
+                    addFpf: string;
                 };
             };
         };
@@ -27,6 +31,10 @@ declare module 'react-i18next' {
                     email: string;
                     name: string;
                     role: string;
+                    organization: string;
+                    addUser: string;
+                    addSelectedUser: string;
+                    addFpf: string;
                 };
             };
         };
@@ -41,6 +49,10 @@ declare module 'react-i18next' {
                     email: string;
                     name: string;
                     role: string;
+                    organization: string;
+                    addUser: string;
+                    addSelectedUser: string;
+                    addFpf: string;
                 };
             };
         };
@@ -55,6 +67,10 @@ declare module 'react-i18next' {
                     email: string;
                     name: string;
                     role: string;
+                    organization: string;
+                    addUser: string;
+                    addSelectedUser: string
+                    addFpf: string;
                 };
             };
         };
@@ -69,6 +85,10 @@ declare module 'react-i18next' {
                     email: string;
                     name: string;
                     role: string;
+                    organization: string;
+                    addUser: string;
+                    addSelectedUser: string;
+                    addFpf: string;
                 };
             };
         };

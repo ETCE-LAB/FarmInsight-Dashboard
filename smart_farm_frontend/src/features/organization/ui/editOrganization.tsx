@@ -13,9 +13,12 @@ import {useAppDispatch} from "../../../utils/Hooks";
 import {changedMembership} from "../../membership/state/MembershipSlice";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../utils/store";
+import { useTranslation } from 'react-i18next';
+
 
 export const EditOrganization = () => {
     const { organizationId } = useParams();
+    const { t } = useTranslation();
     const [organization, setOrganization] = useState<Organization | null>(null);
     const [usersToAdd, setUsersToAdd] = useState<UserProfile[]>([]);
     const [notification, setNotification] = useState<{ type: 'success' | 'error', message: string } | null>(null);
@@ -83,7 +86,7 @@ export const EditOrganization = () => {
                         }}
                     >
                         <Title order={2} style={{ color: "#105385", marginBottom: "10px" }}>
-                            Organization: {organization.name}
+                            {t("header.organization")}: {organization.name}
                         </Title>
                         <Text
                             size="sm"
@@ -107,7 +110,7 @@ export const EditOrganization = () => {
                         style={{ margin: '10px' }}
                     >
                         <IconPlus size={18} style={{ marginRight: "8px" }} />
-                        Add Users
+                        {t("header.addUser")}
                     </Button>
                     <Button
                         onClick={() => setFpFModalOpen(true)} // Open modal on button click
@@ -116,7 +119,7 @@ export const EditOrganization = () => {
                         style={{ margin: '10px' }}
                     >
                         <IconPlus size={18} style={{ marginRight: "8px" }} />
-                        Add FPF
+                        {t("header.addFpf")}
                     </Button>
 
                     {/* Add User Modal */}
@@ -149,7 +152,7 @@ export const EditOrganization = () => {
                                     style={{ marginTop: '15px' }}
                                     variant="filled"
                                 >
-                                    Add Selected Users
+                                    {t("header.addSelectedUser")}
                                 </Button>
                             )}
                         </Card>
