@@ -19,6 +19,7 @@ export const AppShell_Header: React.FC = () => {
         { code: 'fr', label: 'French', flag: '🇫🇷' },
         { code: 'it', label: 'Italian', flag: '🇮🇹' },
         { code: 'zh', label: 'Chinese', flag: '🇨🇳' },
+        { code: 'ru', label: 'Russian', flag: '🇷🇺' },
     ];
 
     // Detect browser language and set it as default language

@@ -92,5 +92,23 @@ declare module 'react-i18next' {
                 };
             };
         };
+        ru: {
+            translation: {
+                header: {
+                    title: string;
+                    logout: string;
+                    search: string;
+                    kick: string;
+                    promote: string;
+                    email: string;
+                    name: string;
+                    role: string;
+                    organization: string;
+                    addUser: string;
+                    addSelectedUser: string;
+                    addFpf: string;
+                };
+            };
+        }
     }
 }

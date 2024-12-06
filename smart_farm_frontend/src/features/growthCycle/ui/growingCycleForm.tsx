@@ -1,55 +1,48 @@
-import React, {useState, useMemo, useEffect} from "react";
-import { Button, Flex, Notification, TextInput } from "@mantine/core";
+import React, { useState, useMemo, useEffect } from "react";
+import { Button, Flex, TextInput } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
 import { createGrowingCycle } from "../useCase/createGrowingCycle";
 import { GrowingCycle } from "../models/growingCycle";
-import {getFpf} from "../../fpf/useCase/getFpf";
-import {modifyGrowingCycle} from "../useCase/modifyGrowingCycle";
-import {useAppDispatch} from "../../../utils/Hooks";
-import {changedGrowingCycle} from "../state/GrowingCycleSlice";
+import { modifyGrowingCycle } from "../useCase/modifyGrowingCycle";
+import { useAppDispatch } from "../../../utils/Hooks";
+import { changedGrowingCycle } from "../state/GrowingCycleSlice";
 
-export const GrowingCycleForm: React.FC<{ fpfId: string, toEditGrowingCycle:GrowingCycle | null }> = ({ fpfId, toEditGrowingCycle }) => {
+export const GrowingCycleForm: React.FC<{
+    fpfId: string;
+    toEditGrowingCycle: GrowingCycle | null;
+    onSuccess: (message: string, color: string) => void; // Callback für Erfolgsmeldung
+}> = ({ fpfId, toEditGrowingCycle, onSuccess }) => {
     const [growingCycle, setGrowingCycle] = useState<GrowingCycle>({ fpfId: fpfId } as GrowingCycle);
-    const [notification, setNotification] = useState<{ message: string; color: string } | null>(null);
-    const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch();
+
     const handleInputChange = (field: string, value: any) => {
         setGrowingCycle((prev) => ({ ...prev, [field]: value }));
     };
+
     const handleSubmit = async () => {
-        if(toEditGrowingCycle){
-            try {
+        try {
+            if (toEditGrowingCycle) {
                 await modifyGrowingCycle(growingCycle.id, growingCycle);
-                setNotification({ message: "Growing cycle edited", color: "green" });
-            } catch (error) {
-                setNotification({ message: "Failed to save the growing cycle.", color: "red" });
-            }
-        }
-        else{
-            try {
+                onSuccess("Growing cycle edited successfully.", "green");
+            } else {
                 await createGrowingCycle(growingCycle);
-                setNotification({ message: "Growing cycle saved successfully!", color: "green" });
-            } catch (error) {
-                setNotification({ message: "Failed to save the growing cycle.", color: "red" });
+                onSuccess("Growing cycle created successfully!", "green");
             }
+            dispatch(changedGrowingCycle());
+        } catch (error) {
+            onSuccess("Failed to save the growing cycle.", "red");
         }
-        dispatch(changedGrowingCycle());
     };
 
-    // Check if the form is valid
     const isFormValid = useMemo(() => {
-        return (
-            growingCycle.plants?.trim() &&
-            growingCycle.startDate
-        );
+        return growingCycle.plants?.trim() && growingCycle.startDate;
     }, [growingCycle]);
 
     useEffect(() => {
-        if(toEditGrowingCycle){
-            setGrowingCycle(toEditGrowingCycle)
+        if (toEditGrowingCycle) {
+            setGrowingCycle(toEditGrowingCycle);
         }
     }, [toEditGrowingCycle]);
-
-
 
     return (
         <>
@@ -67,7 +60,7 @@ export const GrowingCycleForm: React.FC<{ fpfId: string, toEditGrowingCycle:Grow
                     placeholder="Start Date"
                     allowDeselect
                     required
-                    value={growingCycle.startDate? new Date(growingCycle.startDate) : null}
+                    value={growingCycle.startDate ? new Date(growingCycle.startDate) : null}
                     onChange={(date) => handleInputChange("startDate", date)}
                     style={{ flex: 1 }}
                 />
@@ -75,7 +68,7 @@ export const GrowingCycleForm: React.FC<{ fpfId: string, toEditGrowingCycle:Grow
                     label="End Date"
                     placeholder="End Date"
                     allowDeselect
-                    value={growingCycle.endDate? new Date(growingCycle.endDate) : null}
+                    value={growingCycle.endDate ? new Date(growingCycle.endDate) : null}
                     onChange={(date) => handleInputChange("endDate", date)}
                     style={{ flex: 1 }}
                 />
@@ -92,21 +85,11 @@ export const GrowingCycleForm: React.FC<{ fpfId: string, toEditGrowingCycle:Grow
                     style={{ width: "30%", marginTop: "1rem" }}
                     type="submit"
                     onClick={handleSubmit}
-                    disabled={!isFormValid} // Disable the button if the form is invalid
+                    disabled={!isFormValid}
                 >
                     Save
                 </Button>
             </Flex>
-
-            {notification && (
-                <Notification
-                    color={notification.color}
-                    onClose={() => setNotification(null)}
-                    style={{ marginTop: "20px" }}
-                >
-                    {notification.message}
-                </Notification>
-            )}
         </>
     );
 };

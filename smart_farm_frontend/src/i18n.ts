@@ -95,12 +95,30 @@ i18n
                     },
                 },
             },
-        },
-            lng: 'en',
-            fallbackLng: 'en',
-            interpolation: {
-                escapeValue: false,
+            ru: {
+                translation: {
+                    header: {
+                        title: 'ФЕРМЕРСКИЙ АНАЛИЗ',
+                        logout: 'Выйти',
+                        search: 'Поиск FPF...',
+                        kick: 'Удалить',
+                        promote: 'Повысить',
+                        email: 'Электронная почта',
+                        name: 'Имя',
+                        role: 'Роль',
+                        organization: 'Организация',
+                        addUser: 'Добавить пользователя',
+                        addSelectedUser: 'Добавить выбранного пользователя',
+                        addFpf: 'Добавить FPF',
+                    },
+                },
             },
+        },
+        lng: navigator.language.split('-')[0],
+        fallbackLng: 'en',
+        interpolation: {
+            escapeValue: false,
+        },
     });
 
 export default i18n;
