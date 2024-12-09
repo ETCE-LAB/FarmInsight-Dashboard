@@ -47,7 +47,10 @@ const TimeseriesGraph: React.FC<{sensor:Sensor}> = ({sensor}) => {
     useEffect(() => {
         if(lastMessage){
             const data = JSON.parse(lastMessage.data)
-            setMeasurements([...measurements, ...data.measurement])
+            const roundedMeasurements = data.measurement.map((measurement: number) =>
+                Math.round(measurement * 100) / 100
+            );
+            setMeasurements([...measurements, ...roundedMeasurements])
         }
     }, [lastMessage]);
 
