@@ -7,6 +7,7 @@ import measurementSlice from "../features/measurements/state/measurementSlice";
 import authSlice from "../features/auth/slice/authSlice";
 import MembershipSlice from "../features/membership/state/MembershipSlice";
 import CameraSlice from "../features/camera/state/CameraSlice";
+import GrowingCycleSlice from "../features/growthCycle/state/GrowingCycleSlice";
 
 export const store = configureStore({
     reducer: {
@@ -16,6 +17,8 @@ export const store = configureStore({
         sensor: SensorSlice,
         fpf : FpfSlice,
         measurement: measurementSlice,
+        membership: MembershipSlice,
+        growingCycle: GrowingCycleSlice,
         membership: MembershipSlice,
         camera: CameraSlice
     }

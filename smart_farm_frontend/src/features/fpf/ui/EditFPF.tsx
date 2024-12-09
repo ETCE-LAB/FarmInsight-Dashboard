@@ -17,7 +17,7 @@ import {Camera} from "../../camera/models/camera";
 export const EditFPF: React.FC = () => {
     const { organizationId, fpfId } = useParams();
     const [organization, setOrganization] = useState<Organization>()
-    const [fpf, setFpf] = useState<Fpf>({id:"0", name:"", isPublic:true, Sensors:[], Cameras:[], sensorServiceIp:"", address:""});
+    const [fpf, setFpf] = useState<Fpf>({id:"0", name:"", isPublic:true, Sensors:[], Cameras:[], sensorServiceIp:"", address:"", GrowingCycles:[]});
     const [sensors, setSensor] = useState<Sensor[]>()
     const [cameras, setCamera] = useState<Camera[]>()
 

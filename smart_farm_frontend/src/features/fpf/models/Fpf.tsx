@@ -1,5 +1,6 @@
 import {Sensor} from "../../sensor/models/Sensor";
 import {Camera} from "../../camera/models/camera";
+import {GrowingCycle} from "../../growthCycle/models/growingCycle";
 
 
 export interface Fpf {
@@ -10,5 +11,5 @@ export interface Fpf {
     address:string,
     Sensors: Sensor[],
     Cameras: Camera[]
-    //TODO: Growing Circle
+    GrowingCycles: GrowingCycle[]
 }

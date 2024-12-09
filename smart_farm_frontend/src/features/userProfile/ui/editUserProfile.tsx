@@ -1,4 +1,4 @@
-import {Button, Card, Group, Notification, Select, TextInput} from "@mantine/core";
+import {Button, Card, Group, Notification, TextInput} from "@mantine/core";
 import React, {useEffect, useState} from "react";
 import {modifyUserProfile} from "../useCase/modifyUserProfile";
 import {UserProfile} from "../models/UserProfile";
@@ -6,10 +6,6 @@ import {receiveUserProfile} from "../useCase/receiveUserProfile";
 import {useAuth} from "react-oidc-context";
 import {useAppDispatch, useAppSelector} from "../../../utils/Hooks";
 import {changedUserProfile, receivedUserProfileEvent} from "../state/UserProfileSlice";
-
-
-
-
 
 export const EditUserProfile = () => {
     const [editableProfile, setEditableProfile] = useState({
@@ -20,10 +16,12 @@ export const EditUserProfile = () => {
     const auth = useAuth();
     const userProfileReceivedEventListener = useAppSelector(receivedUserProfileEvent);
     const [notification, setNotification] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+    const dispatch = useAppDispatch();
+
     const handleInputChange = (field: keyof typeof editableProfile, value: string) => {
         setEditableProfile((prev) => ({ ...prev, [field]: value }));
     };
-    const dispatch = useAppDispatch();
+
     const handleSave = async () => {
         console.log('Saving updated profile:', editableProfile);
         try {
@@ -114,6 +112,25 @@ export const EditUserProfile = () => {
                     Save changes
                 </Button>
             </Group>
-    </>
+
+            {/* Render Notification */}
+            {notification && (
+                <Notification
+                    onClose={() => setNotification(null)}
+                    color={notification.type === 'success' ? 'green' : 'red'}
+                    title={notification.type === 'success' ? 'Success' : 'Error'}
+                    style={{
+                        position: 'fixed',
+                        top: '20px',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        zIndex: 1000,
+                    }}
+                >
+                    {notification.message}
+                </Notification>
+            )}
+
+        </>
     );
-}
+};
