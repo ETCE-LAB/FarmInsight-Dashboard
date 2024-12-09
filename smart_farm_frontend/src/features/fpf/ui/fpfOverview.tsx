@@ -8,11 +8,16 @@ import { Container, Flex, Box, Image } from '@mantine/core';
 import GrowingCycleList from "../../growthCycle/ui/growingCycleList";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../utils/store";
+import {getAllImages} from "../../measurements/useCase/getAllImages";
+import useWebSocket from "react-use-websocket"
+import {getWebSocketToken} from "../../../utils/WebSocket/getWebSocketToken";
 
 export const FpfOverview = () => {
     const [fpf, setFpf] = useState<Fpf>();
     const growingCylceEventListener = useSelector((state: RootState) => state.growingCycle.changeGrowingCycleEvent);
+    const [images, setImages] = useState<[{url:string, measuredAt:string}] |null>(null)
     const params = useParams();
+
 
     useEffect(() => {
         if (params?.fpfId) {
@@ -22,6 +27,16 @@ export const FpfOverview = () => {
             });
         }
     }, [params, growingCylceEventListener]);
+
+    useEffect( () => {
+        if(fpf?.Cameras[0]) {
+            getAllImages(fpf?.Cameras[0].id).then( resp => {
+                setImages(resp)
+            })
+        }
+        else setImages(null)
+    },[fpf])
+
 
     return (
         <Container style={{ display: 'flex', height: 'auto', width: '100vw' }}>
@@ -39,7 +54,9 @@ export const FpfOverview = () => {
                     <Box style={{ width: 'auto', display: 'flex', flexDirection: 'column' }}>
                         <Box style={{ height: 'auto', marginBottom: '20px' }}>
                             {/* Camera feed placeholder */}
-                            <Image src={placeholderImage} alt="Placeholder" style={{ width: '100%', height: 'auto', marginBottom: '1rem' }} />
+                            {images?.length && images.length > 0 && (
+                            <Image src={images[0].url} alt="Last Received Image" style={{ width: '100%', height: 'auto' }} />
+                                )}
                             {fpf &&
                                 <GrowingCycleList fpfId={fpf.id} growingCycles={fpf.GrowingCycles} />
                             }
