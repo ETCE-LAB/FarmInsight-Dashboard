@@ -4,7 +4,7 @@ import placeholderImage from "../../../placeholder.png";
 import { useParams } from "react-router-dom";
 import { Fpf } from "../models/Fpf";
 import { getFpf } from "../useCase/getFpf";
-import { Container, Flex, Box, Image } from '@mantine/core';
+import {Container, Flex, Box, Image, Grid, SimpleGrid} from '@mantine/core';
 import GrowingCycleList from "../../growthCycle/ui/growingCycleList";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../utils/store";
@@ -39,10 +39,15 @@ export const FpfOverview = () => {
 
 
     return (
-        <Container style={{ display: 'flex', height: 'auto', width: '100vw' }}>
-            <Flex style={{ flexGrow: 1, padding: '20px', flexDirection: 'column' }}>
-                <Flex style={{ flexGrow: 1 }}>
-                    <Box style={{ flex: 1, marginRight: '20px', overflowY: "scroll", maxHeight: "85vh", maxWidth: "50vw" }}>
+        <Container fluid style={{ width: '100%', height:'100%', margin: 0}}>
+
+            <SimpleGrid
+                type="container"
+                cols={2}
+                spacing={{ base: 10, '300px': 'xl' }}
+              >
+
+                    <Box style={{ flex: 1, marginRight: '20px', overflowY: "scroll", scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch', height:'85vh', maxWidth: "50vw", width:"100%" }}>
                         {fpf && fpf.Sensors.map((sensor) => (
                             <Box key={sensor.id}>
                                 {sensor && (
@@ -51,8 +56,8 @@ export const FpfOverview = () => {
                             </Box>
                         ))}
                     </Box>
-                    <Box style={{ width: 'auto', display: 'flex', flexDirection: 'column' }}>
-                        <Box style={{ height: 'auto', marginBottom: '20px' }}>
+                    <Box style={{ width: 'auto', display: 'flex', flexDirection: 'column', height:'85vh'}}>
+                        <Box style={{  marginBottom: '20px' }}>
                             {/* Camera feed placeholder */}
                             {images?.length && images.length > 0 && (
                             <Image src={images[0].url} alt="Last Received Image" style={{ width: '100%', height: 'auto' }} />
@@ -62,8 +67,8 @@ export const FpfOverview = () => {
                             }
                         </Box>
                     </Box>
-                </Flex>
-            </Flex>
+
+            </SimpleGrid>
         </Container>
     );
 };
