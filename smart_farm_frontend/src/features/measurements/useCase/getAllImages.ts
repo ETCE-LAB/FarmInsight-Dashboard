@@ -15,7 +15,7 @@ export const getAllImages = (cameraId:string) => {
         {'Authorization': `Bearer ${token}`}
     let url = `${process.env.REACT_APP_BACKEND_URL}/api/cameras/${cameraId}/images?from=2024-10-10`;
 
-
+//cameras/${amera_id}/livestream
 
 
     const result:Promise<[{url:string, measuredAt:string}]> = apiClient.get(url, headers)

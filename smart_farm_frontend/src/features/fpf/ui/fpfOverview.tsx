@@ -55,7 +55,7 @@ export const FpfOverview = () => {
                         <Box style={{ height: 'auto', marginBottom: '20px' }}>
                             {/* Camera feed placeholder */}
                             {images?.length && images.length > 0 && (
-                            <Image src={images[0].url} alt="Placeholder" style={{ width: '100%', height: 'auto' }} />
+                            <Image src={images[0].url} alt="Last Received Image" style={{ width: '100%', height: 'auto' }} />
                                 )}
                             {fpf &&
                                 <GrowingCycleList fpfId={fpf.id} growingCycles={fpf.GrowingCycles} />
