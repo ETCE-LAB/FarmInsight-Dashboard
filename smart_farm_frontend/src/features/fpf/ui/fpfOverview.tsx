@@ -6,11 +6,14 @@ import { Fpf } from "../models/Fpf";
 import { getFpf } from "../useCase/getFpf";
 import { Container, Flex, Box, Image } from '@mantine/core';
 import {getAllImages} from "../../measurements/useCase/getAllImages";
+import useWebSocket from "react-use-websocket"
+import {getWebSocketToken} from "../../../utils/WebSocket/getWebSocketToken";
 
 export const FpfOverview = () => {
     const [fpf, setFpf] = useState<Fpf>();
-    const [images, setImages] = useState<[{url:string, measuredAt:string}]>()
+    const [images, setImages] = useState<[{url:string, measuredAt:string}] |null>(null)
     const params = useParams();
+
 
     useEffect(() => {
         if (params?.fpfId) {
@@ -24,6 +27,7 @@ export const FpfOverview = () => {
                 setImages(resp)
             })
         }
+        else setImages(null)
     },[fpf])
 
 

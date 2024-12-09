@@ -34,6 +34,9 @@ export const CameraForm:React.FC<{toEditCamera?:EditCamera}> = ({toEditCamera}) 
             setIsActive(toEditCamera.isActive || false);
             setIntervalSeconds(toEditCamera.intervalSeconds || 1);
             setLocation(toEditCamera.location || "");
+            setResolution(toEditCamera.resolution ||"")
+            setSnapshotUrl(toEditCamera.snapshotUrl || "")
+            setLivestreamUrl(toEditCamera.livestreamUrl)
         }
     }, [toEditCamera]);
 
@@ -62,7 +65,6 @@ export const CameraForm:React.FC<{toEditCamera?:EditCamera}> = ({toEditCamera}) 
                 dispatch(createdCamera())
                 navigate(AppRoutes.editFpf.replace(":organizationId", organizationId).replace(":fpfId", fpfId));
             })
-
         }
     }
 
