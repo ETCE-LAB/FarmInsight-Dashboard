@@ -13,6 +13,8 @@ import {Fpf} from "../../../features/fpf/models/Fpf";
 import placeholderImage from "../../../placeholder.png";
 import {getFpf} from "../../../features/fpf/useCase/getFpf";
 import {Sensor} from "../../../features/sensor/models/Sensor";
+import {receiveVisibleFpfs} from "../../../features/fpf/useCase/receiveVisibleFpfs";
+import {BasicFPF} from "../../../features/fpf/models/BasicFPF";
 
 const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     const auth = useAuth();
@@ -23,15 +25,12 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     const navigate = useNavigate();
     const [fpf, setFpf] = useState<Fpf>({id:"0", name:"", isPublic:true, Sensors:[], Cameras:[], sensorServiceIp:"", address:""});
     const [sensors, setSensor]= useState<Sensor[]>()
-    const [fpfs, setFpfs] = useState([]);
+    const [fpfs, setFpfs] = useState<BasicFPF[]>([]);
 
     useEffect(() => {
-        if(fpfId) {
-            getFpf(fpfId).then(resp => {
-                setFpf(resp)
-            })
-        }
-    }, [fpfId]);
+        receiveVisibleFpfs().then(r =>
+        setFpfs(r))
+    }, []);
 
     useEffect(() => {
         if(fpf?.Sensors && fpf.Sensors.length >= 1 ){
@@ -147,12 +146,12 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
 
             <Container style={{overflowY: "hidden"}}>
                 <Grid>
-                    {fpfs.map((fpf) => (
+                    {fpfs && fpfs?.map((fpf) => (
                         <Grid.Col span={4}>
                             <Card p="lg" shadow="sm" radius="md" style={{ margin: '10px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)' }}>
                                 <Flex justify="space-between" align="center" mb="sm">
                                     <Title order={3} style={{ color: '#199ff4' }}>{fpf.name}</Title>
-                                    <Text c="blue">{fpf.organization.address}</Text>
+                                    <Text c="blue">{fpf.organization.name}</Text>
                                     <Text size="xs" style={{ fontWeight: 'bold', color: '#105385' }}>PPM</Text>
                                     <IconTemperature style={{ color: '#105385' }}/>
                                     <IconSunHigh style={{ color: '#105385' }}/>
@@ -166,9 +165,12 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
                                 </Flex>
 
                                 <Box style={{ height: 'auto' }}>
-                                    <Image src={fpf.lastImageUrl || placeholderImage} alt="Placeholder" style={{ width: '100%', height: 'auto' }} />
+                                    {fpf.lastImageUrl?.length && fpf.lastImageUrl.length > 0 && (
+                                        <Image src={`${process.env.REACT_APP_BACKEND_URL}${fpf.lastImageUrl}`} alt="Last Received Image" style={{ width: '100%', height: 'auto' }} />
+                                    ) }
+
                                 </Box>
-                            </Card></Grid.Col>)}
+                            </Card></Grid.Col>))}
                         <Grid.Col span={4}>
                             <Card p="lg" shadow="sm" radius="md" style={{ margin: '10px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)' }}>
                                 <Flex justify="space-between" align="center" mb="sm">
