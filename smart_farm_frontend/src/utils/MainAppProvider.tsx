@@ -5,6 +5,7 @@ import { store } from './store';
 import {WebStorageStateStore} from "oidc-client-ts";
 import {AuthProvider} from "react-oidc-context";
 //import {SocketProvider} from "./SocketProvider";
+import '@mantine/carousel/styles.css';
 
 export const oidcConfig = {
     authority: "https://development-isse-identityserver.azurewebsites.net",

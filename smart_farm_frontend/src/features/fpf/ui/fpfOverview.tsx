@@ -8,7 +8,7 @@ import { Container, Flex, Box, Image } from '@mantine/core';
 import GrowingCycleList from "../../growthCycle/ui/growingCycleList";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../utils/store";
-import {getAllImages} from "../../measurements/useCase/getAllImages";
+import {getImages} from "../../camera/useCase/getImages";
 import useWebSocket from "react-use-websocket"
 import {getWebSocketToken} from "../../../utils/WebSocket/getWebSocketToken";
 import {CameraCarousel} from "../../camera/ui/CameraCarousel";
@@ -16,7 +16,7 @@ import {CameraCarousel} from "../../camera/ui/CameraCarousel";
 export const FpfOverview = () => {
     const [fpf, setFpf] = useState<Fpf>();
     const growingCylceEventListener = useSelector((state: RootState) => state.growingCycle.changeGrowingCycleEvent);
-    const [images, setImages] = useState<{ url: string, measuredAt: string }[]>([]);
+
     const params = useParams();
 
 
@@ -29,14 +29,7 @@ export const FpfOverview = () => {
         }
     }, [params, growingCylceEventListener]);
 
-    useEffect( () => {
-        if(fpf?.Cameras[0]) {
-            getAllImages(fpf?.Cameras[0].id).then( resp => {
-                setImages(resp)
-            })
-        }
-        else setImages([])
-    },[fpf])
+
 
 
     return (
@@ -51,20 +44,10 @@ export const FpfOverview = () => {
                     </Box>
                 ))}
             </Box>
-            <Box style={{ flex: 1 }}>
+            <Box style={{ flex: 1, Width: '50vw', height: 'auto' }}>
                 {/* Camera-Feed */}
-                {images?.[0]?.url ? (
-                    <Image
-                        src={images[0].url}
-                        alt="Last Received Image"
-                        style={{ width: '100%', height: '18vw' }}
-                    />
-                ) : (
-                    <Image
-                        src={placeholderImage}
-                        alt="No Camera available"
-                        style={{ width: '100%', height: '18vw' }}
-                    />
+                {fpf?.Cameras && (
+                    <CameraCarousel camerasToDisplay={fpf?.Cameras}/>
                 )}
                 {/* GrowingCycle */}
                 {fpf && (
