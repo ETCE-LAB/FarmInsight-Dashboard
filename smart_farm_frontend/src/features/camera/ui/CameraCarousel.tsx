@@ -23,23 +23,17 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ src }) => (
     </video>
 );
 
-
-
 export const CameraCarousel:React.FC<{camerasToDisplay:Camera[]}> = ({camerasToDisplay}) => {
     const { organizationId, fpfId } = useParams();
     const[objectsToDisplay, setObjectsToDisplay] = useState<displayObject[]>([]);
 
-    useEffect( () => {
-        if(objectsToDisplay) {
-            console.log(objectsToDisplay)
-        }
-    },[objectsToDisplay])
-
-
     useEffect(() => {
         if(camerasToDisplay){
+            //Reset/Clear current List
+            setObjectsToDisplay([])
+            //For each Camera add all Images and Livestreams as objectsToDisplay
             camerasToDisplay.map((camera) => {
-
+                //If the camera has a SnapShot URL
                 if(camera.isActive && camera.snapshotUrl.length > 4){
                     getImages(camera.id).then( resp => {
                         if (resp && resp.length > 0) {
@@ -50,17 +44,16 @@ export const CameraCarousel:React.FC<{camerasToDisplay:Camera[]}> = ({camerasToD
                         }
                     })
                 }
+                //If the Camera has a Livestream URL
                 if(camera.isActive && camera.livestreamUrl.length > 4){
-
                     setObjectsToDisplay((prevObjects) => [
                         ...prevObjects,
-
                         { url: `${process.env.REACT_APP_BACKEND_URL}/api/cameras/${camera.id}/livestream`, isLiveStream: true },
                     ]);
                 }
             })
         }
-    }, []);
+    }, [fpfId, camerasToDisplay]);
 
     const slides = objectsToDisplay.map((objectToDisplay) => (
         <Carousel.Slide>
@@ -78,6 +71,4 @@ export const CameraCarousel:React.FC<{camerasToDisplay:Camera[]}> = ({camerasToD
             {slides}
             </Carousel>
     )
-
 }
-

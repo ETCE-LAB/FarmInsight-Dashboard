@@ -52,8 +52,8 @@ export const FpfOverview = () => {
                     </Box>
                     <Box style={{ flex: 1, Width: '50vw', height: 'auto' }}>
                             {/* Camera-Feed */}
-                            {fpf?.Cameras && (
-                                <CameraCarousel camerasToDisplay={fpf?.Cameras}/>
+                            {fpf && (
+                                <CameraCarousel camerasToDisplay={fpf.Cameras}/>
                             )}
                             {fpf &&
                                 <GrowingCycleList fpfId={fpf.id} growingCycles={fpf.GrowingCycles} />
