@@ -9,8 +9,8 @@ import '@mantine/notifications/styles.css';
 //import {SocketProvider} from "./SocketProvider";
 
 export const oidcConfig = {
-    authority: process.env.REACT_APP_IDENTITY_SERVER_URL || 'https://development-isse-identityserver.azurewebsites.net',
-    client_id: "farminsight.interactive",
+    authority: "https://development-isse-identity-backend.azurewebsites.net" //process.env.REACT_APP_IDENTITY_SERVER_URL || 'https://development-isse-identityserver.azurewebsites.net',
+    client_id: "farmingisht.interactive",
     redirect_uri: window.location.origin + "/auth/callback",
     post_logout_redirect_uri: window.location.origin + "/auth/signout-callback",
     scopes: "profile openId offline_access",
