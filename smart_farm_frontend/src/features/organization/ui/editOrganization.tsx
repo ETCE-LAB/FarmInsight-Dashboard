@@ -2,7 +2,7 @@ import {useLocation, useParams} from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getOrganization } from "../useCase/getOrganization";
 import { Organization } from "../models/Organization";
-import {Button, Card, Modal, Notification, Paper, Title, Text, Box} from "@mantine/core";
+import {Button, Card, Modal, TextInput, Switch, Flex, Title, Text, Box} from "@mantine/core";
 import { SearchUserProfile } from "../../userProfile/ui/searchUserProfile";
 import { UserProfile } from "../../userProfile/models/UserProfile";
 import { addUserToOrganization } from "../useCase/addUserToOrganization";
@@ -75,19 +75,34 @@ export const EditOrganization = () => {
         <>
             {organization ? (
                 <>
-                    <Paper
-                        radius="md"
-                        p="xs"
-                        style={{
-                            border: "1px solid #105385",
-                            textAlign: "center",
-                            marginBottom: "20px",
-                        }}
-                    >
-                        <Title order={2} style={{ color: "#105385", marginBottom: "10px" }}>
-                            Organization: {organization.name}
-                        </Title>
-                    </Paper>
+                    <Title order={2} style={{ marginBottom: "10px" }}>
+                        Organization
+                    </Title>
+                    <Text style={{ fontWeight: 'bold' }}>
+                        Name
+                    </Text>
+                    <Flex gap={20} align="center" mb="2rem">
+                        <TextInput placeholder={organization.name} ></TextInput>
+                        <Switch
+                            label="Is Public"
+                            checked={organization.isPublic}
+                        />
+                    </Flex>
+                    <Flex gap={20} align="center">
+                        <Text style={{ fontWeight: 'bold' }}>
+                            Members
+                        </Text>
+                        <Button
+                            onClick={() => setUserModalOpen(true)} // Open modal on button click
+                            variant="outline"
+                            color="#105385"
+                            style={{ margin: '10px' }}
+
+                        >
+                            <IconPlus size={18} style={{ marginRight: "8px" }} />
+                            Add Users
+                        </Button>
+                    </Flex>
                     <MembershipList members={organization.memberships} />
 
                     <Button
