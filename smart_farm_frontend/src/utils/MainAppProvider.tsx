@@ -9,7 +9,7 @@ import '@mantine/notifications/styles.css';
 //import {SocketProvider} from "./SocketProvider";
 
 export const oidcConfig = {
-    authority: "https://development-isse-identity-backend.azurewebsites.net" //process.env.REACT_APP_IDENTITY_SERVER_URL || 'https://development-isse-identityserver.azurewebsites.net',
+    authority: "https://development-isse-identity-backend.azurewebsites.net", //process.env.REACT_APP_IDENTITY_SERVER_URL || 'https://development-isse-identityserver.azurewebsites.net',
     client_id: "farmingisht.interactive",
     redirect_uri: window.location.origin + "/auth/callback",
     post_logout_redirect_uri: window.location.origin + "/auth/signout-callback",
