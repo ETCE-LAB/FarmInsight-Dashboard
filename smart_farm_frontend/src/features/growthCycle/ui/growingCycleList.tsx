@@ -38,15 +38,6 @@ const GrowingCycleList: React.FC<{ fpfId: string; growingCycles: GrowingCycle[] 
 
     const dispatch = useAppDispatch();
 
-    useEffect(() => {
-        if (notification.show) {
-            const timer = setTimeout(() => {
-                setNotification({ ...notification, show: false });
-            }, 3000); // 3 Sekunden Timer
-
-            return () => clearTimeout(timer); // Cleanup des Timers
-        }
-    }, [notification]);
 
     const closeModal = () => {
         setShowGrowingCycleForm(false);
@@ -104,7 +95,6 @@ const GrowingCycleList: React.FC<{ fpfId: string; growingCycles: GrowingCycle[] 
                     fpfId={fpfId}
                     toEditGrowingCycle={toEditGrowingCycle}
                     onSuccess={(message, color) => {
-                        setNotification({ show: true, message, color });
                         closeModal();
                     }}
                 />

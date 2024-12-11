@@ -5,7 +5,6 @@ import {kickMember} from "../useState/kickMember";
 import {useDispatch} from "react-redux";
 import {changedMembership} from "../state/MembershipSlice";
 import { useTranslation } from 'react-i18next';
-
 import {showNotification} from "@mantine/notifications";
 
 

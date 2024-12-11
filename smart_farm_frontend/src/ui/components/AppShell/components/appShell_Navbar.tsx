@@ -16,7 +16,6 @@ import { useTranslation } from 'react-i18next';
 export const AppShell_Navbar: React.FC = () => {
     const [value, setValue] = useState('');
     const { t } = useTranslation();
-    const [selectedOrganization, setSelectedOrganization] = useState<{name: string, id: string}>({name: 'My Organizations', id: ''});
     const [selectedOrganization, setSelectedOrganization] = useState<{
         name: string,
         id: string
