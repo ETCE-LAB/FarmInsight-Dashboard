@@ -68,7 +68,7 @@ export const CameraCarousel:React.FC<{camerasToDisplay:Camera[]}> = ({camerasToD
                 <Image src={objectToDisplay.url} alt="Last Received Image" style={{ width: '100%', height: '18vw', maxWidth:'50vw' }} />
             )}
             {objectToDisplay.isLiveStream && (
-                <VideoPlayer src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"/>
+                <VideoPlayer src={objectToDisplay.url}/>
             )}
         </Carousel.Slide>
     ))
