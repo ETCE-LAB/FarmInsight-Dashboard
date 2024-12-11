@@ -18,6 +18,7 @@ import { RootState } from "../../../utils/store";
 import { OrganizationForm } from "../../../features/organization/ui/organizationForm";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../../utils/appRoutes";
+import { useTranslation } from 'react-i18next';
 
 const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     const auth = useAuth();
@@ -25,6 +26,7 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     const [modalOpen, setModalOpen] = useState(false);
     const organizationEventListener = useSelector((state: RootState) => state.organization.createdOrganizationEvent);
     const navigate = useNavigate();
+    const { t, i18n } = useTranslation();
 
     useEffect(() => {
         if (auth.isAuthenticated) {
@@ -99,7 +101,7 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
                                 variant="filled"
                                 color="blue"
                             >
-                                Create New Organization
+                                {t('header.createOrganization')}
                             </Button>
                         ) : null}
                     </Group>
@@ -108,7 +110,7 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
             <Modal
                 opened={modalOpen}
                 onClose={() => setModalOpen(false)}
-                title="Add your Organization"
+                title={t("header.addOrganization")}
                 centered={true}
             >
                 <OrganizationForm />

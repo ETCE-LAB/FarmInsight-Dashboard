@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { Button, Flex, TextInput } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
+import { useTranslation } from "react-i18next";
 import { createGrowingCycle } from "../useCase/createGrowingCycle";
 import { GrowingCycle } from "../models/growingCycle";
 import { modifyGrowingCycle } from "../useCase/modifyGrowingCycle";
@@ -10,8 +11,9 @@ import { changedGrowingCycle } from "../state/GrowingCycleSlice";
 export const GrowingCycleForm: React.FC<{
     fpfId: string;
     toEditGrowingCycle: GrowingCycle | null;
-    onSuccess: (message: string, color: string) => void; // Callback für Erfolgsmeldung
+    onSuccess: (message: string, color: string) => void;
 }> = ({ fpfId, toEditGrowingCycle, onSuccess }) => {
+    const { t } = useTranslation();
     const [growingCycle, setGrowingCycle] = useState<GrowingCycle>({ fpfId: fpfId } as GrowingCycle);
     const dispatch = useAppDispatch();
 
@@ -23,14 +25,14 @@ export const GrowingCycleForm: React.FC<{
         try {
             if (toEditGrowingCycle) {
                 await modifyGrowingCycle(growingCycle.id, growingCycle);
-                onSuccess("Growing cycle edited successfully.", "green");
+                onSuccess(t("growingCycleForm.successEdit"), "green");
             } else {
                 await createGrowingCycle(growingCycle);
-                onSuccess("Growing cycle created successfully!", "green");
+                onSuccess(t("growingCycleForm.successCreate"), "green");
             }
             dispatch(changedGrowingCycle());
         } catch (error) {
-            onSuccess("Failed to save the growing cycle.", "red");
+            onSuccess(t("growingCycleForm.error"), "red");
         }
     };
 
@@ -47,8 +49,8 @@ export const GrowingCycleForm: React.FC<{
     return (
         <>
             <TextInput
-                label="Plant Type"
-                placeholder="Plant Type"
+                label={t("growingCycleForm.plantTypeLabel")}
+                placeholder={t("growingCycleForm.plantTypePlaceholder")}
                 required
                 value={growingCycle.plants || ""}
                 onChange={(e) => handleInputChange("plants", e.currentTarget.value)}
@@ -56,8 +58,8 @@ export const GrowingCycleForm: React.FC<{
             />
             <Flex gap="50px" style={{ marginTop: "15px" }}>
                 <DateInput
-                    label="Start Date"
-                    placeholder="Start Date"
+                    label={t("growingCycleForm.startDateLabel")}
+                    placeholder={t("growingCycleForm.startDatePlaceholder")}
                     allowDeselect
                     required
                     value={growingCycle.startDate ? new Date(growingCycle.startDate) : null}
@@ -65,8 +67,8 @@ export const GrowingCycleForm: React.FC<{
                     style={{ flex: 1 }}
                 />
                 <DateInput
-                    label="End Date"
-                    placeholder="End Date"
+                    label={t("growingCycleForm.endDateLabel")}
+                    placeholder={t("growingCycleForm.endDatePlaceholder")}
                     allowDeselect
                     value={growingCycle.endDate ? new Date(growingCycle.endDate) : null}
                     onChange={(date) => handleInputChange("endDate", date)}
@@ -74,8 +76,8 @@ export const GrowingCycleForm: React.FC<{
                 />
             </Flex>
             <TextInput
-                label="Notes"
-                placeholder="Notes about your plants"
+                label={t("growingCycleForm.notesLabel")}
+                placeholder={t("growingCycleForm.notesPlaceholder")}
                 value={growingCycle.note || ""}
                 onChange={(e) => handleInputChange("note", e.currentTarget.value)}
                 style={{ width: "100%", marginTop: "15px" }}
@@ -87,7 +89,7 @@ export const GrowingCycleForm: React.FC<{
                     onClick={handleSubmit}
                     disabled={!isFormValid}
                 >
-                    Save
+                    {t("growingCycleForm.saveButton")}
                 </Button>
             </Flex>
         </>

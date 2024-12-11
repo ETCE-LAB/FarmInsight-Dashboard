@@ -37,6 +37,13 @@ export const EditOrganization = () => {
                 });
     }, [organizationId, membershipEventListener]);
 
+    useEffect(() => {
+        if (notification) {
+            const timer = setTimeout(() => setNotification(null), 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [notification]);
+
     const userSelected = (user: UserProfile) => {
         if (!usersToAdd.includes(user)) {
             setUsersToAdd((prevUsers) => [...prevUsers, user]);
@@ -56,7 +63,7 @@ export const EditOrganization = () => {
             .then(() => {
                 setNotification({
                     type: 'success',
-                    message: `${usersToAdd.length} users have been added to the organization.`,
+                    message: `${usersToAdd.length + t("header.usersAdded")}`,
                 });
                 // Clear the user list
                 setUsersToAdd([]);
@@ -80,8 +87,7 @@ export const EditOrganization = () => {
                         radius="md"
                         p="xs"
                         style={{
-                            border: "1px solid #105385",
-                            textAlign: "center",
+                            textAlign: "left",
                             marginBottom: "20px",
                         }}
                     >
@@ -98,7 +104,7 @@ export const EditOrganization = () => {
                                 display: "inline-block",
                             }}
                         >
-                            {organization.isPublic ? "Public" : "Private"}
+                            {organization.isPublic ? t("header.public") : t("header.private")}
                         </Text>
                     </Paper>
                     <MembershipList members={organization.memberships} />
@@ -126,7 +132,7 @@ export const EditOrganization = () => {
                     <Modal
                         opened={userModalOpen}
                         onClose={() => setUserModalOpen(false)}
-                        title="Add User to Organization"
+                        title={t("header.addUser")}
                         centered
                     >
                         {/* Search and select users */}
@@ -142,7 +148,7 @@ export const EditOrganization = () => {
                                 ))
                             ) : (
                                 <Text>
-                                    No users selected yet
+                                    {t("header.noUserSelected")}
                                 </Text>
                             )}
                             {usersToAdd.length > 0 && (
@@ -162,7 +168,7 @@ export const EditOrganization = () => {
                     <Modal
                         opened={fpfModalOpen}
                         onClose={() => setFpFModalOpen(false)}
-                        title="Create FPF"
+                        title={t("header.addFpf")}
                         centered
                     >
                         <FpfForm inputOrganization={organization}></FpfForm>

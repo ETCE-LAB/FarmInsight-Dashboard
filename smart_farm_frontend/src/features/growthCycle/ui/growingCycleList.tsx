@@ -11,6 +11,7 @@ import {
     Paper,
     Grid,
 } from "@mantine/core";
+import { useTranslation } from 'react-i18next';
 import { IconCircleMinus, IconCirclePlus, IconEdit, IconSeeding } from "@tabler/icons-react";
 import { GrowingCycleForm } from "./growingCycleForm";
 import { GrowingCycle } from "../models/growingCycle";
@@ -28,6 +29,7 @@ const truncateText = (text: string, limit: number): string => {
 
 const GrowingCycleList: React.FC<{ fpfId: string; growingCycles: GrowingCycle[] }> = ({ fpfId, growingCycles }) => {
     const [showGrowingCycleForm, setShowGrowingCycleForm] = useState(false);
+    const { t, i18n } = useTranslation();
     const [toEditGrowingCycle, setToEditGrowingCycle] = useState<GrowingCycle | null>(null);
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false); // State for confirmation modal
     const [cycleToDelete, setCycleToDelete] = useState<GrowingCycle | null>(null); // State to hold cycle to delete
@@ -141,14 +143,14 @@ const GrowingCycleList: React.FC<{ fpfId: string; growingCycles: GrowingCycle[] 
                 centered
             >
                 <Text style={{ fontSize: "14px", textAlign: "center", marginBottom: "1rem" }}>
-                    This action cannot be undone. Do you want to proceed with deleting this growing cycle?
+                    {t("headers.confirmDialog")}
                 </Text>
                 <Group gap="center" justify={"center"}>
                     <Button color="red" onClick={confirmDelete}>
-                        Yes, Delete
+                        {t("header.yesDelete")}
                     </Button>
                     <Button variant="outline" onClick={() => setShowDeleteConfirmation(false)}>
-                        Cancel
+                        {t("header.cancel")}
                     </Button>
                 </Group>
             </Modal>
@@ -195,10 +197,10 @@ const GrowingCycleList: React.FC<{ fpfId: string; growingCycles: GrowingCycle[] 
                         <Table.Thead>
                             <Table.Tr>
                                 <Table.Th></Table.Th>
-                                <Table.Th>Name</Table.Th>
-                                <Table.Th>Planted</Table.Th>
-                                <Table.Th>Harvested</Table.Th>
-                                <Table.Th>Notes</Table.Th>
+                                <Table.Th>{t('header.table.name')}</Table.Th>
+                                <Table.Th>{t('header.table.planted')}</Table.Th>
+                                <Table.Th>{t('header.table.harvested')}</Table.Th>
+                                <Table.Th>{t('header.table.notes')}</Table.Th>
                                 <Table.Th></Table.Th>
                             </Table.Tr>
                         </Table.Thead>
