@@ -6,6 +6,7 @@ import {useDispatch} from "react-redux";
 import {changedMembership} from "../state/MembershipSlice";
 import { useTranslation } from 'react-i18next';
 
+import {showNotification} from "@mantine/notifications";
 
 
 export const KickMemberButton:React.FC<{id:string}> = ({id}) => {
@@ -15,10 +16,11 @@ export const KickMemberButton:React.FC<{id:string}> = ({id}) => {
 
     function handleKick(id: string) {
         kickMember({id}).then(r =>{
-            setNotification({
-                type: 'success',
-                message: `User was kicked from Organization.`,
-            })
+            showNotification({
+                    title: 'Success',
+                    message: `User was kicked from Organization.`,
+                    color: 'green',
+                });
             dispatch(changedMembership());
         })
     }

@@ -4,9 +4,11 @@ import { DateInput } from "@mantine/dates";
 import { useTranslation } from "react-i18next";
 import { createGrowingCycle } from "../useCase/createGrowingCycle";
 import { GrowingCycle } from "../models/growingCycle";
-import { modifyGrowingCycle } from "../useCase/modifyGrowingCycle";
-import { useAppDispatch } from "../../../utils/Hooks";
-import { changedGrowingCycle } from "../state/GrowingCycleSlice";
+import {getFpf} from "../../fpf/useCase/getFpf";
+import {modifyGrowingCycle} from "../useCase/modifyGrowingCycle";
+import {useAppDispatch} from "../../../utils/Hooks";
+import {changedGrowingCycle} from "../state/GrowingCycleSlice";
+import {showNotification} from "@mantine/notifications";
 
 export const GrowingCycleForm: React.FC<{
     fpfId: string;
@@ -15,25 +17,45 @@ export const GrowingCycleForm: React.FC<{
 }> = ({ fpfId, toEditGrowingCycle, onSuccess }) => {
     const { t } = useTranslation();
     const [growingCycle, setGrowingCycle] = useState<GrowingCycle>({ fpfId: fpfId } as GrowingCycle);
-    const dispatch = useAppDispatch();
-
+    const dispatch = useAppDispatch()
     const handleInputChange = (field: string, value: any) => {
         setGrowingCycle((prev) => ({ ...prev, [field]: value }));
     };
 
     const handleSubmit = async () => {
-        try {
-            if (toEditGrowingCycle) {
+        if(toEditGrowingCycle){
+            try {
                 await modifyGrowingCycle(growingCycle.id, growingCycle);
-                onSuccess(t("growingCycleForm.successEdit"), "green");
-            } else {
-                await createGrowingCycle(growingCycle);
-                onSuccess(t("growingCycleForm.successCreate"), "green");
+                showNotification({
+                    title: 'Success',
+                    message: 'Growing cycle edited',
+                    color: 'green',
+                });
+            } catch (error) {
+                showNotification({
+                    title: 'Failed to save the growing cycle',
+                    message: `${error}`,
+                    color: 'red',
+                });
             }
-            dispatch(changedGrowingCycle());
-        } catch (error) {
-            onSuccess(t("growingCycleForm.error"), "red");
         }
+        else{
+            try {
+                await createGrowingCycle(growingCycle);
+                showNotification({
+                    title: 'Success',
+                    message: 'Growing cycle saved successfully!',
+                    color: 'green',
+                });
+            } catch (error) {
+                showNotification({
+                    title: 'Failed to save the growing cycle',
+                    message: `${error}`,
+                    color: 'red',
+            });
+            }
+        }
+        dispatch(changedGrowingCycle());
     };
 
     const isFormValid = useMemo(() => {
