@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { Button, List, Loader, Box } from '@mantine/core';
 import { useAuth } from 'react-oidc-context';
-import axios from 'axios';
 import {getMyOrganizations} from "../useCase/getMyOrganizations";
 import {Organization} from "../models/Organization";
-import {createdOrganizationEvent} from "../state/OrganizationSlice";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../utils/store";
+
 
 export const MyOrganizations: React.FC = () => {
     const auth = useAuth();
@@ -14,12 +13,14 @@ export const MyOrganizations: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const organizationEventListener = useSelector((state: RootState) => state.organization.createdOrganizationEvent);
+    //const socket = useContext(SocketContext)
 
     useEffect(() => {
             if (auth.isAuthenticated) {
                 try {
                     getMyOrganizations().then(resp => {
-                        setOrganizations(resp)
+                        if (resp !== undefined)
+                            setOrganizations(resp)
                     })
                 } catch (err) {
                     setError('Failed to load organizations');

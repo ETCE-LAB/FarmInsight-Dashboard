@@ -1,4 +1,4 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createSlice} from "@reduxjs/toolkit";
 import {RootState} from "../../../utils/store";
 
 
@@ -18,7 +18,6 @@ const organizationSlice = createSlice({
 
     reducers: {
         createdOrganization(state){
-            console.log("OrgaEvent triggered")
             state.createdOrganizationEvent += 1
         }
     }

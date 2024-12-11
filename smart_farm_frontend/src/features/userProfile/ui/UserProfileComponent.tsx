@@ -1,50 +1,73 @@
-import { HoverCard, Button, Text, Group } from '@mantine/core';
-import {useEffect, useState} from "react";
+import React, { useEffect, useState } from 'react';
+import {AppRoutes} from "../../../utils/appRoutes";
+import { Text, Group } from '@mantine/core';
 import {UserProfile} from "../models/UserProfile"
 import {useAppSelector} from "../../../utils/Hooks";
-import {receivedUserProfileEvent} from "../state/UserProfileSlice";
+import {changedUserProfileEvent, receivedUserProfileEvent} from "../state/UserProfileSlice";
 import {useAuth} from "react-oidc-context";
-import APIClient from "../../../utils/APIClient";
 import {receiveUserProfile} from "../useCase/receiveUserProfile";
+// @ts-ignore
+import {IconUserCog} from "@tabler/icons-react";
+import {useNavigate} from "react-router-dom";
+
 
 
 
 const UserProfileComponent = () => {
-    const auth = useAuth()
-    const apiClient = new APIClient()
-
-    const [userProfile, setUserProfile] = useState<UserProfile | null>(null)
-    const userProfileReceivedEventListener = useAppSelector(receivedUserProfileEvent)
-
+    const auth = useAuth();
+    const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+    const userProfileReceivedEventListener = useAppSelector(receivedUserProfileEvent);
+    const changedUserProfile = useAppSelector(changedUserProfileEvent);
+    const navigate = useNavigate();
 
     useEffect(() => {
-
-        if(auth.user != null) {
-            receiveUserProfile().then(resp => {
-                setUserProfile(resp)
-            })
+        if (auth.user) {
+            receiveUserProfile()
+                .then((resp) => {
+                    if (resp) {
+                        setUserProfile(resp);
+                    } else {
+                        console.warn('No user profile data received');
+                        setUserProfile(null);
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error fetching user profile:', error);
+                });
         }
-    }, [auth.user, userProfileReceivedEventListener]);
+    }, [auth.user, userProfileReceivedEventListener, changedUserProfile]);
+
+
 
     const editProfile = () => {
-        console.log("editing Profile")
-    }
+        navigate(AppRoutes.editUserProfile);
+    };
+
 
     return (
-        <Group justify="center">
-            <HoverCard width={280} shadow="md">
-                <HoverCard.Target>
-                    <Button variant="filled" onClick={() => editProfile()}>E-Mail: {userProfile?.email}</Button >
-                </HoverCard.Target>
-                <HoverCard.Dropdown>
-                    <Text style={{color: '#105385', }}>
-                        E-Mail: {userProfile?.email}
+        <>
+            {auth.isAuthenticated && userProfile && (
+                <Group gap="center">
+                    <IconUserCog
+                        size={30}
+                        cursor="pointer"
+                        onClick={editProfile}
+                    />
+                    <Text
+                        variant="filled"
+                        style={{
+                            backgroundColor: '#199ff4',
+                            borderRadius: '6px',
+                            padding: '6px 10px',
+                            color: 'white',
+                        }}
+                    >
+                        {userProfile.email}
                     </Text>
-                </HoverCard.Dropdown>
-
-            </HoverCard>
-        </Group>
+                </Group>
+            )}
+        </>
     );
-}
+};
 
-export {UserProfileComponent}
+export { UserProfileComponent };

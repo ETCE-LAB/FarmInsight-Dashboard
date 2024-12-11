@@ -1,10 +1,12 @@
-// src/MainAppProvider.tsx
 import React, {PropsWithChildren} from 'react';
 import { Provider } from 'react-redux';
 import { MantineProvider } from '@mantine/core';
-import { store } from './store';  // importiere deinen Redux-Store
+import { store } from './store';
 import {WebStorageStateStore} from "oidc-client-ts";
 import {AuthProvider} from "react-oidc-context";
+import {Notifications} from "@mantine/notifications";
+import '@mantine/notifications/styles.css';
+//import {SocketProvider} from "./SocketProvider";
 
 export const oidcConfig = {
     authority: process.env.REACT_APP_IDENTITY_SERVER_URL || 'https://development-isse-identityserver.azurewebsites.net',
@@ -23,9 +25,12 @@ const MainAppProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
         //Redux Provider
         <AuthProvider {...oidcConfig}>
             <Provider store={store}>
+                {/* <SocketProvider> */}
                 <MantineProvider defaultColorScheme="auto">
+                    <Notifications position="bottom-right" zIndex={3000} limit={5}/>
                     {children}
-                </MantineProvider>
+                    </MantineProvider>
+               {/* </SocketProvider>*/}
             </Provider>
         </AuthProvider>
     );

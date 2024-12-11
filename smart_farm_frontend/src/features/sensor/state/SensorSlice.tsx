@@ -1,4 +1,4 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createSlice } from "@reduxjs/toolkit";
 import {RootState} from "../../../utils/store";
 
 
@@ -27,7 +27,7 @@ const sensorSlice = createSlice({
 })
 
 export const {receivedSensor} = sensorSlice.actions
-export const receivedUserProfileEvent = (state:RootState) => state.sensor.receivedSensorEvent;
+export const receivedSensorEvent = (state:RootState) => state.sensor.receivedSensorEvent;
 export default sensorSlice.reducer
 
 
