@@ -4,7 +4,7 @@ import placeholderImage from "../../camera/ui/NoCameraPlaceholder.png";
 import { useParams } from "react-router-dom";
 import { Fpf } from "../models/Fpf";
 import { getFpf } from "../useCase/getFpf";
-import { Container, Flex, Box, Image } from '@mantine/core';
+import {Container, Flex, Box, Image, Grid, SimpleGrid} from '@mantine/core';
 import GrowingCycleList from "../../growthCycle/ui/growingCycleList";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../utils/store";
@@ -33,30 +33,35 @@ export const FpfOverview = () => {
 
 
     return (
-        <Container style={{ display: 'flex', gap:"20px", flexDirection: 'row', maxWidth:"90%"}}>
-            {/*TimeseriesGraph*/}
-            <Box style={{ flex: 1, overflowY: 'auto', marginRight: '10px' }}>
-                {fpf && fpf.Sensors.map((sensor) => (
-                    <Box key={sensor.id} style={{display:'flex', align:"right"}}>
-                        {sensor && (
-                            <TimeseriesGraph sensor={sensor} />
-                        )}
+        <Container fluid style={{ width: '100%', height:'100%', margin: 0}}>
+
+            <SimpleGrid
+                type="container"
+                cols={2}
+                spacing={{ base: 10, '300px': 'xl' }}
+              >
+
+                    <Box style={{ flex: 1, marginRight: '20px', overflowY: "scroll", scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch', height:'85vh', maxWidth: "50vw", width:"100%" }}>
+                        {fpf && fpf.Sensors.map((sensor) => (
+                            <Box key={sensor.id}>
+                                {sensor && (
+                                    <TimeseriesGraph sensor={sensor} />
+                                )}
+                            </Box>
+                        ))}
                     </Box>
-                ))}
-            </Box>
-            <Box style={{ flex: 1, Width: '50vw', height: 'auto' }}>
-                {/* Camera-Feed */}
-                {fpf?.Cameras && (
-                    <CameraCarousel camerasToDisplay={fpf?.Cameras}/>
-                )}
-                {/* GrowingCycle */}
-                {fpf && (
-                    <GrowingCycleList
-                        fpfId={fpf.id}
-                        growingCycles={fpf.GrowingCycles}
-                    />
-                )}
-            </Box>
+                    <Box style={{ flex: 1, Width: '50vw', height: 'auto' }}>
+                            {/* Camera-Feed */}
+                            {fpf?.Cameras && (
+                                <CameraCarousel camerasToDisplay={fpf?.Cameras}/>
+                            )}
+                            {fpf &&
+                                <GrowingCycleList fpfId={fpf.id} growingCycles={fpf.GrowingCycles} />
+                            }
+                        </Box>
+
+
+            </SimpleGrid>
         </Container>
     );
 };

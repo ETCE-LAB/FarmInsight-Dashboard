@@ -87,7 +87,7 @@ const TimeseriesGraph: React.FC<{sensor:Sensor}> = ({sensor}) => {
     };
 
     return (
-        <Card p="lg" shadow="sm" radius="md" style={{ margin: '10px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)', width:'100%', maxWidth:'none'}}>
+        <Card p="lg" shadow="sm" radius="md" style={{ marginBottom: '30px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)' }}>
             <Flex justify="space-between" align="center" mb="md">
                 <Title order={3} style={{ color: '#199ff4' }}>{sensor?.name}</Title>
                 <Button
