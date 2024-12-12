@@ -9,7 +9,11 @@ i18n
                 translation: {
                     header: {
                         title: 'FARMINSIGHT',
+                        organizations: 'Organizations',
+                        myOrganizations: 'My Organizations',
                         loginToManage: 'Login to manage organization',
+                        loginToSee: 'Login to see your organizations',
+                        login: 'Login',
                         logout: 'Logout',
                         search: 'Search FPFs...',
                         kick: 'Remove',
@@ -35,12 +39,24 @@ i18n
                         yesDelete: 'Yes, delete',
                         cancel: 'Cancel',
                         confirmDialog: 'This action cannot be undone. Do you want to proceed with deleting this growing cycle?',
+                        members: 'Members',
                         table: {
                             name: 'Name',
                             planted: 'Planted on',
                             harvested: 'Harvested on',
                             notes: 'Notes'
                         }
+                    },
+                    growingCycleForm: {
+                        plantTypeLabel: 'Plant Type',
+                        plantTypePlaceholder: 'Enter Plant Type',
+                        startDateLabel: 'Start Date',
+                        startDatePlaceholder: 'Select Start Date',
+                        endDateLabel: 'End Date',
+                        endDatePlaceholder: 'Select End Date',
+                        notesLabel: 'Notes',
+                        notesPlaceholder: 'Enter Notes',
+                        saveButton: 'Save',
                     },
                     button: {
                         loginToManage: 'Login to manage organization',
@@ -56,6 +72,20 @@ i18n
                     },
                     error: {
                         organizationNameTaken: 'Organization Name already taken'
+                    },
+                    userprofile: {
+                        notifications: {
+                            success: {
+                                title: 'Successfully updated',
+                                message: 'Updated the Profile name successfully!',
+                            },
+                            error: {
+                                title: 'Unable to update profile name',
+                            }
+                        },
+                        enterName: 'Enter your display name',
+                        saveChanges: 'Save Changes',
+
                     }
                 },
             },
@@ -63,7 +93,11 @@ i18n
                 translation: {
                     header: {
                         title: 'FARMINSIGHT',
+                        organizations: 'Organisationen',
+                        myOrganizations: 'Meine Organisationen',
                         loginToManage: 'Einloggen, um Organisation zu verwalten',
+                        loginToSee: 'Einloggen, um Ihre Organisationen zu sehen',
+                        login: 'Einloggen',
                         logout: 'Abmelden',
                         search: 'FPFs durchsuchen...',
                         kick: 'Entfernen',
@@ -89,12 +123,24 @@ i18n
                         yesDelete: 'Ja, löschen',
                         cancel: 'Abbrechen',
                         confirmDialog: 'Diese Aktion kann nicht rückgängig gemacht werden. Möchten Sie diesen Wachstumszyklus wirklich löschen?',
+                        members: 'Mitglieder',
                         table: {
                             name: 'Name',
                             planted: 'Gepflanzt am',
                             harvested: 'Geerntet am',
                             notes: 'Bemerkungen'
                         }
+                    },
+                    growingCycleForm: {
+                        plantTypeLabel: 'Pflanzentyp',
+                        plantTypePlaceholder: 'Pflanzentyp eingeben',
+                        startDateLabel: 'Startdatum',
+                        startDatePlaceholder: 'Startdatum auswählen',
+                        endDateLabel: 'Enddatum',
+                        endDatePlaceholder: 'Enddatum auswählen',
+                        notesLabel: 'Notizen',
+                        notesPlaceholder: 'Notizen eingeben',
+                        saveButton: 'Speichern',
                     },
                     button: {
                         loginToManage: 'Einloggen, um Organisation zu verwalten',
@@ -110,6 +156,19 @@ i18n
                     },
                     error: {
                         organizationNameTaken: 'Organisationsname bereits vergeben'
+                    },
+                    userprofile: {
+                        notifications: {
+                            success: {
+                                title: 'Erfolgreich aktualisiert',
+                                message: 'Profilname erfolgreich aktualisiert!',
+                            },
+                            error: {
+                                title: 'Profilname konnte nicht aktualisiert werden',
+                            }
+                        },
+                        enterName: 'Geben Sie Ihren Anzeigenamen ein',
+                        saveChanges: 'Änderungen speichern',
                     }
                 },
             },
@@ -117,7 +176,11 @@ i18n
                 translation: {
                     header: {
                         title: 'FARMINSIGHT',
+                        organizations: 'Organisations',
+                        myOrganizations: 'Mes organisations',
                         loginToManage: 'Se connecter pour gérer l’organisation',
+                        loginToSee: 'Se connecter pour voir vos organisations',
+                        login: 'Se connecter',
                         logout: 'Se déconnecter',
                         search: 'Rechercher des FPF...',
                         kick: 'Retirer',
@@ -143,12 +206,24 @@ i18n
                         yesDelete: 'Oui, supprimer',
                         cancel: 'Annuler',
                         confirmDialog: 'Cette action est irréversible. Voulez-vous vraiment supprimer ce cycle de croissance ?',
+                        members: 'Membres',
                         table: {
                             name: 'Nom',
                             planted: 'Planté le',
                             harvested: 'Récolté le',
                             notes: 'Remarques'
                         }
+                    },
+                    growingCycleForm: {
+                        plantTypeLabel: 'Type de plante',
+                        plantTypePlaceholder: 'Entrez le type de plante',
+                        startDateLabel: 'Date de début',
+                        startDatePlaceholder: 'Sélectionnez la date de début',
+                        endDateLabel: 'Date de fin',
+                        endDatePlaceholder: 'Sélectionnez la date de fin',
+                        notesLabel: 'Remarques',
+                        notesPlaceholder: 'Entrez des remarques',
+                        saveButton: 'Enregistrer',
                     },
                     button: {
                         loginToManage: 'Se connecter pour gérer l’organisation',
@@ -163,6 +238,19 @@ i18n
                     },
                     error: {
                         organizationNameTaken: 'Le nom de l’organisation est déjà pris'
+                    },
+                    userprofile: {
+                        notifications: {
+                            success: {
+                                title: 'Mise à jour réussie',
+                                message: 'Nom du profil mis à jour avec succès !',
+                            },
+                            error: {
+                                title: 'Impossible de mettre à jour le nom du profil',
+                            }
+                        },
+                        enterName: 'Entrez votre nom d’affichage',
+                        saveChanges: 'Enregistrer les modifications',
                     }
                 },
             },
@@ -170,7 +258,11 @@ i18n
                 translation: {
                     header: {
                         title: 'FARMINSIGHT',
+                        organizations: 'Organizzazioni',
+                        myOrganizations: 'Le mie organizzazioni',
                         loginToManage: 'Accedi per gestire l’organizzazione',
+                        loginToSee: 'Accedi per vedere le tue organizzazioni',
+                        login: 'Accedi',
                         logout: 'Disconnettersi',
                         search: 'Cerca FPF...',
                         kick: 'Rimuovere',
@@ -196,12 +288,24 @@ i18n
                         yesDelete: 'Sì, elimina',
                         cancel: 'Annulla',
                         confirmDialog: 'Questa azione non può essere annullata. Sei sicuro di voler eliminare questo ciclo di crescita?',
+                        members: 'Membri',
                         table: {
                             name: 'Nome',
                             planted: 'Pianta il',
                             harvested: 'Raccolto il',
                             notes: 'Annotazioni'
                         }
+                    },
+                    growingCycleForm: {
+                        plantTypeLabel: 'Tipo di pianta',
+                        plantTypePlaceholder: 'Inserisci il tipo di pianta',
+                        startDateLabel: 'Data di inizio',
+                        startDatePlaceholder: 'Seleziona la data di inizio',
+                        endDateLabel: 'Data di fine',
+                        endDatePlaceholder: 'Seleziona la data di fine',
+                        notesLabel: 'Note',
+                        notesPlaceholder: 'Inserisci le note',
+                        saveButton: 'Salva',
                     },
                     button: {
                         loginToManage: 'Accedi per gestire l’organizzazione',
@@ -217,14 +321,31 @@ i18n
                     },
                     error: {
                         organizationNameTaken: 'Il nome dell’organizzazione è già preso'
+                    },
+                    userprofile: {
+                        notifications: {
+                            success: {
+                                title: 'Aggiornamento riuscito',
+                                message: 'Nome del profilo aggiornato con successo!',
+                            },
+                            error: {
+                                title: 'Impossibile aggiornare il nome del profilo',
+                            }
+                        },
+                        enterName: 'Inserisci il tuo nome visualizzato',
+                        saveChanges: 'Salva le modifiche',
                     }
                 },
             },
             zh: {
                 translation: {
                     header: {
-                        title: '农场洞察',
+                        title: 'FARMINSIGHT',
+                        organizations: '组织',
+                        myOrganizations: '我的组织',
                         loginToManage: '登录以管理组织',
+                        loginToSee: '登录查看您的组织',
+                        login: '登录',
                         logout: '退出登录',
                         search: '搜索 FPF...',
                         kick: '移除',
@@ -250,12 +371,24 @@ i18n
                         yesDelete: '是的，删除',
                         cancel: '取消',
                         confirmDialog: '此操作无法撤销。您确定要删除此种植周期吗？',
+                        members: '成员',
                         table: {
                             name: '名称',
                             planted: '种植时间',
                             harvested: '收获时间',
                             notes: '备注'
                         }
+                    },
+                    growingCycleForm: {
+                        plantTypeLabel: '植物类型',
+                        plantTypePlaceholder: '输入植物类型',
+                        startDateLabel: '开始日期',
+                        startDatePlaceholder: '选择开始日期',
+                        endDateLabel: '结束日期',
+                        endDatePlaceholder: '选择结束日期',
+                        notesLabel: '备注',
+                        notesPlaceholder: '输入备注',
+                        saveButton: '保存',
                     },
                     button: {
                         loginToManage: '登录以管理组织',
@@ -271,6 +404,19 @@ i18n
                     },
                     error: {
                         organizationNameTaken: '组织名称已被占用'
+                    },
+                    userprofile: {
+                        notifications: {
+                            success: {
+                                title: '更新成功',
+                                message: '成功更新了个人资料名称！',
+                            },
+                            error: {
+                                title: '无法更新个人资料名称',
+                            }
+                        },
+                        enterName: '输入您的显示名称',
+                        saveChanges: '保存更改',
                     }
                 },
             },
@@ -278,7 +424,11 @@ i18n
                 translation: {
                     header: {
                         title: 'FARMINSIGHT',
+                        organizations: 'Организации',
+                        myOrganizations: 'Мои организации',
                         loginToManage: 'Войти для управления организацией',
+                        loginToSee: 'Войдите, чтобы увидеть ваши организации',
+                        login: 'Войти',
                         logout: 'Выйти',
                         search: 'Искать FPF...',
                         kick: 'Удалить',
@@ -304,12 +454,24 @@ i18n
                         yesDelete: 'Да, удалить',
                         cancel: 'Отмена',
                         confirmDialog: 'Это действие нельзя отменить. Вы уверены, что хотите удалить этот цикл роста?',
+                        members: 'Участники',
                         table: {
                             name: 'Имя',
                             planted: 'Дата посадки',
                             harvested: 'Дата сбора',
                             notes: 'Примечания'
                         }
+                    },
+                    growingCycleForm: {
+                        plantTypeLabel: 'Тип растения',
+                        plantTypePlaceholder: 'Введите тип растения',
+                        startDateLabel: 'Дата начала',
+                        startDatePlaceholder: 'Выберите дату начала',
+                        endDateLabel: 'Дата окончания',
+                        endDatePlaceholder: 'Выберите дату окончания',
+                        notesLabel: 'Примечания',
+                        notesPlaceholder: 'Введите примечания',
+                        saveButton: 'Сохранить',
                     },
                     button: {
                         loginToManage: 'Войти для управления организацией',
@@ -325,6 +487,19 @@ i18n
                     },
                     error: {
                         organizationNameTaken: 'Название организации уже занято'
+                    },
+                    userprofile: {
+                        notifications: {
+                            success: {
+                                title: 'Успешно обновлено',
+                                message: 'Имя профиля успешно обновлено!',
+                            },
+                            error: {
+                                title: 'Не удалось обновить имя профиля',
+                            }
+                        },
+                        enterName: 'Введите ваше отображаемое имя',
+                        saveChanges: 'Сохранить изменения',
                     }
                 },
             },

@@ -65,7 +65,7 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
 
     const tabs = [
         {
-            name: 'Organization',
+            name: t('header.organizations'),
             color: '#000000',
             link: './my-organizations',
             submenu: organizations.map((org) => ({ name: org.name, id: org.id }))
@@ -121,7 +121,7 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
                 <Flex justify="center">
                     <Group>
                         <TextInput
-                            placeholder="Search FPFs"
+                            placeholder={t('header.search')}
                             style={{ width: '30vw' }}
                             value={searchTerm}
                             onChange={handleSearchChange}

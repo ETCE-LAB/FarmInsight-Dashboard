@@ -55,7 +55,7 @@ export const EditOrganization = () => {
             .then(() => {
                 showNotification({
                     title: 'Success',
-                    message: `${usersToAdd.length} users have been added to the organization.`,
+                    message: `${usersToAdd.length + t("header.userAdded")}`,
                     color: 'green',
                 });
                 // Clear the user list
@@ -81,18 +81,18 @@ export const EditOrganization = () => {
                         {t("header.organization")}: {organization.name}
                     </Title>
                     <Text style={{ fontWeight: 'bold' }}>
-                        Name
+                        {t("header.name")}
                     </Text>
                     <Flex gap={20} align="center" mb="2rem">
                         <TextInput placeholder={organization.name} ></TextInput>
                         <Switch
-                            label="Is Public"
+                            label={t("header.public")}
                             checked={organization.isPublic}
                         />
                     </Flex>
                     <Flex gap={20} align="center">
                         <Text style={{ fontWeight: 'bold' }}>
-                            Members
+                            {t("header.members")}
                         </Text>
                         <Button
                             onClick={() => setUserModalOpen(true)} // Open modal on button click
@@ -102,7 +102,7 @@ export const EditOrganization = () => {
 
                         >
                             <IconPlus size={18} style={{ marginRight: "8px" }} />
-                            Add Users
+                            {t("header.addUser")}
                         </Button>
                     </Flex>
                     <MembershipList members={organization.memberships} />
