@@ -1,6 +1,5 @@
 import APIClient from "../../../utils/APIClient";
 import {getUser} from "../../../utils/getUser";
-import {Fpf} from "../../fpf/models/Fpf";
 
 export const kickMember = async (data: { id:string }) => {
     try {
@@ -13,9 +12,7 @@ export const kickMember = async (data: { id:string }) => {
         const headers =
             {'Authorization': `Bearer ${token}`}
         const url = `${process.env.REACT_APP_BACKEND_URL}/api/memberships/${data.id}`;
-        const response:Fpf = await apiClient.delete(url, headers);
-
-        return response
+        return await apiClient.delete(url, headers)
     }
     catch (error) {
         console.error("Error: " + error);

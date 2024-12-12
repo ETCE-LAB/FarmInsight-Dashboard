@@ -7,6 +7,7 @@ import {AuthProvider} from "react-oidc-context";
 import {Notifications} from "@mantine/notifications";
 import '@mantine/notifications/styles.css';
 //import {SocketProvider} from "./SocketProvider";
+import '@mantine/carousel/styles.css';
 
 export const oidcConfig = {
     authority: "https://development-isse-identityserver.azurewebsites.net",

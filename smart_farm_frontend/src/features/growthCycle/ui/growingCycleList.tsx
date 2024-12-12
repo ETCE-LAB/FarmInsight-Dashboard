@@ -164,15 +164,13 @@ const GrowingCycleList: React.FC<{ fpfId: string; growingCycles: GrowingCycle[] 
                     style={{
                         cursor: "pointer",
                         color: "#105385",
-                        position: "absolute",
-                        top: "10px",
+                        position: "relative",
+                        top: "25px",
                         left: "10px",
                     }}
                 />
-                <Flex style={{ marginTop: "2rem" }}>
-                    <Table
-                        striped
-                        highlightOnHover
+                <Flex>
+                    <Table striped highlightOnHover
                         style={{
                             textAlign: "left",
                             borderCollapse: "collapse",
