@@ -1,11 +1,9 @@
+import {EditCamera} from "../models/camera";
 import APIClient from "../../../utils/APIClient";
 import {getUser} from "../../../utils/getUser";
-import {Measurement} from "../models/measurement";
 
 
-
-
-export const getAllImages = (cameraId:string) => {
+export const getLivestream = async (cameraId: string, from:string="2024-10-10") => {
     const apiClient = new APIClient()
 
     const user = getUser();
@@ -13,12 +11,12 @@ export const getAllImages = (cameraId:string) => {
 
     const headers =
         {'Authorization': `Bearer ${token}`}
-    let url = `${process.env.REACT_APP_BACKEND_URL}/api/cameras/${cameraId}/images?from=2024-10-10`;
+    let url = `${process.env.REACT_APP_BACKEND_URL}/api/cameras/${cameraId}/livestream`;
 
 //cameras/${amera_id}/livestream
 
 
-    const result:Promise<[{url:string, measuredAt:string}]> = apiClient.get(url, headers)
+    const result = apiClient.get(url, headers)
     console.log(result)
     return result
-}
+};
