@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { getUserProfilesBySearchString } from "../useCase/getUserProfilesBySearchString";
 import { UserProfile } from "../models/UserProfile";
 import { useParams } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
+
 
 interface SearchUserProfileProps {
     onUserSelected: (user: UserProfile) => void;
@@ -11,6 +13,7 @@ interface SearchUserProfileProps {
 export const SearchUserProfile = ({ onUserSelected }: SearchUserProfileProps) => {
     const [searchTerm, setSearchTerm] = useState("");
     const [userProfiles, setUserProfiles] = useState<UserProfile[]>([]);
+    const { t } = useTranslation();
 
     const { organizationId } = useParams();
 
@@ -30,7 +33,7 @@ export const SearchUserProfile = ({ onUserSelected }: SearchUserProfileProps) =>
     return (
         <>
             <Input
-                placeholder="Search User Profile"
+                placeholder={t("header.searchUserProfile")}
                 style={{ width: '100%', marginBottom: '15px' }}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -59,7 +62,7 @@ export const SearchUserProfile = ({ onUserSelected }: SearchUserProfileProps) =>
                         </Card>
                     ))
                 ) : (
-                    <Text style={{ color: '#888' }}>No user profiles found</Text>
+                    <Text style={{ color: '#888' }}>{t("header.noProfilesFound")}</Text>
                 )}
             </Box>
         </>

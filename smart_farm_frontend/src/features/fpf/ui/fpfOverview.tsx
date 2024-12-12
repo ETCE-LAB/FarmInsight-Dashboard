@@ -13,6 +13,7 @@ import useWebSocket from "react-use-websocket"
 import {getWebSocketToken} from "../../../utils/WebSocket/getWebSocketToken";
 import {CameraCarousel} from "../../camera/ui/CameraCarousel";
 
+
 export const FpfOverview = () => {
     const [fpf, setFpf] = useState<Fpf>();
     const growingCylceEventListener = useSelector((state: RootState) => state.growingCycle.changeGrowingCycleEvent);

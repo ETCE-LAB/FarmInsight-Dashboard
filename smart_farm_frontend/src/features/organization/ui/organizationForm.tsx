@@ -7,6 +7,7 @@ import { createdOrganization } from "../state/OrganizationSlice";
 import { useNavigate } from "react-router-dom";
 import {AppRoutes} from "../../../utils/appRoutes";
 import {Organization} from "../models/Organization";
+import { useTranslation } from 'react-i18next';
 
 export const OrganizationForm: React.FC = () => {
     const auth = useAuth();
@@ -14,6 +15,7 @@ export const OrganizationForm: React.FC = () => {
     const [isPublic, setIsPublic] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const [createOrgaErrorListener , triggerCreateOrgaError] = useState(false)
 
@@ -39,30 +41,31 @@ export const OrganizationForm: React.FC = () => {
                     color="#105385"
                     style={{ margin: '10px' }}
                 >
-                    Login to manage organization
+                    {t('button.loginToManage')}
                 </Button>
             ) : (
                 <form onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
                     <Popover width={200} opened position="bottom-start" withArrow arrowPosition="side" arrowOffset={50} arrowSize={12}>
                         <Popover.Target>
-                    <TextInput
-                        label="Organization Name"
-                        placeholder="Enter organization name"
-                        value={name}
-                        onChange={(e) => setName(e.currentTarget.value)}
-                        required
-                        mt="xs" // margin-top
-                        mb="md" // margin-bottom
-                        style={{ width: '100%' }}
-                    />
+                            <TextInput
+                                label={t('label.organizationName')}
+                                placeholder={t('placeholder.enterOrganizationName')}
+                                value={name}
+                                onChange={(e) => setName(e.currentTarget.value)}
+                                required
+                                mt="xs" // margin-top
+                                mb="md" // margin-bottom
+                                style={{ width: '100%' }}
+                            />
                         </Popover.Target>
-                        {createOrgaErrorListener && (<Popover.Dropdown>
-                           Organization Name already taken
-                        </Popover.Dropdown>
+                        {createOrgaErrorListener && (
+                            <Popover.Dropdown>
+                                {t('error.organizationNameTaken')}
+                            </Popover.Dropdown>
                         )}
                     </Popover>
                     <Switch
-                        label="Set Public"
+                        label={t('label.setPublic')}
                         checked={isPublic}
                         onChange={(e) => setIsPublic(e.currentTarget.checked)}
                         mt="sm"
@@ -75,7 +78,7 @@ export const OrganizationForm: React.FC = () => {
                             color="#105385"
                             style={{ margin: '10px' }}
                         >
-                            Create
+                            {t('button.create')}
                         </Button>
                     </Box>
                 </form>

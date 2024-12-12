@@ -10,10 +10,13 @@ import {useNavigate} from "react-router-dom";
 import {Fpf} from "../models/Fpf";
 import {IconTrash} from "@tabler/icons-react";
 import {getAvailableHardwareConfiguration} from "../../hardwareConfiguration/useCase/getAvailableHardwareConfiguration";
+import { useTranslation } from 'react-i18next';
+
 
 
 export const FpfForm: React.FC<{inputOrganization?:Organization, toEditFpf?:Fpf}> = ({ inputOrganization, toEditFpf }) => {
     const auth = useAuth();
+    const { t } = useTranslation();
     const [name, setName] = useState("");
     const [isPublic, setIsPublic] = useState(false);
     const [sensorServiceIp, setSensorServiceIp] = useState("");
@@ -56,7 +59,7 @@ export const FpfForm: React.FC<{inputOrganization?:Organization, toEditFpf?:Fpf}
         <>
             {!auth.isAuthenticated ? (
                 <Button onClick={() => auth.signinRedirect()} variant="filled" color="#105385" style={{ margin: '10px' }}>
-                    Login to manage Facility
+                    {t("header.loginToManage")}
                 </Button>
             ) : (
                 <form onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
@@ -73,8 +76,8 @@ export const FpfForm: React.FC<{inputOrganization?:Organization, toEditFpf?:Fpf}
 
                         {/* Name Input */}
                         <Grid.Col span={6}>
-                            <TextInput label="Name"
-                                       placeholder="Enter name"
+                            <TextInput label={t("header.name")}
+                                       placeholder={t("header.enterName")}
                                        required
                                        value={name}
                                        onChange={(e) => setName(e.currentTarget.value)}/>
@@ -82,8 +85,8 @@ export const FpfForm: React.FC<{inputOrganization?:Organization, toEditFpf?:Fpf}
 
                         {/* Address Input */}
                         <Grid.Col span={6}>
-                            <TextInput label="Address"
-                                       placeholder="Enter address (optional)"
+                            <TextInput label={t("header.address")}
+                                       placeholder={t("header.enterAddress")}
                                        value={address}
                                        onChange={(e) => setAddress(e.currentTarget.value)}/>
                         </Grid.Col>
@@ -102,14 +105,14 @@ export const FpfForm: React.FC<{inputOrganization?:Organization, toEditFpf?:Fpf}
                         {/* Is Public Toggle */}
                         <Grid.Col span={12}
                                   style={{display: "flex", alignItems: "center", justifyContent: "space-between"}}>
-                            <Switch label="Is Public?" size="md"/>
+                            <Switch label={t("label.setPublic")} size="md"/>
                         </Grid.Col>
 
                         <Grid.Col span={12}>
                             {inputOrganization &&
                                 <Box mt="md" style={{ display: 'flex', justifyContent: 'flex-end', margin: '10px'}}>
                                     <Button type="submit" variant="filled" color="#105385" style={{ margin: '10px' }}>
-                                        Create Facility
+                                        {t("button.add")}
                                     </Button>
                                 </Box>
                             }

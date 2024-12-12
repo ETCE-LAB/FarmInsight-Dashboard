@@ -5,12 +5,16 @@ import {getMyOrganizations} from "../useCase/getMyOrganizations";
 import {Organization} from "../models/Organization";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../utils/store";
+import { useTranslation } from 'react-i18next';
+
 
 
 export const MyOrganizations: React.FC = () => {
     const auth = useAuth();
     const [organizations, setOrganizations] = useState<Organization[]>([]);
     const [loading, setLoading] = useState(true);
+    const { t } = useTranslation();
+
     const [error, setError] = useState<string | null>(null);
     const organizationEventListener = useSelector((state: RootState) => state.organization.createdOrganizationEvent);
     //const socket = useContext(SocketContext)
@@ -35,7 +39,7 @@ export const MyOrganizations: React.FC = () => {
     if (!auth.isAuthenticated) {
         return (
             <Button onClick={() => auth.signinRedirect()} variant="filled" color="#105385" style={{ margin: '0 10px' }}>
-                Login to see your organizations
+                {t('header.loginToSee')}
             </Button>
         );
     }

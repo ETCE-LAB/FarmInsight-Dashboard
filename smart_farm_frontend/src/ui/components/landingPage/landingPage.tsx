@@ -15,6 +15,7 @@ import {getFpf} from "../../../features/fpf/useCase/getFpf";
 import {Sensor} from "../../../features/sensor/models/Sensor";
 import {receiveVisibleFpfs} from "../../../features/fpf/useCase/receiveVisibleFpfs";
 import {BasicFPF} from "../../../features/fpf/models/BasicFPF";
+import { useTranslation } from 'react-i18next';
 
 const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     const auth = useAuth();
@@ -23,7 +24,7 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     const organizationEventListener = useSelector((state: RootState) => state.organization.createdOrganizationEvent);
     const navigate = useNavigate();
     const [fpfs, setFpfs] = useState<BasicFPF[]>([]);
-
+    const { t, i18n } = useTranslation();
     const [searchTerm, setSearchTerm] = useState('');
     const ITEMS_PER_PAGE = 6;
     const [currentPage, setCurrentPage] = useState(1);
@@ -64,7 +65,7 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
 
     const tabs = [
         {
-            name: 'Organization',
+            name: t('header.organizations'),
             color: '#000000',
             link: './my-organizations',
             submenu: organizations.map((org) => ({ name: org.name, id: org.id }))
@@ -120,7 +121,7 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
                 <Flex justify="center">
                     <Group>
                         <TextInput
-                            placeholder="Search FPFs"
+                            placeholder={t('header.search')}
                             style={{ width: '30vw' }}
                             value={searchTerm}
                             onChange={handleSearchChange}
@@ -132,7 +133,7 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
                                 variant="filled"
                                 color="blue"
                             >
-                                Create New Organization
+                                {t('header.createOrganization')}
                             </Button>
                         ) : null}
                     </Group>
@@ -176,7 +177,7 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
             <Modal
                 opened={modalOpen}
                 onClose={() => setModalOpen(false)}
-                title="Add your Organization"
+                title={t("header.addOrganization")}
                 centered={true}
             >
                 <OrganizationForm />
