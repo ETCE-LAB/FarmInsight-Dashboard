@@ -36,13 +36,11 @@ export const EditOrganization = () => {
 
     const userSelected = (user: UserProfile) => {
         if (!usersToAdd.includes(user)) {
-            console.log(usersToAdd)
             setUsersToAdd((prevUsers) => [...prevUsers, user]);
         }
     };
 
     const handleAddUsers = () => {
-        // Add users to organization
         Promise.all(
             usersToAdd.map((user) =>
                 addUserToOrganization({
@@ -53,7 +51,6 @@ export const EditOrganization = () => {
             )
         )
             .then(() => {
-                // Show success notification
                 setNotification({
                     type: 'success',
                     message: `${usersToAdd.length} users have been added to the organization.`,
@@ -64,7 +61,6 @@ export const EditOrganization = () => {
                 setUserModalOpen(false);
             })
             .catch((error) => {
-                // Show error notification
                 setNotification({
                     type: 'error',
                     message: 'There was an error adding the users.',
@@ -89,18 +85,6 @@ export const EditOrganization = () => {
                         <Title order={2} style={{ color: "#105385", marginBottom: "10px" }}>
                             Organization: {organization.name}
                         </Title>
-                        <Text
-                            size="sm"
-                            style={{
-                                color: organization.isPublic ? "#28a745" : "#dc3545",
-                                padding: "5px 10px",
-                                borderRadius: "5px",
-                                backgroundColor: organization.isPublic ? "#e6f9f0" : "#fbe5e5",
-                                display: "inline-block",
-                            }}
-                        >
-                            {organization.isPublic ? "Public" : "Private"}
-                        </Text>
                     </Paper>
                     <MembershipList members={organization.memberships} />
 

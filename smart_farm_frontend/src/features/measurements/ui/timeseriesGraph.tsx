@@ -5,32 +5,77 @@ import { requestMeasuremnt } from "../useCase/requestMeasurements";
 import { receivedMeasurementEvent } from "../state/measurementSlice";
 import { useAppSelector } from "../../../utils/Hooks";
 import { Measurement } from "../models/measurement";
-import { Button, Card, Flex, Text, Title } from "@mantine/core";
+import {Box, Button, Card, Flex, Text, Title} from "@mantine/core";
 // @ts-ignore
 import { IconZoomScan } from "@tabler/icons-react";
 import {Sensor} from "../../sensor/models/Sensor";
-import {receiveSensor} from "../../sensor/useCase/receiveSensor";
+import useWebSocket from "react-use-websocket";
+import {getWebSocketToken} from "../../../utils/WebSocket/getWebSocketToken";
+import {read} from "node:fs";
 
 const TimeseriesGraph: React.FC<{sensor:Sensor}> = ({sensor}) => {
 
     const measurementReceivedEventListener = useAppSelector(receivedMeasurementEvent);
     const [measurements, setMeasurements] = useState<Measurement[]>([]);
 
+    const [shouldReconnect, setShouldReconnect] = useState<boolean>(false);
+    const [token, setToken] = useState<string | null>(null)
+    const [socketURL, setSocketUrl] = useState<string | null>(null)
+    let {lastMessage, readyState} = useWebSocket(socketURL || "",{
+        shouldReconnect:() => shouldReconnect})
+
+    const reconnectSocket = async (): Promise<boolean> => {
+        try {
+            const resp = await getWebSocketToken();
+            if (resp) {
+                setSocketUrl(`ws://localhost:8000/ws/sensor/${sensor?.id}?token=${encodeURIComponent(resp.token)}`);
+                setShouldReconnect(true); // Verbindung erlauben
+                return true;
+            } else {
+                console.warn('No Token received, can not establish Connection to WebSocket.');
+                setShouldReconnect(false); // Verbindung verhindern
+                return false;
+            }
+        } catch (error) {
+            console.error('Error while receiving the Token:', error);
+            setShouldReconnect(false); // Verbindung verhindern
+            return false;
+        }
+    };
 
 
     useEffect(() => {
-        requestMeasuremnt(sensor.id, "2024-10-10", "2024-11-01").then(resp => {
+        if(lastMessage){
+            const data = JSON.parse(lastMessage.data)
+            const roundedMeasurements = data.measurement.map((measurement: number) =>
+                Math.round(measurement * 100) / 100
+            );
+            setMeasurements([...measurements, ...roundedMeasurements])
+        }
+    }, [lastMessage]);
+
+    useEffect(() => {
+        if(sensor){
+            reconnectSocket()
+        }
+        setSocketUrl(null); // Verbindung deaktivieren, wenn kein Sensor vorhanden ist
+        setShouldReconnect(false);
+    }, [sensor])
+
+    useEffect(() => {
+        requestMeasuremnt(sensor.id, "2024-10-10").then(resp => {
+
             if(resp) {
                 // Round the values before setting them
                 const roundedMeasurements = resp.map((measurement) => ({
                     ...measurement,
-                    //TODO: "We might have to change this"
                     value: parseFloat(measurement.value.toFixed(2)),
                 }));
                 setMeasurements(roundedMeasurements);
             }
         });
     }, [measurementReceivedEventListener]);
+
 
     const calculateDomain = () => {
         if (measurements.length === 0) return [-10, 10];
@@ -42,7 +87,7 @@ const TimeseriesGraph: React.FC<{sensor:Sensor}> = ({sensor}) => {
     };
 
     return (
-        <Card p="lg" shadow="sm" radius="md" style={{ margin: '30px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)' }}>
+        <Card p="lg" shadow="sm" radius="md" style={{ marginBottom: '30px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)' }}>
             <Flex justify="space-between" align="center" mb="md">
                 <Title order={3} style={{ color: '#199ff4' }}>{sensor?.name}</Title>
                 <Button

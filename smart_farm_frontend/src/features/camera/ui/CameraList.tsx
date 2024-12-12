@@ -7,16 +7,9 @@ import {useParams} from "react-router-dom";
 
 
 export const CameraList:React.FC<{camerasToDisplay?:Camera[]}> = ({camerasToDisplay}) => {
-    const [camera, setCamera] = useState<Camera[]>()
     const [CameraModalOpen, setCameraModalOpen] = useState(false);
     const [selectedCamera, setSelectedCamera] = useState<EditCamera | undefined>(undefined);
     const { organizationId, fpfId } = useParams();
-
-    useEffect(() => {
-        if (camerasToDisplay) {
-            setCamera(camerasToDisplay);
-        }
-    }, [camerasToDisplay]);
 
 
     const onClickEdit = (camera: Camera) => {
@@ -47,7 +40,7 @@ export const CameraList:React.FC<{camerasToDisplay?:Camera[]}> = ({camerasToDisp
             <Modal
                 opened={CameraModalOpen}
                 onClose={() => setCameraModalOpen(false)}
-                title={selectedCamera ? "Edit Sensor": "Create Sensor"}
+                title={selectedCamera ? "Edit Camera": "Create Camera"}
                 centered
             >
                 <CameraForm toEditCamera={selectedCamera} />
