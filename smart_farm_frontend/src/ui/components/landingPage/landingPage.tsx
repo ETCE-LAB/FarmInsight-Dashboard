@@ -139,7 +139,7 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
                 </Flex>
             </Container>
 
-            <Container style={{overflowY: "hidden"}}>
+            <Container style={{overflowX: "hidden"}}>
                 <Grid>
                     {paginatedFpfs && paginatedFpfs.map((fpf) => (
                         <Grid.Col span={4}>
@@ -156,15 +156,13 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
                                     {fpf.sensor ? (<IconDroplet style={{ color: '#105385' }}/>):("")}
                                     {fpf.sensor ? (<Text size="xs" style={{ fontWeight: 'bold', color: '#105385' }}>PH</Text>):("")}*/}
                                 </Flex>
-
                                 <Box style={{ height: 'auto' }}>
                                     {fpf.lastImageUrl?.length && fpf.lastImageUrl.length > 0 && (
                                         <Image src={`${fpf.lastImageUrl}`} alt="Last Received Image" style={{ width: '100%', height: 'auto' }} />
                                     ) }
-
                                 </Box>
-                            </Card></Grid.Col>))}
-
+                            </Card>
+                        </Grid.Col>))}
                 </Grid>
                 <Flex justify="center" mt="lg">
                     <Pagination
