@@ -18,25 +18,40 @@ import {BasicFPF} from "../../../features/fpf/models/BasicFPF";
 
 const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     const auth = useAuth();
-    const { organizationId, fpfId } = useParams();
     const [organizations, setOrganisations] = useState<Organization[]>([]);
     const [modalOpen, setModalOpen] = useState(false);
     const organizationEventListener = useSelector((state: RootState) => state.organization.createdOrganizationEvent);
     const navigate = useNavigate();
-    const [fpf, setFpf] = useState<Fpf>({id:"0", name:"", isPublic:true, Sensors:[], Cameras:[], sensorServiceIp:"", address:""});
-    const [sensors, setSensor]= useState<Sensor[]>()
     const [fpfs, setFpfs] = useState<BasicFPF[]>([]);
+
+    const [searchTerm, setSearchTerm] = useState('');
+    const ITEMS_PER_PAGE = 6;
+    const [currentPage, setCurrentPage] = useState(1);
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const endIndex = startIndex + ITEMS_PER_PAGE;
+
+    const filteredFpfs = fpfs?.filter((fpf) =>
+        fpf.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        fpf.organization.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    const paginatedFpfs = filteredFpfs?.slice(startIndex, endIndex);
+
+    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(event.target.value);
+        setCurrentPage(1); // Reset to the first page when search term changes
+    };
+
+    // Handle page change
+    const handlePageChange = (page: number) => {
+        setCurrentPage(page);
+    };
 
     useEffect(() => {
         receiveVisibleFpfs().then(r =>
         setFpfs(r))
     }, []);
 
-    useEffect(() => {
-        if(fpf?.Sensors && fpf.Sensors.length >= 1 ){
-            setSensor(fpf.Sensors)
-        }
-    }, [fpf]);
 
     useEffect(() => {
         if (auth.isAuthenticated) {
@@ -62,6 +77,10 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
         } else {
             console.warn('No link provided for this tab.');
         }
+    };
+
+    const handleFpfSelect = (organizationId:string, fpfId:string) => {
+        navigate(AppRoutes.displayFpf.replace(':organizationId', organizationId).replace(':fpfId', fpfId));
     };
 
     const items = tabs.map((tab) => (
@@ -103,6 +122,8 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
                         <TextInput
                             placeholder="Search FPFs"
                             style={{ width: '30vw' }}
+                            value={searchTerm}
+                            onChange={handleSearchChange}
                         />
                         {items}
                         {auth.isAuthenticated ? (
@@ -118,45 +139,17 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
                 </Flex>
             </Container>
 
-            {/*<Container style={{overflowY: "hidden"}}>
-                    <Grid>
-                        <Grid.Col span={4}>
-                        <Card p="lg" shadow="sm" radius="md" style={{ margin: '10px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)' }}>
-                        <Flex justify="space-between" align="center" mb="sm">
-                            <Title order={3} style={{ color: '#199ff4' }}>{fpf?.name}</Title>
-                            <Text c="blue">
-                                {fpf.address}
-                            </Text>
-                            <Text size="xs" style={{ fontWeight: 'bold', color: '#105385' }}>PPM</Text>
-                            <IconTemperature style={{ color: '#105385' }}/>
-                            <IconSunHigh style={{ color: '#105385' }}/>
-                            <IconDroplet style={{ color: '#105385' }}/>
-                            <Text size="xs" style={{ fontWeight: 'bold', color: '#105385' }}>PH</Text>
-                            {fpf.sensor ? (<Text size="xs" style={{ fontWeight: 'bold', color: '#105385' }}>PPM</Text>):("")}
-                            {fpf.sensor ? (<IconTemperature style={{ color: '#105385' }}/>):("")}
-                            {fpf.sensor ? (<IconSunHigh style={{ color: '#105385' }}/>):("")}
-                            {fpf.sensor ? (<IconDroplet style={{ color: '#105385' }}/>):("")}
-                            {fpf.sensor ? (<Text size="xs" style={{ fontWeight: 'bold', color: '#105385' }}>PH</Text>):("")}
-                        </Flex>
-
-                        <Box style={{ height: 'auto' }}>
-                            <Image src={placeholderImage} alt="Placeholder" style={{ width: '100%', height: 'auto' }} />
-                        </Box>
-                    </Card></Grid.Col>*/}
-
             <Container style={{overflowY: "hidden"}}>
                 <Grid>
-                    {fpfs && fpfs?.map((fpf) => (
+                    {paginatedFpfs && paginatedFpfs.map((fpf) => (
                         <Grid.Col span={4}>
-                            <Card p="lg" shadow="sm" radius="md" style={{ margin: '10px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)' }}>
+                            <Card p="lg" shadow="sm" radius="md" style={{ margin: '10px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)', cursor:'pointer' }}
+                            onClick={() => {handleFpfSelect(fpf.organization.id, fpf.id);}}
+                            >
                                 <Flex justify="space-between" align="center" mb="sm">
                                     <Title order={3} style={{ color: '#199ff4' }}>{fpf.name}</Title>
                                     <Text c="blue">{fpf.organization.name}</Text>
-                                    <Text size="xs" style={{ fontWeight: 'bold', color: '#105385' }}>PPM</Text>
-                                    <IconTemperature style={{ color: '#105385' }}/>
-                                    <IconSunHigh style={{ color: '#105385' }}/>
-                                    <IconDroplet style={{ color: '#105385' }}/>
-                                    <Text size="xs" style={{ fontWeight: 'bold', color: '#105385' }}>PH</Text>
+
                                     {/*{fpf.sensor ? (<Text size="xs" style={{ fontWeight: 'bold', color: '#105385' }}>PPM</Text>):("")}
                                     {fpf.sensor ? (<IconTemperature style={{ color: '#105385' }}/>):("")}
                                     {fpf.sensor ? (<IconSunHigh style={{ color: '#105385' }}/>):("")}
@@ -166,101 +159,20 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
 
                                 <Box style={{ height: 'auto' }}>
                                     {fpf.lastImageUrl?.length && fpf.lastImageUrl.length > 0 && (
-                                        <Image src={`${process.env.REACT_APP_BACKEND_URL}${fpf.lastImageUrl}`} alt="Last Received Image" style={{ width: '100%', height: 'auto' }} />
+                                        <Image src={`${fpf.lastImageUrl}`} alt="Last Received Image" style={{ width: '100%', height: 'auto' }} />
                                     ) }
 
                                 </Box>
                             </Card></Grid.Col>))}
-                        <Grid.Col span={4}>
-                            <Card p="lg" shadow="sm" radius="md" style={{ margin: '10px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)' }}>
-                                <Flex justify="space-between" align="center" mb="sm">
-                                    <Title order={3} style={{ color: '#199ff4' }}>Tolles FPF</Title>
-                                    <Text c="blue">
-                                        Goslar
-                                    </Text>
-                                    {/*{fpf.sensor ? (<Text size="xs" style={{ fontWeight: 'bold', color: '#105385' }}>PPM</Text>):("")}
-                                    {fpf.sensor ? (<IconTemperature style={{ color: '#105385' }}/>):("")}
-                                    {fpf.sensor ? (<IconSunHigh style={{ color: '#105385' }}/>):("")}
-                                    {fpf.sensor ? (<IconDroplet style={{ color: '#105385' }}/>):("")}
-                                    {fpf.sensor ? (<Text size="xs" style={{ fontWeight: 'bold', color: '#105385' }}>PH</Text>):("")}*/}
-                                </Flex>
 
-                                <Box style={{ height: 'auto' }}>
-                                    <Image src={placeholderImage} alt="Placeholder" style={{ width: '100%', height: 'auto' }} />
-                                </Box>
-                            </Card></Grid.Col>
-                        <Grid.Col span={4}>
-                            <Card p="lg" shadow="sm" radius="md" style={{ margin: '10px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)' }}>
-                                <Flex justify="space-between" align="center" mb="sm">
-                                    <Title order={3} style={{ color: '#199ff4' }}>{fpf?.name}</Title>
-                                    <Text c="blue">
-                                        {fpf.address}
-                                    </Text>
-                                    <Text size="xs" style={{ fontWeight: 'bold', color: '#105385' }}>PPM</Text>
-                                    <IconTemperature style={{ color: '#105385' }}/>
-                                    <IconSunHigh style={{ color: '#105385' }}/>
-                                    <IconDroplet style={{ color: '#105385' }}/>
-                                    <Text size="xs" style={{ fontWeight: 'bold', color: '#105385' }}>PH</Text>
-                                    {/*{fpf.sensor ? (<Text size="xs" style={{ fontWeight: 'bold', color: '#105385' }}>PPM</Text>):("")}
-                                    {fpf.sensor ? (<IconTemperature style={{ color: '#105385' }}/>):("")}
-                                    {fpf.sensor ? (<IconSunHigh style={{ color: '#105385' }}/>):("")}
-                                    {fpf.sensor ? (<IconDroplet style={{ color: '#105385' }}/>):("")}
-                                    {fpf.sensor ? (<Text size="xs" style={{ fontWeight: 'bold', color: '#105385' }}>PH</Text>):("")}*/}
-                                </Flex>
-
-                                <Box style={{ height: 'auto' }}>
-                                    <Image src={placeholderImage} alt="Placeholder" style={{ width: '100%', height: 'auto' }} />
-                                </Box>
-                            </Card></Grid.Col>
-                        <Grid.Col span={4}>
-                            <Card p="lg" shadow="sm" radius="md" style={{ margin: '10px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)' }}>
-                                <Flex justify="space-between" align="center" mb="sm">
-                                    <Title order={3} style={{ color: '#199ff4' }}>{fpf?.name}</Title>
-                                    <Text c="blue">
-                                        {fpf.address}
-                                    </Text>
-                                    <Text size="xs" style={{ fontWeight: 'bold', color: '#105385' }}>PPM</Text>
-                                    <IconTemperature style={{ color: '#105385' }}/>
-                                    <IconSunHigh style={{ color: '#105385' }}/>
-                                    <IconDroplet style={{ color: '#105385' }}/>
-                                    <Text size="xs" style={{ fontWeight: 'bold', color: '#105385' }}>PH</Text>
-                                    {/*{fpf.sensor ? (<Text size="xs" style={{ fontWeight: 'bold', color: '#105385' }}>PPM</Text>):("")}
-                                    {fpf.sensor ? (<IconTemperature style={{ color: '#105385' }}/>):("")}
-                                    {fpf.sensor ? (<IconSunHigh style={{ color: '#105385' }}/>):("")}
-                                    {fpf.sensor ? (<IconDroplet style={{ color: '#105385' }}/>):("")}
-                                    {fpf.sensor ? (<Text size="xs" style={{ fontWeight: 'bold', color: '#105385' }}>PH</Text>):("")}*/}
-                                </Flex>
-
-                                <Box style={{ height: 'auto' }}>
-                                    <Image src={placeholderImage} alt="Placeholder" style={{ width: '100%', height: 'auto' }} />
-                                </Box>
-                            </Card></Grid.Col>
-                        <Grid.Col span={4}>
-                            <Card p="lg" shadow="sm" radius="md" style={{ margin: '10px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)' }}>
-                                <Flex justify="space-between" align="center" mb="sm">
-                                    <Title order={3} style={{ color: '#199ff4' }}>{fpf?.name}</Title>
-                                    <Text c="blue">
-                                        {fpf.address}
-                                    </Text>
-                                    <Text size="xs" style={{ fontWeight: 'bold', color: '#105385' }}>PPM</Text>
-                                    <IconTemperature style={{ color: '#105385' }}/>
-                                    <IconSunHigh style={{ color: '#105385' }}/>
-                                    <IconDroplet style={{ color: '#105385' }}/>
-                                    <Text size="xs" style={{ fontWeight: 'bold', color: '#105385' }}>PH</Text>
-                                    {/*{fpf.sensor ? (<Text size="xs" style={{ fontWeight: 'bold', color: '#105385' }}>PPM</Text>):("")}
-                                    {fpf.sensor ? (<IconTemperature style={{ color: '#105385' }}/>):("")}
-                                    {fpf.sensor ? (<IconSunHigh style={{ color: '#105385' }}/>):("")}
-                                    {fpf.sensor ? (<IconDroplet style={{ color: '#105385' }}/>):("")}
-                                    {fpf.sensor ? (<Text size="xs" style={{ fontWeight: 'bold', color: '#105385' }}>PH</Text>):("")}*/}
-                                </Flex>
-
-                                <Box style={{ height: 'auto' }}>
-                                    <Image src={placeholderImage} alt="Placeholder" style={{ width: '100%', height: 'auto' }} />
-                                </Box>
-                            </Card></Grid.Col>
                 </Grid>
                 <Flex justify="center" mt="lg">
-                    <Pagination total={10} siblings={2} defaultValue={1} />
+                    <Pagination
+                    total={Math.ceil(fpfs?.length / ITEMS_PER_PAGE) || 1}
+                    siblings={2}
+                    defaultValue={currentPage}
+                    onChange={handlePageChange}
+                />
                 </Flex>
             </Container>
             <Modal
