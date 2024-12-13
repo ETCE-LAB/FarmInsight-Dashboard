@@ -17,57 +17,43 @@ interface VideoPlayerProps {
     src: string; // Define the type for the `src` prop
 }
 
-const VideoPlayer: React.FC<VideoPlayerProps> = ({ src }) => {
-    const [videoUrl, setVideoUrl] = useState<string | null>(null);
+const Livestream: React.FC<VideoPlayerProps> = ({ src }) => {
+    const [authenticatedSrc, setAuthenticatedSrc] = useState<string | null>(null);
 
     useEffect(() => {
-        const fetchVideo = async () => {
+        const fetchAuthenticatedUrl = () => {
             try {
-                const token = getUser()?.access_token; // Retrieve the token
-                const response = await fetch(src, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-
-                if (!response.ok) {
-                    throw new Error(`Failed to fetch video: ${response.statusText}`);
+                const token = getUser()?.access_token;
+                if (!token) {
+                    throw new Error("No access token available");
                 }
 
-                const blob = await response.blob();
-                const blobUrl = URL.createObjectURL(blob);
-                setVideoUrl(blobUrl);
+                const authenticatedUrl = `${src}?token=${encodeURIComponent(token)}`;
+                setAuthenticatedSrc(authenticatedUrl);
             } catch (error) {
-                console.error('Error fetching video:', error);
+                console.error('Error generating authenticated URL:', error);
             }
         };
 
-        fetchVideo();
-
-        // Cleanup blob URL when component unmounts
-        return () => {
-            if (videoUrl) {
-                URL.revokeObjectURL(videoUrl);
-            }
-        };
+        fetchAuthenticatedUrl();
     }, [src]);
 
-    if (!videoUrl) {
-        return <div>Loading video...</div>;
+    if (!authenticatedSrc) {
+        return <div>Loading stream...</div>;
     }
 
     return (
-        <video controls style={{ width: '100%', height: '18vw', maxWidth: '50vw' }}>
-            <source src={videoUrl} type="video/mp4"/>
-
-            Your browser does not support the video tag.
-        </video>
+        <img
+            src={authenticatedSrc}
+            alt="Live Stream"
+            style={{ width: '100%', height: '18vw', maxWidth: '50vw', objectFit: 'contain' }}
+        />
     );
 };
 
-export const CameraCarousel:React.FC<{camerasToDisplay:Camera[]}> = ({camerasToDisplay}) => {
-    const { organizationId, fpfId } = useParams();
-    const[objectsToDisplay, setObjectsToDisplay] = useState<displayObject[]>([]);
+export const CameraCarousel: React.FC<{ camerasToDisplay: Camera[] }> = ({camerasToDisplay}) => {
+    const {organizationId, fpfId} = useParams();
+    const [objectsToDisplay, setObjectsToDisplay] = useState<displayObject[]>([]);
     const auth = useAuth();
 
     useEffect(() => {
@@ -110,24 +96,25 @@ export const CameraCarousel:React.FC<{camerasToDisplay:Camera[]}> = ({camerasToD
 
     const slides = objectsToDisplay.map((objectToDisplay) => (
         <Carousel.Slide key={index}>
-            <Title order={3} style={{}} >
+            <Title order={3} style={{}}>
                 {objectToDisplay.title}
             </Title>
             {!objectToDisplay.isLiveStream && (
-                <Image src={objectToDisplay.url} alt="Last Received Image" fit="contain"  style={{ height: '18vw', maxWidth:'50vw' }} />
+                <Image src={objectToDisplay.url} alt="Last Received Image" fit="contain"
+                       style={{height: '18vw', maxWidth: '50vw'}}/>
             )}
             {auth.isAuthenticated && objectToDisplay.isLiveStream && (
-                <VideoPlayer src={objectToDisplay.url}
-                />
+                <Livestream src={objectToDisplay.url}/>
             )}
-            {index = index +1}
+            {
+                index = index + 1
+            }
         </Carousel.Slide>
-
     ))
 
     return (
         <Carousel withIndicators>
             {slides}
-            </Carousel>
+        </Carousel>
     )
 }
