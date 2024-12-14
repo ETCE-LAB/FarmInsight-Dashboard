@@ -13,10 +13,12 @@ import {useAppDispatch} from "../../../utils/Hooks";
 import {changedMembership} from "../../membership/state/MembershipSlice";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../utils/store";
+import { useTranslation } from 'react-i18next';
 import {showNotification} from "@mantine/notifications";
 
 export const EditOrganization = () => {
     const { organizationId } = useParams();
+    const { t } = useTranslation();
     const [organization, setOrganization] = useState<Organization | null>(null);
     const [usersToAdd, setUsersToAdd] = useState<UserProfile[]>([]);
     const [userModalOpen, setUserModalOpen] = useState(false); // State to manage modal visibility
@@ -53,7 +55,7 @@ export const EditOrganization = () => {
             .then(() => {
                 showNotification({
                     title: 'Success',
-                    message: `${usersToAdd.length} users have been added to the organization.`,
+                    message: `${usersToAdd.length + t("header.userAdded")}`,
                     color: 'green',
                 });
                 // Clear the user list
@@ -76,21 +78,21 @@ export const EditOrganization = () => {
             {organization ? (
                 <>
                     <Title order={2} style={{ marginBottom: "10px" }}>
-                        Organization
+                        {t("header.organization")}: {organization.name}
                     </Title>
                     <Text style={{ fontWeight: 'bold' }}>
-                        Name
+                        {t("header.name")}
                     </Text>
                     <Flex gap={20} align="center" mb="2rem">
                         <TextInput placeholder={organization.name} ></TextInput>
                         <Switch
-                            label="Is Public"
+                            label={t("header.public")}
                             checked={organization.isPublic}
                         />
                     </Flex>
                     <Flex gap={20} align="center">
                         <Text style={{ fontWeight: 'bold' }}>
-                            Members
+                            {t("header.members")}
                         </Text>
                         <Button
                             onClick={() => setUserModalOpen(true)} // Open modal on button click
@@ -100,7 +102,7 @@ export const EditOrganization = () => {
 
                         >
                             <IconPlus size={18} style={{ marginRight: "8px" }} />
-                            Add Users
+                            {t("header.addUser")}
                         </Button>
                     </Flex>
                     <MembershipList members={organization.memberships} />
@@ -112,7 +114,7 @@ export const EditOrganization = () => {
                         style={{ margin: '10px' }}
                     >
                         <IconPlus size={18} style={{ marginRight: "8px" }} />
-                        Add Users
+                        {t("header.addUser")}
                     </Button>
                     <Button
                         onClick={() => setFpFModalOpen(true)} // Open modal on button click
@@ -121,14 +123,14 @@ export const EditOrganization = () => {
                         style={{ margin: '10px' }}
                     >
                         <IconPlus size={18} style={{ marginRight: "8px" }} />
-                        Add FPF
+                        {t("header.addFpf")}
                     </Button>
 
                     {/* Add User Modal */}
                     <Modal
                         opened={userModalOpen}
                         onClose={() => setUserModalOpen(false)}
-                        title="Add User to Organization"
+                        title={t("header.addUser")}
                         centered
                     >
                         {/* Search and select users */}
@@ -144,7 +146,7 @@ export const EditOrganization = () => {
                                 ))
                             ) : (
                                 <Text>
-                                    No users selected yet
+                                    {t("header.noUserSelected")}
                                 </Text>
                             )}
                             {usersToAdd.length > 0 && (
@@ -154,7 +156,7 @@ export const EditOrganization = () => {
                                     style={{ marginTop: '15px' }}
                                     variant="filled"
                                 >
-                                    Add Selected Users
+                                    {t("header.addSelectedUser")}
                                 </Button>
                             )}
                         </Card>
@@ -164,7 +166,7 @@ export const EditOrganization = () => {
                     <Modal
                         opened={fpfModalOpen}
                         onClose={() => setFpFModalOpen(false)}
-                        title="Create FPF"
+                        title={t("header.addFpf")}
                         centered
                     >
                         <FpfForm inputOrganization={organization}></FpfForm>

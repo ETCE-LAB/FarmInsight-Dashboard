@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import TimeseriesGraph from "../../measurements/ui/timeseriesGraph";
-import placeholderImage from "../../../placeholder.png";
+import placeholderImage from "../../camera/ui/NoCameraPlaceholder.png";
 import { useParams } from "react-router-dom";
 import { Fpf } from "../models/Fpf";
 import { getFpf } from "../useCase/getFpf";
@@ -8,14 +8,16 @@ import {Container, Flex, Box, Image, Grid, SimpleGrid} from '@mantine/core';
 import GrowingCycleList from "../../growthCycle/ui/growingCycleList";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../utils/store";
-import {getAllImages} from "../../measurements/useCase/getAllImages";
+import {getImages} from "../../camera/useCase/getImages";
 import useWebSocket from "react-use-websocket"
 import {getWebSocketToken} from "../../../utils/WebSocket/getWebSocketToken";
+import {CameraCarousel} from "../../camera/ui/CameraCarousel";
+
 
 export const FpfOverview = () => {
     const [fpf, setFpf] = useState<Fpf>();
     const growingCylceEventListener = useSelector((state: RootState) => state.growingCycle.changeGrowingCycleEvent);
-    const [images, setImages] = useState<[{url:string, measuredAt:string}] |null>(null)
+
     const params = useParams();
 
 
@@ -28,14 +30,7 @@ export const FpfOverview = () => {
         }
     }, [params, growingCylceEventListener]);
 
-    useEffect( () => {
-        if(fpf?.Cameras[0]) {
-            getAllImages(fpf?.Cameras[0].id).then( resp => {
-                setImages(resp)
-            })
-        }
-        else setImages(null)
-    },[fpf])
+
 
 
     return (
@@ -56,17 +51,16 @@ export const FpfOverview = () => {
                             </Box>
                         ))}
                     </Box>
-                    <Box style={{ width: 'auto', display: 'flex', flexDirection: 'column', height:'85vh'}}>
-                        <Box style={{  marginBottom: '20px' }}>
-                            {/* Camera feed placeholder */}
-                            {images?.length && images.length > 0 && (
-                            <Image src={images[0].url} alt="Last Received Image" style={{ width: '100%', height: 'auto' }} />
-                                )}
+                    <Box style={{ flex: 1, Width: '50vw', height: 'auto' }}>
+                            {/* Camera-Feed */}
+                            {fpf && (
+                                <CameraCarousel camerasToDisplay={fpf.Cameras}/>
+                            )}
                             {fpf &&
                                 <GrowingCycleList fpfId={fpf.id} growingCycles={fpf.GrowingCycles} />
                             }
                         </Box>
-                    </Box>
+
 
             </SimpleGrid>
         </Container>

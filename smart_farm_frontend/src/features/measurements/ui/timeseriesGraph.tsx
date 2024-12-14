@@ -109,6 +109,7 @@ const TimeseriesGraph: React.FC<{sensor:Sensor}> = ({sensor}) => {
                 style={{
                     borderRadius: '3px',
                     padding: '15px',
+                    width: "100%"
                 }}
                 xAxisProps={{
                     color: '#105385',

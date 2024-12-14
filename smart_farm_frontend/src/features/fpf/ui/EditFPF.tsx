@@ -53,7 +53,6 @@ export const EditFPF: React.FC = () => {
         if(fpfId){
             getFpf(fpfId).then((resp) => {
                 setSensor(resp.Sensors)
-
             })
         }
     }, [SensorEventListener]);

@@ -7,6 +7,8 @@ import {useAuth} from "react-oidc-context";
 import {useAppDispatch, useAppSelector} from "../../../utils/Hooks";
 import {changedUserProfile, receivedUserProfileEvent} from "../state/UserProfileSlice";
 import {showNotification} from "@mantine/notifications";
+import { useTranslation } from 'react-i18next';
+
 
 export const EditUserProfile = () => {
     const [editableProfile, setEditableProfile] = useState({
@@ -14,6 +16,7 @@ export const EditUserProfile = () => {
         name: ''
     });
     const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+    const { t, i18n } = useTranslation();
     const auth = useAuth();
     const userProfileReceivedEventListener = useAppSelector(receivedUserProfileEvent);
     const dispatch = useAppDispatch();
@@ -31,14 +34,14 @@ export const EditUserProfile = () => {
             dispatch(changedUserProfile());
             setUserProfile((prev) => (prev ? { ...prev, ...response } : null)); // Update local state
             showNotification({
-                title: 'Successfully updated',
-                message: 'Updated the Profile name successfully!',
+                title: t("userprofile.notifications.success.title"),
+                message: t("userprofile.notifications.success.message"),
                 color: 'green',
             });
 
         } catch (error) {
             showNotification({
-                title: 'Unable to update profile name',
+                title: t("userprofile.notifications.error.title"),
                 message: `${error}`,
                 color: 'red',
             });
@@ -69,7 +72,7 @@ export const EditUserProfile = () => {
     return (
         <>
             <TextInput
-                label="Email"
+                label={t("header.email")}
                 value={editableProfile.email}
                 onChange={(e) => handleInputChange('email', e.target.value)}
                 disabled
@@ -78,8 +81,8 @@ export const EditUserProfile = () => {
                 }}
             />
             <TextInput
-                label="Name"
-                placeholder="Enter your display name"
+                label={t("header.name")}
+                placeholder={t("userprofile.enterName")}
                 value={editableProfile.name}
                 onChange={(e) => handleInputChange('name', e.target.value)}
                 style={{
@@ -95,7 +98,7 @@ export const EditUserProfile = () => {
                         borderRadius: '6px',
                     }}
                 >
-                    Save changes
+                    {t("userprofile.saveChanges")}
                 </Button>
             </Group>
         </>
