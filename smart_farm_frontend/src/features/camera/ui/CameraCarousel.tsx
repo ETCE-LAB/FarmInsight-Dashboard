@@ -85,23 +85,11 @@ export const CameraCarousel:React.FC<{camerasToDisplay:Camera[]}> = ({camerasToD
                             console.log(resp)
                             setObjectsToDisplay((prevObjects) => [
                                 ...prevObjects,
-                                { url: resp[0].url, title: `${camera.name} Last Picture`, isLiveStream: false,   },
                                 { url: `${process.env.REACT_APP_BACKEND_URL}/api/cameras/${camera.id}/livestream`, title: `${camera.name} LiveStream`, isLiveStream: true }
                             ]);
                         }
                     })
                 }
-                //If the Camera has a Livestream URL
-                // Currently not needed as both URLS are required
-                /*
-                if(camera.isActive){
-                    setObjectsToDisplay((prevObjects) => [
-                        ...prevObjects,
-                        { url: `${process.env.REACT_APP_BACKEND_URL}/api/cameras/${camera.id}/livestream`, isLiveStream: true },
-                    ]);
-                }
-                */
-
             })
         }
     }, [fpfId, camerasToDisplay]);
