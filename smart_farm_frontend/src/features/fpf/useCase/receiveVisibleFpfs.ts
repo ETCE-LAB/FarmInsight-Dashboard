@@ -18,7 +18,7 @@ export const receiveVisibleFpfs = () => {
     const headers =
         {'Authorization': `Bearer ${token}`}
 
-    const url = `${process.env.REACT_APP_BACKEND_URL}/api/fpfs/visible`;
+    const url = `https://farminsight-backend.etce.isse.tu-clausthal.de/api/fpfs/visible`;
     const result:  Promise<BasicFPF[]> = apiClient.get(url, headers)
 
     return result
