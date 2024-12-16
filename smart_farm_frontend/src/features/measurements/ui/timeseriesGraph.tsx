@@ -5,11 +5,12 @@ import { requestMeasuremnt } from "../useCase/requestMeasurements";
 import { receivedMeasurementEvent } from "../state/measurementSlice";
 import { useAppSelector } from "../../../utils/Hooks";
 import { Measurement } from "../models/measurement";
-import {Button, Card, Flex, Title} from "@mantine/core";
+import {Button, Card, Flex, Title, Badge} from "@mantine/core";
 import { IconZoomScan } from "@tabler/icons-react";
 import {Sensor} from "../../sensor/models/Sensor";
 import useWebSocket from "react-use-websocket";
 import {getWebSocketToken} from "../../../utils/WebSocket/getWebSocketToken";
+import {format} from "node:url";
 
 const TimeseriesGraph: React.FC<{sensor:Sensor}> = ({sensor}) => {
 
@@ -43,16 +44,20 @@ const TimeseriesGraph: React.FC<{sensor:Sensor}> = ({sensor}) => {
         }
     };
 
-    useEffect(() => {
-        if(lastMessage){
-            const data = JSON.parse(lastMessage.data)
-            console.log(data)
-            const roundedMeasurements = data.measurement.map((measurement: number) =>
-                Math.round(measurement * 100) / 100
-            );
-            setMeasurements([...measurements, ...roundedMeasurements])
-        }
-    }, [lastMessage]);
+useEffect(() => {
+    if (lastMessage) {
+        const data = JSON.parse(lastMessage.data);
+        console.log(data);
+        const newMeasurements  = data.measurement.map((measurement: any) => ({
+            value: Math.round(measurement.value * 100) / 100,
+            measuredAt: data.measuredAt
+        })
+        );
+        setMeasurements((prevMeasurements) => [...prevMeasurements, ...newMeasurements]);
+
+        console.log(newMeasurements, sensor.name);
+    }
+}, [lastMessage]);
 
     useEffect(() => {
         if(sensor){
@@ -63,7 +68,7 @@ const TimeseriesGraph: React.FC<{sensor:Sensor}> = ({sensor}) => {
     }, [sensor])
 
     useEffect(() => {
-        requestMeasuremnt(sensor.id, "2024-12-12").then(resp => {
+        requestMeasuremnt(sensor.id, "2024-10-12").then(resp => {
             if(resp) {
                 // Round the values before setting them
                 const roundedMeasurements = resp.map((measurement) => ({
@@ -82,10 +87,10 @@ const TimeseriesGraph: React.FC<{sensor:Sensor}> = ({sensor}) => {
             const values = measurements.map((item) => item.value);
             const minValue = Math.min(...values);
             const maxValue = Math.max(...values);
-            const padding = 2;
 
-            setMinXValue(minValue - padding)
-            setMaxXValue(maxValue - padding)
+
+            setMinXValue(minValue)
+            setMaxXValue(maxValue)
         }
     }, [measurements]);
     return (
@@ -104,6 +109,7 @@ const TimeseriesGraph: React.FC<{sensor:Sensor}> = ({sensor}) => {
             </Flex>
 
             <LineChart
+                key={measurements.length}
                 data={measurements}
                 dataKey="date"
                 series={[{ name: "value", color: '#199ff4', label: sensor?.unit }]}
@@ -114,14 +120,36 @@ const TimeseriesGraph: React.FC<{sensor:Sensor}> = ({sensor}) => {
                     width: "100%"
                 }}
                 xAxisProps={{
+                    tickFormatter: (dateString) => {
+                        return dateString;
+                    }, // Format dates
                     color: '#105385',
                     padding: { left: 30, right: 30 },
-                }}
+                  }}
                 yAxisProps={{
                     color: '#105385',
                     domain: [minXValue, maxXValue],
                 }}
-                h={185}
+                h={250}
+                tooltipAnimationDuration={200}
+                  tooltipProps={{
+                      content: ({ label, payload }) => {
+                       if (payload && payload.length > 0) {
+                          return (
+                            <Badge color="grey" style={{ }}>
+                              <strong>{label}</strong>
+                              {payload.map((item) => (
+                                <div key={item.name}>
+                                  {item.value}{sensor.unit}
+                                </div>
+                              ))}
+                            </Badge>
+                          );
+                        }
+                        return null;
+                      }
+                }}
+
             />
         </Card>
     );
