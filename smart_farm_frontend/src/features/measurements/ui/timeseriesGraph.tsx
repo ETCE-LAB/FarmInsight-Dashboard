@@ -48,11 +48,13 @@ useEffect(() => {
     if (lastMessage) {
         const data = JSON.parse(lastMessage.data);
         console.log(data);
-        const newMeasurements  = data.measurement.map((measurement: any) => ({
+        const newMeasurements  = data.measurement.map((measurement: Measurement) => (
+            {
             value: Math.round(measurement.value * 100) / 100,
-            measuredAt: data.measuredAt
+            measuredAt: measurement.measuredAt
         })
         );
+        console.log(newMeasurements)
         setMeasurements((prevMeasurements) => [...prevMeasurements, ...newMeasurements]);
 
         console.log(newMeasurements, sensor.name);
@@ -119,6 +121,7 @@ useEffect(() => {
                     padding: '15px',
                     width: "100%"
                 }}
+                tickLine="y"
                 xAxisProps={{
                   tickFormatter: (dateString) => {
                     const date = new Date(dateString);
@@ -139,7 +142,7 @@ useEffect(() => {
                   },
 }}
                 yAxisProps={{
-                    color: '#105385',
+
                     domain: [minXValue, maxXValue],
                 }}
                 h={250}
@@ -149,7 +152,7 @@ useEffect(() => {
                        if (payload && payload.length > 0) {
                           return (
                             <Card color="grey" style={{ }}>
-                              <strong>{label}</strong>
+                              <strong>{new Date(label).toLocaleDateString([], { year: 'numeric', month: '2-digit', day: '2-digit',  hour: '2-digit', minute: '2-digit' })}</strong>
                               {payload.map((item) => (
                                 <div key={item.name}>
                                   {item.value}{sensor.unit}
@@ -161,7 +164,6 @@ useEffect(() => {
                         return null;
                       }
                 }}
-
             />
         </Card>
     );
