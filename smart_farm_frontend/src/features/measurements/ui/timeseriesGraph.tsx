@@ -5,13 +5,11 @@ import { requestMeasuremnt } from "../useCase/requestMeasurements";
 import { receivedMeasurementEvent } from "../state/measurementSlice";
 import { useAppSelector } from "../../../utils/Hooks";
 import { Measurement } from "../models/measurement";
-import {Box, Button, Card, Flex, Text, Title} from "@mantine/core";
-// @ts-ignore
+import {Button, Card, Flex, Title} from "@mantine/core";
 import { IconZoomScan } from "@tabler/icons-react";
 import {Sensor} from "../../sensor/models/Sensor";
 import useWebSocket from "react-use-websocket";
 import {getWebSocketToken} from "../../../utils/WebSocket/getWebSocketToken";
-import {read} from "node:fs";
 
 const TimeseriesGraph: React.FC<{sensor:Sensor}> = ({sensor}) => {
 
@@ -21,6 +19,8 @@ const TimeseriesGraph: React.FC<{sensor:Sensor}> = ({sensor}) => {
     const [shouldReconnect, setShouldReconnect] = useState<boolean>(false);
     const [token, setToken] = useState<string | null>(null)
     const [socketURL, setSocketUrl] = useState<string | null>(null)
+    const [minXValue, setMinXValue] = useState<number>(10)
+    const [maxXValue, setMaxXValue] = useState<number>(10)
     let {lastMessage, readyState} = useWebSocket(socketURL || "",{
         shouldReconnect:() => shouldReconnect})
 
@@ -28,7 +28,7 @@ const TimeseriesGraph: React.FC<{sensor:Sensor}> = ({sensor}) => {
         try {
             const resp = await getWebSocketToken();
             if (resp) {
-                setSocketUrl(`ws://localhost:8000/ws/sensor/${sensor?.id}?token=${encodeURIComponent(resp.token)}`);
+                setSocketUrl(`ws://${process.env.REACT_APP_BACKEND_URL}/ws/sensor/${sensor?.id}?token=${encodeURIComponent(resp.token)}`);
                 setShouldReconnect(true); // Verbindung erlauben
                 return true;
             } else {
@@ -43,10 +43,10 @@ const TimeseriesGraph: React.FC<{sensor:Sensor}> = ({sensor}) => {
         }
     };
 
-
     useEffect(() => {
         if(lastMessage){
             const data = JSON.parse(lastMessage.data)
+            console.log(data)
             const roundedMeasurements = data.measurement.map((measurement: number) =>
                 Math.round(measurement * 100) / 100
             );
@@ -63,29 +63,31 @@ const TimeseriesGraph: React.FC<{sensor:Sensor}> = ({sensor}) => {
     }, [sensor])
 
     useEffect(() => {
-        requestMeasuremnt(sensor.id, "2024-10-10").then(resp => {
-
+        requestMeasuremnt(sensor.id, "2024-12-12").then(resp => {
             if(resp) {
                 // Round the values before setting them
                 const roundedMeasurements = resp.map((measurement) => ({
                     ...measurement,
                     value: parseFloat(measurement.value.toFixed(2)),
                 }));
+                console.log(resp)
                 setMeasurements(roundedMeasurements);
             }
         });
     }, [measurementReceivedEventListener]);
 
 
-    const calculateDomain = () => {
-        if (measurements.length === 0) return [-10, 10];
-        const values = measurements.map((item) => item.value);
-        const minValue = Math.min(...values);
-        const maxValue = Math.max(...values);
-        const padding = 2;
-        return [minValue - padding, maxValue + padding];
-    };
+    useEffect(() => {
+        if (measurements.length > 0) {
+            const values = measurements.map((item) => item.value);
+            const minValue = Math.min(...values);
+            const maxValue = Math.max(...values);
+            const padding = 2;
 
+            setMinXValue(minValue - padding)
+            setMaxXValue(maxValue - padding)
+        }
+    }, [measurements]);
     return (
         <Card p="lg" shadow="sm" radius="md" style={{ marginBottom: '30px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)' }}>
             <Flex justify="space-between" align="center" mb="md">
@@ -117,7 +119,7 @@ const TimeseriesGraph: React.FC<{sensor:Sensor}> = ({sensor}) => {
                 }}
                 yAxisProps={{
                     color: '#105385',
-                    domain: calculateDomain(),
+                    domain: [minXValue, maxXValue],
                 }}
                 h={185}
             />

@@ -10,7 +10,7 @@ export const getAvailableHardwareConfiguration = (fpfId: string) => {
 
     const headers =
         {'Authorization': `Bearer ${token}`}
-    const url = `${process.env.REACT_APP_BACKEND_URL}/api/sensors/types/available/${fpfId}`;
+    const url = `http://${process.env.REACT_APP_BACKEND_URL}/api/sensors/types/available/${fpfId}`;
     const result:  Promise<HardwareConfiguration[]> = apiClient.get(url, headers)
 
     return result

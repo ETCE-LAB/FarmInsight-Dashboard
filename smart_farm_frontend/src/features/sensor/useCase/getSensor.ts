@@ -9,7 +9,7 @@ export const getSensor = async (sensorId: string): Promise<EditSensor|undefined>
         const token = user?.access_token;
         const headers =
             {'Authorization': `Bearer ${token}`}
-        const url = `${process.env.REACT_APP_BACKEND_URL}/api/sensors/${sensorId}`;
+        const url = `http://${process.env.REACT_APP_BACKEND_URL}/api/sensors/${sensorId}`;
         return await apiClient.get(url, headers);
     }
     catch (error) {

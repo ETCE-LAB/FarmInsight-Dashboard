@@ -11,7 +11,7 @@ export const promoteMember = async (data: { id:string, membershipRole:string }) 
 
         const headers =
             {'Authorization': `Bearer ${token}`}
-        const url = `${process.env.REACT_APP_BACKEND_URL}/api/memberships/${data.id}`;
+        const url = `http://${process.env.REACT_APP_BACKEND_URL}/api/memberships/${data.id}`;
 
 
         const response = await apiClient.put(url, data, headers)

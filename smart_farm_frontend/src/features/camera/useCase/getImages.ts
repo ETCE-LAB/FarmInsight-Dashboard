@@ -13,7 +13,7 @@ export const getImages = (cameraId:string, from:string = "2024-10-10") => {
 
     const headers =
         {'Authorization': `Bearer ${token}`}
-    let url = `${process.env.REACT_APP_BACKEND_URL}/api/cameras/${cameraId}/images?from=${from}`;
+    let url = `http://${process.env.REACT_APP_BACKEND_URL}/api/cameras/${cameraId}/images?from=${from}`;
 
     const result:Promise<[{url:string, measuredAt:string}]> = apiClient.get(url, headers)
 

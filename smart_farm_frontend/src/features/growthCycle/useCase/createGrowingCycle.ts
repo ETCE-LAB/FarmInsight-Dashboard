@@ -14,7 +14,7 @@ export const createGrowingCycle = (data:GrowingCycle) => {
     const headers =
         {'Authorization': `Bearer ${token}`}
 
-    const url = `${process.env.REACT_APP_BACKEND_URL}/api/growing-cycles`;
+    const url = `http://${process.env.REACT_APP_BACKEND_URL}/api/growing-cycles`;
     const result:  Promise<GrowingCycle> = apiClient.post(url, data, headers)
 
     return result

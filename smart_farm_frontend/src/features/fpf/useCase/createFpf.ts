@@ -13,7 +13,7 @@ export const createFpf = async (data: { name:string, isPublic:boolean, sensorSer
 
         const headers =
             {'Authorization': `Bearer ${token}`}
-        const url = `${process.env.REACT_APP_BACKEND_URL}/api/fpfs`;
+        const url = `http://${process.env.REACT_APP_BACKEND_URL}/api/fpfs`;
         const response:Fpf = await apiClient.post(url, data, headers);
 
         return response

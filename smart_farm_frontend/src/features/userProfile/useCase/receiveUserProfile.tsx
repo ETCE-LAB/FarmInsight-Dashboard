@@ -12,7 +12,7 @@ export const receiveUserProfile = () => {
     const headers =
         {'Authorization': `Bearer ${token}`}
 
-    const url = `${process.env.REACT_APP_BACKEND_URL}/api/userprofiles`;
+    const url = `http://${process.env.REACT_APP_BACKEND_URL}/api/userprofiles`;
     const result:  Promise<UserProfile> = apiClient.get(url, headers)
 
     return result

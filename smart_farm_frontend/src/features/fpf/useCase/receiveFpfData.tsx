@@ -19,7 +19,7 @@ export const receiveFpfData = (fpfID: string, from: string, to: string) => {
 
     const fromTest = "2024-09-20"
     const toTest = "2024-11-20"
-    const url = `${process.env.REACT_APP_BACKEND_URL}/api/fpfs/${fpfID}/data?from=${fromTest}&to=${toTest}`;
+    const url = `http://${process.env.REACT_APP_BACKEND_URL}/api/fpfs/${fpfID}/data?from=${fromTest}&to=${toTest}`;
     const result:  Promise<Fpf> = apiClient.get(url, headers)
 
     return result

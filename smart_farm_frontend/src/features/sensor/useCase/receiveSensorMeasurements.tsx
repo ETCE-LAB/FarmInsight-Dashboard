@@ -12,7 +12,7 @@ export const receiveSensorMeasurements = (sensorID:number, from:Date, to:Date) =
     const headers =
         {'Authorization': `Bearer ${token}`}
 
-    const url = `${process.env.REACT_APP_BACKEND_URL}/api/sensors/${sensorID}/measurement?from=${from}&to=${to}`;
+    const url = `http://${process.env.REACT_APP_BACKEND_URL}/api/sensors/${sensorID}/measurement?from=${from}&to=${to}`;
     const result:  Promise<Sensor> = apiClient.get(url, headers)
 
     return result
