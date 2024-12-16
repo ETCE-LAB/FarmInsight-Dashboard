@@ -21,6 +21,8 @@ const Livestream: React.FC<VideoPlayerProps> = ({ src }) => {
     const [authenticatedSrc, setAuthenticatedSrc] = useState<string | null>(null);
 
     useEffect(() => {
+        let isMounted = true;
+
         const fetchAuthenticatedUrl = () => {
             try {
                 const token = getUser()?.access_token;
@@ -36,6 +38,13 @@ const Livestream: React.FC<VideoPlayerProps> = ({ src }) => {
         };
 
         fetchAuthenticatedUrl();
+
+        return () => {
+            isMounted = false;
+            if (authenticatedSrc) {
+                URL.revokeObjectURL(authenticatedSrc);
+            }
+        };
     }, [src]);
 
     if (!authenticatedSrc) {
