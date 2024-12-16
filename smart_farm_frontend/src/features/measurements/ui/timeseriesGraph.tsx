@@ -110,7 +110,7 @@ useEffect(() => {
 
             <LineChart
                 key={measurements.length}
-                data={measurements}
+                data={measurements.slice(-50)}
                 dataKey="measuredAt"
                 series={[{ name: "value", color: '#199ff4', label: sensor?.unit }]}
                 curveType="monotone"
@@ -120,23 +120,24 @@ useEffect(() => {
                     width: "100%"
                 }}
                 xAxisProps={{
-                    tickFormatter: (dateString) => {
-                        const date = new Date(dateString);
-                        const now = new Date();
+                  tickFormatter: (dateString) => {
+                    const date = new Date(dateString);
+                    const now = new Date();
 
-                        // Prüfe, ob die Daten vom selben Tag stammen
-                        const isSameDay =
-                            date.getDate() === now.getDate() &&
-                            date.getMonth() === now.getMonth() &&
-                            date.getFullYear() === now.getFullYear();
+                    const isSameDay =
+                      date.getDate() === now.getDate() &&
+                      date.getMonth() === now.getMonth() &&
+                      date.getFullYear() === now.getFullYear();
 
-                        return isSameDay
-                            ? date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) // Uhrzeit anzeigen
-                            : date.toLocaleDateString([], { year: 'numeric', month: '2-digit', day: '2-digit' }); // Datum anzeigen
-                    }, // Format dates
-                    color: '#105385',
-                    padding: { left: 30, right: 30 },
-                  }}
+                    const isSameYear = date.getFullYear() === now.getFullYear();
+
+                    return isSameDay
+                      ? date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) // Show time for the same day
+                      : isSameYear
+                      ? date.toLocaleDateString([], { month: '2-digit', day: '2-digit' }) // Show date without year for the same year
+                      : date.toLocaleDateString([], { year: 'numeric', month: '2-digit', day: '2-digit' }); // Show full date including year for other years
+                  },
+}}
                 yAxisProps={{
                     color: '#105385',
                     domain: [minXValue, maxXValue],
@@ -147,14 +148,14 @@ useEffect(() => {
                       content: ({ label, payload }) => {
                        if (payload && payload.length > 0) {
                           return (
-                            <Badge color="grey" style={{ }}>
+                            <Card color="grey" style={{ }}>
                               <strong>{label}</strong>
                               {payload.map((item) => (
                                 <div key={item.name}>
                                   {item.value}{sensor.unit}
                                 </div>
                               ))}
-                            </Badge>
+                            </Card>
                           );
                         }
                         return null;
