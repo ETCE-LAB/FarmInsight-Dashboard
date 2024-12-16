@@ -17,8 +17,7 @@ export const receiveVisibleFpfs = () => {
 
     const headers =
         {
-            'Authorization': `Bearer ${token}`,
-            'Access-Control-Allow-Origin': 'https://farminsight.etce.isse.tu-clausthal.de',
+            'Authorization': `Bearer ${token}`
         }
 
     const url = `https://farminsight-backend.etce.isse.tu-clausthal.de/api/fpfs/visible`;
