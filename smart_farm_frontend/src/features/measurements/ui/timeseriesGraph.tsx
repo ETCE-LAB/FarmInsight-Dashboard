@@ -68,7 +68,7 @@ useEffect(() => {
     }, [sensor])
 
     useEffect(() => {
-        requestMeasuremnt(sensor.id, "2024-10-12").then(resp => {
+        requestMeasuremnt(sensor.id, "2024-10-10").then(resp => {
             if(resp) {
                 // Round the values before setting them
                 const roundedMeasurements = resp.map((measurement) => ({
@@ -88,11 +88,11 @@ useEffect(() => {
             const minValue = Math.min(...values);
             const maxValue = Math.max(...values);
 
-
             setMinXValue(minValue)
             setMaxXValue(maxValue)
         }
     }, [measurements]);
+
     return (
         <Card p="lg" shadow="sm" radius="md" style={{ marginBottom: '30px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)' }}>
             <Flex justify="space-between" align="center" mb="md">
@@ -111,7 +111,7 @@ useEffect(() => {
             <LineChart
                 key={measurements.length}
                 data={measurements}
-                dataKey="date"
+                dataKey="measuredAt"
                 series={[{ name: "value", color: '#199ff4', label: sensor?.unit }]}
                 curveType="monotone"
                 style={{
@@ -121,7 +121,18 @@ useEffect(() => {
                 }}
                 xAxisProps={{
                     tickFormatter: (dateString) => {
-                        return dateString;
+                        const date = new Date(dateString);
+                        const now = new Date();
+
+                        // Prüfe, ob die Daten vom selben Tag stammen
+                        const isSameDay =
+                            date.getDate() === now.getDate() &&
+                            date.getMonth() === now.getMonth() &&
+                            date.getFullYear() === now.getFullYear();
+
+                        return isSameDay
+                            ? date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) // Uhrzeit anzeigen
+                            : date.toLocaleDateString([], { year: 'numeric', month: '2-digit', day: '2-digit' }); // Datum anzeigen
                     }, // Format dates
                     color: '#105385',
                     padding: { left: 30, right: 30 },
