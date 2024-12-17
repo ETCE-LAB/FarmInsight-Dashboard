@@ -1,64 +1,22 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {Camera, EditCamera} from "../models/camera";
 import {useParams} from "react-router-dom";
 import { Carousel } from '@mantine/carousel';
 import {getImages} from "../useCase/getImages";
-import {Image, Title} from '@mantine/core';
+import {Card, Center, Image, Title} from '@mantine/core';
 import {getUser} from "../../../utils/getUser";
 import {useAuth} from "react-oidc-context";
+import {Livestream} from "./Livestream";
+import NoCameraPlaceholder from './NoCameraPlaceholder.png';
+import {IconVideoOff} from "@tabler/icons-react";
 
-interface displayObject {
+
+export interface displayObject {
     url:string,
     title:string,
     isLiveStream:boolean
 }
 
-interface VideoPlayerProps {
-    src: string; // Define the type for the `src` prop
-}
-
-const Livestream: React.FC<VideoPlayerProps> = ({ src }) => {
-    const [authenticatedSrc, setAuthenticatedSrc] = useState<string | null>(null);
-
-    useEffect(() => {
-        let isMounted = true;
-
-        const fetchAuthenticatedUrl = () => {
-            try {
-                const token = getUser()?.access_token;
-                if (!token) {
-                    throw new Error("No access token available");
-                }
-
-                const authenticatedUrl = `${src}?token=${encodeURIComponent(token)}`;
-                setAuthenticatedSrc(authenticatedUrl);
-            } catch (error) {
-                console.error('Error generating authenticated URL:', error);
-            }
-        };
-
-        fetchAuthenticatedUrl();
-
-        return () => {
-            isMounted = false;
-            if (authenticatedSrc) {
-                URL.revokeObjectURL(authenticatedSrc);
-            }
-        };
-    }, [src]);
-
-    if (!authenticatedSrc) {
-        return <div>Loading stream...</div>;
-    }
-
-    return (
-        <img
-            src={authenticatedSrc}
-            alt="Live Stream"
-            style={{ width: '100%', height: '18vw', maxWidth: '50vw', objectFit: 'contain' }}
-        />
-    );
-};
 
 export const CameraCarousel: React.FC<{ camerasToDisplay: Camera[] }> = ({camerasToDisplay}) => {
     const {organizationId, fpfId} = useParams();
@@ -66,9 +24,14 @@ export const CameraCarousel: React.FC<{ camerasToDisplay: Camera[] }> = ({camera
     const auth = useAuth();
 
     useEffect(() => {
-        if(camerasToDisplay){
+        setObjectsToDisplay([])
+
+        console.log(camerasToDisplay)
+
+        if(camerasToDisplay.length > 0){
+            console.log(fpfId, camerasToDisplay)
             //Reset/Clear current List
-            setObjectsToDisplay([])
+
             //For each Camera add all Images and Livestreams as objectsToDisplay
             camerasToDisplay.map((camera) => {
                 console.log(camera)
@@ -80,7 +43,7 @@ export const CameraCarousel: React.FC<{ camerasToDisplay: Camera[] }> = ({camera
                             console.log(resp)
                             setObjectsToDisplay((prevObjects) => [
                                 ...prevObjects,
-                                { url: resp[0].url, title: `${camera.name} Last Picture`, isLiveStream: false,   },
+                                { url: resp[0].url, title: `${camera.name} ${resp[0].measuredAt}`, isLiveStream: false,   },
                                 { url: `${process.env.REACT_APP_BACKEND_URL}/api/cameras/${camera.id}/livestream`, title: `${camera.name} LiveStream`, isLiveStream: true }
                             ]);
                         }
@@ -101,29 +64,41 @@ export const CameraCarousel: React.FC<{ camerasToDisplay: Camera[] }> = ({camera
         }
     }, [fpfId, camerasToDisplay]);
 
-    let index = 0
 
-    const slides = objectsToDisplay.map((objectToDisplay) => (
+
+    const slides = objectsToDisplay.map((objectToDisplay, index) => (
         <Carousel.Slide key={index}>
-            <Title order={3} style={{}}>
-                {objectToDisplay.title}
-            </Title>
+
             {!objectToDisplay.isLiveStream && (
-                <Image src={objectToDisplay.url} alt="Last Received Image" fit="contain"
-                       style={{height: '18vw', maxWidth: '50vw'}}/>
+               <>
+                   <Image src={objectToDisplay.url} alt="Last Received Image" fit="contain" />
+                   <Title order={6} style={{position: 'absolute', top: '5px', left: '5px'}}> {objectToDisplay.title} </Title>
+               </>
             )}
             {auth.isAuthenticated && objectToDisplay.isLiveStream && (
-                <Livestream src={objectToDisplay.url}/>
+                <Livestream src={objectToDisplay}/>
             )}
-            {
-                index = index + 1
-            }
+
         </Carousel.Slide>
     ))
 
     return (
-        <Carousel withIndicators>
-            {slides}
-        </Carousel>
-    )
+         <Card
+            shadow="sm"
+            padding="md"
+            radius="md"
+            style={{ boxShadow: "0 2px 8px rgba(0, 0, 0, 0.3)", position: "static", marginBottom: "30px"}}>
+             <Center>
+                {camerasToDisplay && camerasToDisplay.length > 0 ? (
+                    <Carousel withIndicators>
+                        {slides}
+                    </Carousel>
+                ) : (
+                    <Center style={{ height: '35vh'}}>
+                        <IconVideoOff style={{ margin: 'auto'}} size={50}/>
+                    </Center>
+                )}
+             </Center>
+         </Card>
+        )
 }
