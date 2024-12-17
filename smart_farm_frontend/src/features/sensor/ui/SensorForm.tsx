@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Box, Button, Grid, NumberInput, Switch, TextInput} from "@mantine/core";
-import {useAuth} from "react-oidc-context";
+import {useAuth} from "../../../utils/MainAppProvider"//"react-oidc-context";
 import {EditSensor} from "../models/Sensor";
 import SelectHardwareConfiguration from "../../hardwareConfiguration/ui/SelectHardwareConfiguration";
 import {createSensor} from "../useCase/createSensor";

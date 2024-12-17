@@ -1,4 +1,4 @@
-import {useAuth} from "react-oidc-context";
+import {useAuth} from "../../../utils/MainAppProvider"//"react-oidc-context";
 import React, {useEffect} from "react";
 
 export const SignIn = () => {

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {useAuth} from "react-oidc-context";
+import {useAuth} from "../../../utils/MainAppProvider"//"react-oidc-context";
 import {useNavigate, useParams} from "react-router-dom";
 import {AppRoutes} from "../../../utils/appRoutes";
 import {Box, Button, Grid, NumberInput, Switch, TextInput} from "@mantine/core";

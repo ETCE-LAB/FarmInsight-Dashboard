@@ -5,7 +5,7 @@ import { Carousel } from '@mantine/carousel';
 import {getImages} from "../useCase/getImages";
 import {Image, Title} from '@mantine/core';
 import {getUser} from "../../../utils/getUser";
-import {useAuth} from "react-oidc-context";
+import {useAuth} from "../../../utils/MainAppProvider"//"react-oidc-context";
 
 interface displayObject {
     url:string,

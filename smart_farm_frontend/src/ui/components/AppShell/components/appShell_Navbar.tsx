@@ -5,7 +5,7 @@ import { Organization } from "../../../../features/organization/models/Organizat
 import { useLocation, useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../../../utils/appRoutes";
 import { getMyOrganizations } from "../../../../features/organization/useCase/getMyOrganizations";
-import { useAuth } from "react-oidc-context";
+import { useAuth } from "../../../../utils/MainAppProvider"//"react-oidc-context";
 import { Fpf } from "../../../../features/fpf/models/Fpf";
 import { getOrganization } from "../../../../features/organization/useCase/getOrganization";
 import DynamicFontText from "../../../../utils/DynamicFontText";
