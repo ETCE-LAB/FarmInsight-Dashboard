@@ -1,6 +1,6 @@
 import React from 'react';
 import {Button} from "@mantine/core";
-import {useAuth} from "react-oidc-context";
+import {useAuth} from "../../../utils/MainAppProvider"//"react-oidc-context";
 import { useTranslation } from 'react-i18next';
 
 

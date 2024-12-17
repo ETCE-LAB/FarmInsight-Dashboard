@@ -9,7 +9,6 @@ import GrowingCycleList from "../../growthCycle/ui/growingCycleList";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../utils/store";
 import {getImages} from "../../camera/useCase/getImages";
-import useWebSocket from "react-use-websocket"
 import {getWebSocketToken} from "../../../utils/WebSocket/getWebSocketToken";
 import {CameraCarousel} from "../../camera/ui/CameraCarousel";
 

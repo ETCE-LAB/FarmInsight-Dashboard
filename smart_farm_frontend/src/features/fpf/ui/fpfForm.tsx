@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Button, TextInput, Checkbox, Box, Switch, Card, Grid, Title, ActionIcon} from "@mantine/core";
-import { useAuth } from "react-oidc-context";
+import { useAuth } from "../../../utils/MainAppProvider"//"react-oidc-context";
 import {createFpf} from "../useCase/createFpf";
 import {Organization} from "../../organization/models/Organization";
 import {useDispatch} from "react-redux";

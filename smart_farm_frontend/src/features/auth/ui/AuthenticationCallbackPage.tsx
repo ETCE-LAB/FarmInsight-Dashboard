@@ -1,4 +1,4 @@
-import {useAuth} from "react-oidc-context";
+import {useAuth} from "../../../utils/MainAppProvider"//"react-oidc-context";
 import {Navigate} from "react-router-dom";
 import {AppRoutes} from "../../../utils/appRoutes";
 import React from "react";

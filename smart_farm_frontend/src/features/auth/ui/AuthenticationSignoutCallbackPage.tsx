@@ -1,5 +1,5 @@
 import {Navigate, useNavigate} from "react-router-dom";
-import {useAuth} from "react-oidc-context";
+import {useAuth} from "../../../utils/MainAppProvider"//"react-oidc-context";
 import {AppRoutes} from "../../../utils/appRoutes";
 import React from "react";
 

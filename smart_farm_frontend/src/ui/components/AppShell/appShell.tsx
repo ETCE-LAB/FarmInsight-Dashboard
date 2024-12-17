@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import React, { PropsWithChildren } from "react";
 import { AppShell_Header } from "./components/appShell_Header"; // Import the header component
 import { AppShell_Navbar } from "./components/appShell_Navbar";
-import {useAuth} from "react-oidc-context";
+import {useAuth} from "../../../utils/MainAppProvider"//"react-oidc-context";
 import {AppRoutes} from "../../../utils/appRoutes"; // Import the navbar component
 
 export const BasicAppShell: React.FC<PropsWithChildren<{}>> = ({ children }) => {
