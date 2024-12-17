@@ -16,7 +16,7 @@ export const deleteGrowingCycle = async (growingCycleID:string) => {
         'Content-Type': 'application/json', // Ensure proper content type for JSON payload
     };
 
-    const url = `http://${process.env.REACT_APP_BACKEND_URL}/api/growing-cycles/${growingCycleID}`;
+    const url = `${process.env.REACT_APP_BACKEND_URL}/api/growing-cycles/${growingCycleID}`;
     try {
         const response = await apiClient.delete(url, headers);
         if(response)

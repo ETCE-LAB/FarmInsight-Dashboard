@@ -9,7 +9,7 @@ export const createOrganization = async (data: { name: string; isPublic: boolean
         const token = user?.access_token;
         const headers =
             {'Authorization': `Bearer ${token}`}
-        const url = `http://${process.env.REACT_APP_BACKEND_URL}/api/organizations`;
+        const url = `${process.env.REACT_APP_BACKEND_URL}/api/organizations`;
         const response = await apiClient.post(url, data, headers);
 
 

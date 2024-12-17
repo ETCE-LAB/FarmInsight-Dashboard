@@ -15,10 +15,10 @@ export const requestMeasuremnt = (sensorID:string, from:string, to?:string) => {
         {'Authorization': `Bearer ${token}`}
     let url = ""
     if(to) {
-        url = `http://${process.env.REACT_APP_BACKEND_URL}/api/sensors/${sensorID}/measurements?from=${from}&to=${to}`;
+        url = `${process.env.REACT_APP_BACKEND_URL}/api/sensors/${sensorID}/measurements?from=${from}&to=${to}`;
     }
     else {
-        url = `http://${process.env.REACT_APP_BACKEND_URL}/api/sensors/${sensorID}/measurements?from=${from}`;
+        url = `${process.env.REACT_APP_BACKEND_URL}/api/sensors/${sensorID}/measurements?from=${from}`;
     }
 
     const result:  Promise<Measurement[]> = apiClient.get(url, headers)

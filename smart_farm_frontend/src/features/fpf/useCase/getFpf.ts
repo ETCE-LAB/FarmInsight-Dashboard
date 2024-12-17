@@ -13,7 +13,7 @@ export const getFpf = (fpfID: string) => {
         {'Authorization': `Bearer ${token}`}
 
 
-    const url = `http://${process.env.REACT_APP_BACKEND_URL}/api/fpfs/${fpfID}`;
+    const url = `${process.env.REACT_APP_BACKEND_URL}/api/fpfs/${fpfID}`;
     const result:  Promise<Fpf> = apiClient.get(url, headers)
 
     return result

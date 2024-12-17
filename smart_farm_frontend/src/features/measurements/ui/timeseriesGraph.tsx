@@ -18,7 +18,6 @@ const TimeseriesGraph: React.FC<{sensor:Sensor}> = ({sensor}) => {
     const [measurements, setMeasurements] = useState<Measurement[]>([]);
 
     const [shouldReconnect, setShouldReconnect] = useState<boolean>(false);
-    const [token, setToken] = useState<string | null>(null)
     const [socketURL, setSocketUrl] = useState<string | null>(null)
     const [minXValue, setMinXValue] = useState<number>(10)
     const [maxXValue, setMaxXValue] = useState<number>(10)
@@ -29,7 +28,22 @@ const TimeseriesGraph: React.FC<{sensor:Sensor}> = ({sensor}) => {
         try {
             const resp = await getWebSocketToken();
             if (resp) {
-                setSocketUrl(`ws://${process.env.REACT_APP_BACKEND_URL}/ws/sensor/${sensor?.id}?token=${encodeURIComponent(resp.token)}`);
+                let base_url = process.env.REACT_APP_BACKEND_URL;
+                if (base_url) {
+                    if (base_url.startsWith('https')) {
+                        base_url = base_url.replace('https', 'wss');
+                    } else if (base_url.startsWith('http')) {
+                        base_url = base_url.replace('http', 'ws');
+                    } else {
+                        console.log(`REACT_APP_BACKEND_URL ${base_url} not configured correctly, needs to begin with http/https.`);
+                        return false;
+                    }
+                } else {
+                    console.log('REACT_APP_BACKEND_URL not configured.');
+                    return false;
+                }
+
+                setSocketUrl(`${base_url}/ws/sensor/${sensor?.id}?token=${encodeURIComponent(resp.token)}`);
                 setShouldReconnect(true); // Verbindung erlauben
                 return true;
             } else {

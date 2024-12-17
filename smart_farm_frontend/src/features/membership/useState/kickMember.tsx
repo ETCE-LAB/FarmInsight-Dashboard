@@ -11,7 +11,7 @@ export const kickMember = async (data: { id:string }) => {
 
         const headers =
             {'Authorization': `Bearer ${token}`}
-        const url = `http://${process.env.REACT_APP_BACKEND_URL}/api/memberships/${data.id}`;
+        const url = `${process.env.REACT_APP_BACKEND_URL}/api/memberships/${data.id}`;
         return await apiClient.delete(url, headers)
     }
     catch (error) {

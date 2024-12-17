@@ -11,7 +11,7 @@ export const getCamera = async (cameraId: string): Promise<EditCamera|undefined>
         const token = user?.access_token;
         const headers =
             {'Authorization': `Bearer ${token}`}
-        const url = `$http://${process.env.REACT_APP_BACKEND_URL}/api/cameras/${cameraId}`;
+        const url = `${process.env.REACT_APP_BACKEND_URL}/api/cameras/${cameraId}`;
         return await apiClient.get(url, headers);
     }
     catch (error) {

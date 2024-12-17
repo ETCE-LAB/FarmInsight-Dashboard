@@ -11,7 +11,7 @@ export const getLivestream = async (cameraId: string, from:string="2024-10-10") 
 
     const headers =
         {'Authorization': `Bearer ${token}`}
-    let url = `http://${process.env.REACT_APP_BACKEND_URL}/api/cameras/${cameraId}/livestream`;
+    let url = `${process.env.REACT_APP_BACKEND_URL}/api/cameras/${cameraId}/livestream`;
 
 //cameras/${amera_id}/livestream
 

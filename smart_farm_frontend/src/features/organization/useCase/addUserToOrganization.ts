@@ -10,7 +10,7 @@ export const addUserToOrganization = async (data: { organizationId:string, userp
         const token = user?.access_token;
         const headers =
             {'Authorization': `Bearer ${token}`}
-        const url = `http://${process.env.REACT_APP_BACKEND_URL}/api/memberships`;
+        const url = `${process.env.REACT_APP_BACKEND_URL}/api/memberships`;
         const response:Organization = await apiClient.post(url, data, headers);
 
         return response;

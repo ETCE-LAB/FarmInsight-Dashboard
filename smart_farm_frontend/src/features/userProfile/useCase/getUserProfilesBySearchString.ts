@@ -19,7 +19,7 @@ export const getUserProfilesBySearchString = (searchString:string, orgaID:string
         exclude = `?exclude_organization_id=${orgaID}`
     }
 
-    const url = `http://${process.env.REACT_APP_BACKEND_URL}/api/userprofiles/${searchString}${exclude}`;
+    const url = `${process.env.REACT_APP_BACKEND_URL}/api/userprofiles/${searchString}${exclude}`;
 
     console.log(url)
 

@@ -13,7 +13,7 @@ export const getMyOrganizations = () => {
         {'Authorization': `Bearer ${token}`}
 
 
-    const url = `http://${process.env.REACT_APP_BACKEND_URL}/api/organizations/own`;
+    const url = `${process.env.REACT_APP_BACKEND_URL}/api/organizations/own`;
     const result:  Promise<Organization[]> = apiClient.get(url, headers)
 
     return result

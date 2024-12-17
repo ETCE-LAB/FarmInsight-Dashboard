@@ -11,7 +11,7 @@ export const getWebSocketToken = () => {
     const headers =
         {'Authorization': `Bearer ${token}`}
 
-    const url = `http://${process.env.REACT_APP_BACKEND_URL}/api/websocket-token`;
+    const url = `${process.env.REACT_APP_BACKEND_URL}/api/websocket-token`;
 
     const result= apiClient.get(url, headers)
 
