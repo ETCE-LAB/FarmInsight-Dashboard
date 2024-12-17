@@ -9,6 +9,7 @@ import {useAuth} from "react-oidc-context";
 import {Livestream} from "./Livestream";
 import NoCameraPlaceholder from './NoCameraPlaceholder.png';
 import {IconVideoOff} from "@tabler/icons-react";
+import {BACKEND_URL} from "../../../env-config";
 
 
 export interface displayObject {
@@ -44,7 +45,7 @@ export const CameraCarousel: React.FC<{ camerasToDisplay: Camera[] }> = ({camera
                             setObjectsToDisplay((prevObjects) => [
                                 ...prevObjects,
                                 { url: resp[0].url, title: `${camera.name} ${resp[0].measuredAt}`, isLiveStream: false,   },
-                                { url: `${process.env.REACT_APP_BACKEND_URL}/api/cameras/${camera.id}/livestream`, title: `${camera.name} LiveStream`, isLiveStream: true }
+                                { url: `${BACKEND_URL}/api/cameras/${camera.id}/livestream`, title: `${camera.name} LiveStream`, isLiveStream: true }
                             ]);
                         }
                     })
@@ -55,7 +56,7 @@ export const CameraCarousel: React.FC<{ camerasToDisplay: Camera[] }> = ({camera
                 if(camera.isActive){
                     setObjectsToDisplay((prevObjects) => [
                         ...prevObjects,
-                        { url: `${process.env.REACT_APP_BACKEND_URL}/api/cameras/${camera.id}/livestream`, isLiveStream: true },
+                        { url: `${BACKEND_URL}/api/cameras/${camera.id}/livestream`, isLiveStream: true },
                     ]);
                 }
                 */

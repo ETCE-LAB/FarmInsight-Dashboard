@@ -1,0 +1,1 @@
+export const BACKEND_URL = "https://farminsght-backend.etce.isse.tu-clausthal.de";

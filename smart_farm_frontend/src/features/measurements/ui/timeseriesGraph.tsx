@@ -11,6 +11,7 @@ import {Sensor} from "../../sensor/models/Sensor";
 import useWebSocket from "react-use-websocket";
 import {getWebSocketToken} from "../../../utils/WebSocket/getWebSocketToken";
 import {format} from "node:url";
+import {BACKEND_URL} from "../../../env-config";
 
 const TimeseriesGraph: React.FC<{sensor:Sensor}> = ({sensor}) => {
 
@@ -28,7 +29,7 @@ const TimeseriesGraph: React.FC<{sensor:Sensor}> = ({sensor}) => {
         try {
             const resp = await getWebSocketToken();
             if (resp) {
-                let base_url = process.env.REACT_APP_BACKEND_URL;
+                let base_url = BACKEND_URL;
                 if (base_url) {
                     if (base_url.startsWith('https')) {
                         base_url = base_url.replace('https', 'wss');
