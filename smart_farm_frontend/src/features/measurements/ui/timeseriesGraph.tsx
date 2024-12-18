@@ -5,13 +5,12 @@ import { requestMeasuremnt } from "../useCase/requestMeasurements";
 import { receivedMeasurementEvent } from "../state/measurementSlice";
 import { useAppSelector } from "../../../utils/Hooks";
 import { Measurement } from "../models/measurement";
-import {Box, Button, Card, Flex, Text, Title} from "@mantine/core";
-// @ts-ignore
+import {Button, Card, Flex, Title, Badge} from "@mantine/core";
 import { IconZoomScan } from "@tabler/icons-react";
 import {Sensor} from "../../sensor/models/Sensor";
 import useWebSocket from "react-use-websocket";
 import {getWebSocketToken} from "../../../utils/WebSocket/getWebSocketToken";
-import {read} from "node:fs";
+import {format} from "node:url";
 
 const TimeseriesGraph: React.FC<{sensor:Sensor}> = ({sensor}) => {
 
@@ -19,8 +18,9 @@ const TimeseriesGraph: React.FC<{sensor:Sensor}> = ({sensor}) => {
     const [measurements, setMeasurements] = useState<Measurement[]>([]);
 
     const [shouldReconnect, setShouldReconnect] = useState<boolean>(false);
-    const [token, setToken] = useState<string | null>(null)
     const [socketURL, setSocketUrl] = useState<string | null>(null)
+    const [minXValue, setMinXValue] = useState<number>(10)
+    const [maxXValue, setMaxXValue] = useState<number>(10)
     let {lastMessage, readyState} = useWebSocket(socketURL || "",{
         shouldReconnect:() => shouldReconnect})
 
@@ -28,7 +28,22 @@ const TimeseriesGraph: React.FC<{sensor:Sensor}> = ({sensor}) => {
         try {
             const resp = await getWebSocketToken();
             if (resp) {
-                setSocketUrl(`ws://localhost:8000/ws/sensor/${sensor?.id}?token=${encodeURIComponent(resp.token)}`);
+                let base_url = process.env.REACT_APP_BACKEND_URL;
+                if (base_url) {
+                    if (base_url.startsWith('https')) {
+                        base_url = base_url.replace('https', 'wss');
+                    } else if (base_url.startsWith('http')) {
+                        base_url = base_url.replace('http', 'ws');
+                    } else {
+                        console.log(`REACT_APP_BACKEND_URL ${base_url} not configured correctly, needs to begin with http/https.`);
+                        return false;
+                    }
+                } else {
+                    console.log('REACT_APP_BACKEND_URL not configured.');
+                    return false;
+                }
+
+                setSocketUrl(`${base_url}/ws/sensor/${sensor?.id}?token=${encodeURIComponent(resp.token)}`);
                 setShouldReconnect(true); // Verbindung erlauben
                 return true;
             } else {
@@ -43,16 +58,22 @@ const TimeseriesGraph: React.FC<{sensor:Sensor}> = ({sensor}) => {
         }
     };
 
+useEffect(() => {
+    if (lastMessage) {
+        const data = JSON.parse(lastMessage.data);
+        console.log(data);
+        const newMeasurements  = data.measurement.map((measurement: Measurement) => (
+            {
+            value: Math.round(measurement.value * 100) / 100,
+            measuredAt: measurement.measuredAt
+        })
+        );
+        console.log(newMeasurements)
+        setMeasurements((prevMeasurements) => [...prevMeasurements, ...newMeasurements]);
 
-    useEffect(() => {
-        if(lastMessage){
-            const data = JSON.parse(lastMessage.data)
-            const roundedMeasurements = data.measurement.map((measurement: number) =>
-                Math.round(measurement * 100) / 100
-            );
-            setMeasurements([...measurements, ...roundedMeasurements])
-        }
-    }, [lastMessage]);
+        console.log(newMeasurements, sensor.name);
+    }
+}, [lastMessage]);
 
     useEffect(() => {
         if(sensor){
@@ -64,27 +85,29 @@ const TimeseriesGraph: React.FC<{sensor:Sensor}> = ({sensor}) => {
 
     useEffect(() => {
         requestMeasuremnt(sensor.id, "2024-10-10").then(resp => {
-
             if(resp) {
                 // Round the values before setting them
                 const roundedMeasurements = resp.map((measurement) => ({
                     ...measurement,
                     value: parseFloat(measurement.value.toFixed(2)),
                 }));
+                console.log(resp)
                 setMeasurements(roundedMeasurements);
             }
         });
     }, [measurementReceivedEventListener]);
 
 
-    const calculateDomain = () => {
-        if (measurements.length === 0) return [-10, 10];
-        const values = measurements.map((item) => item.value);
-        const minValue = Math.min(...values);
-        const maxValue = Math.max(...values);
-        const padding = 2;
-        return [minValue - padding, maxValue + padding];
-    };
+    useEffect(() => {
+        if (measurements.length > 0) {
+            const values = measurements.map((item) => item.value);
+            const minValue = Math.min(...values);
+            const maxValue = Math.max(...values);
+
+            setMinXValue(minValue)
+            setMaxXValue(maxValue)
+        }
+    }, [measurements]);
 
     return (
         <Card p="lg" shadow="sm" radius="md" style={{ marginBottom: '30px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)' }}>
@@ -102,8 +125,9 @@ const TimeseriesGraph: React.FC<{sensor:Sensor}> = ({sensor}) => {
             </Flex>
 
             <LineChart
-                data={measurements}
-                dataKey="date"
+                key={measurements.length}
+                data={measurements.slice(-50)}
+                dataKey="measuredAt"
                 series={[{ name: "value", color: '#199ff4', label: sensor?.unit }]}
                 curveType="monotone"
                 style={{
@@ -111,15 +135,49 @@ const TimeseriesGraph: React.FC<{sensor:Sensor}> = ({sensor}) => {
                     padding: '15px',
                     width: "100%"
                 }}
+                tickLine="y"
                 xAxisProps={{
-                    color: '#105385',
-                    padding: { left: 30, right: 30 },
-                }}
+                  tickFormatter: (dateString) => {
+                    const date = new Date(dateString);
+                    const now = new Date();
+
+                    const isSameDay =
+                      date.getDate() === now.getDate() &&
+                      date.getMonth() === now.getMonth() &&
+                      date.getFullYear() === now.getFullYear();
+
+                    const isSameYear = date.getFullYear() === now.getFullYear();
+
+                    return isSameDay
+                      ? date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) // Show time for the same day
+                      : isSameYear
+                      ? date.toLocaleDateString([], { month: '2-digit', day: '2-digit' }) // Show date without year for the same year
+                      : date.toLocaleDateString([], { year: 'numeric', month: '2-digit', day: '2-digit' }); // Show full date including year for other years
+                  },
+}}
                 yAxisProps={{
-                    color: '#105385',
-                    domain: calculateDomain(),
+
+                    domain: [minXValue, maxXValue],
                 }}
-                h={185}
+                h={250}
+                tooltipAnimationDuration={200}
+                  tooltipProps={{
+                      content: ({ label, payload }) => {
+                       if (payload && payload.length > 0) {
+                          return (
+                            <Card color="grey" style={{ }}>
+                              <strong>{new Date(label).toLocaleDateString([], { year: 'numeric', month: '2-digit', day: '2-digit',  hour: '2-digit', minute: '2-digit' })}</strong>
+                              {payload.map((item) => (
+                                <div key={item.name}>
+                                  {item.value}{sensor.unit}
+                                </div>
+                              ))}
+                            </Card>
+                          );
+                        }
+                        return null;
+                      }
+                }}
             />
         </Card>
     );
