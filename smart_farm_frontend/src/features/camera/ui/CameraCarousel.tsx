@@ -5,7 +5,7 @@ import { Carousel } from '@mantine/carousel';
 import {getImages} from "../useCase/getImages";
 import {Card, Center, Image, Title} from '@mantine/core';
 import {getUser} from "../../../utils/getUser";
-import {useAuth} from "react-oidc-context";
+import {useAuth} from "../../../utils/MainAppProvider";//"react-oidc-context";
 import {Livestream} from "./Livestream";
 import NoCameraPlaceholder from './NoCameraPlaceholder.png';
 import {IconVideoOff} from "@tabler/icons-react";
