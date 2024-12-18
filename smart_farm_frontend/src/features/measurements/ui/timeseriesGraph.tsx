@@ -43,9 +43,9 @@ const TimeseriesGraph: React.FC<{sensor:Sensor}> = ({sensor}) => {
                     console.log('REACT_APP_BACKEND_URL not configured.');
                     return false;
                 }
-
-                setSocketUrl(`${base_url}/ws/sensor/${sensor?.id}?token=${encodeURIComponent(resp.token)}`);
-                setShouldReconnect(true); // Verbindung erlauben
+                console.log(`${base_url}/ws/sensor/${sensor?.id}?token=${encodeURIComponent(resp.token)}`);
+                //setSocketUrl(`${base_url}/ws/sensor/${sensor?.id}?token=${encodeURIComponent(resp.token)}`);
+                //setShouldReconnect(true); // Verbindung erlauben
                 return true;
             } else {
                 console.warn('No Token received, can not establish Connection to WebSocket.');
