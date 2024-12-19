@@ -45,6 +45,7 @@ i18n
                         members: 'Members',
                         isActive: 'Active',
                         actions: 'Actions',
+                        addSensor: 'Add Sensor',
                         table: {
                             name: 'Name',
                             planted: 'Planted on',
@@ -150,6 +151,7 @@ i18n
                         members: 'Mitglieder',
                         isActive: 'Aktiv',
                         actions: 'Aktionen',
+                        addSensor: 'Sensor hinzufügen',
                         table: {
                             name: 'Name',
                             planted: 'Gepflanzt am',
@@ -254,6 +256,7 @@ i18n
                         members: 'Membres',
                         isActive: 'Actif',
                         actions: 'Actions',
+                        addSensor: 'Ajouter un capteur',
                         table: {
                             name: 'Nom',
                             planted: 'Planté le',
@@ -357,6 +360,7 @@ i18n
                         members: 'Membri',
                         isActive: 'Attivo',
                         actions: 'Azioni',
+                        addSensor: 'Aggiungi sensore',
                         table: {
                             name: 'Nome',
                             planted: 'Pianta il',
@@ -461,6 +465,7 @@ i18n
                         members: '成员',
                         isActive: '活跃',
                         actions: '操作',
+                        addSensor: '添加传感器',
                         table: {
                             name: '名称',
                             planted: '种植时间',
@@ -565,6 +570,7 @@ i18n
                         members: 'Участники',
                         isActive: 'Активный',
                         actions: 'Действия',
+                        addSensor: 'Добавить датчик',
                         table: {
                             name: 'Имя',
                             planted: 'Дата посадки',
