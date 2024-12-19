@@ -8,6 +8,7 @@ import {EditCamera} from "../models/camera";
 import {createCamera} from "../useCase/createCamera";
 import {updateCamera} from "../useCase/updateCamera";
 import {createdCamera} from "../state/CameraSlice";
+import {useTranslation} from "react-i18next";
 
 
 export const CameraForm:React.FC<{toEditCamera?:EditCamera}> = ({toEditCamera}) => {
@@ -23,6 +24,8 @@ export const CameraForm:React.FC<{toEditCamera?:EditCamera}> = ({toEditCamera}) 
     const [resolution, setResolution] = useState<string>("")
     const [snapshotUrl, setSnapshotUrl] = useState<string>("")
     const [livestreamUrl, setLivestreamUrl] = useState<string>("")
+    const { t } = useTranslation();
+
 
     const navigate = useNavigate();
 
@@ -72,7 +75,7 @@ export const CameraForm:React.FC<{toEditCamera?:EditCamera}> = ({toEditCamera}) 
         <>
             {!auth.isAuthenticated ? (
                 <Button onClick={() => auth.signinRedirect()} variant="filled" color="#105385" style={{ margin: '10px' }}>
-                    Login to manage Facility
+                    {t("header.loginToManageFpf")}
                 </Button>
             ) : (
                 <form onSubmit={(e) => {
@@ -82,8 +85,8 @@ export const CameraForm:React.FC<{toEditCamera?:EditCamera}> = ({toEditCamera}) 
                     <Grid gutter="md">
                         {/*Name*/}
                         <Grid.Col span={6}>
-                            <TextInput  label="Name"
-                                        placeholder="Enter name"
+                            <TextInput  label={t("header.name")}
+                                        placeholder={t("header.enterName")}
                                         required
                                         value={name}
                                         onChange={(e) => setName(e.currentTarget.value)}
@@ -91,48 +94,48 @@ export const CameraForm:React.FC<{toEditCamera?:EditCamera}> = ({toEditCamera}) 
                         </Grid.Col>
                         {/*Location*/}
                         <Grid.Col span={6}>
-                            <TextInput  label="Location"
-                                        placeholder="Enter Location"
+                            <TextInput  label={t("camera.location")}
+                                        placeholder={t("header.enterLocation")}
                                         required
                                         value={location}
                                         onChange={(e) => setLocation(e.currentTarget.value)}
                             />
                         </Grid.Col>
                         <Grid.Col span={6}>
-                            <TextInput  label="Model Nr."
-                                        placeholder="Enter Model Nr."
+                            <TextInput  label={t("camera.modelNr")}
+                                        placeholder={t("header.enterModelNr")}
                                         required
                                         value={modelNr}
                                         onChange={(e) => setModelNr(e.currentTarget.value)}
                             />
                         </Grid.Col>
                         <Grid.Col span={6}>
-                            <NumberInput  label="Interval in Seconds"
-                                          placeholder="Enter Interval in Seconds"
+                            <NumberInput  label={t("camera.intervalSeconds")}
+                                          placeholder={t("header.enterIntervalSeconds")}
                                           required
                                           value={intervalSeconds}
                                           onChange={(value) => setIntervalSeconds(value as number ?? 1)}
                             />
                         </Grid.Col>
                         <Grid.Col span={6}>
-                            <TextInput  label="Resolution"
-                                          placeholder="Enter Resolution"
+                            <TextInput  label={t("camera.resolution")}
+                                          placeholder={t("header.enterResolution")}
                                           required
                                           value={resolution}
                                           onChange={(e) => setResolution(e.currentTarget.value)}
                             />
                         </Grid.Col>
                         <Grid.Col span={6}>
-                            <TextInput  label="Livestream URL"
-                                          placeholder="Enter Livestream URL"
+                            <TextInput  label={t("camera.livestreamUrl")}
+                                          placeholder={t("header.enterLivestreamUrl")}
                                           required
                                           value={livestreamUrl}
                                           onChange={(e) => setLivestreamUrl(e.currentTarget.value)}
                             />
                         </Grid.Col>
                         <Grid.Col span={6}>
-                            <TextInput  label="Snapshot URL"
-                                          placeholder="Enter Snapshot URL"
+                            <TextInput  label={t("camera.snapshotUrl")}
+                                          placeholder={t("header.enterSnapshotUrl")}
                                           required
                                           value={snapshotUrl}
                                           onChange={(e) => setSnapshotUrl(e.currentTarget.value)}
@@ -140,13 +143,13 @@ export const CameraForm:React.FC<{toEditCamera?:EditCamera}> = ({toEditCamera}) 
                         </Grid.Col>
                         <Grid.Col span={12}
                                   style={{display: "flex", alignItems: "center", justifyContent: "space-between"}}>
-                            <Switch label="Is Active?" size="md" checked={isActive} onChange={() => setIsActive(!isActive)} />
+                            <Switch label={t("header.isActive")} size="md" checked={isActive} onChange={() => setIsActive(!isActive)} />
                         </Grid.Col>
                         {/*Add Button*/}
                         <Grid.Col span={12}>
                             <Box mt="md" style={{ display: 'flex', justifyContent: 'flex-end', margin: '10px'}}>
                                 <Button type="submit" variant="filled" color="#105385" style={{ margin: '10px' }}>
-                                    {toEditCamera?.id ? "Save Changes" : "Add Camera"}
+                                    {toEditCamera?.id ? t("userprofile.saveChanges") : t("camera.addCamera")}
                                 </Button>
                             </Box>
                         </Grid.Col>
