@@ -43,7 +43,6 @@ export const CameraCarousel: React.FC<{ camerasToDisplay: Camera[] }> = ({camera
                             console.log(resp)
                             setObjectsToDisplay((prevObjects) => [
                                 ...prevObjects,
-                                { url: resp[0].url, title: `${camera.name} ${resp[0].measuredAt}`, isLiveStream: false,   },
                                 { url: `${process.env.REACT_APP_BACKEND_URL}/api/cameras/${camera.id}/livestream`, title: `${camera.name} LiveStream`, isLiveStream: true }
                             ]);
                         }

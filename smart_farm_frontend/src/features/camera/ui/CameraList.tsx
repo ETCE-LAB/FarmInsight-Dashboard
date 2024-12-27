@@ -45,7 +45,7 @@ export const CameraList:React.FC<{camerasToDisplay?:Camera[]}> = ({camerasToDisp
                 title={selectedCamera ? t("camera.editCamera"): t("camera.addCamera")}
                 centered
             >
-                <CameraForm toEditCamera={selectedCamera} />
+                <CameraForm toEditCamera={selectedCamera}  setClosed={setCameraModalOpen} />
             </Modal>
 
             <Group mb="md">
