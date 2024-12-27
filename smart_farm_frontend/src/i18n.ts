@@ -67,7 +67,8 @@ i18n
                     button: {
                         loginToManage: 'Login to manage organization',
                         create: 'Create',
-                        add: 'Add'
+                        add: 'Add',
+                        update: 'Save changes'
                     },
                     label: {
                         organizationName: 'Organization Name',
@@ -173,7 +174,8 @@ i18n
                     button: {
                         loginToManage: 'Einloggen, um Organisation zu verwalten',
                         create: 'Erstellen',
-                        add: 'Hinzufügen'
+                        add: 'Hinzufügen',
+                        update:'Änderungen speicher,'
                     },
                     label: {
                         organizationName: 'Organisationsname',

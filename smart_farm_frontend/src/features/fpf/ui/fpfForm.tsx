@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, TextInput, Checkbox, Box, Switch, Card, Grid, Title, ActionIcon} from "@mantine/core";
+import {Button, TextInput, Box, Switch, Grid, ActionIcon, Group} from "@mantine/core";
 import { useAuth } from "react-oidc-context";
 import {createFpf} from "../useCase/createFpf";
 import {Organization} from "../../organization/models/Organization";
@@ -8,9 +8,10 @@ import {AppRoutes} from "../../../utils/appRoutes";
 import {createdFpf} from "../state/FpfSlice";
 import {useNavigate} from "react-router-dom";
 import {Fpf} from "../models/Fpf";
-import {IconTrash} from "@tabler/icons-react";
-import {getAvailableHardwareConfiguration} from "../../hardwareConfiguration/useCase/getAvailableHardwareConfiguration";
+import {IconEdit} from "@tabler/icons-react";
 import { useTranslation } from 'react-i18next';
+import {updateFpf} from "../useCase/updateFpf";
+import {notifications} from "@mantine/notifications";
 
 
 
@@ -24,6 +25,7 @@ export const FpfForm: React.FC<{inputOrganization?:Organization, toEditFpf?:Fpf}
     const [errors, setErrors] = useState<{ sensorServiceIp?: string; cameraServiceIp?: string }>({});
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
 
     useEffect(() => {
         if(toEditFpf){
@@ -44,16 +46,79 @@ export const FpfForm: React.FC<{inputOrganization?:Organization, toEditFpf?:Fpf}
 
     const handleSave = () => {
         if (validateIps() && inputOrganization) {
+            const id = notifications.show({
+                loading: true,
+                title: 'Loading',
+                message: 'Updating FPF Settings',
+                autoClose: false,
+                withCloseButton: false,
+            });
             const organizationId = inputOrganization.id
-            createFpf({name, isPublic, sensorServiceIp, address, organizationId }).then(fpf =>
-            {
-                dispatch(createdFpf());
-                if (fpf)
+            createFpf({name, isPublic, sensorServiceIp, address, organizationId }).then(fpf => {
+
+                if (fpf) {
+                    dispatch(createdFpf());
                     navigate(AppRoutes.editFpf.replace(":organizationId", organizationId).replace(":fpfId", fpf.id));
-            }
-            )
+                    notifications.update({
+                        id,
+                        title: 'Success',
+                        message: `FPF updated successfully.`,
+                        color: 'green',
+                        loading: false,
+                        autoClose: 2000,
+                    })
+                } else {
+                    notifications.update({
+                        id,
+                        title: 'There was an error updating the FPF.',
+                        message: `${fpf}`,
+                        color: 'red',
+                        loading: false,
+                        autoClose: 10000,
+                    })
+                }
+            })
         }
     };
+
+    const onClickEdit = () => {
+        if(toEditFpf){
+            const id = notifications.show({
+                loading: true,
+                title: 'Loading',
+                message: 'Updating FPF',
+                autoClose: false,
+                withCloseButton: false,
+            });
+
+            updateFpf(toEditFpf.id, {name, isPublic, sensorServiceIp, address}).then(fpf => {
+
+                if (fpf)
+                {
+                    dispatch(createdFpf());
+                    notifications.update({
+                        id,
+                        title: 'Success',
+                        message: `FPF updated successfully.`,
+                        color: 'green',
+                        loading: false,
+                        autoClose: 2000,
+                    })
+                } else {
+                    notifications.update({
+                        id,
+                        title: 'There was an error updating the FPF.',
+                        message: `${fpf}`,
+                        color: 'red',
+                        loading: false,
+                        autoClose: 10000,
+                    })
+                }
+            }
+            )
+
+        }
+    }
 
     return (
         <>
@@ -65,14 +130,7 @@ export const FpfForm: React.FC<{inputOrganization?:Organization, toEditFpf?:Fpf}
                 <form onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
                     <Grid gutter="md">
                         {/* Title */}
-                        <Grid.Col span={12}
-                                  style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
-                            {toEditFpf &&
-                                <ActionIcon size="lg" color="red" variant="transparent">
-                                    <IconTrash/>
-                                </ActionIcon>
-                            }
-                        </Grid.Col>
+
 
                         {/* Name Input */}
                         <Grid.Col span={6}>
@@ -103,10 +161,28 @@ export const FpfForm: React.FC<{inputOrganization?:Organization, toEditFpf?:Fpf}
                         </Grid.Col>
 
                         {/* Is Public Toggle */}
-                        <Grid.Col span={12}
-                                  style={{display: "flex", alignItems: "center", justifyContent: "space-between"}}>
-                            <Switch label={t("label.setPublic")} size="md"/>
-                        </Grid.Col>
+                        {toEditFpf && (
+                                <Grid.Col span={12}
+                                          style={{display: "flex", alignItems: "center", justifyContent: "space-between"}}>
+                                    <Switch label={t("label.setPublic")} size="md" checked={isPublic}/>
+                                    <ActionIcon color="blue">
+                                        <IconEdit
+                                            size={16}
+                                            stroke={2}
+                                            onClick={() => onClickEdit()}
+                                            style={{cursor:"pointer"}}
+                                            title={t("fpf.update")}/>
+                                    </ActionIcon>
+                                </Grid.Col>
+
+                        )}
+                        {!toEditFpf && (
+                            <Grid.Col span={12}
+                                      style={{display: "flex", alignItems: "center", justifyContent: "space-between"}}>
+                                <Switch label={t("label.setPublic")} size="md" checked={isPublic}/>
+                            </Grid.Col>
+                        )}
+
 
                         <Grid.Col span={12}>
                             {inputOrganization &&
@@ -117,6 +193,7 @@ export const FpfForm: React.FC<{inputOrganization?:Organization, toEditFpf?:Fpf}
                                 </Box>
                             }
                         </Grid.Col>
+
 
                     </Grid>
                 </form>

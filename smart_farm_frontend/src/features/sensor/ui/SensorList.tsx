@@ -76,7 +76,7 @@ export const SensorList:React.FC<{sensorsToDisplay?:Sensor[], fpfId:string}> = (
                     <Table.Th>Location</Table.Th>
                     <Table.Th>Unit</Table.Th>
                     <Table.Th>ModelNr</Table.Th>
-                    <Table.Th>Interval</Table.Th>
+                    <Table.Th>Interval in Seconds</Table.Th>
                     <Table.Th>Is Active?</Table.Th>
                     <Table.Th>Actions</Table.Th>
                 </tr>

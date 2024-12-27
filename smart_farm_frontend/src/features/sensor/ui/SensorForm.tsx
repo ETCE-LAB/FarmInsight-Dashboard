@@ -78,9 +78,9 @@ export const SensorForm:React.FC<{toEditSensor?:EditSensor, setClosed: React.Dis
                         id,
                         title: 'There was an error updating the sensor.',
                         message: `${sensor}`,
-                        color: 'green',
+                        color: 'red',
                         loading: false,
-                        autoClose: 2000,
+                        autoClose: 10000,
                     });
                 }
 
