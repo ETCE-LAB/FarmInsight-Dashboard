@@ -97,8 +97,8 @@ useEffect(() => {
     useEffect(() => {
         if (measurements.length > 0) {
             const values = measurements.map((item) => item.value);
-            const minValue = Math.min(...values);
-            const maxValue = Math.max(...values);
+            const minValue = Math.min(...values) - 5;
+            const maxValue = Math.max(...values) + 5;
 
             setMinXValue(minValue)
             setMaxXValue(maxValue)
