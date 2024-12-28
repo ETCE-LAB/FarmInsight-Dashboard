@@ -7,25 +7,30 @@ import { GrowingCycle } from "../models/growingCycle";
 import {getFpf} from "../../fpf/useCase/getFpf";
 import {modifyGrowingCycle} from "../useCase/modifyGrowingCycle";
 import {useAppDispatch} from "../../../utils/Hooks";
-import {changedGrowingCycle} from "../state/GrowingCycleSlice";
+import {addGrowingCycle, changedGrowingCycle, deleteGrowingCycle, updateGrowingCycle} from "../state/GrowingCycleSlice";
 import {showNotification} from "@mantine/notifications";
+import {useSelector} from "react-redux";
+import {RootState} from "../../../utils/store";
 
 export const GrowingCycleForm: React.FC<{
     fpfId: string;
     toEditGrowingCycle: GrowingCycle | null;
-    onSuccess: (message: string, color: string) => void;
-}> = ({ fpfId, toEditGrowingCycle, onSuccess }) => {
+    closeForm: () => void;
+}> = ({ fpfId, toEditGrowingCycle, closeForm }) => {
     const { t } = useTranslation();
     const [growingCycle, setGrowingCycle] = useState<GrowingCycle>({ fpfId: fpfId } as GrowingCycle);
     const dispatch = useAppDispatch()
+
     const handleInputChange = (field: string, value: any) => {
         setGrowingCycle((prev) => ({ ...prev, [field]: value }));
     };
 
+
     const handleSubmit = async () => {
         if(toEditGrowingCycle){
             try {
-                await modifyGrowingCycle(growingCycle.id, growingCycle);
+                const updatedCycle = await modifyGrowingCycle(growingCycle.id, growingCycle);
+                dispatch(updateGrowingCycle(updatedCycle));
                 showNotification({
                     title: 'Success',
                     message: 'Growing cycle edited',
@@ -41,7 +46,8 @@ export const GrowingCycleForm: React.FC<{
         }
         else{
             try {
-                await createGrowingCycle(growingCycle);
+                const newCycle = await createGrowingCycle(growingCycle);
+                dispatch(addGrowingCycle(newCycle));
                 showNotification({
                     title: 'Success',
                     message: 'Growing cycle saved successfully!',
@@ -55,7 +61,7 @@ export const GrowingCycleForm: React.FC<{
             });
             }
         }
-        dispatch(changedGrowingCycle());
+        closeForm();
     };
 
     const isFormValid = useMemo(() => {
