@@ -19,6 +19,7 @@ import { deleteGrowingCycle } from "../useCase/deleteGrowingCycle";
 import { changedGrowingCycle } from "../state/GrowingCycleSlice";
 import { useAppDispatch } from "../../../utils/Hooks";
 import {showNotification} from "@mantine/notifications";
+import HarvestEntityList from "../../harvestEntity/ui/harvestEntityList";
 
 // Helper function to truncate text
 const truncateText = (text: string, limit: number): string => {
@@ -108,28 +109,47 @@ const GrowingCycleList: React.FC<{ fpfId: string; growingCycles: GrowingCycle[] 
                 centered
             >
                 {selectedCycle && (
-                    <Paper style={{ width: "100%" }}>
-                        <Grid>
-                            <Grid.Col span={6}>
-                                <Text size="sm"><strong>Plant:</strong></Text>
-                                <Text size="sm">{selectedCycle.plants}</Text>
-                            </Grid.Col>
-                            <Grid.Col span={6}>
-                                <Text size="sm"><strong>Planted:</strong></Text>
-                                <Text size="sm">{selectedCycle.startDate ? new Date(selectedCycle.startDate).toLocaleDateString() : "N/A"}</Text>
-                            </Grid.Col>
-                            <Grid.Col span={6}>
-                                <Text size="sm"><strong>Harvested:</strong></Text>
-                                <Text size="sm">{selectedCycle.endDate ? new Date(selectedCycle.endDate).toLocaleDateString() : "Still growing"}</Text>
-                            </Grid.Col>
-                            <Grid.Col span={6}>
-                                <Text size="sm"><strong>Notes:</strong></Text>
-                                <Text size="sm">{selectedCycle.note || "No notes available."}</Text>
-                            </Grid.Col>
-                        </Grid>
-                    </Paper>
+                    <>
+                        <Paper style={{ width: "100%" }}>
+                            <Grid>
+                                <Grid.Col span={6}>
+                                    <Text size="sm"><strong>Plant:</strong></Text>
+                                    <Text size="sm">{selectedCycle.plants}</Text>
+                                </Grid.Col>
+                                <Grid.Col span={6}>
+                                    <Text size="sm"><strong>Planted:</strong></Text>
+                                    <Text size="sm">{selectedCycle.startDate ? new Date(selectedCycle.startDate).toLocaleDateString() : "N/A"}</Text>
+                                </Grid.Col>
+                                <Grid.Col span={6}>
+                                    <Text size="sm"><strong>Harvested:</strong></Text>
+                                    <Text size="sm">{selectedCycle.endDate ? new Date(selectedCycle.endDate).toLocaleDateString() : "Still growing"}</Text>
+                                </Grid.Col>
+                                <Grid.Col span={6}>
+                                    <Text size="sm"><strong>Notes:</strong></Text>
+                                    <Text size="sm">{selectedCycle.note || "No notes available."}</Text>
+                                </Grid.Col>
+                            </Grid>
+                        </Paper>
+                        <Group mt="md">
+                            <Button
+                                onClick={() => {
+                                    // Open modal or trigger function to add HarvestEntity
+                                    console.log(`Adding HarvestEntity to cycle ${selectedCycle.id}`);
+                                }}
+                            >
+                                Add Harvest Entity
+                            </Button>
+                        </Group>
+                        {selectedCycle.harvests && selectedCycle.harvests.length > 0 && (
+                            <HarvestEntityList
+                                growingCycleID={selectedCycle.id}
+                                harvestEntities={selectedCycle.harvests}
+                            />
+                        )}
+                    </>
                 )}
             </Modal>
+
 
             {/* Modal for Delete Confirmation */}
             <Modal

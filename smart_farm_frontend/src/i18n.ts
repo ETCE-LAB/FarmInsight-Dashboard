@@ -50,7 +50,9 @@ i18n
                             name: 'Name',
                             planted: 'Planted on',
                             harvested: 'Harvested on',
-                            notes: 'Notes'
+                            notes: 'Notes',
+                            date: 'Date',
+                            amount: 'Amount (kg)',
                         }
                     },
                     growingCycleForm: {
