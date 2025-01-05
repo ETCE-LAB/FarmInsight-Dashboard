@@ -4,11 +4,10 @@ import { DateInput } from "@mantine/dates";
 import { useTranslation } from "react-i18next";
 import { createGrowingCycle } from "../useCase/createGrowingCycle";
 import { GrowingCycle } from "../models/growingCycle";
-import {getFpf} from "../../fpf/useCase/getFpf";
-import {modifyGrowingCycle} from "../useCase/modifyGrowingCycle";
-import {useAppDispatch} from "../../../utils/Hooks";
-import {changedGrowingCycle} from "../state/GrowingCycleSlice";
-import {showNotification} from "@mantine/notifications";
+import { modifyGrowingCycle } from "../useCase/modifyGrowingCycle";
+import { useAppDispatch } from "../../../utils/Hooks";
+import { changedGrowingCycle } from "../state/GrowingCycleSlice";
+import { showNotification } from "@mantine/notifications";
 
 export const GrowingCycleForm: React.FC<{
     fpfId: string;
@@ -16,51 +15,68 @@ export const GrowingCycleForm: React.FC<{
     onSuccess: (message: string, color: string) => void;
 }> = ({ fpfId, toEditGrowingCycle, onSuccess }) => {
     const { t } = useTranslation();
-    const [growingCycle, setGrowingCycle] = useState<GrowingCycle>({ fpfId: fpfId } as GrowingCycle);
-    const dispatch = useAppDispatch()
+    const [growingCycle, setGrowingCycle] = useState<GrowingCycle>({ fpfId } as GrowingCycle);
+    const [dateError, setDateError] = useState<string | null>(null); // For error message
+    const dispatch = useAppDispatch();
+
     const handleInputChange = (field: string, value: any) => {
         setGrowingCycle((prev) => ({ ...prev, [field]: value }));
+
+        // Validate date order
+        if (field === "endDate" && growingCycle.startDate && value) {
+            if (new Date(value) < new Date(growingCycle.startDate)) {
+                setDateError(t("header.dateError"));
+            } else {
+                setDateError(null);
+            }
+        } else if (field === "startDate" && growingCycle.endDate && value) {
+            if (new Date(growingCycle.endDate) < new Date(value)) {
+                setDateError(t("header.dateError"));
+            } else {
+                setDateError(null);
+            }
+        }
     };
 
     const handleSubmit = async () => {
-        if(toEditGrowingCycle){
-            try {
+        if (dateError) {
+            showNotification({
+                title: t("growingCycleForm.errorTitle"),
+                message: dateError,
+                color: "red",
+            });
+            return;
+        }
+
+        try {
+            if (toEditGrowingCycle) {
                 await modifyGrowingCycle(growingCycle.id, growingCycle);
                 showNotification({
-                    title: 'Success',
-                    message: 'Growing cycle edited',
-                    color: 'green',
+                    title: t("growingCycleForm.successTitle"),
+                    message: t("growingCycleForm.editSuccessMessage"),
+                    color: "green",
                 });
-            } catch (error) {
-                showNotification({
-                    title: 'Failed to save the growing cycle',
-                    message: `${error}`,
-                    color: 'red',
-                });
-            }
-        }
-        else{
-            try {
+            } else {
                 await createGrowingCycle(growingCycle);
                 showNotification({
-                    title: 'Success',
-                    message: 'Growing cycle saved successfully!',
-                    color: 'green',
+                    title: t("growingCycleForm.successTitle"),
+                    message: t("growingCycleForm.createSuccessMessage"),
+                    color: "green",
                 });
-            } catch (error) {
-                showNotification({
-                    title: 'Failed to save the growing cycle',
-                    message: `${error}`,
-                    color: 'red',
-            });
             }
+            dispatch(changedGrowingCycle());
+        } catch (error) {
+            showNotification({
+                title: t("growingCycleForm.errorTitle"),
+                message: `${error}`,
+                color: "red",
+            });
         }
-        dispatch(changedGrowingCycle());
     };
 
     const isFormValid = useMemo(() => {
-        return growingCycle.plants?.trim() && growingCycle.startDate;
-    }, [growingCycle]);
+        return growingCycle.plants?.trim() && growingCycle.startDate && !dateError;
+    }, [growingCycle, dateError]);
 
     useEffect(() => {
         if (toEditGrowingCycle) {
@@ -91,12 +107,17 @@ export const GrowingCycleForm: React.FC<{
                 <DateInput
                     label={t("growingCycleForm.endDateLabel")}
                     placeholder={t("growingCycleForm.endDatePlaceholder")}
-                    allowDeselect
+                    clearable
                     value={growingCycle.endDate ? new Date(growingCycle.endDate) : null}
                     onChange={(date) => handleInputChange("endDate", date)}
                     style={{ flex: 1 }}
                 />
             </Flex>
+            {dateError && (
+                <div style={{ color: "#a53737", marginTop: "10px" }}>
+                    {dateError}
+                </div>
+            )}
             <TextInput
                 label={t("growingCycleForm.notesLabel")}
                 placeholder={t("growingCycleForm.notesPlaceholder")}

@@ -3,7 +3,6 @@ import {
     Card,
     Modal,
     Table,
-    Notification,
     Group,
     Button,
     Text,
@@ -12,7 +11,7 @@ import {
     Grid,
 } from "@mantine/core";
 import { useTranslation } from 'react-i18next';
-import { IconCircleMinus, IconCirclePlus, IconEdit } from "@tabler/icons-react";
+import { IconCircleMinus, IconEdit } from "@tabler/icons-react";
 import { HarvestEntityForm } from "./harvestEntityForm";
 import { HarvestEntity } from "../models/harvestEntity";
 import { deleteHarvestEntity } from "../useCase/deleteHarvestEntity";
@@ -54,7 +53,7 @@ const HarvestEntityList: React.FC<{ growingCycleID: string; harvestEntities: Har
                     dispatch(changedHarvestEntity());
                     showNotification({
                         title: 'Success',
-                        message: `Harvest entry for ${entityToDelete.date.toLocaleDateString()} has been deleted successfully.`,
+                        message: `Harvest entry for ${entityToDelete.date ? new Date(entityToDelete.date).toLocaleDateString() : "unknown date"} has been deleted successfully.`,
                         color: 'green',
                     });
                 })
@@ -83,8 +82,16 @@ const HarvestEntityList: React.FC<{ growingCycleID: string; harvestEntities: Har
                 <HarvestEntityForm
                     growingCycleId={growingCycleID}
                     toEditHarvestEntity={toEditHarvestEntity}
-                    onSuccess={(message, color) => {
+                    onSuccess={() => {
                         closeModal();
+                        dispatch(changedHarvestEntity()); // Trigger a refresh
+                        showNotification({
+                            title: "Success",
+                            message: toEditHarvestEntity
+                                ? "Harvest entity updated successfully!"
+                                : "Harvest entity added successfully!",
+                            color: "green",
+                        });
                     }}
                 />
             </Modal>
@@ -100,16 +107,16 @@ const HarvestEntityList: React.FC<{ growingCycleID: string; harvestEntities: Har
                     <Paper style={{ width: "100%" }}>
                         <Grid>
                             <Grid.Col span={6}>
-                                <Text size="sm"><strong>Date:</strong></Text>
+                                <Text size="sm"><strong>{t("header.table.date")}</strong></Text>
                                 {selectedEntity.date ? new Date(selectedEntity.date).toLocaleDateString() : ""}
                             </Grid.Col>
                             <Grid.Col span={6}>
-                                <Text size="sm"><strong>Amount (kg):</strong></Text>
+                                <Text size="sm"><strong>{t("header.table.amount")}</strong></Text>
                                 <Text size="sm">{selectedEntity.amountInKg}</Text>
                             </Grid.Col>
                             <Grid.Col span={12}>
-                                <Text size="sm"><strong>Notes:</strong></Text>
-                                <Text size="sm">{selectedEntity.note || "No notes available."}</Text>
+                                <Text size="sm"><strong>{t("header.table.notes")}</strong></Text>
+                                <Text size="sm">{selectedEntity.note || ""}</Text>
                             </Grid.Col>
                         </Grid>
                     </Paper>
@@ -124,7 +131,7 @@ const HarvestEntityList: React.FC<{ growingCycleID: string; harvestEntities: Har
                 centered
             >
                 <Text style={{ fontSize: "14px", textAlign: "center", marginBottom: "1rem" }}>
-                    {t("headers.confirmDialog")}
+                    {t("header.confirmDialog")}
                 </Text>
                 <Group gap="center" justify={"center"}>
                     <Button color="red" onClick={confirmDelete}>
