@@ -13,12 +13,10 @@ import {
 } from "@mantine/core";
 import { useTranslation } from "react-i18next";
 import {
-    IconCircleMinus,
     IconCirclePlus,
     IconEdit,
     IconSeeding,
-    IconInfoCircle,
-    IconInfoSquareRounded
+    IconInfoSquareRounded, IconSquareRoundedMinus
 } from "@tabler/icons-react";
 import { GrowingCycleForm } from "./growingCycleForm";
 import { GrowingCycle } from "../models/growingCycle";
@@ -108,7 +106,7 @@ const GrowingCycleList: React.FC<{ fpfId: string; growingCycles: GrowingCycle[] 
             <Modal
                 opened={activeModal === "harvestForm"}
                 onClose={closeAllModals}
-                title={t("harvestEntityForm.addHarvestEntity")}
+                title={t("harvestEntityForm.addHarvest")}
                 centered
             >
                 {selectedCycle && (
@@ -159,6 +157,15 @@ const GrowingCycleList: React.FC<{ fpfId: string; growingCycles: GrowingCycle[] 
                                 {t("header.addHarvest")}
                             </Button>
                         </Group>
+
+                        {/* Summe der Ernten */}
+                        {selectedCycle.harvests && selectedCycle.harvests.length > 0 && (
+                            <Text size="sm" mt="md">
+                                <strong>{t("header.totalHarvestAmount")}: </strong>
+                                {selectedCycle.harvests.reduce((sum, harvest) => sum + harvest.amountInKg, 0)} kg
+                            </Text>
+                        )}
+
                         {selectedCycle.harvests && selectedCycle.harvests.length > 0 && (
                             <HarvestEntityList
                                 growingCycleID={selectedCycle.id}
@@ -247,7 +254,7 @@ const GrowingCycleList: React.FC<{ fpfId: string; growingCycles: GrowingCycle[] 
                                     <Table.Td>{cycle.endDate ? new Date(cycle.endDate).toLocaleDateString() : ""}</Table.Td>
                                     <Table.Td>{cycle.note ? truncateText(cycle.note, 12) : ""}</Table.Td>
                                     <Table.Td>
-                                        <IconCircleMinus
+                                        <IconSquareRoundedMinus
                                             onClick={() => handleDelete(cycle)}
                                             size={25}
                                             style={{

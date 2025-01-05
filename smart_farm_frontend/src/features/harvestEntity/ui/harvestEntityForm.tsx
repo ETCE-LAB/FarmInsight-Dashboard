@@ -69,6 +69,7 @@ export const HarvestEntityForm: React.FC<{
         }
     }, [toEditHarvestEntity]);
 
+
     return (
         <>
             <DateInput
@@ -82,10 +83,15 @@ export const HarvestEntityForm: React.FC<{
             <TextInput
                 label={t("harvestEntityForm.amountLabel")}
                 placeholder={t("harvestEntityForm.amountPlaceholder")}
+                description={t("harvestEntityForm.amountDescription")}
                 required
                 type="number"
-                value={harvestEntity.amountInKg || ""}
-                onChange={(e) => handleInputChange("amountInKg", parseFloat(e.currentTarget.value))}
+                value={harvestEntity.amountInKg !== undefined ? harvestEntity.amountInKg : ""}
+                onChange={(e) => {
+                    const value = e.currentTarget.value;
+                    const parsedValue = parseFloat(value);
+                    handleInputChange("amountInKg", isNaN(parsedValue) ? "" : parsedValue);
+                }}
                 style={{ width: "100%", marginBottom: "15px" }}
             />
             <TextInput

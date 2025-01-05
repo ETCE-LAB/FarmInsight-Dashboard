@@ -11,7 +11,7 @@ import {
     Grid,
 } from "@mantine/core";
 import { useTranslation } from 'react-i18next';
-import { IconCircleMinus, IconEdit } from "@tabler/icons-react";
+import {IconCircleMinus, IconEdit, IconSquareRoundedMinus} from "@tabler/icons-react";
 import { HarvestEntityForm } from "./harvestEntityForm";
 import { HarvestEntity } from "../models/harvestEntity";
 import { deleteHarvestEntity } from "../useCase/deleteHarvestEntity";
@@ -172,11 +172,14 @@ const HarvestEntityList: React.FC<{ growingCycleID: string; harvestEntities: Har
                                     <Table.Td>{entity.amountInKg}</Table.Td>
                                     <Table.Td>{truncateText(entity.note, 12)}</Table.Td>
                                     <Table.Td>
-                                        <IconCircleMinus
+                                        <IconSquareRoundedMinus
                                             onClick={() => handleDelete(entity)}
                                             size={20}
-                                            style={{ cursor: "pointer", color: "darkred" }}
-                                        />
+                                            style={{
+                                                cursor: "pointer",
+                                                marginRight: "0.5rem",
+                                                color: "#a53737",
+                                            }}                                        />
                                         <IconEdit
                                             onClick={(e) => {
                                                 e.stopPropagation();
@@ -184,7 +187,10 @@ const HarvestEntityList: React.FC<{ growingCycleID: string; harvestEntities: Har
                                                 setToEditHarvestEntity(entity);
                                             }}
                                             size={20}
-                                            style={{ cursor: "pointer", color: "#105385", marginLeft: "1rem" }}
+                                            style={{
+                                                cursor: "pointer",
+                                                color: "#105385",
+                                            }}
                                         />
                                     </Table.Td>
                                 </Table.Tr>
