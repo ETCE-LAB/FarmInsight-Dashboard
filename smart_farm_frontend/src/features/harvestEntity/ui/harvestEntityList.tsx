@@ -101,7 +101,7 @@ const HarvestEntityList: React.FC<{ growingCycleID: string; harvestEntities: Har
                         <Grid>
                             <Grid.Col span={6}>
                                 <Text size="sm"><strong>Date:</strong></Text>
-                                <Text size="sm">{selectedEntity.date?.toLocaleDateString()}</Text>
+                                {selectedEntity.date ? new Date(selectedEntity.date).toLocaleDateString() : ""}
                             </Grid.Col>
                             <Grid.Col span={6}>
                                 <Text size="sm"><strong>Amount (kg):</strong></Text>
@@ -141,19 +141,8 @@ const HarvestEntityList: React.FC<{ growingCycleID: string; harvestEntities: Har
                 shadow="sm"
                 padding="md"
                 radius="md"
-                style={{ boxShadow: "0 2px 8px rgba(0, 0, 0, 0.3)", overflowY: 'scroll', height: '45vh' }}
+                style={{ marginTop: "1rem", width: "100%" }}
             >
-                <IconCirclePlus
-                    size={25}
-                    onClick={() => setShowHarvestEntityForm(true)}
-                    style={{
-                        cursor: "pointer",
-                        color: "#105385",
-                        position: "relative",
-                        top: "25px",
-                        left: "10px",
-                    }}
-                />
                 <Flex>
                     <Table striped highlightOnHover style={{ width: "100%" }}>
                         <Table.Thead>
@@ -171,7 +160,7 @@ const HarvestEntityList: React.FC<{ growingCycleID: string; harvestEntities: Har
                                         style={{ cursor: "pointer" }}
                                         onClick={() => setSelectedEntity(entity)}
                                     >
-                                        {entity.date?.toLocaleDateString()}
+                                        {entity.date ? new Date(entity.date).toLocaleDateString() : ""}
                                     </Table.Td>
                                     <Table.Td>{entity.amountInKg}</Table.Td>
                                     <Table.Td>{truncateText(entity.note, 12)}</Table.Td>

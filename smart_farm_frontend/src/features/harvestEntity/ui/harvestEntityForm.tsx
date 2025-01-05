@@ -13,9 +13,9 @@ export const HarvestEntityForm: React.FC<{
     growingCycleId: string;
     toEditHarvestEntity: HarvestEntity | null;
     onSuccess: (message: string, color: string) => void;
-}> = ({ toEditHarvestEntity, onSuccess }) => {
+}> = ({ growingCycleId, toEditHarvestEntity, onSuccess }) => {
     const { t } = useTranslation();
-    const [harvestEntity, setHarvestEntity] = useState<HarvestEntity>({} as HarvestEntity);
+    const [harvestEntity, setHarvestEntity] = useState<HarvestEntity>({ growingCycleId: growingCycleId } as HarvestEntity);
     const dispatch = useAppDispatch();
 
     const handleInputChange = (field: string, value: any) => {

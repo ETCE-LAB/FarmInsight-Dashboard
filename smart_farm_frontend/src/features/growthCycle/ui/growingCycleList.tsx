@@ -18,8 +18,9 @@ import { GrowingCycle } from "../models/growingCycle";
 import { deleteGrowingCycle } from "../useCase/deleteGrowingCycle";
 import { changedGrowingCycle } from "../state/GrowingCycleSlice";
 import { useAppDispatch } from "../../../utils/Hooks";
-import {showNotification} from "@mantine/notifications";
+import { showNotification } from "@mantine/notifications";
 import HarvestEntityList from "../../harvestEntity/ui/harvestEntityList";
+import {HarvestEntityForm} from "../../harvestEntity/ui/harvestEntityForm";
 
 // Helper function to truncate text
 const truncateText = (text: string, limit: number): string => {
@@ -31,14 +32,14 @@ const truncateText = (text: string, limit: number): string => {
 
 const GrowingCycleList: React.FC<{ fpfId: string; growingCycles: GrowingCycle[] }> = ({ fpfId, growingCycles }) => {
     const [showGrowingCycleForm, setShowGrowingCycleForm] = useState(false);
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
     const [toEditGrowingCycle, setToEditGrowingCycle] = useState<GrowingCycle | null>(null);
-    const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
-    const [cycleToDelete, setCycleToDelete] = useState<GrowingCycle | null>(null); // State to hold cycle to delete
-    const [selectedCycle, setSelectedCycle] = useState<GrowingCycle | null>(null); // State for the details modal
+    const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+    const [cycleToDelete, setCycleToDelete] = useState<GrowingCycle | null>(null);
+    const [selectedCycle, setSelectedCycle] = useState<GrowingCycle | null>(null);
+    const [showHarvestForm, setShowHarvestForm] = useState(false); // New state for HarvestEntityForm
 
     const dispatch = useAppDispatch();
-
 
     const closeModal = () => {
         setShowGrowingCycleForm(false);
@@ -54,20 +55,19 @@ const GrowingCycleList: React.FC<{ fpfId: string; growingCycles: GrowingCycle[] 
         if (cycleToDelete) {
             deleteGrowingCycle(cycleToDelete.id)
                 .then((result) => {
-                    console.log(result)
-                    if(result){
+                    if (result) {
                         dispatch(changedGrowingCycle());
                         showNotification({
                             title: 'Success',
                             message: `Growing cycle for ${cycleToDelete.plants} has been deleted successfully.`,
                             color: 'green',
                         });
-                    }else{
+                    } else {
                         showNotification({
-                        title: 'Error',
-                        message: 'Failed to delete the growing cycle',
-                        color: 'red',
-                    });
+                            title: 'Error',
+                            message: 'Failed to delete the growing cycle',
+                            color: 'red',
+                        });
                     }
                 })
                 .catch(() => {
@@ -95,17 +95,41 @@ const GrowingCycleList: React.FC<{ fpfId: string; growingCycles: GrowingCycle[] 
                 <GrowingCycleForm
                     fpfId={fpfId}
                     toEditGrowingCycle={toEditGrowingCycle}
-                    onSuccess={(message, color) => {
+                    onSuccess={() => {
                         closeModal();
                     }}
                 />
+            </Modal>
+
+            {/* Modal for Harvest Entity Form */}
+            <Modal
+                opened={showHarvestForm}
+                zIndex={1000}
+                onClose={() => setShowHarvestForm(false)}
+                title={t("harvestEntityForm.addHarvestEntity")}
+                centered
+            >
+                {selectedCycle && (
+                    <HarvestEntityForm
+                        growingCycleId={selectedCycle.id}
+                        toEditHarvestEntity={null}
+                        onSuccess={() => {
+                            setShowHarvestForm(false);
+                            showNotification({
+                                title: 'Success',
+                                message: 'Harvest entity added successfully!',
+                                color: 'green',
+                            });
+                        }}
+                    />
+                )}
             </Modal>
 
             {/* Modal for Growing Cycle Details */}
             <Modal
                 opened={!!selectedCycle}
                 onClose={() => setSelectedCycle(null)}
-                title={`Growing Cycle Details for ${selectedCycle?.plants}`}
+                title={t("header.table.details") + " " + selectedCycle?.plants}
                 centered
             >
                 {selectedCycle && (
@@ -113,29 +137,26 @@ const GrowingCycleList: React.FC<{ fpfId: string; growingCycles: GrowingCycle[] 
                         <Paper style={{ width: "100%" }}>
                             <Grid>
                                 <Grid.Col span={6}>
-                                    <Text size="sm"><strong>Plant:</strong></Text>
+                                    <Text size="sm"><strong>{t("header.table.name")}</strong></Text>
                                     <Text size="sm">{selectedCycle.plants}</Text>
                                 </Grid.Col>
                                 <Grid.Col span={6}>
-                                    <Text size="sm"><strong>Planted:</strong></Text>
+                                    <Text size="sm"><strong>{t("header.table.planted")}</strong></Text>
                                     <Text size="sm">{selectedCycle.startDate ? new Date(selectedCycle.startDate).toLocaleDateString() : "N/A"}</Text>
                                 </Grid.Col>
                                 <Grid.Col span={6}>
-                                    <Text size="sm"><strong>Harvested:</strong></Text>
+                                    <Text size="sm"><strong>{t("header.table.harvested")}</strong></Text>
                                     <Text size="sm">{selectedCycle.endDate ? new Date(selectedCycle.endDate).toLocaleDateString() : "Still growing"}</Text>
                                 </Grid.Col>
                                 <Grid.Col span={6}>
-                                    <Text size="sm"><strong>Notes:</strong></Text>
+                                    <Text size="sm"><strong>{t("header.table.notes")}</strong></Text>
                                     <Text size="sm">{selectedCycle.note || "No notes available."}</Text>
                                 </Grid.Col>
                             </Grid>
                         </Paper>
                         <Group mt="md">
                             <Button
-                                onClick={() => {
-                                    // Open modal or trigger function to add HarvestEntity
-                                    console.log(`Adding HarvestEntity to cycle ${selectedCycle.id}`);
-                                }}
+                                onClick={() => setShowHarvestForm(true)} // Show HarvestEntityForm
                             >
                                 Add Harvest Entity
                             </Button>
@@ -149,7 +170,6 @@ const GrowingCycleList: React.FC<{ fpfId: string; growingCycles: GrowingCycle[] 
                     </>
                 )}
             </Modal>
-
 
             {/* Modal for Delete Confirmation */}
             <Modal
@@ -176,7 +196,7 @@ const GrowingCycleList: React.FC<{ fpfId: string; growingCycles: GrowingCycle[] 
                 shadow="sm"
                 padding="md"
                 radius="md"
-                style={{ boxShadow: "0 2px 8px rgba(0, 0, 0, 0.3)", position: "static", overflowY:'scroll', scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch', height:'45vh'}}
+                style={{ boxShadow: "0 2px 8px rgba(0, 0, 0, 0.3)", position: "static", overflowY: 'scroll', scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch', height: '45vh' }}
             >
                 <IconCirclePlus
                     size={25}
@@ -191,11 +211,11 @@ const GrowingCycleList: React.FC<{ fpfId: string; growingCycles: GrowingCycle[] 
                 />
                 <Flex>
                     <Table striped highlightOnHover
-                        style={{
-                            textAlign: "left",
-                            borderCollapse: "collapse",
-                            width: "100%",
-                        }}
+                           style={{
+                               textAlign: "left",
+                               borderCollapse: "collapse",
+                               width: "100%",
+                           }}
                     >
                         <Table.Thead>
                             <Table.Tr>
@@ -235,12 +255,12 @@ const GrowingCycleList: React.FC<{ fpfId: string; growingCycles: GrowingCycle[] 
                                         />
                                         <IconEdit
                                             onClick={(e) => {
-                                                e.stopPropagation(); // Prevent triggering row click
+                                                e.stopPropagation();
                                                 setShowGrowingCycleForm(true);
                                                 setToEditGrowingCycle(cycle);
                                             }}
                                             size={20}
-                                            style={{ cursor: "pointer", color: "#105385", marginLeft: "1rem" }}
+                                            style={{ cursor: "pointer", marginLeft: "5px" }}
                                         />
                                     </Table.Td>
                                 </Table.Tr>

@@ -53,6 +53,7 @@ i18n
                             notes: 'Notes',
                             date: 'Date',
                             amount: 'Amount (kg)',
+                            details: 'Details for',
                         }
                     },
                     growingCycleForm: {
@@ -112,6 +113,16 @@ i18n
                         addCamera: 'Add Camera',
                         editCamera: 'Edit Camera',
                         createCamera: 'Create Camera',
+                    },
+                    harvestEntityForm: {
+                        addHarvestEntity: 'Add Harvest Entity',
+                        dateLabel: 'Date',
+                        datePlaceholder: 'Select Date',
+                        amountLabel: 'Amount (kg)',
+                        amountPlaceholder: 'Enter Amount',
+                        notesLabel: 'Notes',
+                        notesPlaceholder: 'Enter Notes',
+                        saveButton: 'Save',
                     }
                 },
             },
@@ -159,7 +170,10 @@ i18n
                             name: 'Name',
                             planted: 'Gepflanzt am',
                             harvested: 'Geerntet am',
-                            notes: 'Bemerkungen'
+                            notes: 'Bemerkungen',
+                            date: 'Datum',
+                            amount: 'Menge (kg)',
+                            details: 'Details für',
                         }
                     },
                     growingCycleForm: {
@@ -218,6 +232,16 @@ i18n
                         addCamera: 'Kamera hinzufügen',
                         editCamera: 'Kamera bearbeiten',
                         createCamera: 'Kamera erstellen',
+                    },
+                    harvestEntityForm: {
+                        addHarvestEntity: 'Ernte hinzufügen',
+                        dateLabel: 'Datum',
+                        datePlaceholder: 'Datum auswählen',
+                        amountLabel: 'Menge (kg)',
+                        amountPlaceholder: 'Menge eingeben',
+                        notesLabel: 'Notizen',
+                        notesPlaceholder: 'Notizen eingeben',
+                        saveButton: 'Speichern',
                     }
                 },
             },
@@ -265,7 +289,10 @@ i18n
                             name: 'Nom',
                             planted: 'Planté le',
                             harvested: 'Récolté le',
-                            notes: 'Remarques'
+                            notes: 'Remarques',
+                            details: 'Détails pour',
+                            date: 'Date',
+                            amount: 'Quantité (kg)',
                         }
                     },
                     growingCycleForm: {
@@ -322,6 +349,16 @@ i18n
                         addCamera: 'Ajouter une caméra',
                         editCamera: 'Modifier la caméra',
                         createCamera: 'Créer une caméra',
+                    },
+                    harvestEntityForm: {
+                        addHarvestEntity: 'Ajouter une entité de récolte',
+                        dateLabel: 'Date',
+                        datePlaceholder: 'Sélectionnez la date',
+                        amountLabel: 'Quantité (kg)',
+                        amountPlaceholder: 'Entrez la quantité',
+                        notesLabel: 'Remarques',
+                        notesPlaceholder: 'Entrez des remarques',
+                        saveButton: 'Enregistrer',
                     }
                 },
             },
@@ -369,7 +406,10 @@ i18n
                             name: 'Nome',
                             planted: 'Pianta il',
                             harvested: 'Raccolto il',
-                            notes: 'Annotazioni'
+                            notes: 'Annotazioni',
+                            details: 'Dettagli per',
+                            date: 'Data',
+                            amount: 'Quantità (kg)',
                         }
                     },
                     growingCycleForm: {
@@ -427,6 +467,16 @@ i18n
                         addCamera: 'Aggiungi fotocamera',
                         editCamera: 'Modifica fotocamera',
                         createCamera: 'Crea fotocamera',
+                    },
+                    harvestEntityForm: {
+                        addHarvestEntity: 'Aggiungi entità di raccolto',
+                        dateLabel: 'Data',
+                        datePlaceholder: 'Seleziona la data',
+                        amountLabel: 'Quantità (kg)',
+                        amountPlaceholder: 'Inserisci la quantità',
+                        notesLabel: 'Note',
+                        notesPlaceholder: 'Inserisci le note',
+                        saveButton: 'Salva',
                     }
                 },
             },
@@ -474,7 +524,10 @@ i18n
                             name: '名称',
                             planted: '种植时间',
                             harvested: '收获时间',
-                            notes: '备注'
+                            notes: '备注',
+                            details: '详细信息',
+                            date: '日期',
+                            amount: '数量（千克）',
                         }
                     },
                     growingCycleForm: {
@@ -532,6 +585,16 @@ i18n
                         addCamera: '添加摄像头',
                         editCamera: '编辑摄像头',
                         createCamera: '创建摄像头',
+                    },
+                    harvestEntityForm: {
+                        addHarvestEntity: '添加收获实体',
+                        dateLabel: '日期',
+                        datePlaceholder: '选择日期',
+                        amountLabel: '数量（千克）',
+                        amountPlaceholder: '输入数量',
+                        notesLabel: '备注',
+                        notesPlaceholder: '输入备注',
+                        saveButton: '保存',
                     }
                 },
             },
@@ -579,7 +642,10 @@ i18n
                             name: 'Имя',
                             planted: 'Дата посадки',
                             harvested: 'Дата сбора',
-                            notes: 'Примечания'
+                            notes: 'Примечания',
+                            details: 'Подробности для',
+                            date: 'Дата',
+                            amount: 'Количество (кг)',
                         }
                     },
                     growingCycleForm: {
@@ -637,6 +703,16 @@ i18n
                         addCamera: 'Добавить камеру',
                         editCamera: 'Редактировать камеру',
                         createCamera: 'Создать камеру',
+                    },
+                    harvestEntityForm: {
+                        addHarvestEntity: 'Добавить урожай',
+                        dateLabel: 'Дата',
+                        datePlaceholder: 'Выберите дату',
+                        amountLabel: 'Количество (кг)',
+                        amountPlaceholder: 'Введите количество',
+                        notesLabel: 'Примечания',
+                        notesPlaceholder: 'Введите примечания',
+                        saveButton: 'Сохранить',
                     }
                 },
             },
