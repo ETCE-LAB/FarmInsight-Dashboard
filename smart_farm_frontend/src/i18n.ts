@@ -48,7 +48,7 @@ i18n
                         addSensor: 'Add Sensor',
                         dateError: 'End date should be after start date',
                         addHarvest: 'Add a Harvest',
-                        totalHarvestAmount: 'Total Harvest in KG',
+                        totalHarvestAmount: 'Total Harvest',
                         table: {
                             name: 'Name',
                             planted: 'Planted on',
@@ -176,7 +176,7 @@ i18n
                         addSensor: 'Sensor hinzufügen',
                         dateError: 'Enddatum sollte nach dem Startdatum liegen',
                         addHarvest: 'Ernte hinzufügen',
-                        totalHarvestAmount: 'Gesamternte in KG',
+                        totalHarvestAmount: 'Gesamternte',
                         table: {
                             name: 'Name',
                             planted: 'Gepflanzt am',
@@ -303,7 +303,7 @@ i18n
                         addSensor: 'Ajouter un capteur',
                         dateError: 'La date de fin doit être postérieure à la date de début',
                         addHarvest: 'Ajouter une récolte',
-                        totalHarvestAmount: 'Récolte totale en KG',
+                        totalHarvestAmount: 'Récolte totale',
                         table: {
                             name: 'Nom',
                             planted: 'Planté le',
@@ -428,7 +428,7 @@ i18n
                         addSensor: 'Aggiungi sensore',
                         dateError: 'La data di fine deve essere successiva alla data di inizio',
                         addHarvest: 'Aggiungi un raccolto',
-                        totalHarvestAmount: 'Raccolto totale in KG',
+                        totalHarvestAmount: 'Raccolto totale',
                         table: {
                             name: 'Nome',
                             planted: 'Pianta il',
@@ -554,7 +554,7 @@ i18n
                         addSensor: '添加传感器',
                         dateError: '结束日期应在开始日期之后',
                         addHarvest: '添加收获',
-                        totalHarvestAmount: '总收获量（千克）',
+                        totalHarvestAmount: '总收获量',
                         table: {
                             name: '名称',
                             planted: '种植时间',
@@ -680,7 +680,7 @@ i18n
                         addSensor: 'Добавить датчик',
                         dateError: 'Дата окончания должна быть после даты начала',
                         addHarvest: 'Добавить урожай',
-                        totalHarvestAmount: 'Общий урожай в кг',
+                        totalHarvestAmount: 'Общий урожай',
                         table: {
                             name: 'Имя',
                             planted: 'Дата посадки',

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
     Card,
     Modal,
@@ -15,23 +15,22 @@ import {
     IconCirclePlus,
     IconEdit,
     IconSeeding,
-    IconInfoSquareRounded, IconSquareRoundedMinus
+    IconInfoSquareRounded,
+    IconSquareRoundedMinus,
 } from "@tabler/icons-react";
 import { GrowingCycleForm } from "./growingCycleForm";
 import { GrowingCycle } from "../models/growingCycle";
 import { removeGrowingCycle } from "../useCase/removeGrowingCycle";
-import {changedGrowingCycle, deleteGrowingCycle} from "../state/GrowingCycleSlice";
+import { changedGrowingCycle, deleteGrowingCycle } from "../state/GrowingCycleSlice";
 import { useAppDispatch } from "../../../utils/Hooks";
 
 import HarvestEntityList from "../../harvestEntity/ui/harvestEntityList";
 import { HarvestEntityForm } from "../../harvestEntity/ui/harvestEntityForm";
-import {showNotification} from "@mantine/notifications";
-import {useSelector} from "react-redux";
-import {RootState} from "../../../utils/store";
-import {useAuth} from "react-oidc-context";
+import { showNotification } from "@mantine/notifications";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../utils/store";
+import { useAuth } from "react-oidc-context";
 
-
-// Helper function to truncate text
 const truncateText = (text: string, limit: number): string => {
     if (text.length > limit) {
         return `${text.slice(0, limit)}...`;
@@ -39,14 +38,13 @@ const truncateText = (text: string, limit: number): string => {
     return text;
 };
 
-const GrowingCycleList: React.FC<{ fpfId: string; }> = ({ fpfId }) => {
+const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
     const [showGrowingCycleForm, setShowGrowingCycleForm] = useState(false);
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
     const [activeModal, setActiveModal] = useState<"growingCycleForm" | "harvestForm" | "details" | "deleteConfirmation" | null>(null);
     const [toEditGrowingCycle, setToEditGrowingCycle] = useState<GrowingCycle | null>(null);
     const [cycleToDelete, setCycleToDelete] = useState<GrowingCycle | null>(null);
     const [selectedCycle, setSelectedCycle] = useState<GrowingCycle | null>(null);
-    const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
     const dispatch = useAppDispatch();
     const growingCycles = useSelector((state: RootState) => state.growingCycle.growingCycles);
     const auth = useAuth();
@@ -59,7 +57,9 @@ const GrowingCycleList: React.FC<{ fpfId: string; }> = ({ fpfId }) => {
     };
 
     const handleDelete = (cycle: GrowingCycle) => {
+        console.log("button pressed")
         setCycleToDelete(cycle);
+        console.log(cycle)
         setActiveModal("deleteConfirmation");
     };
 
@@ -67,8 +67,7 @@ const GrowingCycleList: React.FC<{ fpfId: string; }> = ({ fpfId }) => {
         if (cycleToDelete) {
             removeGrowingCycle(cycleToDelete.id)
                 .then((result) => {
-
-                    if(result){
+                    if (result) {
                         dispatch(deleteGrowingCycle(cycleToDelete.id));
                         dispatch(changedGrowingCycle());
                         showNotification({
@@ -97,7 +96,6 @@ const GrowingCycleList: React.FC<{ fpfId: string; }> = ({ fpfId }) => {
 
     return (
         <>
-            {/* Modal for Adding or Editing Growing Cycles */}
             <Modal
                 opened={activeModal === "growingCycleForm"}
                 onClose={closeAllModals}
@@ -107,9 +105,7 @@ const GrowingCycleList: React.FC<{ fpfId: string; }> = ({ fpfId }) => {
                 <GrowingCycleForm
                     fpfId={fpfId}
                     toEditGrowingCycle={toEditGrowingCycle}
-                    closeForm={() => {
-                        closeAllModals();
-                    }}
+                    closeForm={closeAllModals}
                 />
             </Modal>
 
@@ -133,48 +129,43 @@ const GrowingCycleList: React.FC<{ fpfId: string; }> = ({ fpfId }) => {
                 )}
             </Modal>
 
-            {/* Modal for Growing Cycle Details */}
             <Modal
                 opened={activeModal === "details"}
                 onClose={closeAllModals}
-                title={t("header.table.details") + " " + selectedCycle?.plants}
+                title={`${t("header.table.details")} ${selectedCycle?.plants}`}
                 centered
             >
-                {selectedCycle?.plants && (
+                {selectedCycle && (
                     <>
-                        <Paper style={{ width: "100%" }}>
+                        <Paper>
                             <Grid>
                                 <Grid.Col span={6}>
-                                    <Text size="sm"><strong>{t("header.table.name")}</strong></Text>
+                                    <Text size="sm">
+                                        <strong>{t("header.table.name")}</strong>
+                                    </Text>
                                     <Text size="sm">{selectedCycle.plants}</Text>
                                 </Grid.Col>
                                 <Grid.Col span={6}>
-                                    <Text size="sm"><strong>{t("header.table.planted")}</strong></Text>
-                                    <Text size="sm">{selectedCycle.startDate ? new Date(selectedCycle.startDate).toLocaleDateString() : "N/A"}</Text>
+                                    <Text size="sm">
+                                        <strong>{t("header.table.planted")}</strong>
+                                    </Text>
+                                    <Text size="sm">
+                                        {selectedCycle.startDate
+                                            ? new Date(selectedCycle.startDate).toLocaleDateString()
+                                            : "N/A"}
+                                    </Text>
                                 </Grid.Col>
                                 <Grid.Col span={6}>
-                                    <Text size="sm"><strong>{t("header.table.harvested")}</strong></Text>
-                                    <Text size="sm">{selectedCycle.endDate ? new Date(selectedCycle.endDate).toLocaleDateString() : "Still growing"}</Text>
-                                </Grid.Col>
-                                <Grid.Col span={6}>
-                                    <Text size="sm"><strong>{t("header.table.notes")}</strong></Text>
+                                    <Text size="sm">
+                                        <strong>{t("header.table.notes")}</strong>
+                                    </Text>
                                     <Text size="sm">{selectedCycle.note || "No notes available."}</Text>
                                 </Grid.Col>
                             </Grid>
                         </Paper>
 
-                        {/* Summe der Ernten */}
-                        {selectedCycle.harvests && selectedCycle.harvests.length > 0 && (
-                            <Text size="sm" mt="md">
-                                <strong>{t("header.totalHarvestAmount")}: </strong>
-                                {selectedCycle.harvests.reduce((sum, harvest) => sum + harvest.amountInKg, 0)} kg
-                            </Text>
-                        )}
-
                         {selectedCycle.harvests && (
-                            <HarvestEntityList
-                                growingCycleID={selectedCycle.id}
-                            />
+                            <HarvestEntityList growingCycleID={selectedCycle.id} />
                         )}
                     </>
                 )}
@@ -200,44 +191,34 @@ const GrowingCycleList: React.FC<{ fpfId: string; }> = ({ fpfId }) => {
                 </Group>
             </Modal>
 
-            {/* Card Component */}
-            <Card
-                shadow="sm"
-                padding="md"
-                radius="md"
-                style={{ boxShadow: "0 2px 8px rgba(0, 0, 0, 0.3)", position: "static", overflowY: "scroll", scrollbarWidth: "none", WebkitOverflowScrolling: "touch", height: "45vh" }}
-            >
+            <Card shadow="sm" radius="md" style={{ height: "45vh", overflowY: "scroll" }}>
                 <IconCirclePlus
                     size={25}
                     aria-disabled={!auth.user}
-                    onClick={auth.user ? () => {
-                        setActiveModal("growingCycleForm");
-                        setToEditGrowingCycle(null);
-                    }: undefined }
+                    onClick={
+                        auth.user
+                            ? () => {
+                                setActiveModal("growingCycleForm");
+                                setToEditGrowingCycle(null);
+                            }
+                            : undefined
+                    }
                     style={{
                         cursor: auth.user ? "pointer" : "not-allowed",
                         color: auth.user ? "#105385" : "#a1a1a1",
-                        position: "relative",
-                        top: "25px",
-                        left: "10px",
                     }}
                 />
                 <Flex>
-                    <Table striped highlightOnHover
-                           style={{
-                               textAlign: "left",
-                               borderCollapse: "collapse",
-                               width: "100%",
-                           }}
-                    >
+                    <Table striped highlightOnHover>
                         <Table.Thead>
                             <Table.Tr>
-                                <Table.Th></Table.Th>
+                                <Table.Th />
                                 <Table.Th>{t("header.table.name")}</Table.Th>
                                 <Table.Th>{t("header.table.planted")}</Table.Th>
-                                <Table.Th>{t("header.table.harvested")}</Table.Th>
+                                <Table.Th>{t("header.totalHarvestAmount")}</Table.Th>
                                 <Table.Th>{t("header.table.notes")}</Table.Th>
-                                <Table.Th></Table.Th>
+                                <Table.Th />
+                                <Table.Th />
                             </Table.Tr>
                         </Table.Thead>
                         <Table.Tbody>
@@ -247,26 +228,29 @@ const GrowingCycleList: React.FC<{ fpfId: string; }> = ({ fpfId }) => {
                                         <IconSeeding
                                             style={{
                                                 marginRight: "0.5rem",
-                                                color: cycle.endDate ? "grey" : "green",
+                                                color: "green",
                                             }}
                                         />
                                     </Table.Td>
-                                    <Table.Td
-                                    >
-                                        {truncateText(cycle.plants, 12)}
+                                    <Table.Td>{truncateText(cycle.plants, 12)}</Table.Td>
+                                    <Table.Td>
+                                        {cycle.startDate
+                                            ? new Date(cycle.startDate).toLocaleDateString()
+                                            : ""}
                                     </Table.Td>
-                                    <Table.Td>{cycle.startDate ? new Date(cycle.startDate).toLocaleDateString() : ""}</Table.Td>
-                                    <Table.Td>{cycle.endDate ? new Date(cycle.endDate).toLocaleDateString() : ""}</Table.Td>
-                                    <Table.Td>{cycle.note ? truncateText(cycle.note, 12) : ""}</Table.Td>
+                                    <Table.Td>
+                                        {cycle.harvests && cycle.harvests.reduce((sum, harvest) => sum + harvest.amountInKg, 0) !== 0
+                                            ? cycle.harvests.reduce((sum, harvest) => sum + harvest.amountInKg, 0).toFixed(3)
+                                            : 0} kg
+                                    </Table.Td>
+                                    <Table.Td>
+                                        {cycle.note ? truncateText(cycle.note, 12) : ""}
+                                    </Table.Td>
                                     <Table.Td>
                                         <IconSquareRoundedMinus
                                             onClick={() => handleDelete(cycle)}
                                             size={25}
-                                            style={{
-                                                cursor: "pointer",
-                                                marginRight: "0.5rem",
-                                                color: "#a53737",
-                                            }}
+                                            style={{ cursor: "pointer", color: "#a53737", marginRight: "1rem" }}
                                         />
                                         <IconEdit
                                             onClick={() => {
@@ -274,22 +258,17 @@ const GrowingCycleList: React.FC<{ fpfId: string; }> = ({ fpfId }) => {
                                                 setToEditGrowingCycle(cycle);
                                             }}
                                             size={25}
-                                            style={{
-                                                cursor: "pointer",
-                                                color: "#105385",
-                                            }}
+                                            style={{ cursor: "pointer", color: "#105385"}}
                                         />
+                                    </Table.Td>
+                                    <Table.Td>
                                         <IconInfoSquareRounded
                                             onClick={() => {
                                                 setSelectedCycle(cycle);
                                                 setActiveModal("details");
                                             }}
                                             size={25}
-                                            style={{
-                                                cursor: "pointer",
-                                                marginLeft: "0.5rem",
-                                                color: "#2D6A4F",
-                                            }}
+                                            style={{ cursor: "pointer", color: "#2D6A4F" }}
                                         />
                                     </Table.Td>
                                 </Table.Tr>
