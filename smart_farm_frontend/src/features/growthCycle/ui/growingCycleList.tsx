@@ -238,9 +238,15 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
                                             : ""}
                                     </Table.Td>
                                     <Table.Td>
-                                        {cycle.harvests && cycle.harvests.reduce((sum, harvest) => sum + harvest.amountInKg, 0) !== 0
-                                            ? cycle.harvests.reduce((sum, harvest) => sum + harvest.amountInKg, 0).toFixed(3)
-                                            : 0} kg
+                                        {(() => {
+                                            const totalHarvest = cycle.harvests?.reduce((sum, harvest) => sum + harvest.amountInKg, 0) || 0;
+                                            if (totalHarvest < 1) {
+                                                const grams = totalHarvest * 1000; // Umrechnung in Gramm
+                                                return `${grams} g`;
+                                            } else {
+                                                return `${totalHarvest} kg`;
+                                            }
+                                        })()}
                                     </Table.Td>
                                     <Table.Td>
                                         {cycle.note ? truncateText(cycle.note, 12) : ""}
