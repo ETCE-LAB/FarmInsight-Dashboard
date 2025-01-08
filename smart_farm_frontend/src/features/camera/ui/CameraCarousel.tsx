@@ -34,13 +34,10 @@ export const CameraCarousel: React.FC<{ camerasToDisplay: Camera[] }> = ({camera
 
             //For each Camera add all Images and Livestreams as objectsToDisplay
             camerasToDisplay.map((camera) => {
-                console.log(camera)
-                console.log(objectsToDisplay)
                 //If the camera has a SnapShot URL
                 if(camera.isActive){ // && camera.snapshotUrl.length > 1){
                     getImages(camera.id).then( resp => {
                         if (resp && resp.length > 0) {
-                            console.log(resp)
                             setObjectsToDisplay((prevObjects) => [
                                 ...prevObjects,
                                 { url: `${process.env.REACT_APP_BACKEND_URL}/api/cameras/${camera.id}/livestream`, title: `${camera.name} LiveStream`, isLiveStream: true }

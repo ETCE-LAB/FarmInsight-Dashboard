@@ -61,8 +61,7 @@ export const GrowingCycleForm: React.FC<{
                     message: t("growingCycleForm.editSuccessMessage"),
                     color: "green",
                 });
-            }
-            else {
+            } else {
                 const newCycle = await createGrowingCycle(growingCycle);
                 dispatch(addGrowingCycle(newCycle));
                 showNotification({

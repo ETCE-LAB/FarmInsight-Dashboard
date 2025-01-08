@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import {
     Card,
     Modal,
@@ -11,13 +11,17 @@ import {
     Grid,
 } from "@mantine/core";
 import { useTranslation } from 'react-i18next';
-import {IconCircleMinus, IconEdit, IconSquareRoundedMinus} from "@tabler/icons-react";
+import {IconCircleMinus, IconCirclePlus, IconEdit, IconSquareRoundedMinus} from "@tabler/icons-react";
 import { HarvestEntityForm } from "./harvestEntityForm";
 import { HarvestEntity } from "../models/harvestEntity";
 import { deleteHarvestEntity } from "../useCase/deleteHarvestEntity";
-import { changedHarvestEntity } from "../state/HarvestEntitySlice";
-import { useAppDispatch } from "../../../utils/Hooks";
+
+import {useAppDispatch} from "../../../utils/Hooks";
 import { showNotification } from "@mantine/notifications";
+import {useSelector} from "react-redux";
+import {RootState} from "../../../utils/store";
+import {changedGrowingCycle, removeHarvestEntity} from "../../growthCycle/state/GrowingCycleSlice";
+import {useAuth} from "react-oidc-context";
 
 const truncateText = (text: string, limit: number): string => {
     if (text.length > limit) {
@@ -26,15 +30,18 @@ const truncateText = (text: string, limit: number): string => {
     return text;
 };
 
-const HarvestEntityList: React.FC<{ growingCycleID: string; harvestEntities: HarvestEntity[] }> = ({ growingCycleID, harvestEntities }) => {
+const HarvestEntityList: React.FC<{ growingCycleID: string; }> = ({ growingCycleID }) => {
     const [showHarvestEntityForm, setShowHarvestEntityForm] = useState(false);
     const { t } = useTranslation();
     const [toEditHarvestEntity, setToEditHarvestEntity] = useState<HarvestEntity | null>(null);
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
     const [entityToDelete, setEntityToDelete] = useState<HarvestEntity | null>(null);
     const [selectedEntity, setSelectedEntity] = useState<HarvestEntity | null>(null);
-
+    const auth = useAuth();
     const dispatch = useAppDispatch();
+    const harvestEntities = useSelector((state: RootState) =>
+        state.growingCycle.growingCycles.find(cycle => cycle.id === growingCycleID)?.harvests || []
+    );
 
     const closeModal = () => {
         setShowHarvestEntityForm(false);
@@ -49,13 +56,17 @@ const HarvestEntityList: React.FC<{ growingCycleID: string; harvestEntities: Har
     const confirmDelete = () => {
         if (entityToDelete) {
             deleteHarvestEntity(entityToDelete.id)
-                .then(() => {
-                    dispatch(changedHarvestEntity());
-                    showNotification({
-                        title: 'Success',
-                        message: `Harvest entry for ${entityToDelete.date ? new Date(entityToDelete.date).toLocaleDateString() : "unknown date"} has been deleted successfully.`,
-                        color: 'green',
-                    });
+                .then((result) => {
+
+                    if(result){
+                        dispatch(removeHarvestEntity({ cycleId: growingCycleID, harvestId: entityToDelete.id }));
+                        dispatch(changedGrowingCycle());
+                        showNotification({
+                            title: 'Success',
+                            message: `Harvest entry for ${entityToDelete.date ? new Date(entityToDelete.date).toLocaleDateString() : "unknown date"} has been deleted successfully.`,
+                            color: 'green',
+                        });
+                    }
                 })
                 .catch(() => {
                     showNotification({
@@ -78,13 +89,14 @@ const HarvestEntityList: React.FC<{ growingCycleID: string; harvestEntities: Har
                 opened={showHarvestEntityForm}
                 onClose={closeModal}
                 title={toEditHarvestEntity ? "Edit Harvest Entry" : "Add Harvest Entry"}
+                centered
             >
                 <HarvestEntityForm
                     growingCycleId={growingCycleID}
                     toEditHarvestEntity={toEditHarvestEntity}
                     onSuccess={() => {
-                        closeModal();
-                        dispatch(changedHarvestEntity()); // Trigger a refresh
+                        closeModal()
+                        dispatch(changedGrowingCycle());
                         showNotification({
                             title: "Success",
                             message: toEditHarvestEntity
@@ -123,6 +135,7 @@ const HarvestEntityList: React.FC<{ growingCycleID: string; harvestEntities: Har
                 )}
             </Modal>
 
+
             {/* Modal for Delete Confirmation */}
             <Modal
                 opened={showDeleteConfirmation}
@@ -150,7 +163,20 @@ const HarvestEntityList: React.FC<{ growingCycleID: string; harvestEntities: Har
                 radius="md"
                 style={{ marginTop: "1rem", width: "100%" }}
             >
+                <IconCirclePlus
+                        size={25}
+                        aria-disabled={!auth.user}
+                        onClick={auth.user ? () => {
+                            setToEditHarvestEntity(null);
+                            setShowHarvestEntityForm(true);
+                        }: undefined }
+                        style={{
+                            cursor: auth.user ? "pointer" : "not-allowed",
+                            color: auth.user ? "#105385" : "#a1a1a1",
+                        }}
+                    />
                 <Flex>
+
                     <Table striped highlightOnHover style={{ width: "100%" }}>
                         <Table.Thead>
                             <Table.Tr>

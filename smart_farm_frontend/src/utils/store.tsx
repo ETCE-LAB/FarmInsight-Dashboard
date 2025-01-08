@@ -8,7 +8,6 @@ import authSlice from "../features/auth/slice/authSlice";
 import MembershipSlice from "../features/membership/state/MembershipSlice";
 import CameraSlice from "../features/camera/state/CameraSlice";
 import GrowingCycleSlice from "../features/growthCycle/state/GrowingCycleSlice";
-import HarvestEntitySlice from "../features/harvestEntity/state/HarvestEntitySlice";
 
 export const store = configureStore({
     reducer: {
@@ -21,7 +20,6 @@ export const store = configureStore({
         membership: MembershipSlice,
         growingCycle: GrowingCycleSlice,
         camera: CameraSlice,
-        harvestEntity: HarvestEntitySlice,
     }
 })
 

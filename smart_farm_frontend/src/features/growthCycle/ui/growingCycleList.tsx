@@ -3,7 +3,6 @@ import {
     Card,
     Modal,
     Table,
-    Notification,
     Group,
     Button,
     Text,
@@ -29,8 +28,8 @@ import { HarvestEntityForm } from "../../harvestEntity/ui/harvestEntityForm";
 import {showNotification} from "@mantine/notifications";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../utils/store";
-import {useParams} from "react-router-dom";
-import {getFpf} from "../../fpf/useCase/getFpf";
+import {useAuth} from "react-oidc-context";
+
 
 // Helper function to truncate text
 const truncateText = (text: string, limit: number): string => {
@@ -50,6 +49,7 @@ const GrowingCycleList: React.FC<{ fpfId: string; }> = ({ fpfId }) => {
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
     const dispatch = useAppDispatch();
     const growingCycles = useSelector((state: RootState) => state.growingCycle.growingCycles);
+    const auth = useAuth();
 
     const closeAllModals = () => {
         setActiveModal(null);
@@ -99,7 +99,7 @@ const GrowingCycleList: React.FC<{ fpfId: string; }> = ({ fpfId }) => {
         <>
             {/* Modal for Adding or Editing Growing Cycles */}
             <Modal
-                opened={showGrowingCycleForm}
+                opened={activeModal === "growingCycleForm"}
                 onClose={closeAllModals}
                 centered
                 title={toEditGrowingCycle ? "Edit Growing Cycle" : "Add Growing Cycle"}
@@ -115,8 +115,8 @@ const GrowingCycleList: React.FC<{ fpfId: string; }> = ({ fpfId }) => {
 
             {/* Modal for Harvest Entity Form */}
             <Modal
-                opened={!!selectedCycle}
-                onClose={closeAllModals}
+                opened={activeModal === "harvestForm"}
+                onClose={() => setActiveModal("details")}
                 title={t("harvestEntityForm.addHarvest")}
                 centered
             >
@@ -125,8 +125,9 @@ const GrowingCycleList: React.FC<{ fpfId: string; }> = ({ fpfId }) => {
                         growingCycleId={selectedCycle.id}
                         toEditHarvestEntity={null}
                         onSuccess={() => {
+                            setActiveModal(null)
+                            setActiveModal("details")
                             dispatch(changedGrowingCycle());
-                            closeAllModals();
                         }}
                     />
                 )}
@@ -139,7 +140,7 @@ const GrowingCycleList: React.FC<{ fpfId: string; }> = ({ fpfId }) => {
                 title={t("header.table.details") + " " + selectedCycle?.plants}
                 centered
             >
-                {selectedCycle && (
+                {selectedCycle?.plants && (
                     <>
                         <Paper style={{ width: "100%" }}>
                             <Grid>
@@ -161,13 +162,6 @@ const GrowingCycleList: React.FC<{ fpfId: string; }> = ({ fpfId }) => {
                                 </Grid.Col>
                             </Grid>
                         </Paper>
-                        <Group mt="md">
-                            <Button
-                                onClick={() => setActiveModal("harvestForm")} // Show HarvestEntityForm
-                            >
-                                {t("header.addHarvest")}
-                            </Button>
-                        </Group>
 
                         {/* Summe der Ernten */}
                         {selectedCycle.harvests && selectedCycle.harvests.length > 0 && (
@@ -177,10 +171,9 @@ const GrowingCycleList: React.FC<{ fpfId: string; }> = ({ fpfId }) => {
                             </Text>
                         )}
 
-                        {selectedCycle.harvests && selectedCycle.harvests.length > 0 && (
+                        {selectedCycle.harvests && (
                             <HarvestEntityList
                                 growingCycleID={selectedCycle.id}
-                                harvestEntities={selectedCycle.harvests}
                             />
                         )}
                     </>
@@ -216,13 +209,14 @@ const GrowingCycleList: React.FC<{ fpfId: string; }> = ({ fpfId }) => {
             >
                 <IconCirclePlus
                     size={25}
-                    onClick={() => {
+                    aria-disabled={!auth.user}
+                    onClick={auth.user ? () => {
                         setActiveModal("growingCycleForm");
                         setToEditGrowingCycle(null);
-                    }}
+                    }: undefined }
                     style={{
-                        cursor: "pointer",
-                        color: "#105385",
+                        cursor: auth.user ? "pointer" : "not-allowed",
+                        color: auth.user ? "#105385" : "#a1a1a1",
                         position: "relative",
                         top: "25px",
                         left: "10px",

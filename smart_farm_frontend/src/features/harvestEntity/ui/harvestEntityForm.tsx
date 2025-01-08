@@ -6,13 +6,19 @@ import { showNotification } from "@mantine/notifications";
 import { useAppDispatch } from "../../../utils/Hooks";
 import { createHarvestEntity } from "../useCase/createHarvestEntity";
 import { modifyHarvestEntity } from "../useCase/modifyHarvestEntity";
-import { changedHarvestEntity } from "../state/HarvestEntitySlice";
+
 import { HarvestEntity } from "../models/harvestEntity";
+import {
+    addHarvestEntity,
+    changedGrowingCycle,
+    updateGrowingCycle,
+    updateHarvestEntity
+} from "../../growthCycle/state/GrowingCycleSlice";
 
 export const HarvestEntityForm: React.FC<{
     growingCycleId: string;
     toEditHarvestEntity: HarvestEntity | null;
-    onSuccess: (message: string, color: string) => void;
+    onSuccess: () => void;
 }> = ({ growingCycleId, toEditHarvestEntity, onSuccess }) => {
     const { t } = useTranslation();
     const [harvestEntity, setHarvestEntity] = useState<HarvestEntity>({ growingCycleId: growingCycleId } as HarvestEntity);
@@ -25,13 +31,9 @@ export const HarvestEntityForm: React.FC<{
     const handleSubmit = async () => {
         if (toEditHarvestEntity) {
             try {
-                await modifyHarvestEntity(harvestEntity.id, harvestEntity);
-                showNotification({
-                    title: "Success",
-                    message: "Harvest entity edited successfully!",
-                    color: "green",
-                });
-                onSuccess("Harvest entity edited successfully!", "green");
+                const updatedEntity = await modifyHarvestEntity(harvestEntity.id, harvestEntity);
+                dispatch(updateHarvestEntity(updatedEntity))
+                onSuccess()
             } catch (error) {
                 showNotification({
                     title: "Failed to save the harvest entity",
@@ -41,13 +43,9 @@ export const HarvestEntityForm: React.FC<{
             }
         } else {
             try {
-                await createHarvestEntity(harvestEntity);
-                showNotification({
-                    title: "Success",
-                    message: "Harvest entity created successfully!",
-                    color: "green",
-                });
-                onSuccess("Harvest entity created successfully!", "green");
+                const newEntity = await createHarvestEntity(harvestEntity);
+                dispatch(addHarvestEntity({cycleId: growingCycleId, harvestEntity: newEntity}));
+                onSuccess()
             } catch (error) {
                 showNotification({
                     title: "Failed to save the harvest entity",
@@ -56,7 +54,7 @@ export const HarvestEntityForm: React.FC<{
                 });
             }
         }
-        dispatch(changedHarvestEntity());
+        dispatch(changedGrowingCycle());
     };
 
     const isFormValid = useMemo(() => {
