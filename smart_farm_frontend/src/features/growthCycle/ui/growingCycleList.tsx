@@ -21,8 +21,7 @@ import { useAppDispatch } from "../../../utils/Hooks";
 import {showNotification} from "@mantine/notifications";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../utils/store";
-import {useParams} from "react-router-dom";
-import {getFpf} from "../../fpf/useCase/getFpf";
+
 
 // Helper function to truncate text
 const truncateText = (text: string, limit: number): string => {
