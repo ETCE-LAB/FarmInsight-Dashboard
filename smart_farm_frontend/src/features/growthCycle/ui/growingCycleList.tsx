@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     Card,
     Modal,
@@ -20,12 +20,17 @@ import {
 } from "@tabler/icons-react";
 import { GrowingCycleForm } from "./growingCycleForm";
 import { GrowingCycle } from "../models/growingCycle";
-import { deleteGrowingCycle } from "../useCase/deleteGrowingCycle";
-import { changedGrowingCycle } from "../state/GrowingCycleSlice";
+import { removeGrowingCycle } from "../useCase/removeGrowingCycle";
+import {changedGrowingCycle, deleteGrowingCycle} from "../state/GrowingCycleSlice";
 import { useAppDispatch } from "../../../utils/Hooks";
-import { showNotification } from "@mantine/notifications";
+
 import HarvestEntityList from "../../harvestEntity/ui/harvestEntityList";
 import { HarvestEntityForm } from "../../harvestEntity/ui/harvestEntityForm";
+import {showNotification} from "@mantine/notifications";
+import {useSelector} from "react-redux";
+import {RootState} from "../../../utils/store";
+import {useParams} from "react-router-dom";
+import {getFpf} from "../../fpf/useCase/getFpf";
 
 // Helper function to truncate text
 const truncateText = (text: string, limit: number): string => {
@@ -35,14 +40,16 @@ const truncateText = (text: string, limit: number): string => {
     return text;
 };
 
-const GrowingCycleList: React.FC<{ fpfId: string; growingCycles: GrowingCycle[] }> = ({ fpfId, growingCycles }) => {
-    const { t } = useTranslation();
+const GrowingCycleList: React.FC<{ fpfId: string; }> = ({ fpfId }) => {
+    const [showGrowingCycleForm, setShowGrowingCycleForm] = useState(false);
+    const { t, i18n } = useTranslation();
     const [activeModal, setActiveModal] = useState<"growingCycleForm" | "harvestForm" | "details" | "deleteConfirmation" | null>(null);
     const [toEditGrowingCycle, setToEditGrowingCycle] = useState<GrowingCycle | null>(null);
     const [cycleToDelete, setCycleToDelete] = useState<GrowingCycle | null>(null);
     const [selectedCycle, setSelectedCycle] = useState<GrowingCycle | null>(null);
-
+    const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
     const dispatch = useAppDispatch();
+    const growingCycles = useSelector((state: RootState) => state.growingCycle.growingCycles);
 
     const closeAllModals = () => {
         setActiveModal(null);
@@ -58,9 +65,11 @@ const GrowingCycleList: React.FC<{ fpfId: string; growingCycles: GrowingCycle[] 
 
     const confirmDelete = () => {
         if (cycleToDelete) {
-            deleteGrowingCycle(cycleToDelete.id)
+            removeGrowingCycle(cycleToDelete.id)
                 .then((result) => {
-                    if (result) {
+
+                    if(result){
+                        dispatch(deleteGrowingCycle(cycleToDelete.id));
                         dispatch(changedGrowingCycle());
                         showNotification({
                             title: "Success",
@@ -90,7 +99,7 @@ const GrowingCycleList: React.FC<{ fpfId: string; growingCycles: GrowingCycle[] 
         <>
             {/* Modal for Adding or Editing Growing Cycles */}
             <Modal
-                opened={activeModal === "growingCycleForm"}
+                opened={showGrowingCycleForm}
                 onClose={closeAllModals}
                 centered
                 title={toEditGrowingCycle ? "Edit Growing Cycle" : "Add Growing Cycle"}
@@ -98,13 +107,15 @@ const GrowingCycleList: React.FC<{ fpfId: string; growingCycles: GrowingCycle[] 
                 <GrowingCycleForm
                     fpfId={fpfId}
                     toEditGrowingCycle={toEditGrowingCycle}
-                    onSuccess={closeAllModals}
+                    closeForm={() => {
+                        closeAllModals();
+                    }}
                 />
             </Modal>
 
             {/* Modal for Harvest Entity Form */}
             <Modal
-                opened={activeModal === "harvestForm"}
+                opened={!!selectedCycle}
                 onClose={closeAllModals}
                 title={t("harvestEntityForm.addHarvest")}
                 centered

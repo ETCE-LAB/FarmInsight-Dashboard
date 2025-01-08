@@ -5,7 +5,7 @@ import {GrowingCycle} from "../models/growingCycle";
 //8250f7569a3047ea8decf4cc101003da
 //"2017-07-21T17:32:28Z
 ////"2017-07-21
-export const deleteGrowingCycle = async (growingCycleID:string) => {
+export const removeGrowingCycle = async (growingCycleID:string) => {
     const apiClient = new APIClient()
 
     const user = getUser();

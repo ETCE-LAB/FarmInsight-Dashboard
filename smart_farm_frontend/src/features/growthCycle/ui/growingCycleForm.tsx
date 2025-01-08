@@ -4,20 +4,23 @@ import { DateInput } from "@mantine/dates";
 import { useTranslation } from "react-i18next";
 import { createGrowingCycle } from "../useCase/createGrowingCycle";
 import { GrowingCycle } from "../models/growingCycle";
-import { modifyGrowingCycle } from "../useCase/modifyGrowingCycle";
-import { useAppDispatch } from "../../../utils/Hooks";
-import { changedGrowingCycle } from "../state/GrowingCycleSlice";
-import { showNotification } from "@mantine/notifications";
+import {getFpf} from "../../fpf/useCase/getFpf";
+import {modifyGrowingCycle} from "../useCase/modifyGrowingCycle";
+import {useAppDispatch} from "../../../utils/Hooks";
+import {addGrowingCycle, changedGrowingCycle, deleteGrowingCycle, updateGrowingCycle} from "../state/GrowingCycleSlice";
+import {showNotification} from "@mantine/notifications";
+import {useSelector} from "react-redux";
+import {RootState} from "../../../utils/store";
 
 export const GrowingCycleForm: React.FC<{
     fpfId: string;
     toEditGrowingCycle: GrowingCycle | null;
-    onSuccess: (message: string, color: string) => void;
-}> = ({ fpfId, toEditGrowingCycle, onSuccess }) => {
+    closeForm: () => void;
+}> = ({ fpfId, toEditGrowingCycle, closeForm }) => {
     const { t } = useTranslation();
-    const [growingCycle, setGrowingCycle] = useState<GrowingCycle>({ fpfId } as GrowingCycle);
     const [dateError, setDateError] = useState<string | null>(null); // For error message
-    const dispatch = useAppDispatch();
+    const [growingCycle, setGrowingCycle] = useState<GrowingCycle>({ fpfId: fpfId } as GrowingCycle);
+    const dispatch = useAppDispatch()
 
     const handleInputChange = (field: string, value: any) => {
         setGrowingCycle((prev) => ({ ...prev, [field]: value }));
@@ -38,6 +41,7 @@ export const GrowingCycleForm: React.FC<{
         }
     };
 
+
     const handleSubmit = async () => {
         if (dateError) {
             showNotification({
@@ -49,22 +53,24 @@ export const GrowingCycleForm: React.FC<{
         }
 
         try {
-            if (toEditGrowingCycle) {
-                await modifyGrowingCycle(growingCycle.id, growingCycle);
+            if(toEditGrowingCycle){
+                const updatedCycle = await modifyGrowingCycle(growingCycle.id, growingCycle);
+                dispatch(updateGrowingCycle(updatedCycle));
                 showNotification({
                     title: t("growingCycleForm.successTitle"),
                     message: t("growingCycleForm.editSuccessMessage"),
                     color: "green",
                 });
-            } else {
-                await createGrowingCycle(growingCycle);
-                showNotification({
-                    title: t("growingCycleForm.successTitle"),
-                    message: t("growingCycleForm.createSuccessMessage"),
-                    color: "green",
-                });
             }
-            dispatch(changedGrowingCycle());
+            else {
+                const newCycle = await createGrowingCycle(growingCycle);
+                dispatch(addGrowingCycle(newCycle));
+                showNotification({
+                    title: 'Success',
+                    message: 'Growing cycle saved successfully!',
+                    color: 'green',
+                })
+            }
         } catch (error) {
             showNotification({
                 title: t("growingCycleForm.errorTitle"),
@@ -72,7 +78,9 @@ export const GrowingCycleForm: React.FC<{
                 color: "red",
             });
         }
+        closeForm();
     };
+
 
     const isFormValid = useMemo(() => {
         return growingCycle.plants?.trim() && growingCycle.startDate && !dateError;
