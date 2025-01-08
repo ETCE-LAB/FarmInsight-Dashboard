@@ -15,10 +15,14 @@ import { useTranslation } from 'react-i18next';
 import { IconCircleMinus, IconCirclePlus, IconEdit, IconSeeding } from "@tabler/icons-react";
 import { GrowingCycleForm } from "./growingCycleForm";
 import { GrowingCycle } from "../models/growingCycle";
-import { deleteGrowingCycle } from "../useCase/deleteGrowingCycle";
-import { changedGrowingCycle } from "../state/GrowingCycleSlice";
+import { removeGrowingCycle } from "../useCase/removeGrowingCycle";
+import {changedGrowingCycle, deleteGrowingCycle} from "../state/GrowingCycleSlice";
 import { useAppDispatch } from "../../../utils/Hooks";
 import {showNotification} from "@mantine/notifications";
+import {useSelector} from "react-redux";
+import {RootState} from "../../../utils/store";
+import {useParams} from "react-router-dom";
+import {getFpf} from "../../fpf/useCase/getFpf";
 
 // Helper function to truncate text
 const truncateText = (text: string, limit: number): string => {
@@ -28,15 +32,15 @@ const truncateText = (text: string, limit: number): string => {
     return text;
 };
 
-const GrowingCycleList: React.FC<{ fpfId: string; growingCycles: GrowingCycle[] }> = ({ fpfId, growingCycles }) => {
+const GrowingCycleList: React.FC<{ fpfId: string; }> = ({ fpfId }) => {
     const [showGrowingCycleForm, setShowGrowingCycleForm] = useState(false);
     const { t, i18n } = useTranslation();
     const [toEditGrowingCycle, setToEditGrowingCycle] = useState<GrowingCycle | null>(null);
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
     const [cycleToDelete, setCycleToDelete] = useState<GrowingCycle | null>(null); // State to hold cycle to delete
     const [selectedCycle, setSelectedCycle] = useState<GrowingCycle | null>(null); // State for the details modal
-
     const dispatch = useAppDispatch();
+    const growingCycles = useSelector((state: RootState) => state.growingCycle.growingCycles);
 
 
     const closeModal = () => {
@@ -51,10 +55,11 @@ const GrowingCycleList: React.FC<{ fpfId: string; growingCycles: GrowingCycle[] 
 
     const confirmDelete = () => {
         if (cycleToDelete) {
-            deleteGrowingCycle(cycleToDelete.id)
+            removeGrowingCycle(cycleToDelete.id)
                 .then((result) => {
                     console.log(result)
                     if(result){
+                        dispatch(deleteGrowingCycle(cycleToDelete.id));
                         dispatch(changedGrowingCycle());
                         showNotification({
                             title: 'Success',
@@ -63,10 +68,10 @@ const GrowingCycleList: React.FC<{ fpfId: string; growingCycles: GrowingCycle[] 
                         });
                     }else{
                         showNotification({
-                        title: 'Error',
-                        message: 'Failed to delete the growing cycle',
-                        color: 'red',
-                    });
+                            title: 'Error',
+                            message: 'Failed to delete the growing cycle',
+                            color: 'red',
+                        });
                     }
                 })
                 .catch(() => {
@@ -94,7 +99,7 @@ const GrowingCycleList: React.FC<{ fpfId: string; growingCycles: GrowingCycle[] 
                 <GrowingCycleForm
                     fpfId={fpfId}
                     toEditGrowingCycle={toEditGrowingCycle}
-                    onSuccess={(message, color) => {
+                    closeForm={() => {
                         closeModal();
                     }}
                 />
@@ -139,7 +144,7 @@ const GrowingCycleList: React.FC<{ fpfId: string; growingCycles: GrowingCycle[] 
                 centered
             >
                 <Text style={{ fontSize: "14px", textAlign: "center", marginBottom: "1rem" }}>
-                    {t("headers.confirmDialog")}
+                    {t("header.confirmDialog")}
                 </Text>
                 <Group gap="center" justify={"center"}>
                     <Button color="red" onClick={confirmDelete}>
