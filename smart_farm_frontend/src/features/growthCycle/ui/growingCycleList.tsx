@@ -57,7 +57,6 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
     };
 
     const handleDelete = (cycle: GrowingCycle) => {
-        console.log("button pressed")
         setCycleToDelete(cycle);
         console.log(cycle)
         setActiveModal("deleteConfirmation");

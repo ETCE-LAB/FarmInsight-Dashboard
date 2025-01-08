@@ -179,7 +179,7 @@ export const FpfForm: React.FC<{inputOrganization?:Organization, toEditFpf?:Fpf}
                         {!toEditFpf && (
                             <Grid.Col span={12}
                                       style={{display: "flex", alignItems: "center", justifyContent: "space-between"}}>
-                                <Switch label={t("label.setPublic")} size="md" checked={isPublic}/>
+                                <Switch label={t("label.setCameraCarousel")} size="md" checked={isPublic}  onChange={(e) => setIsPublic(e.currentTarget.checked)} />
                             </Grid.Col>
                         )}
 

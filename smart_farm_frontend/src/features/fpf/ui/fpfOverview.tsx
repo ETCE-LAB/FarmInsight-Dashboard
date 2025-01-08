@@ -3,11 +3,12 @@ import TimeseriesGraph from "../../measurements/ui/timeseriesGraph";
 import { useParams } from "react-router-dom";
 import { Fpf } from "../models/Fpf";
 import { getFpf } from "../useCase/getFpf";
-import {Container, Box, SimpleGrid} from '@mantine/core';
+import {Container, Box, SimpleGrid, Switch} from '@mantine/core';
 import GrowingCycleList from "../../growthCycle/ui/growingCycleList";
 import {CameraCarousel} from "../../camera/ui/CameraCarousel";
 import {useAppDispatch} from "../../../utils/Hooks";
 import {setGrowingCycles} from "../../growthCycle/state/GrowingCycleSlice";
+import {t} from "i18next";
 
 
 
@@ -15,6 +16,7 @@ export const FpfOverview = () => {
     const [fpf, setFpf] = useState<Fpf>();
     const dispatch = useAppDispatch();
     const params = useParams();
+
 
 
     useEffect(() => {
@@ -46,7 +48,9 @@ export const FpfOverview = () => {
                 <Box style={{ flex: 1, Width: '50vw', height: 'auto' }}>
                         {/* Camera-Feed */}
                         {fpf && (
-                            <CameraCarousel camerasToDisplay={fpf.Cameras}/>
+                            <>
+                                <CameraCarousel camerasToDisplay={fpf.Cameras} />
+                            </>
                         )}
                         {fpf &&
                             <GrowingCycleList fpfId={fpf.id} />

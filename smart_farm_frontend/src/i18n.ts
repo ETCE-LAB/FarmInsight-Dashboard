@@ -82,7 +82,8 @@ i18n
                     },
                     label: {
                         organizationName: 'Organization Name',
-                        setPublic: 'Set Public'
+                        setPublic: 'Set Public',
+                        setCameraCarousel: 'Image or Livestream'
                     },
                     placeholder: {
                         enterOrganizationName: 'Enter organization name'
@@ -210,7 +211,8 @@ i18n
                     },
                     label: {
                         organizationName: 'Organisationsname',
-                        setPublic: 'Öffentlich einstellen'
+                        setPublic: 'Öffentlich einstellen',
+                        setCameraCarousel: 'Bilder oder Livestream'
                     },
                     placeholder: {
                         enterOrganizationName: 'Geben Sie den Organisationsnamen ein'
@@ -335,7 +337,8 @@ i18n
                     },
                     label: {
                         organizationName: 'Nom de l’organisation',
-                        setPublic: 'Définir comme public'
+                        setPublic: 'Définir comme public',
+                        setCameraCarousel: 'Imagee or live de stream'
                     },
                     placeholder: {
                         enterOrganizationName: 'Entrez le nom de l’organisation'
