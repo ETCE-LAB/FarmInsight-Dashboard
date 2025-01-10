@@ -7,15 +7,12 @@ import { useAuth } from "react-oidc-context";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../utils/store";
 import { OrganizationForm } from "../../../features/organization/ui/organizationForm";
-import {useNavigate, useParams} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../../utils/appRoutes";
-import {Fpf} from "../../../features/fpf/models/Fpf";
-import placeholderImage from "../../../placeholder.png";
-import {getFpf} from "../../../features/fpf/useCase/getFpf";
-import {Sensor} from "../../../features/sensor/models/Sensor";
 import {receiveVisibleFpfs} from "../../../features/fpf/useCase/receiveVisibleFpfs";
 import {BasicFPF} from "../../../features/fpf/models/BasicFPF";
 import { useTranslation } from 'react-i18next';
+import Footer from "../footer/footer";
 
 const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     const auth = useAuth();
@@ -174,6 +171,7 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
                 />
                 </Flex>
             </Container>
+            <Footer />
             <Modal
                 opened={modalOpen}
                 onClose={() => setModalOpen(false)}
