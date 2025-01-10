@@ -6,7 +6,7 @@ import { Button, Card, Modal, TextInput, Switch, Flex, Title, Text, Box } from "
 import { SearchUserProfile } from "../../userProfile/ui/searchUserProfile";
 import { UserProfile } from "../../userProfile/models/UserProfile";
 import { addUserToOrganization } from "../useCase/addUserToOrganization";
-import { IconEdit, IconPlus } from '@tabler/icons-react';
+import {IconCircleMinus, IconEdit, IconPlus, IconSquareRoundedMinus} from '@tabler/icons-react';
 import { FpfForm } from "../../fpf/ui/fpfForm";
 import { MembershipList } from "../../membership/ui/MembershipList";
 import { useAppDispatch } from "../../../utils/Hooks";
@@ -15,7 +15,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../utils/store";
 import { useTranslation } from 'react-i18next';
 import { showNotification } from "@mantine/notifications";
-import { editOrganization } from "../useCase/editOrganization"; // Add the import for the use case
+import { editOrganization } from "../useCase/editOrganization";
 
 export const EditOrganization = () => {
     const { organizationId } = useParams();
@@ -30,6 +30,11 @@ export const EditOrganization = () => {
     const [editModalOpen, setEditModalOpen] = useState(false);  // State to control the edit modal visibility
     const membershipEventListener = useSelector((state: RootState) => state.membership.changeMembershipEvent);
     const dispatch = useAppDispatch();
+
+    const handleRemoveUser = (user: UserProfile) => {
+        setUsersToAdd((prevUsers) => prevUsers.filter((u) => u.id !== user.id));
+    };
+
 
     useEffect(() => {
         if (organizationId)
@@ -63,7 +68,7 @@ export const EditOrganization = () => {
         )
             .then(() => {
                 showNotification({
-                    title: 'Success',
+                    title: t('growingCycleForm.successTitle'),
                     message: `${usersToAdd.length} ${t("header.userAdded")}`,
                     color: 'green',
                 });
@@ -108,7 +113,7 @@ export const EditOrganization = () => {
         editOrganization(updatedOrganization)
             .then(() => {
                 showNotification({
-                    title: 'Success',
+                    title: t('growingCycleForm.successTitle'),
                     message: `${t("header.organizationUpdated")}`,
                     color: 'green',
                 });
@@ -134,14 +139,13 @@ export const EditOrganization = () => {
                         <Title order={2} style={{ display: 'inline-block' }}>
                             {t("header.organization")}: {organization.name}
                         </Title>
-                        {/* Remove the condition isModified and always show the edit icon */}
                         <IconEdit
                             size={24}
                             onClick={() => setEditModalOpen(true)}  // Open the modal when clicked
                             style={{
                                 cursor: 'pointer',
                                 color: '#105385',
-                                marginLeft: 5,
+                                marginLeft: 10,
                             }}
                         />
                     </Flex>
@@ -172,6 +176,7 @@ export const EditOrganization = () => {
                     </Button>
 
                     {/* Add User Modal */}
+                    {/* Add User Modal */}
                     <Modal
                         opened={userModalOpen}
                         onClose={() => setUserModalOpen(false)}
@@ -182,9 +187,14 @@ export const EditOrganization = () => {
                         <Card withBorder style={{ marginTop: '20px' }}>
                             {usersToAdd.length > 0 ? (
                                 usersToAdd.map((user, index) => (
-                                    <Box key={index} style={{ padding: '5px 0' }}>
+                                    <Flex key={index} justify="space-between" align="center" style={{ padding: '5px 0' }}>
                                         <Text>{user.name || user.email}</Text>
-                                    </Box>
+                                        <IconSquareRoundedMinus
+                                            size={18}
+                                            style={{ cursor: 'pointer', color: "#a53737" }}
+                                            onClick={() => handleRemoveUser(user)}
+                                        />
+                                    </Flex>
                                 ))
                             ) : (
                                 <Text>
@@ -219,7 +229,7 @@ export const EditOrganization = () => {
                         opened={editModalOpen}
                         onClose={() => setEditModalOpen(false)}  // Close modal on cancel
                         title={t("header.organization") + ": " + organization.name}
-                    centered
+                        centered
                     >
                         <TextInput
                             label={t("header.table.name")}
@@ -238,10 +248,12 @@ export const EditOrganization = () => {
                             fullWidth
                             style={{ marginTop: '20px' }}
                             variant="filled"
+                            disabled={!isModified} // Save button only active when there are changes
                         >
                             {t("growingCycleForm.saveButton")}
                         </Button>
                     </Modal>
+
                 </>
             ) : null}
         </>

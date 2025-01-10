@@ -49,6 +49,8 @@ i18n
                         dateError: 'End date should be after start date',
                         addHarvest: 'Add a Harvest',
                         totalHarvestAmount: 'Total Harvest',
+                        organizationUpdated: 'Organization updated successfully!',
+                        userAdded: 'User added',
                         table: {
                             name: 'Name',
                             planted: 'Planted on',
@@ -58,6 +60,10 @@ i18n
                             amount: 'Amount (kg)',
                             details: 'Details for',
                         }
+                    },
+                    userManagement: {
+                        userKicked: 'User was kicked from Organization.',
+                        userPromoted: 'User was promoted.'
                     },
                     growingCycleForm: {
                         plantTypeLabel: 'Plant Type',
@@ -73,6 +79,15 @@ i18n
                         editSuccessMessage: 'Growing cycle updated successfully!',
                         createSuccessMessage: 'Growing cycle created successfully!',
                         errorTitle: 'Failed to save the growing cycle',
+                    },
+                    sensorList: {
+                        name: 'Name',
+                        location: 'Location',
+                        unit: 'Unit',
+                        modelNr: 'Model Nr',
+                        intervalSeconds: 'Interval in Seconds',
+                        isActive: 'Is Active?',
+                        actions: 'Actions',
                     },
                     button: {
                         loginToManage: 'Login to manage organization',
@@ -178,6 +193,8 @@ i18n
                         dateError: 'Enddatum sollte nach dem Startdatum liegen',
                         addHarvest: 'Ernte hinzufügen',
                         totalHarvestAmount: 'Gesamternte',
+                        organizationUpdated: 'Organisation erfolgreich aktualisiert!',
+                        userAdded: 'Benutzer hinzugefügt',
                         table: {
                             name: 'Name',
                             planted: 'Gepflanzt am',
@@ -187,6 +204,10 @@ i18n
                             amount: 'Menge (kg)',
                             details: 'Details für',
                         }
+                    },
+                    userManagement: {
+                        userKicked: 'Benutzer wurde aus der Organisation entfernt.',
+                        userPromoted: 'Benutzer wurde befördert.'
                     },
                     growingCycleForm: {
                         plantTypeLabel: 'Pflanzentyp',
@@ -202,6 +223,15 @@ i18n
                         editSuccessMessage: 'Wachstumszyklus erfolgreich aktualisiert!',
                         createSuccessMessage: 'Wachstumszyklus erfolgreich erstellt!',
                         errorTitle: 'Speichern des Wachstumszyklus fehlgeschlagen',
+                    },
+                    sensorList: {
+                        name: 'Name',
+                        location: 'Standort',
+                        unit: 'Einheit',
+                        modelNr: 'Modell Nr.',
+                        intervalSeconds: 'Intervall in Sekunden',
+                        isActive: 'Ist aktiv?',
+                        actions: 'Aktionen',
                     },
                     button: {
                         loginToManage: 'Einloggen, um Organisation zu verwalten',
@@ -306,6 +336,8 @@ i18n
                         dateError: 'La date de fin doit être postérieure à la date de début',
                         addHarvest: 'Ajouter une récolte',
                         totalHarvestAmount: 'Récolte totale',
+                        organizationUpdated: 'Organisation mise à jour avec succès !',
+                        userAdded: 'Utilisateur ajouté',
                         table: {
                             name: 'Nom',
                             planted: 'Planté le',
@@ -315,6 +347,10 @@ i18n
                             date: 'Date',
                             amount: 'Quantité (kg)',
                         }
+                    },
+                    userManagement: {
+                        userKicked: 'L’utilisateur a été retiré de l’organisation.',
+                        userPromoted: 'L’utilisateur a été promu.'
                     },
                     growingCycleForm: {
                         plantTypeLabel: 'Type de plante',
@@ -330,6 +366,15 @@ i18n
                         editSuccessMessage: 'Cycle de croissance mis à jour avec succès !',
                         createSuccessMessage: 'Cycle de croissance créé avec succès !',
                         errorTitle: 'Impossible d’enregistrer le cycle de croissance',
+                    },
+                    sensorList: {
+                        name: 'Nom',
+                        location: 'Emplacement',
+                        unit: 'Unité',
+                        modelNr: 'Numéro de modèle',
+                        intervalSeconds: 'Intervalle en secondes',
+                        isActive: 'Est actif ?',
+                        actions: 'Actions',
                     },
                     button: {
                         loginToManage: 'Se connecter pour gérer l’organisation',
@@ -432,6 +477,8 @@ i18n
                         dateError: 'La data di fine deve essere successiva alla data di inizio',
                         addHarvest: 'Aggiungi un raccolto',
                         totalHarvestAmount: 'Raccolto totale',
+                        organizationUpdated: 'Organizzazione aggiornata con successo!',
+                        userAdded: 'Utente aggiunto',
                         table: {
                             name: 'Nome',
                             planted: 'Pianta il',
@@ -441,6 +488,10 @@ i18n
                             date: 'Data',
                             amount: 'Quantità (kg)',
                         }
+                    },
+                    userManagement: {
+                        userKicked: 'L’utente è stato rimosso dall’organizzazione.',
+                        userPromoted: 'L’utente è stato promosso.'
                     },
                     growingCycleForm: {
                         plantTypeLabel: 'Tipo di pianta',
@@ -456,6 +507,15 @@ i18n
                         editSuccessMessage: 'Ciclo di crescita aggiornato con successo!',
                         createSuccessMessage: 'Ciclo di crescita creato con successo!',
                         errorTitle: 'Impossibile salvare il ciclo di crescita',
+                    },
+                    sensorList: {
+                        name: 'Nome',
+                        location: 'Posizione',
+                        unit: 'Unità',
+                        modelNr: 'Numero di modello',
+                        intervalSeconds: 'Intervallo in secondi',
+                        isActive: 'È attivo?',
+                        actions: 'Azioni',
                     },
                     button: {
                         loginToManage: 'Accedi per gestire l’organizzazione',
@@ -558,6 +618,8 @@ i18n
                         dateError: '结束日期应在开始日期之后',
                         addHarvest: '添加收获',
                         totalHarvestAmount: '总收获量',
+                        organizationUpdated: '组织已成功更新！',
+                        userAdded: '用户已添加',
                         table: {
                             name: '名称',
                             planted: '种植时间',
@@ -567,6 +629,10 @@ i18n
                             date: '日期',
                             amount: '数量（千克）',
                         }
+                    },
+                    userManagement: {
+                        userKicked: '用户已从组织中移除。',
+                        userPromoted: '用户已晋升。'
                     },
                     growingCycleForm: {
                         plantTypeLabel: '植物类型',
@@ -582,6 +648,15 @@ i18n
                         editSuccessMessage: '成功更新了生长周期！',
                         createSuccessMessage: '成功创建了生长周期！',
                         errorTitle: '无法保存生长周期',
+                    },
+                    sensorList: {
+                        name: '名称',
+                        location: '位置',
+                        unit: '单位',
+                        modelNr: '型号',
+                        intervalSeconds: '间隔时间（秒）',
+                        isActive: '是否活跃？',
+                        actions: '操作',
                     },
                     button: {
                         loginToManage: '登录以管理组织',
@@ -684,6 +759,8 @@ i18n
                         dateError: 'Дата окончания должна быть после даты начала',
                         addHarvest: 'Добавить урожай',
                         totalHarvestAmount: 'Общий урожай',
+                        organizationUpdated: 'Организация успешно обновлена!',
+                        userAdded: 'Пользователь добавлен',
                         table: {
                             name: 'Имя',
                             planted: 'Дата посадки',
@@ -693,6 +770,10 @@ i18n
                             date: 'Дата',
                             amount: 'Количество (кг)',
                         }
+                    },
+                    userManagement: {
+                        userKicked: 'Пользоват ель был удален из организации.',
+                        userPromoted: 'Пользователь был повышен.'
                     },
                     growingCycleForm: {
                         plantTypeLabel: 'Тип растения',
@@ -708,6 +789,15 @@ i18n
                         editSuccessMessage: 'Цикл роста успешно обновлен!',
                         createSuccessMessage: 'Цикл роста успешно создан!',
                         errorTitle: 'Не удалось сохранить цикл роста',
+                    },
+                    sensorList: {
+                        name: 'Имя',
+                        location: 'Местопол',
+                        unit: 'Единица',
+                        modelNr: 'Номер модели',
+                        intervalSeconds: 'Интервал в секундах',
+                        isActive: 'Активен?',
+                        actions: 'Действия',
                     },
                     button: {
                         loginToManage: 'Войти для управления организацией',
