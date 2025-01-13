@@ -189,7 +189,6 @@ export const EditOrganization = () => {
                     </Button>
 
                     {/* Add User Modal */}
-                    {/* Add User Modal */}
                     <Modal
                         opened={userModalOpen}
                         onClose={() => setUserModalOpen(false)}
@@ -231,7 +230,6 @@ export const EditOrganization = () => {
                     <Modal
                         opened={fpfModalOpen}
                         onClose={() => setFpFModalOpen(false)}
-                        title={t("header.addFpf")}
                         centered
                     >
                         <FpfForm inputOrganization={organization}></FpfForm>

@@ -1,29 +1,25 @@
 // src/components/LegalNoticePage.tsx
 import React from 'react';
-import { Container, Title, Text, Stack, Anchor } from '@mantine/core';
+import { Container, Title, Text, Stack, Anchor, List } from '@mantine/core';
 
 const LegalNoticePage: React.FC = () => {
     return (
-        <Container size="md" mt="xl" style={{overflowX: 'hidden'}}>
-            <Stack style={{overflowX: 'hidden'}}>
+        <Container size="md" mt="xl" style={{ overflowX: 'hidden' }}>
+            <Stack style={{ overflowX: 'hidden' }}>
                 <Title order={1}>Legal Notice</Title>
                 <Text>This legal notice was last updated on 13th January 2025.</Text>
 
                 <Title order={2}>Website Owner</Title>
+                <Text fw={500}>Benjamin Leiding</Text>
+                <Text>Altewiekring 60</Text>
+                <Text>38102 Braunschweig, Germany</Text>
                 <Text>
-                    <strong>Benjamin Leiding</strong>
-                    <br/>
-                    Altewiekring 60
-                    <br/>
-                    38102 Braunschweig, Germany
-                    <br/>
                     Email:{' '}
                     <Anchor href="mailto:bejamin.leiding@tu-clausthal.de">
                         bejamin.leiding@tu-clausthal.de
                     </Anchor>
-                    <br/>
-                    Phone: +49 170 76 77 606
                 </Text>
+                <Text>Phone: +49 170 76 77 606</Text>
 
                 <Title order={2}>1. General</Title>
                 <Text>
@@ -35,10 +31,10 @@ const LegalNoticePage: React.FC = () => {
                 <Text>
                     The following personal data are collected and processed:
                 </Text>
-                <Text component="ul">
-                    <li>Username</li>
-                    <li>Email address</li>
-                </Text>
+                <List>
+                    <List.Item>Username</List.Item>
+                    <List.Item>Email address</List.Item>
+                </List>
                 <Text>
                     These data are used solely for providing access to the platform and
                     responding to support inquiries.
@@ -58,13 +54,13 @@ const LegalNoticePage: React.FC = () => {
 
                 <Title order={2}>5. Your Rights</Title>
                 <Text>You have the following rights under GDPR:</Text>
-                <Text component="ul">
-                    <li>Access to your stored data</li>
-                    <li>Correction of incorrect data</li>
-                    <li>Deletion of your data</li>
-                    <li>Objection to the processing of your data</li>
-                    <li>Data portability</li>
-                </Text>
+                <List>
+                    <List.Item>Access to your stored data</List.Item>
+                    <List.Item>Correction of incorrect data</List.Item>
+                    <List.Item>Deletion of your data</List.Item>
+                    <List.Item>Objection to the processing of your data</List.Item>
+                    <List.Item>Data portability</List.Item>
+                </List>
                 <Text>
                     To exercise these rights, please contact us at the address mentioned
                     above.
@@ -90,23 +86,19 @@ const LegalNoticePage: React.FC = () => {
                     If you have any questions or encounter any issues with this website,
                     please contact:
                 </Text>
+                <Text fw={500}>Benjamin Leiding</Text>
+                <Text>Altewiekring 60</Text>
+                <Text>38102 Braunschweig, Germany</Text>
                 <Text>
-                    <strong>Benjamin Leiding</strong>
-                    <br/>
-                    Altewiekring 60
-                    <br/>
-                    38102 Braunschweig, Germany
-                    <br/>
                     Email:{' '}
                     <Anchor href="mailto:bejamin.leiding@tu-clausthal.de">
                         bejamin.leiding@tu-clausthal.de
                     </Anchor>
-                    <br/>
-                    Phone: +49 170 76 77 606
                 </Text>
+                <Text>Phone: +49 170 76 77 606</Text>
             </Stack>
         </Container>
     );
-}
+};
 
-    export default LegalNoticePage;
+export default LegalNoticePage;

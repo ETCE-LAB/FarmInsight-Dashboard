@@ -11,7 +11,6 @@ import { HarvestEntity } from "../models/harvestEntity";
 import {
     addHarvestEntity,
     changedGrowingCycle,
-    updateGrowingCycle,
     updateHarvestEntity
 } from "../../growthCycle/state/GrowingCycleSlice";
 
@@ -24,16 +23,18 @@ export const HarvestEntityForm: React.FC<{
     const [harvestEntity, setHarvestEntity] = useState<HarvestEntity>({ growingCycleId: growingCycleId } as HarvestEntity);
     const dispatch = useAppDispatch();
 
+    // Handle changes in input fields
     const handleInputChange = (field: string, value: any) => {
         setHarvestEntity((prev) => ({ ...prev, [field]: value }));
     };
 
+    // Handle form submission, either creating or updating a harvest entity
     const handleSubmit = async () => {
         if (toEditHarvestEntity) {
             try {
                 const updatedEntity = await modifyHarvestEntity(harvestEntity.id, harvestEntity);
-                dispatch(updateHarvestEntity(updatedEntity))
-                onSuccess()
+                dispatch(updateHarvestEntity(updatedEntity));
+                onSuccess();
             } catch (error) {
                 showNotification({
                     title: "Failed to save the harvest entity",
@@ -44,8 +45,8 @@ export const HarvestEntityForm: React.FC<{
         } else {
             try {
                 const newEntity = await createHarvestEntity(harvestEntity);
-                dispatch(addHarvestEntity({cycleId: growingCycleId, harvestEntity: newEntity}));
-                onSuccess()
+                dispatch(addHarvestEntity({ cycleId: growingCycleId, harvestEntity: newEntity }));
+                onSuccess();
             } catch (error) {
                 showNotification({
                     title: "Failed to save the harvest entity",
@@ -57,15 +58,18 @@ export const HarvestEntityForm: React.FC<{
         dispatch(changedGrowingCycle());
     };
 
+    // Form validation to ensure required fields are filled
     const isFormValid = useMemo(() => {
         return harvestEntity.date && harvestEntity.amountInKg > 0;
     }, [harvestEntity]);
 
+    // Populate form with data when editing an existing entity
     useEffect(() => {
         if (toEditHarvestEntity) {
             setHarvestEntity(toEditHarvestEntity);
         }
     }, [toEditHarvestEntity]);
+
 
 
     return (
@@ -77,11 +81,12 @@ export const HarvestEntityForm: React.FC<{
                 value={harvestEntity.date ? new Date(harvestEntity.date) : null}
                 onChange={(date) => handleInputChange("date", date)}
                 style={{ width: "100%", marginBottom: "15px" }}
+                description={t("harvestEntityForm.hint.dateDescription")}
             />
             <TextInput
                 label={t("harvestEntityForm.amountLabel")}
                 placeholder={t("harvestEntityForm.amountPlaceholder")}
-                description={t("harvestEntityForm.amountDescription")}
+                description={t("harvestEntityForm.hint.amountDescription")}
                 required
                 type="number"
                 value={harvestEntity.amountInKg !== undefined ? harvestEntity.amountInKg : ""}
@@ -98,6 +103,7 @@ export const HarvestEntityForm: React.FC<{
                 value={harvestEntity.note || ""}
                 onChange={(e) => handleInputChange("note", e.currentTarget.value)}
                 style={{ width: "100%", marginBottom: "15px" }}
+                description={t("harvestEntityForm.hint.notesDescription")}
             />
             <Flex justify="flex-end">
                 <Button

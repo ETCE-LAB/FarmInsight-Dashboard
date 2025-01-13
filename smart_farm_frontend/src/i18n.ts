@@ -7,6 +7,13 @@ i18n
         resources: {
             en: {
                 translation: {
+                    fpf: {
+                        editFpF: 'Edit FpF',
+                        createFpF: 'Create FpF',
+                        hint: {
+                            sensorServiceIpHint: 'IP or URL of the FPF Backend',
+                        },
+                    },
                     header: {
                         title: 'FARMINSIGHT',
                         organizations: 'Organizations',
@@ -62,11 +69,26 @@ i18n
                             details: 'Details for',
                         }
                     },
+                    sensor: {
+                        hint: {
+                            nameHint: 'Name of the sensor',
+                            locationHint: 'Location of the sensor',
+                            intervalSecondsHint: 'Interval of capturing data',
+                        },
+                        title: 'Sensors',
+                        noSensorsFound: 'No Sensor found',
+                    },
                     userManagement: {
                         userKicked: 'User was kicked from Organization.',
                         userPromoted: 'User was promoted.'
                     },
                     growingCycleForm: {
+                        hint: {
+                            plantTypeHint: 'Type of plant',
+                            startDateHint: 'Start date of the growing cycle',
+                            endDateHint: 'End date of the growing cycle',
+                            notesHint: 'Notes on the growing cycle',
+                        },
                         plantTypeLabel: 'Plant Type',
                         plantTypePlaceholder: 'Enter Plant Type',
                         startDateLabel: 'Start Date',
@@ -122,6 +144,17 @@ i18n
 
                     },
                     camera: {
+                        hint: {
+                                nameHint: 'Name of the camera',
+                                locationHint: 'Location of the camera',
+                                modelNrHint: 'Model number of the camera',
+                                intervalSecondsHint: 'Interval of capturing images',
+                                resolutionHint: 'Resolution of the camera',
+                                livestreamUrlHint: 'URL for the livestream',
+                                snapshotUrlHint: 'URL for the snapshot',
+                            },
+                        cameraList: 'Camera List',
+                        noCamerasFound: 'No Camera found',
                         location: 'Location',
                         enterLocation: 'Enter Location',
                         modelNr: 'Model Nr.',
@@ -139,6 +172,11 @@ i18n
                         createCamera: 'Create Camera',
                     },
                     harvestEntityForm: {
+                        hint: {
+                            dateDescription: 'Date of the harvest',
+                            amountDescription: 'Amount of the harvest',
+                            notesDescription: 'Notes on the harvest',
+                        },
                         addHarvest: 'Add Harvest Entity',
                         dateLabel: 'Date',
                         datePlaceholder: 'Select Date',
@@ -153,6 +191,13 @@ i18n
             },
             de: {
                 translation: {
+                    fpf: {
+                        editFpF: 'FpF bearbeiten',
+                        createFpF: 'FpF erstellen',
+                        hint: {
+                            sensorServiceIpHint: 'IP oder URL des FPF-Backends',
+                        },
+                    },
                     header: {
                         title: 'FARMINSIGHT',
                         organizations: 'Organisationen',
@@ -207,11 +252,26 @@ i18n
                             details: 'Details für',
                         }
                     },
+                    sensor: {
+                        hint: {
+                            nameHint: 'Name des Sensors',
+                            locationHint: 'Standort des Sensors',
+                            intervalSecondsHint: 'Intervall zum Erfassen von Daten',
+                        },
+                        title: 'Sensoren',
+                        noSensorsFound: 'Kein Sensor gefunden',
+                    },
                     userManagement: {
                         userKicked: 'Benutzer wurde aus der Organisation entfernt.',
                         userPromoted: 'Benutzer wurde befördert.'
                     },
                     growingCycleForm: {
+                        hint: {
+                            plantTypeHint: 'Pflanzentyp',
+                            startDateHint: 'Startdatum des Wachstumszyklus',
+                            endDateHint: 'Enddatum des Wachstumszyklus',
+                            notesHint: 'Notizen zum Wachstumszyklus',
+                        },
                         plantTypeLabel: 'Pflanzentyp',
                         plantTypePlaceholder: 'Pflanzentyp eingeben',
                         startDateLabel: 'Startdatum',
@@ -266,6 +326,17 @@ i18n
                         saveChanges: 'Änderungen speichern',
                     },
                     camera: {
+                        hint: {
+                                nameHint: 'Name der Kamera',
+                                locationHint: 'Standort der Kamera',
+                                modelNrHint: 'Modellnummer der Kamera',
+                                intervalSecondsHint: 'Intervall zum Aufnehmen von Bildern',
+                                resolutionHint: 'Auflösung der Kamera',
+                                livestreamUrlHint: 'URL für den Livestream',
+                                snapshotUrlHint: 'URL für den Schnappschuss',
+                        },
+                        cameraList: 'Kamera-Liste',
+                        noCamerasFound: 'Keine Kamera gefunden',
                         location: 'Standort',
                         enterLocation: 'Standort eingeben',
                         modelNr: 'Modell Nr.',
@@ -283,6 +354,11 @@ i18n
                         createCamera: 'Kamera erstellen',
                     },
                     harvestEntityForm: {
+                        hint: {
+                            dateDescription: 'Datum der Ernte',
+                            amountDescription: 'Menge der Ernte',
+                            notesDescription: 'Notizen zur Ernte',
+                        },
                         addHarvest: 'Ernte hinzufügen',
                         dateLabel: 'Datum',
                         datePlaceholder: 'Datum auswählen',
@@ -297,6 +373,13 @@ i18n
             },
             fr: {
                 translation: {
+                    fpf: {
+                        editFpF: 'modifier FpF' ,
+                        createFpF: 'Créer FpF',
+                        hint: {
+                            sensorServiceIpHint: 'IP ou URL du backend FPF',
+                        },
+                    },
                     header: {
                         title: 'FARMINSIGHT',
                         organizations: 'Organisations',
@@ -351,11 +434,26 @@ i18n
                             amount: 'Quantité (kg)',
                         }
                     },
+                    sensor: {
+                        hint: {
+                            nameHint: 'Nom du capteur',
+                            locationHint: 'Emplacement du capteur',
+                            intervalSecondsHint: 'Intervalle de capture des données',
+                        },
+                        title: 'Capteurs',
+                        noSensorsFound: 'Aucun capteur trouvé',
+                    },
                     userManagement: {
                         userKicked: 'L’utilisateur a été retiré de l’organisation.',
                         userPromoted: 'L’utilisateur a été promu.'
                     },
                     growingCycleForm: {
+                        hint: {
+                            plantTypeHint: 'Type de plante',
+                            startDateHint: 'Date de début du cycle de croissance',
+                            endDateHint: 'Date de fin du cycle de croissance',
+                            notesHint: 'Notes sur le cycle de croissance',
+                        },
                         plantTypeLabel: 'Type de plante',
                         plantTypePlaceholder: 'Entrez le type de plante',
                         startDateLabel: 'Date de début',
@@ -408,6 +506,16 @@ i18n
                         saveChanges: 'Enregistrer les modifications',
                     },
                     camera: {
+                        hint: {
+                                nameHint: 'Nom de la caméra',
+                                locationHint: 'Emplacement de la caméra',
+                                modelNrHint: 'Numéro de modèle de la caméra',
+                                intervalSecondsHint: 'Intervalle de capture des images',
+                                resolutionHint: 'Résolution de la caméra',
+                                livestreamUrlHint: 'URL du flux en direct',
+                                snapshotUrlHint: 'URL de la capture instantanée',
+                            },
+                        noCamerasFound: 'Aucune caméra trouvée',
                         location: 'Emplacement',
                         enterLocation: 'Entrez l’emplacement',
                         modelNr: 'Numéro de modèle',
@@ -425,6 +533,11 @@ i18n
                         createCamera: 'Créer une caméra',
                     },
                     harvestEntityForm: {
+                        hint: {
+                            dateDescription: 'Date de la récolte',
+                            amountDescription: 'Quantité de la récolte',
+                            notesDescription: 'Remarques sur la récolte',
+                        },
                         addHarvest: 'Ajouter une entité de récolte',
                         dateLabel: 'Date',
                         datePlaceholder: 'Sélectionnez la date',
@@ -439,6 +552,13 @@ i18n
             },
             it: {
                 translation: {
+                    fpf: {
+                        editFpF: 'modifica FpF',
+                        createFpF: 'Crea FpF',
+                        hint: {
+                            sensorServiceIpHint: 'IP o URL del backend FPF',
+                        },
+                    },
                     header: {
                         title: 'FARMINSIGHT',
                         organizations: 'Organizzazioni',
@@ -493,11 +613,26 @@ i18n
                             amount: 'Quantità (kg)',
                         }
                     },
+                    sensor: {
+                        hint: {
+                            nameHint: 'Nome del sensore',
+                            locationHint: 'Posizione del sensore',
+                            intervalSecondsHint: 'Intervallo di acquisizione dei dati',
+                        },
+                        title: 'Sensori',
+                        noSensorsFound: 'Nessun sensore trovato',
+                    },
                     userManagement: {
                         userKicked: 'L’utente è stato rimosso dall’organizzazione.',
                         userPromoted: 'L’utente è stato promosso.'
                     },
                     growingCycleForm: {
+                        hint: {
+                            plantTypeHint: 'Tipo di pianta',
+                            startDateHint: 'Data di inizio del ciclo di crescita',
+                            endDateHint: 'Data di fine del ciclo di crescita',
+                            notesHint: 'Note sul ciclo di crescita',
+                        },
                         plantTypeLabel: 'Tipo di pianta',
                         plantTypePlaceholder: 'Inserisci il tipo di pianta',
                         startDateLabel: 'Data di inizio',
@@ -550,6 +685,16 @@ i18n
                         saveChanges: 'Salva le modifiche',
                     },
                     camera: {
+                        hint: {
+                                nameHint: 'Nome della fotocamera',
+                                locationHint: 'Posizione della fotocamera',
+                                modelNrHint: 'Numero di modello della fotocamera',
+                                intervalSecondsHint: 'Intervallo di cattura delle immagini',
+                                resolutionHint: 'Risoluzione della fotocamera',
+                                livestreamUrlHint: 'URL per il livestream',
+                                snapshotUrlHint: 'URL per lo snapshot',
+                            },
+                        noCamerasFound: 'Nessuna fotocamera trovata',
                         location: 'Posizione',
                         enterLocation: 'Inserisci la posizione',
                         modelNr: 'Numero di modello',
@@ -567,6 +712,11 @@ i18n
                         createCamera: 'Crea fotocamera',
                     },
                     harvestEntityForm: {
+                        hint: {
+                            dateDescription: 'Data del raccolto',
+                            amountDescription: 'Quantità del raccolto',
+                            notesDescription: 'Note sul raccolto',
+                        },
                         addHarvest: 'Aggiungi entità di raccolto',
                         dateLabel: 'Data',
                         datePlaceholder: 'Seleziona la data',
@@ -581,6 +731,13 @@ i18n
             },
             zh: {
                 translation: {
+                    fpf: {
+                        editFpF: '編輯 FpF',
+                        createFpF: '创建 FpF',
+                        hint: {
+                            sensorServiceIpHint: 'FPF 后端的 IP 或 URL',
+                        },
+                    },
                     header: {
                         title: 'FARMINSIGHT',
                         organizations: '组织',
@@ -635,11 +792,26 @@ i18n
                             amount: '数量（千克）',
                         }
                     },
+                    sensor: {
+                        hint: {
+                            nameHint: '传感器名称',
+                            locationHint: '传感器位置',
+                            intervalSecondsHint: '数据捕获间隔',
+                        },
+                        title: '传感器',
+                        noSensorsFound: '未找到传感器',
+                    },
                     userManagement: {
                         userKicked: '用户已从组织中移除。',
                         userPromoted: '用户已晋升。'
                     },
                     growingCycleForm: {
+                        hint: {
+                            plantTypeHint: '植物类型',
+                            startDateHint: '生长周期开始日期',
+                            endDateHint: '生长周期结束日期',
+                            notesHint: '生长周期备注',
+                        },
                         plantTypeLabel: '植物类型',
                         plantTypePlaceholder: '输入植物类型',
                         startDateLabel: '开始日期',
@@ -692,6 +864,16 @@ i18n
                         saveChanges: '保存更改',
                     },
                     camera: {
+                        hint: {
+                                nameHint: '摄像头名称',
+                                locationHint: '摄像头位置',
+                                modelNrHint: '摄像头型号',
+                                intervalSecondsHint: '图像捕获间隔',
+                                resolutionHint: '摄像头分辨率',
+                                livestreamUrlHint: '直播流 URL',
+                                snapshotUrlHint: '快照 URL',
+                            },
+                        noCamerasFound: '未找到摄像头',
                         location: '位置',
                         enterLocation: '输入位置',
                         modelNr: '型号',
@@ -709,6 +891,11 @@ i18n
                         createCamera: '创建摄像头',
                     },
                     harvestEntityForm: {
+                        hint: {
+                            dateDescription: '收获日期',
+                            amountDescription: '收获数量',
+                            notesDescription: '收获备注',
+                        },
                         addHarvest: '添加收获实体',
                         dateLabel: '日期',
                         datePlaceholder: '选择日期',
@@ -723,6 +910,13 @@ i18n
             },
             ru: {
                 translation: {
+                    fpf: {
+                        editFpF: 'редактировать FpF',
+                        createFpF: 'Создать FpF',
+                        hint: {
+                            sensorServiceIpHint: 'IP или URL FPF-бэкенда',
+                        },
+                    },
                     header: {
                         title: 'FARMINSIGHT',
                         organizations: 'Организации',
@@ -777,11 +971,26 @@ i18n
                             amount: 'Количество (кг)',
                         }
                     },
+                    sensor: {
+                        hint: {
+                            nameHint: 'Имя датчика',
+                            locationHint: 'Местоположение датчика',
+                            intervalSecondsHint: 'Интервал сбора данных',
+                        },
+                        title: 'Датчики',
+                        noSensorsFound: 'Датчики не найдены',
+                    },
                     userManagement: {
                         userKicked: 'Пользоват ель был удален из организации.',
                         userPromoted: 'Пользователь был повышен.'
                     },
                     growingCycleForm: {
+                        hint: {
+                            plantTypeHint: 'Тип растения',
+                            startDateHint: 'Дата начала цикла роста',
+                            endDateHint: 'Дата окончания цикла роста',
+                            notesHint: 'Примечания к циклу роста',
+                        },
                         plantTypeLabel: 'Тип растения',
                         plantTypePlaceholder: 'Введите тип растения',
                         startDateLabel: 'Дата начала',
@@ -834,6 +1043,16 @@ i18n
                         saveChanges: 'Сохранить изменения',
                     },
                     camera: {
+                        hint: {
+                                nameHint: 'Название камеры',
+                                locationHint: 'Местоположение камеры',
+                                modelNrHint: 'Номер модели камеры',
+                                intervalSecondsHint: 'Интервал захвата изображений',
+                                resolutionHint: 'Разрешение камеры',
+                                livestreamUrlHint: 'URL прямой трансляции',
+                                snapshotUrlHint: 'URL снимка',
+                            },
+                        noCamerasFound: 'Камеры не найдены',
                         location: 'Местоположение',
                         enterLocation: 'Введите местоположение',
                         modelNr: 'Номер модели',
@@ -851,6 +1070,11 @@ i18n
                         createCamera: 'Создать камеру',
                     },
                     harvestEntityForm: {
+                        hint: {
+                            dateDescription: 'Дата урожая',
+                            amountDescription: 'Количество урожая',
+                            notesDescription: 'Примечания к урожаю',
+                        },
                         addHarvest: 'Добавить урожай',
                         dateLabel: 'Дата',
                         datePlaceholder: 'Выберите дату',
