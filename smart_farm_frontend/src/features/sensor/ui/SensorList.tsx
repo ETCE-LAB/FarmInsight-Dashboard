@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { EditSensor, Sensor } from "../models/Sensor";
 import { ActionIcon, Box, Group, Modal, Switch, Table, Text } from "@mantine/core";
-import { IconEdit, IconPlus } from "@tabler/icons-react";
+import {IconCirclePlus, IconEdit, IconPlus} from "@tabler/icons-react";
 import { SensorForm } from "./SensorForm";
 import { useAppSelector } from "../../../utils/Hooks";
 import { receivedSensorEvent } from "../state/SensorSlice";
@@ -59,15 +59,17 @@ export const SensorList: React.FC<{ sensorsToDisplay?: Sensor[], fpfId: string }
             </Modal>
 
             {/* Header with Add Button */}
-            <Group mb="md">
+            <Group mb="md" justify="space-between">
                 <h2>{t('sensor.title')}</h2>
-                <IconPlus
-                    size={16}
-                    stroke={3}
+                <IconCirclePlus
+                    size={25}
+                    stroke={2}
+                    color={"#105385"}
                     onClick={() => onClickAddSensor()}
                     style={{ cursor: "pointer" }}
                 />
             </Group>
+
 
             {/* Conditional Rendering of Table */}
             {sensorsToDisplay && sensorsToDisplay.length > 0 ? (

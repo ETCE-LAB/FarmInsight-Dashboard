@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import {ActionIcon, Box, Group, Modal, Switch, Table, Text} from "@mantine/core";
-import { IconEdit, IconPlus } from "@tabler/icons-react";
+import {IconCirclePlus, IconEdit, IconPlus} from "@tabler/icons-react";
 import { Camera, EditCamera } from "../models/camera";
 import { CameraForm } from "./CameraForm";
 import { useParams } from "react-router-dom";
@@ -45,11 +45,12 @@ export const CameraList: React.FC<{ camerasToDisplay?: Camera[] }> = ({ camerasT
             </Modal>
 
             {/* Header with Add Button */}
-            <Group mb="md">
-                <h2>{t("camera.cameraList")}</h2>
-                <IconPlus
-                    size={16}
-                    stroke={3}
+            <Group mb="md" justify="space-between">
+                <h2>{t('sensor.title')}</h2>
+                <IconCirclePlus
+                    size={25}
+                    stroke={2}
+                    color={"#105385"}
                     onClick={() => setCameraModalOpen(true)}
                     style={{ cursor: "pointer" }}
                 />

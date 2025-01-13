@@ -8,6 +8,8 @@ i18n
             en: {
                 translation: {
                     fpf: {
+                        address: 'Location',
+                        noAddress: 'No Standort',
                         editFpF: 'Edit FpF',
                         createFpF: 'Create FpF',
                         hint: {
@@ -192,6 +194,8 @@ i18n
             de: {
                 translation: {
                     fpf: {
+                        address: 'Standort',
+                        noAddress: 'Kein Adresse',
                         editFpF: 'FpF bearbeiten',
                         createFpF: 'FpF erstellen',
                         hint: {
@@ -299,7 +303,7 @@ i18n
                         loginToManage: 'Einloggen, um Organisation zu verwalten',
                         create: 'Erstellen',
                         add: 'Hinzufügen',
-                        update:'Änderungen speicher,'
+                        update:'Änderungen speichern,'
                     },
                     label: {
                         organizationName: 'Organisationsname',
@@ -374,6 +378,8 @@ i18n
             fr: {
                 translation: {
                     fpf: {
+                        address: 'Emplacement',
+                        noAddress: 'Pas d’adresse',
                         editFpF: 'modifier FpF' ,
                         createFpF: 'Créer FpF',
                         hint: {
@@ -515,6 +521,7 @@ i18n
                                 livestreamUrlHint: 'URL du flux en direct',
                                 snapshotUrlHint: 'URL de la capture instantanée',
                             },
+                        cameraList: 'Liste des caméras',
                         noCamerasFound: 'Aucune caméra trouvée',
                         location: 'Emplacement',
                         enterLocation: 'Entrez l’emplacement',
@@ -553,6 +560,8 @@ i18n
             it: {
                 translation: {
                     fpf: {
+                        address: 'Posizione',
+                        noAddress: 'Nessuna posizione',
                         editFpF: 'modifica FpF',
                         createFpF: 'Crea FpF',
                         hint: {
@@ -694,6 +703,7 @@ i18n
                                 livestreamUrlHint: 'URL per il livestream',
                                 snapshotUrlHint: 'URL per lo snapshot',
                             },
+                        cameraList: 'Elenco delle fotocamere',
                         noCamerasFound: 'Nessuna fotocamera trovata',
                         location: 'Posizione',
                         enterLocation: 'Inserisci la posizione',
@@ -732,6 +742,8 @@ i18n
             zh: {
                 translation: {
                     fpf: {
+                        address: '位置',
+                        noAddress: '没有位置',
                         editFpF: '編輯 FpF',
                         createFpF: '创建 FpF',
                         hint: {
@@ -873,6 +885,7 @@ i18n
                                 livestreamUrlHint: '直播流 URL',
                                 snapshotUrlHint: '快照 URL',
                             },
+                        cameraList: '摄像头列表',
                         noCamerasFound: '未找到摄像头',
                         location: '位置',
                         enterLocation: '输入位置',
@@ -911,6 +924,8 @@ i18n
             ru: {
                 translation: {
                     fpf: {
+                        address: 'Местоположение',
+                        noAddress: 'Нет адреса',
                         editFpF: 'редактировать FpF',
                         createFpF: 'Создать FpF',
                         hint: {
@@ -1052,6 +1067,7 @@ i18n
                                 livestreamUrlHint: 'URL прямой трансляции',
                                 snapshotUrlHint: 'URL снимка',
                             },
+                        cameraList: 'Список камер',
                         noCamerasFound: 'Камеры не найдены',
                         location: 'Местоположение',
                         enterLocation: 'Введите местоположение',

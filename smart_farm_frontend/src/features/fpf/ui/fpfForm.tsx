@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, TextInput, Box, Switch, Grid, ActionIcon, Group, Title, Card } from "@mantine/core";
+import { Button, TextInput, Box, Switch, Grid, Title } from "@mantine/core";
 import { useAuth } from "react-oidc-context";
 import { createFpf } from "../useCase/createFpf";
 import { Organization } from "../../organization/models/Organization";
@@ -8,7 +8,6 @@ import { AppRoutes } from "../../../utils/appRoutes";
 import { createdFpf } from "../state/FpfSlice";
 import { useNavigate } from "react-router-dom";
 import { Fpf } from "../models/Fpf";
-import { IconEdit } from "@tabler/icons-react";
 import { useTranslation } from 'react-i18next';
 import { updateFpf } from "../useCase/updateFpf";
 import { notifications } from "@mantine/notifications";
@@ -117,10 +116,12 @@ export const FpfForm: React.FC<{ inputOrganization?: Organization, toEditFpf?: F
                     {t("header.loginToManage")}
                 </Button>
             ) : (
-                <Card shadow="sm" padding="lg" radius="md" withBorder>
-                    <Title order={2} style={{ textAlign: 'center', marginBottom: '20px' }}>
-                        {toEditFpf ? t("fpf.editFpF") : t("fpf.createFpF")}
-                    </Title>
+                <>
+                    {!toEditFpf && (
+                        <Title order={2} style={{ textAlign: 'center', marginBottom: '20px' }}>
+                            {t("fpf.createFpF")}
+                        </Title>
+                    )}
                     <form onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
                         <Grid gutter="md">
                             {/* Name Input */}
@@ -137,8 +138,8 @@ export const FpfForm: React.FC<{ inputOrganization?: Organization, toEditFpf?: F
                             {/* Address Input */}
                             <Grid.Col span={6}>
                                 <TextInput
-                                    label={t("header.address")}
-                                    placeholder={t("header.enterAddress")}
+                                    label={t("header.location")}
+                                    placeholder={t("header.enterLocation")}
                                     required
                                     value={address}
                                     onChange={(e) => setAddress(e.currentTarget.value)}
@@ -162,15 +163,9 @@ export const FpfForm: React.FC<{ inputOrganization?: Organization, toEditFpf?: F
                             {toEditFpf && (
                                 <Grid.Col span={12} style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                                     <Switch label={t("label.setPublic")} size="md" checked={isPublic} onChange={(e) => setIsPublic(e.currentTarget.checked)} />
-                                    <ActionIcon color="blue">
-                                        <IconEdit
-                                            size={16}
-                                            stroke={2}
-                                            onClick={() => onClickEdit()}
-                                            style={{ cursor: "pointer" }}
-                                            title={t("fpf.update")}
-                                        />
-                                    </ActionIcon>
+                                    <Button onClick={onClickEdit} variant="outline" color="blue">
+                                        {t("userprofile.saveChanges")}
+                                    </Button>
                                 </Grid.Col>
                             )}
                             {!toEditFpf && (
@@ -190,7 +185,7 @@ export const FpfForm: React.FC<{ inputOrganization?: Organization, toEditFpf?: F
                             </Grid.Col>
                         </Grid>
                     </form>
-                </Card>
+                </>
             )}
         </>
     );
