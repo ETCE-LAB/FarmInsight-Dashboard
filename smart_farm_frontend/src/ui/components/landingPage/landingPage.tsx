@@ -143,7 +143,7 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
                 <Grid>
                     {paginatedFpfs && paginatedFpfs.map((fpf) => (
                         <Grid.Col span={4}>
-                            <Card p="lg" shadow="sm" radius="md" style={{ margin: '10px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)', cursor:'pointer' }}
+                            <Card p="lg" shadow="sm" radius="md" style={{ height: '350px', margin: '10px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)', cursor:'pointer' }}
                             onClick={() => {handleFpfSelect(fpf.organization.id, fpf.id);}}
                             >
                                 <Flex justify="space-between" align="center" mb="sm">
