@@ -1,9 +1,11 @@
 import React from 'react';
 import { Flex, Text } from '@mantine/core';
 import { IconBrandGithub } from '@tabler/icons-react';
+import {useNavigate} from "react-router-dom";
 
 const Footer: React.FC = () => {
     const githubLink = "https://github.com/ETCE-LAB";
+    const navigate = useNavigate();
 
     return (
         <Flex
@@ -23,7 +25,7 @@ const Footer: React.FC = () => {
                     cursor: "pointer",
                     color: "rgba(0, 0, 0, 0.4)", //TODO: Adapt color to theme
                 }}
-                onClick={() => console.log("Clicked footer")}
+                onClick={() => navigate('/legal-notice')} // Navigate to the new page
             >
                 Impress | Legal Notice | Privacy Policy
             </Text>

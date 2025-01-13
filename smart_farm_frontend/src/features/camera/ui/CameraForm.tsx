@@ -157,7 +157,7 @@ export const CameraForm: React.FC<{ toEditCamera?: EditCamera, setClosed : React
                         {/*Location*/}
                         <Grid.Col span={6}>
                             <TextInput  label={t("camera.location")}
-                                        placeholder={t("header.enterLocation")}
+                                        placeholder={t("camera.enterLocation")}
                                         required
                                         value={location}
                                         onChange={(e) => setLocation(e.currentTarget.value)}
@@ -165,7 +165,7 @@ export const CameraForm: React.FC<{ toEditCamera?: EditCamera, setClosed : React
                         </Grid.Col>
                         <Grid.Col span={6}>
                             <TextInput  label={t("camera.modelNr")}
-                                        placeholder={t("header.enterModelNr")}
+                                        placeholder={t("camera.enterModelNr")}
                                         required
                                         value={modelNr}
                                         onChange={(e) => setModelNr(e.currentTarget.value)}
@@ -173,7 +173,7 @@ export const CameraForm: React.FC<{ toEditCamera?: EditCamera, setClosed : React
                         </Grid.Col>
                         <Grid.Col span={6}>
                             <NumberInput  label={t("camera.intervalSeconds")}
-                                          placeholder={t("header.enterIntervalSeconds")}
+                                          placeholder={t("camera.enterIntervalSeconds")}
                                           required
                                           value={intervalSeconds}
                                           onChange={(value) => setIntervalSeconds(value as number ?? 1)}
@@ -181,7 +181,7 @@ export const CameraForm: React.FC<{ toEditCamera?: EditCamera, setClosed : React
                         </Grid.Col>
                         <Grid.Col span={6}>
                             <TextInput  label={t("camera.resolution")}
-                                          placeholder={t("header.enterResolution")}
+                                          placeholder={t("camera.enterResolution")}
                                           required
                                           value={resolution}
                                           onChange={(e) => setResolution(e.currentTarget.value)}
@@ -189,7 +189,7 @@ export const CameraForm: React.FC<{ toEditCamera?: EditCamera, setClosed : React
                         </Grid.Col>
                         <Grid.Col span={6}>
                             <TextInput  label={t("camera.livestreamUrl")}
-                                          placeholder={t("header.enterLivestreamUrl")}
+                                          placeholder={t("camera.enterLivestreamUrl")}
                                           required
                                           value={livestreamUrl}
                                           onChange={(e) => setLivestreamUrl(e.currentTarget.value)}
@@ -197,7 +197,7 @@ export const CameraForm: React.FC<{ toEditCamera?: EditCamera, setClosed : React
                         </Grid.Col>
                         <Grid.Col span={6}>
                             <TextInput  label={t("camera.snapshotUrl")}
-                                          placeholder={t("header.enterSnapshotUrl")}
+                                          placeholder={t("camera.enterSnapshotUrl")}
                                           required
                                           value={snapshotUrl}
                                           onChange={(e) => setSnapshotUrl(e.currentTarget.value)}

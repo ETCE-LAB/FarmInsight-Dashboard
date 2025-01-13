@@ -51,6 +51,7 @@ i18n
                         totalHarvestAmount: 'Total Harvest',
                         organizationUpdated: 'Organization updated successfully!',
                         userAdded: 'User added',
+                        status: 'Status',
                         table: {
                             name: 'Name',
                             planted: 'Planted on',
@@ -195,6 +196,7 @@ i18n
                         totalHarvestAmount: 'Gesamternte',
                         organizationUpdated: 'Organisation erfolgreich aktualisiert!',
                         userAdded: 'Benutzer hinzugefügt',
+                        status: 'Status',
                         table: {
                             name: 'Name',
                             planted: 'Gepflanzt am',
@@ -338,6 +340,7 @@ i18n
                         totalHarvestAmount: 'Récolte totale',
                         organizationUpdated: 'Organisation mise à jour avec succès !',
                         userAdded: 'Utilisateur ajouté',
+                        status: 'Statut',
                         table: {
                             name: 'Nom',
                             planted: 'Planté le',
@@ -479,6 +482,7 @@ i18n
                         totalHarvestAmount: 'Raccolto totale',
                         organizationUpdated: 'Organizzazione aggiornata con successo!',
                         userAdded: 'Utente aggiunto',
+                        status: 'Stato',
                         table: {
                             name: 'Nome',
                             planted: 'Pianta il',
@@ -620,6 +624,7 @@ i18n
                         totalHarvestAmount: '总收获量',
                         organizationUpdated: '组织已成功更新！',
                         userAdded: '用户已添加',
+                        status: '状态',
                         table: {
                             name: '名称',
                             planted: '种植时间',
@@ -761,6 +766,7 @@ i18n
                         totalHarvestAmount: 'Общий урожай',
                         organizationUpdated: 'Организация успешно обновлена!',
                         userAdded: 'Пользователь добавлен',
+                        status: 'Статус',
                         table: {
                             name: 'Имя',
                             planted: 'Дата посадки',

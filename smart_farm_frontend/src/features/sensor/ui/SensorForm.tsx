@@ -161,8 +161,8 @@ export const SensorForm:React.FC<{toEditSensor?:EditSensor, setClosed: React.Dis
                             />
                         </Grid.Col>
                         <Grid.Col span={6}>
-                            <NumberInput  label={t("camera.intervalInSeconds")}
-                                        placeholder={t("camera.enterIntervalInSeconds")}
+                            <NumberInput  label={t("camera.intervalSeconds")}
+                                        placeholder={t("camera.enterIntervalSeconds")}
                                         required
                                         value={intervalSeconds}
                                         onChange={(value) => setIntervalSeconds(value as number ?? 1)}

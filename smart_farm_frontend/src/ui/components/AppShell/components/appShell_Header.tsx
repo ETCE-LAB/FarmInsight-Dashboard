@@ -78,7 +78,7 @@ export const AppShell_Header: React.FC = () => {
                             <Button variant="subtle">
                                 <Flex align="center" gap="sm">
                                     <img
-                                        src={`https://flagcdn.com/w20/${currentFlag}.png`} // Example flag CDN
+                                        src={`./assets/flags/${currentFlag}.png`}
                                         alt={currentFlag}
                                         style={{ width: "auto", height: "auto" }}
                                     />
@@ -94,7 +94,7 @@ export const AppShell_Header: React.FC = () => {
                                 >
                                     <Flex align="center" gap="sm">
                                         <img
-                                            src={`https://flagcdn.com/w20/${lang.flag}.png`} // Example flag CDN
+                                            src={`./assets/flags/${lang.flag}.png`}
                                             alt={lang.flag}
                                             style={{ width: "auto", height: "auto" }}
                                         />

@@ -2,7 +2,7 @@ import { useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getOrganization } from "../useCase/getOrganization";
 import { Organization } from "../models/Organization";
-import { Button, Card, Modal, TextInput, Switch, Flex, Title, Text, Box } from "@mantine/core";
+import {Button, Card, Modal, TextInput, Switch, Flex, Title, Text, Box, Badge, Indicator} from "@mantine/core";
 import { SearchUserProfile } from "../../userProfile/ui/searchUserProfile";
 import { UserProfile } from "../../userProfile/models/UserProfile";
 import { addUserToOrganization } from "../useCase/addUserToOrganization";
@@ -149,6 +149,19 @@ export const EditOrganization = () => {
                             }}
                         />
                     </Flex>
+                    <Flex gap={10} align="center" mt="5px">
+                        <Text fw="bold" color="dimmed">{t("header.status")}:</Text>
+                        <Flex align="center" gap={5}>
+                            <Badge
+                                color={isPublic ? "green" : "red"}
+                                variant="light"
+                                size="sm"
+                            >
+                                {t(isPublic ? "header.public" : "header.private")}
+                            </Badge>
+                        </Flex>
+                    </Flex>
+
                     <Flex gap={20} align="center">
                         <Text style={{ fontWeight: 'bold' }}>
                             {t("header.members")}
