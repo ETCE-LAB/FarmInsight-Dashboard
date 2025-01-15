@@ -7,12 +7,14 @@ import {SensorForm} from "./SensorForm";
 import {getFpf} from "../../fpf/useCase/getFpf";
 import {useAppSelector} from "../../../utils/Hooks";
 import {receivedSensorEvent} from "../state/SensorSlice";
+import {useTranslation} from "react-i18next";
 
 
 export const SensorList:React.FC<{sensorsToDisplay?:Sensor[], fpfId:string}> = ({sensorsToDisplay, fpfId}) => {
     const [sensor, setSensor] = useState<Sensor[]>()
     const [sensorModalOpen, setSensorModalOpen] = useState(false);
     const [selectedSensor, setSelectedSensor] = useState<EditSensor | undefined>(undefined);
+    const { t } = useTranslation();
 
     const sensorReceivedEventListener = useAppSelector(receivedSensorEvent);
 
@@ -72,13 +74,13 @@ export const SensorList:React.FC<{sensorsToDisplay?:Sensor[], fpfId:string}> = (
             <Table highlightOnHover>
                 <thead>
                 <tr>
-                    <Table.Th>Name</Table.Th>
-                    <Table.Th>Location</Table.Th>
-                    <Table.Th>Unit</Table.Th>
-                    <Table.Th>ModelNr</Table.Th>
-                    <Table.Th>Interval</Table.Th>
-                    <Table.Th>Is Active?</Table.Th>
-                    <Table.Th>Actions</Table.Th>
+                    <Table.Th>{t('sensorList.name')}</Table.Th>
+                    <Table.Th>{t('sensorList.location')}</Table.Th>
+                    <Table.Th>{t('sensorList.unit')}</Table.Th>
+                    <Table.Th>{t('sensorList.modelNr')}</Table.Th>
+                    <Table.Th>{t('sensorList.intervalSeconds')}</Table.Th>
+                    <Table.Th>{t('sensorList.isActive')}</Table.Th>
+                    <Table.Th>{t('sensorList.actions')}</Table.Th>
                 </tr>
                 </thead>
                 <tbody>

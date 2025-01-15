@@ -3,7 +3,7 @@ import {IconChevronDown, IconZoomScan, IconDroplet, IconTemperature, IconSunHigh
 import React, { PropsWithChildren, useEffect, useState } from "react";
 import { getMyOrganizations } from "../../../features/organization/useCase/getMyOrganizations";
 import { Organization } from "../../../features/organization/models/Organization";
-import { useAuth } from "../../../utils/MainAppProvider";//"react-oidc-context";
+import { useAuth } from "react-oidc-context";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../utils/store";
 import { OrganizationForm } from "../../../features/organization/ui/organizationForm";

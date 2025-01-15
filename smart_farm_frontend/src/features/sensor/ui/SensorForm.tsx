@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Box, Button, Grid, NumberInput, Switch, TextInput} from "@mantine/core";
-import {useAuth} from "../../../utils/MainAppProvider"//"react-oidc-context";
+import {useAuth} from "react-oidc-context";
 import {EditSensor} from "../models/Sensor";
 import SelectHardwareConfiguration from "../../hardwareConfiguration/ui/SelectHardwareConfiguration";
 import {createSensor} from "../useCase/createSensor";
@@ -11,6 +11,7 @@ import {AppRoutes} from "../../../utils/appRoutes";
 import {useNavigate} from "react-router-dom";
 import {updateSensor} from "../useCase/updateSensor";
 import {notifications} from "@mantine/notifications";
+import {useTranslation} from "react-i18next";
 
 
 export const SensorForm:React.FC<{toEditSensor?:EditSensor, setClosed: React.Dispatch<React.SetStateAction<boolean>>}> = ({toEditSensor, setClosed}) => {
@@ -25,6 +26,8 @@ export const SensorForm:React.FC<{toEditSensor?:EditSensor, setClosed: React.Dis
     const [location, setLocation] = useState<string>("")
     const [hardwareConfiguration, setHardwareConfiguration] = useState<{ sensorClassId: string, additionalInformation: Record<string, any>} | undefined>(undefined);
     const navigate = useNavigate();
+    const { t } = useTranslation();
+
 
     const dispatch = useAppDispatch();
 
@@ -75,9 +78,9 @@ export const SensorForm:React.FC<{toEditSensor?:EditSensor, setClosed: React.Dis
                         id,
                         title: 'There was an error updating the sensor.',
                         message: `${sensor}`,
-                        color: 'green',
+                        color: 'red',
                         loading: false,
-                        autoClose: 2000,
+                        autoClose: 10000,
                     });
                 }
 
@@ -131,7 +134,7 @@ export const SensorForm:React.FC<{toEditSensor?:EditSensor, setClosed: React.Dis
         <>
             {!auth.isAuthenticated ? (
                 <Button onClick={() => auth.signinRedirect()} variant="filled" color="#105385" style={{ margin: '10px' }}>
-                    Login to manage Facility
+                    {t("header.loginToManageFpf")}
                 </Button>
             ) : (
                 <form onSubmit={(e) => {
@@ -141,8 +144,8 @@ export const SensorForm:React.FC<{toEditSensor?:EditSensor, setClosed: React.Dis
                     <Grid gutter="md">
                         {/*Name*/}
                         <Grid.Col span={6}>
-                            <TextInput  label="Name"
-                                placeholder="Enter name"
+                            <TextInput  label={t("header.name")}
+                                placeholder={t("header.enterName")}
                                 required
                                 value={name}
                                 onChange={(e) => setName(e.currentTarget.value)}
@@ -150,16 +153,16 @@ export const SensorForm:React.FC<{toEditSensor?:EditSensor, setClosed: React.Dis
                         </Grid.Col>
                         {/*Location*/}
                         <Grid.Col span={6}>
-                            <TextInput  label="Location"
-                                        placeholder="Enter Location"
+                            <TextInput  label={t("header.location")}
+                                        placeholder={t("header.enterLocation")}
                                         required
                                         value={location}
                                         onChange={(e) => setLocation(e.currentTarget.value)}
                             />
                         </Grid.Col>
                         <Grid.Col span={6}>
-                            <NumberInput  label="Interval in Seconds"
-                                        placeholder="Enter Interval in Seconds"
+                            <NumberInput  label={t("camera.intervalInSeconds")}
+                                        placeholder={t("camera.enterIntervalInSeconds")}
                                         required
                                         value={intervalSeconds}
                                         onChange={(value) => setIntervalSeconds(value as number ?? 1)}
@@ -167,7 +170,7 @@ export const SensorForm:React.FC<{toEditSensor?:EditSensor, setClosed: React.Dis
                         </Grid.Col>
                         <Grid.Col span={12}
                                   style={{display: "flex", alignItems: "center", justifyContent: "space-between"}}>
-                            <Switch label="Is Active?" size="md" checked={isActive} onChange={() => setIsActive(!isActive)} />
+                            <Switch label={t("header.isActive")} size="md" checked={isActive} onChange={() => setIsActive(!isActive)} />
                         </Grid.Col>
                         <Grid.Col span={12}>
                             { fpfId && (
@@ -181,7 +184,7 @@ export const SensorForm:React.FC<{toEditSensor?:EditSensor, setClosed: React.Dis
                         <Grid.Col span={12}>
                                 <Box mt="md" style={{ display: 'flex', justifyContent: 'flex-end', margin: '10px'}}>
                             <Button type="submit" variant="filled" color="#105385" style={{ margin: '10px' }}>
-                                {toEditSensor?.id ? "Save Changes" : "Add Sensor"}
+                                {toEditSensor?.id ? t("userprofile.saveChanges") : t("header.addSensor")}
                             </Button>
                         </Box>
                     </Grid.Col>

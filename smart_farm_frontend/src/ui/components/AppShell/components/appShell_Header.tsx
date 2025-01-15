@@ -11,15 +11,15 @@ export const AppShell_Header: React.FC = () => {
     const navigate = useNavigate();
     const { t, i18n } = useTranslation();
     const [selectedLanguage, setSelectedLanguage] = useState('English');
-    const [currentFlag, setCurrentFlag] = useState('🇺🇸');
+    const [currentFlag, setCurrentFlag] = useState('us');
 
     const languageOptions = [
-        { code: 'en', label: 'English', flag: '🇺🇸' },
-        { code: 'de', label: 'German', flag: '🇩🇪' },
-        { code: 'fr', label: 'French', flag: '🇫🇷' },
-        { code: 'it', label: 'Italian', flag: '🇮🇹' },
-        { code: 'zh', label: 'Chinese', flag: '🇨🇳' },
-        { code: 'ru', label: 'Russian', flag: '🇷🇺' },
+        { code: 'en', label: 'English', flag: 'us' },
+        { code: 'de', label: 'German', flag: 'de' },
+        { code: 'fr', label: 'French', flag: 'fr' },
+        { code: 'it', label: 'Italian', flag: 'it' },
+        { code: 'zh', label: 'Chinese', flag: 'cn' },
+        { code: 'ru', label: 'Russian', flag: 'ru' },
     ];
 
     // Detect browser language and set it as default language
@@ -77,7 +77,11 @@ export const AppShell_Header: React.FC = () => {
                         <Menu.Target>
                             <Button variant="subtle">
                                 <Flex align="center" gap="sm">
-                                    <span>{currentFlag}</span>
+                                    <img
+                                        src={`https://flagcdn.com/w20/${currentFlag}.png`} // Example flag CDN
+                                        alt={currentFlag}
+                                        style={{ width: "auto", height: "auto" }}
+                                    />
                                     <span>{selectedLanguage}</span>
                                 </Flex>
                             </Button>
@@ -89,7 +93,11 @@ export const AppShell_Header: React.FC = () => {
                                     onClick={() => handleLanguageChange(lang)}
                                 >
                                     <Flex align="center" gap="sm">
-                                        <span>{lang.flag}</span>
+                                        <img
+                                            src={`https://flagcdn.com/w20/${lang.flag}.png`} // Example flag CDN
+                                            alt={lang.flag}
+                                            style={{ width: "auto", height: "auto" }}
+                                        />
                                         <span>{lang.label}</span>
                                     </Flex>
                                 </Menu.Item>

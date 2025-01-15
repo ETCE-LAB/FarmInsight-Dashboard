@@ -4,12 +4,14 @@ import {IconEdit, IconPlus} from "@tabler/icons-react";
 import {Camera, EditCamera} from "../models/camera";
 import {CameraForm} from "./CameraForm";
 import {useParams} from "react-router-dom";
+import {useTranslation} from "react-i18next";
 
 
 export const CameraList:React.FC<{camerasToDisplay?:Camera[]}> = ({camerasToDisplay}) => {
     const [CameraModalOpen, setCameraModalOpen] = useState(false);
     const [selectedCamera, setSelectedCamera] = useState<EditCamera | undefined>(undefined);
     const { organizationId, fpfId } = useParams();
+    const { t } = useTranslation();
 
 
     const onClickEdit = (camera: Camera) => {
@@ -40,10 +42,10 @@ export const CameraList:React.FC<{camerasToDisplay?:Camera[]}> = ({camerasToDisp
             <Modal
                 opened={CameraModalOpen}
                 onClose={() => setCameraModalOpen(false)}
-                title={selectedCamera ? "Edit Camera": "Create Camera"}
+                title={selectedCamera ? t("camera.editCamera"): t("camera.addCamera")}
                 centered
             >
-                <CameraForm toEditCamera={selectedCamera} />
+                <CameraForm toEditCamera={selectedCamera}  setClosed={setCameraModalOpen} />
             </Modal>
 
             <Group mb="md">
@@ -57,15 +59,15 @@ export const CameraList:React.FC<{camerasToDisplay?:Camera[]}> = ({camerasToDisp
                 <thead>
                 <tr>
 
-                    <Table.Th>Name</Table.Th>
-                    <Table.Th>Location</Table.Th>
-                    <Table.Th>Resolution</Table.Th>
-                    <Table.Th>ModelNr</Table.Th>
-                    <Table.Th>Interval</Table.Th>
-                    <Table.Th>SnapshotURL</Table.Th>
-                    <Table.Th>LivestreamURL</Table.Th>
-                    <Table.Th>Is Active?</Table.Th>
-                    <Table.Th>Actions</Table.Th>
+                    <Table.Th>{t("camera.name")}</Table.Th>
+                    <Table.Th>{t("camera.location")}</Table.Th>
+                    <Table.Th>{t("camera.resolution")}</Table.Th>
+                    <Table.Th>{t("camera.modelNr")}</Table.Th>
+                    <Table.Th>{t("camera.intervalSeconds")}</Table.Th>
+                    <Table.Th>{t("camera.snapshotUrl")}</Table.Th>
+                    <Table.Th>{t("camera.livestreamUrl")}</Table.Th>
+                    <Table.Th>{t("header.isActive")}</Table.Th>
+                    <Table.Th>{t("header.actions")}</Table.Th>
                 </tr>
                 </thead>
                 <tbody>

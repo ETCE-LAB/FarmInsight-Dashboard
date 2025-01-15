@@ -4,7 +4,7 @@ import { Text, Group } from '@mantine/core';
 import {UserProfile} from "../models/UserProfile"
 import {useAppSelector} from "../../../utils/Hooks";
 import {changedUserProfileEvent, receivedUserProfileEvent} from "../state/UserProfileSlice";
-import {useAuth} from "../../../utils/MainAppProvider"//"react-oidc-context";
+import {useAuth} from "react-oidc-context";
 import {receiveUserProfile} from "../useCase/receiveUserProfile";
 // @ts-ignore
 import {IconUserCog} from "@tabler/icons-react";

@@ -19,7 +19,7 @@ export const store = configureStore({
         measurement: measurementSlice,
         membership: MembershipSlice,
         growingCycle: GrowingCycleSlice,
-        camera: CameraSlice
+        camera: CameraSlice,
     }
 })
 

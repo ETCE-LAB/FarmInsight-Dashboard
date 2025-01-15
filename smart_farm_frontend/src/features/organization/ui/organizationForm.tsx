@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {Button, TextInput, Switch, Box, Popover} from "@mantine/core";
-import { useAuth } from "../../../utils/MainAppProvider"//"react-oidc-context";
+import { useAuth } from "react-oidc-context";
 import { createOrganization } from "../useCase/createOrganization";
 import { useDispatch } from "react-redux";
 import { createdOrganization } from "../state/OrganizationSlice";

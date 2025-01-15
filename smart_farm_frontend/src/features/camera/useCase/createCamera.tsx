@@ -11,7 +11,6 @@ export const createCamera= async (data: EditCamera) => {
             const headers =
                 {'Authorization': `Bearer ${token}`}
             const url = `${BACKEND_URL}/api/cameras`;
-            console.log(data)
             const response = await apiClient.post(url, data, headers);
 
             return response;

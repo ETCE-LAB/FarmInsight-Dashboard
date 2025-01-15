@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import {modifyUserProfile} from "../useCase/modifyUserProfile";
 import {UserProfile} from "../models/UserProfile";
 import {receiveUserProfile} from "../useCase/receiveUserProfile";
-import {useAuth} from "../../../utils/MainAppProvider"//"react-oidc-context";
+import {useAuth} from "react-oidc-context";
 import {useAppDispatch, useAppSelector} from "../../../utils/Hooks";
 import {changedUserProfile, receivedUserProfileEvent} from "../state/UserProfileSlice";
 import {showNotification} from "@mantine/notifications";

@@ -1,4 +1,3 @@
-import {EditCamera} from "../models/camera";
 import APIClient from "../../../utils/APIClient";
 import {getUser} from "../../../utils/getUser";
 import {BACKEND_URL} from "../../../env-config";
@@ -17,7 +16,5 @@ export const getLivestream = async (cameraId: string, from:string="2024-10-10") 
 //cameras/${amera_id}/livestream
 
 
-    const result = apiClient.get(url, headers)
-    console.log(result)
-    return result
+    return apiClient.get(url, headers)
 };

@@ -62,17 +62,14 @@ const TimeseriesGraph: React.FC<{sensor:Sensor}> = ({sensor}) => {
 useEffect(() => {
     if (lastMessage) {
         const data = JSON.parse(lastMessage.data);
-        console.log(data);
+
         const newMeasurements  = data.measurement.map((measurement: Measurement) => (
             {
             value: Math.round(measurement.value * 100) / 100,
             measuredAt: measurement.measuredAt
         })
         );
-        console.log(newMeasurements)
         setMeasurements((prevMeasurements) => [...prevMeasurements, ...newMeasurements]);
-
-        console.log(newMeasurements, sensor.name);
     }
 }, [lastMessage]);
 
@@ -92,7 +89,6 @@ useEffect(() => {
                     ...measurement,
                     value: parseFloat(measurement.value.toFixed(2)),
                 }));
-                console.log(resp)
                 setMeasurements(roundedMeasurements);
             }
         });
@@ -102,8 +98,8 @@ useEffect(() => {
     useEffect(() => {
         if (measurements.length > 0) {
             const values = measurements.map((item) => item.value);
-            const minValue = Math.min(...values);
-            const maxValue = Math.max(...values);
+            const minValue = Math.min(...values) - 5;
+            const maxValue = Math.max(...values) + 5;
 
             setMinXValue(minValue)
             setMaxXValue(maxValue)
