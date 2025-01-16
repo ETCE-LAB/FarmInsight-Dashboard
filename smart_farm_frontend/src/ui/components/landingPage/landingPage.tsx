@@ -144,13 +144,11 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
                 <Grid>
                     {paginatedFpfs && paginatedFpfs.map((fpf) => (
                         <Grid.Col span={4}>
-                            <Card p="lg" shadow="sm" radius="md" style={{ margin: '10px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)', cursor:'pointer' }}
-                            onClick={() => {handleFpfSelect(fpf.organization.id, fpf.id);}}
-                            >
+                            <Card p="lg" shadow="sm" radius="md" style={{ height: '20vh', margin: '10px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)', cursor:'pointer' }}
+                            onClick={() => {handleFpfSelect(fpf.organization.id, fpf.id);}}>
                                 <Flex justify="space-between" align="center" mb="sm">
-                                    <Title order={3} style={{ color: '#199ff4' }}>{fpf.name}</Title>
+                                    <Title order={3} style={{ fontSize: '1rem', color: '#199ff4', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{fpf.name}</Title>
                                     <Text c="blue">{fpf.organization.name}</Text>
-
                                     {/*{fpf.sensor ? (<Text size="xs" style={{ fontWeight: 'bold', color: '#105385' }}>PPM</Text>):("")}
                                     {fpf.sensor ? (<IconTemperature style={{ color: '#105385' }}/>):("")}
                                     {fpf.sensor ? (<IconSunHigh style={{ color: '#105385' }}/>):("")}
@@ -159,8 +157,7 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
                                 </Flex>
                                 <Box style={{ height: 'auto' }}>
                                     {fpf.lastImageUrl?.length && fpf.lastImageUrl.length > 0 && (
-                                        <Image src={`${fpf.lastImageUrl}`} alt="Last Received Image" style={{ width: '100%', height: 'auto' }} />
-                                    ) }
+                                        <Image src={`${fpf.lastImageUrl}`} alt="Last Received Image" style={{ width: '100%', height: 'auto', objectFit: 'contain' }} />)}
                                 </Box>
                             </Card>
                         </Grid.Col>))}
