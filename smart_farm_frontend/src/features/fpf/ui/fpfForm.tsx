@@ -42,6 +42,7 @@ export const FpfForm: React.FC<{ organizationId?: string, toEditFpf?: Fpf }> = (
     };
 
     const handleSave = () => {
+        console.log(organizationId)
         if (validateIps() && organizationId) {
             const id = notifications.show({
                 loading: true,

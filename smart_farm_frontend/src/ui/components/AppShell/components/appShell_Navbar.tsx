@@ -34,13 +34,13 @@ export const AppShell_Navbar: React.FC = () => {
     const auth = useAuth();
     const location = useLocation();
 
-    const { organizationId } = useParams();
     const [organization, setOrganization] = useState<Organization | null>(null);
     const [fpfModalOpen, setFpFModalOpen] = useState(false);
+    const [organizationId, setOrganizationId] = useState<string>()
 
     useEffect(() => {
-
-    }, [selectedOrganization]);
+        console.log(organizationId)
+    }, [organizationId]);
 
     useEffect(() => {
         if (auth.isAuthenticated) {
@@ -56,6 +56,7 @@ export const AppShell_Navbar: React.FC = () => {
             const organizationPathIndex = path.indexOf('organization');
             if (organizationPathIndex !== -1 && path.length > organizationPathIndex + 1) {
                 const organizationId = path[organizationPathIndex + 1];
+                setOrganizationId(organizationId)
                 getOrganization(organizationId).then(resp => {
                     if (resp) {
                         setFpfList(resp.FPFs);
