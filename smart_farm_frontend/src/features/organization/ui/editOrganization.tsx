@@ -181,45 +181,6 @@ export const EditOrganization = () => {
                         <MembershipList members={organization.memberships} />
                     </Box>
                     </Card>
-
-                    {/* Add FpF Button */}
-                    <Card padding="lg" radius="md" mt="lg">
-                        <Box mt="xl" style={{ position: "relative" }}>
-                            <Flex justify="space-between" align="center" mb="lg">
-                                <Text size="xl" fw="bold">
-                                    FpF´s
-                                </Text>
-                            </Flex>
-
-                            {/* FPF Liste */}
-                            {organization.FPFs && organization.FPFs.length > 0 ? (
-                                <Box>
-                                    {organization.FPFs.map((fpf) => (
-                                        <Card key={fpf.id} padding="md" mt="sm" radius="md">
-                                            <Flex justify="space-between" align="center">
-                                                <Text size="lg" fw="bold">{fpf.name}</Text>
-                                            </Flex>
-                                        </Card>
-                                    ))}
-                                </Box>
-                            ) : (
-                                <Text>{t("header.noFpfAvailable")}</Text>
-                            )}
-                            <Button
-                                onClick={() => setFpFModalOpen(true)}
-                                variant="filled"
-                                color="#105385"
-                                style={{
-                                    position: "absolute",
-                                    top: "10px",
-                                    right: "10px",
-                                }}
-                            >
-                                {t("header.addFpf")}
-                            </Button>
-                        </Box>
-                    </Card>
-
                     {/* FpF Modal */}
                     <Modal
                         opened={fpfModalOpen}
