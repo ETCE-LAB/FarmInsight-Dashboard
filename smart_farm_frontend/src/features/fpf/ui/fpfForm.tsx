@@ -11,6 +11,7 @@ import { Fpf } from "../models/Fpf";
 import { useTranslation } from 'react-i18next';
 import { updateFpf } from "../useCase/updateFpf";
 import { notifications } from "@mantine/notifications";
+import {IconEye, IconEyeOff} from "@tabler/icons-react";
 
 export const FpfForm: React.FC<{ inputOrganization?: Organization, toEditFpf?: Fpf }> = ({ inputOrganization, toEditFpf }) => {
     const auth = useAuth();
@@ -159,29 +160,42 @@ export const FpfForm: React.FC<{ inputOrganization?: Organization, toEditFpf?: F
                                 />
                             </Grid.Col>
 
-                            {/* Is Public Toggle */}
-                            {toEditFpf && (
-                                <Grid.Col span={12} style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                                    <Switch label={t("label.setPublic")} size="md" checked={isPublic} onChange={(e) => setIsPublic(e.currentTarget.checked)} />
-                                    <Button onClick={onClickEdit} variant="outline" color="blue">
-                                        {t("userprofile.saveChanges")}
-                                    </Button>
-                                </Grid.Col>
-                            )}
-                            {!toEditFpf && (
-                                <Grid.Col span={12} style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                                    <Switch label={t("label.setCameraCarousel")} size="md" checked={isPublic} onChange={(e) => setIsPublic(e.currentTarget.checked)} />
-                                </Grid.Col>
-                            )}
+                            {/* Public Switch */}
+                            <Grid.Col span={6}>
+                                <Box
+                                    style={{
+                                        display: "flex",
+                                        flexDirection: "column",  // Stacks the text and switch vertically
+                                        alignItems: "center",  // Centers the switch horizontally
+                                        justifyContent: "flex-end",  // Keeps content at the bottom of the grid cell
+                                        height: "100%",  // Ensures vertical alignment works
+                                    }}
+                                >
+                                    <span style={{ marginBottom: 5 }}>{t("header.public")}</span>  {/* Adds space between text and switch */}
+                                    <Switch
+                                        //description={t("fpf.hint.publicHint")}
+                                        onLabel={<IconEye size={16} stroke={2.5} />}
+                                        offLabel={<IconEyeOff size={16} stroke={2.5} />}
+                                        size="md"
+                                        checked={isPublic}
+                                        onChange={(e) => setIsPublic(e.currentTarget.checked)}
+                                    />
+                                </Box>
+                            </Grid.Col>
 
+
+                            {/* Save Button */}
                             <Grid.Col span={12}>
-                                {inputOrganization && (
-                                    <Box mt="md" style={{ display: 'flex', justifyContent: 'flex-end', margin: '10px' }}>
-                                        <Button type="submit" variant="filled" color="#105385" style={{ margin: '10px' }}>
-                                            {t("button.add")}
-                                        </Button>
-                                    </Box>
-                                )}
+                                <Box mt="md" style={{ display: "flex", justifyContent: "center" }}>
+                                    <Button
+                                        type="submit"
+                                        variant="filled"
+                                        color="#105385"
+                                        style={{ margin: "10px" }}
+                                    >
+                                        {toEditFpf ? t("userprofile.saveChanges") : t("button.add")}
+                                    </Button>
+                                </Box>
                             </Grid.Col>
                         </Grid>
                     </form>

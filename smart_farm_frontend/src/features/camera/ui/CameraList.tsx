@@ -46,7 +46,7 @@ export const CameraList: React.FC<{ camerasToDisplay?: Camera[] }> = ({ camerasT
 
             {/* Header with Add Button */}
             <Group mb="md" justify="space-between">
-                <h2>{t('sensor.title')}</h2>
+                <h2>{t('camera.cameras')}</h2>
                 <IconCirclePlus
                     size={25}
                     stroke={2}

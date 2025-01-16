@@ -13,11 +13,13 @@ i18n
                         editFpF: 'Edit FpF',
                         createFpF: 'Create FpF',
                         hint: {
+                            publicHint: 'Set the FPF to public or private',
                             sensorServiceIpHint: 'IP or URL of the FPF Backend',
                         },
                     },
                     header: {
                         title: 'FARMINSIGHT',
+                        noFpfAvailable: 'No FPF available',
                         organizations: 'Organizations',
                         myOrganizations: 'My Organizations',
                         loginToManage: 'Login to manage organization',
@@ -146,6 +148,7 @@ i18n
 
                     },
                     camera: {
+                        cameras: 'Cameras',
                         hint: {
                                 nameHint: 'Name of the camera',
                                 locationHint: 'Location of the camera',
@@ -199,11 +202,13 @@ i18n
                         editFpF: 'FpF bearbeiten',
                         createFpF: 'FpF erstellen',
                         hint: {
+                            publicHint: 'FpF öffentlich oder privat einstellen.',
                             sensorServiceIpHint: 'IP oder URL des FPF-Backends',
                         },
                     },
                     header: {
                         title: 'FARMINSIGHT',
+                        noFpfAvailable: 'Kein FPF verfügbar',
                         organizations: 'Organisationen',
                         myOrganizations: 'Meine Organisationen',
                         loginToManage: 'Einloggen, um Organisation zu verwalten',
@@ -330,6 +335,7 @@ i18n
                         saveChanges: 'Änderungen speichern',
                     },
                     camera: {
+                        cameras: 'Kameras',
                         hint: {
                                 nameHint: 'Name der Kamera',
                                 locationHint: 'Standort der Kamera',
@@ -380,14 +386,16 @@ i18n
                     fpf: {
                         address: 'Emplacement',
                         noAddress: 'Pas d’adresse',
-                        editFpF: 'modifier FpF' ,
+                        editFpF: 'Modifier FpF' ,
                         createFpF: 'Créer FpF',
                         hint: {
+                            publicHint: 'Définir le FPF comme public ou privé',
                             sensorServiceIpHint: 'IP ou URL du backend FPF',
                         },
                     },
                     header: {
                         title: 'FARMINSIGHT',
+                        noFpfAvailable: 'Aucun FPF disponible',
                         organizations: 'Organisations',
                         myOrganizations: 'Mes organisations',
                         loginToManage: 'Se connecter pour gérer l’organisation',
@@ -512,6 +520,7 @@ i18n
                         saveChanges: 'Enregistrer les modifications',
                     },
                     camera: {
+                        cameras: 'Caméras',
                         hint: {
                                 nameHint: 'Nom de la caméra',
                                 locationHint: 'Emplacement de la caméra',
@@ -562,14 +571,16 @@ i18n
                     fpf: {
                         address: 'Posizione',
                         noAddress: 'Nessuna posizione',
-                        editFpF: 'modifica FpF',
+                        editFpF: 'Modifica FpF',
                         createFpF: 'Crea FpF',
                         hint: {
+                            publicHint: 'Imposta il FPF su pubblico o privato',
                             sensorServiceIpHint: 'IP o URL del backend FPF',
                         },
                     },
                     header: {
                         title: 'FARMINSIGHT',
+                        noFpfAvailable: 'Nessun FPF disponibile',
                         organizations: 'Organizzazioni',
                         myOrganizations: 'Le mie organizzazioni',
                         loginToManage: 'Accedi per gestire l’organizzazione',
@@ -694,6 +705,7 @@ i18n
                         saveChanges: 'Salva le modifiche',
                     },
                     camera: {
+                        cameras: 'Fotocamere',
                         hint: {
                                 nameHint: 'Nome della fotocamera',
                                 locationHint: 'Posizione della fotocamera',
@@ -747,11 +759,13 @@ i18n
                         editFpF: '編輯 FpF',
                         createFpF: '创建 FpF',
                         hint: {
+                            publicHint: '将 FPF 设置为公共或私有',
                             sensorServiceIpHint: 'FPF 后端的 IP 或 URL',
                         },
                     },
                     header: {
                         title: 'FARMINSIGHT',
+                        noFpfAvailable: '没有可用的 FPF',
                         organizations: '组织',
                         myOrganizations: '我的组织',
                         loginToManage: '登录以管理组织',
@@ -876,6 +890,7 @@ i18n
                         saveChanges: '保存更改',
                     },
                     camera: {
+                        cameras: '摄像头',
                         hint: {
                                 nameHint: '摄像头名称',
                                 locationHint: '摄像头位置',
@@ -929,11 +944,13 @@ i18n
                         editFpF: 'редактировать FpF',
                         createFpF: 'Создать FpF',
                         hint: {
+                            publicHint: 'Установить FPF как общедоступный или частный',
                             sensorServiceIpHint: 'IP или URL FPF-бэкенда',
                         },
                     },
                     header: {
                         title: 'FARMINSIGHT',
+                        noFpfAvailable: 'Нет доступных FPF',
                         organizations: 'Организации',
                         myOrganizations: 'Мои организации',
                         loginToManage: 'Войти для управления организацией',
@@ -1058,6 +1075,7 @@ i18n
                         saveChanges: 'Сохранить изменения',
                     },
                     camera: {
+                        cameras: 'Камеры',
                         hint: {
                                 nameHint: 'Название камеры',
                                 locationHint: 'Местоположение камеры',

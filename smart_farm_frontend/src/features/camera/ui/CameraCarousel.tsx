@@ -83,10 +83,10 @@ export const CameraCarousel: React.FC<{ camerasToDisplay: Camera[] }> = ({camera
         <>
         <Switch label={t("label.setCameraCarousel")} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '2vw' }}  onChange={(e) => setShowLivestream(e.currentTarget.checked)}/>
          <Card
-            shadow="sm"
             padding="md"
             radius="md"
-            style={{ boxShadow: "0 2px 8px rgba(0, 0, 0, 0.3)", position: "static", marginBottom: "30px"}}>
+            style={{position: "static", marginBottom: "30px"}}
+            >
              <Center>
                 {camerasToDisplay && camerasToDisplay.length > 0 ? (
                     <Carousel withIndicators>
