@@ -227,7 +227,7 @@ export const EditOrganization = () => {
                         title={t("header.addFpf")}
                         centered
                     >
-                        <FpfForm inputOrganization={organization} />
+                        <FpfForm organizationId={organizationId} />
                     </Modal>
 
                     <Modal

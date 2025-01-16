@@ -1,8 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Container, Menu, TextInput, Text, Flex, Divider } from '@mantine/core';
-import { IconSettings, IconChevronDown, IconCircleCheck, IconCircleMinus, IconSearch } from "@tabler/icons-react";
+import {Container, Menu, TextInput, Text, Flex, Divider, Modal} from '@mantine/core';
+import {
+    IconSettings,
+    IconChevronDown,
+    IconCircleCheck,
+    IconCircleMinus,
+    IconSearch,
+    IconCirclePlus
+} from "@tabler/icons-react";
 import { Organization } from "../../../../features/organization/models/Organization";
-import { useLocation, useNavigate } from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import { AppRoutes } from "../../../../utils/appRoutes";
 import { getMyOrganizations } from "../../../../features/organization/useCase/getMyOrganizations";
 import { useAuth } from "react-oidc-context";
@@ -10,6 +17,7 @@ import { Fpf } from "../../../../features/fpf/models/Fpf";
 import { getOrganization } from "../../../../features/organization/useCase/getOrganization";
 import DynamicFontText from "../../../../utils/DynamicFontText";
 import { useTranslation } from 'react-i18next';
+import {FpfForm} from "../../../../features/fpf/ui/fpfForm";
 
 export const AppShell_Navbar: React.FC = () => {
     const [value, setValue] = useState('');
@@ -25,6 +33,14 @@ export const AppShell_Navbar: React.FC = () => {
     const navigate = useNavigate();
     const auth = useAuth();
     const location = useLocation();
+
+    const { organizationId } = useParams();
+    const [organization, setOrganization] = useState<Organization | null>(null);
+    const [fpfModalOpen, setFpFModalOpen] = useState(false);
+
+    useEffect(() => {
+
+    }, [selectedOrganization]);
 
     useEffect(() => {
         if (auth.isAuthenticated) {
@@ -124,6 +140,16 @@ export const AppShell_Navbar: React.FC = () => {
 
     return (
         <Container size="fluid" style={{ display: 'flex', flexDirection: 'column', width: '100%', padding: '0' }}>
+            {/* FpF Modal */}
+            <Modal
+                opened={fpfModalOpen}
+                onClose={() => setFpFModalOpen(false)}
+                title={t("header.addFpf")}
+                centered
+            >
+                <FpfForm organizationId={organizationId} />
+            </Modal>
+
             <Flex
                 style={{
                     marginTop: '1vh',
@@ -240,7 +266,13 @@ export const AppShell_Navbar: React.FC = () => {
                                     />
                                 )}
                             </Flex>
+
                         ))}
+                <Flex style={{ width: '100%', justifyContent: 'center' }}>
+                    <IconCirclePlus size={20} stroke={2} cursor="pointer" color={"#199ff4"}
+                                    onClick={() => setFpFModalOpen(true)}
+                    />
+                </Flex>
             </Container>
         </Container>
     );
