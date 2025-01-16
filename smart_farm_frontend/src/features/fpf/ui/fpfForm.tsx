@@ -165,13 +165,13 @@ export const FpfForm: React.FC<{ inputOrganization?: Organization, toEditFpf?: F
                                 <Box
                                     style={{
                                         display: "flex",
-                                        flexDirection: "column",  // Stacks the text and switch vertically
-                                        alignItems: "center",  // Centers the switch horizontally
-                                        justifyContent: "flex-end",  // Keeps content at the bottom of the grid cell
-                                        height: "100%",  // Ensures vertical alignment works
+                                        flexDirection: "column",
+                                        alignItems: "center",
+                                        justifyContent: "flex-end",
+                                        height: "100%",
                                     }}
                                 >
-                                    <span style={{ marginBottom: 5 }}>{t("header.public")}</span>  {/* Adds space between text and switch */}
+                                    <span style={{ marginBottom: 5 }}>{t("header.public")}</span>
                                     <Switch
                                         //description={t("fpf.hint.publicHint")}
                                         onLabel={<IconEye size={16} stroke={2.5} />}
@@ -189,9 +189,10 @@ export const FpfForm: React.FC<{ inputOrganization?: Organization, toEditFpf?: F
                                 <Box mt="md" style={{ display: "flex", justifyContent: "center" }}>
                                     <Button
                                         type="submit"
-                                        variant="filled"
+                                        variant="outline"
                                         color="#105385"
                                         style={{ margin: "10px" }}
+                                        onClick={toEditFpf ? onClickEdit : handleSave}
                                     >
                                         {toEditFpf ? t("userprofile.saveChanges") : t("button.add")}
                                     </Button>
