@@ -6,14 +6,15 @@ import { Organization } from "../../organization/models/Organization";
 import { useDispatch } from "react-redux";
 import { AppRoutes } from "../../../utils/appRoutes";
 import { createdFpf } from "../state/FpfSlice";
-import { useNavigate } from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import { Fpf } from "../models/Fpf";
 import { useTranslation } from 'react-i18next';
 import { updateFpf } from "../useCase/updateFpf";
 import { notifications } from "@mantine/notifications";
 import {IconEye, IconEyeOff} from "@tabler/icons-react";
+import organizationSlice from "../../organization/state/OrganizationSlice";
 
-export const FpfForm: React.FC<{ inputOrganization?: Organization, toEditFpf?: Fpf }> = ({ inputOrganization, toEditFpf }) => {
+export const FpfForm: React.FC<{ organizationId?: string, toEditFpf?: Fpf }> = ({ organizationId, toEditFpf }) => {
     const auth = useAuth();
     const { t } = useTranslation();
     const [name, setName] = useState("");
@@ -23,6 +24,7 @@ export const FpfForm: React.FC<{ inputOrganization?: Organization, toEditFpf?: F
     const [errors, setErrors] = useState<{ sensorServiceIp?: string; cameraServiceIp?: string }>({});
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
 
     useEffect(() => {
         if (toEditFpf) {
@@ -40,7 +42,8 @@ export const FpfForm: React.FC<{ inputOrganization?: Organization, toEditFpf?: F
     };
 
     const handleSave = () => {
-        if (validateIps() && inputOrganization) {
+        console.log(organizationId)
+        if (validateIps() && organizationId) {
             const id = notifications.show({
                 loading: true,
                 title: 'Loading',
@@ -48,7 +51,7 @@ export const FpfForm: React.FC<{ inputOrganization?: Organization, toEditFpf?: F
                 autoClose: false,
                 withCloseButton: false,
             });
-            const organizationId = inputOrganization.id;
+
             createFpf({ name, isPublic, sensorServiceIp, address, organizationId }).then(fpf => {
                 if (fpf) {
                     dispatch(createdFpf());
@@ -182,7 +185,6 @@ export const FpfForm: React.FC<{ inputOrganization?: Organization, toEditFpf?: F
                                     />
                                 </Box>
                             </Grid.Col>
-
 
                             {/* Save Button */}
                             <Grid.Col span={12}>
