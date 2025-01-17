@@ -153,11 +153,11 @@ export const EditOrganization = () => {
                             <IconEdit
                                 size={24}
                                 onClick={() => setEditModalOpen(true)}
-                                style={{ cursor: "pointer", color: "#105385" }}
+                                style={{ cursor: "pointer", color: "#199ff4" }}
                             />
                         </Flex>
                         <Flex align="center" gap={10}>
-                            <Text fw="bold" size="lg" color="dimmed">
+                            <Text fw="bold" size="lg" c="dimmed">
                                 {t("header.status")}:
                             </Text>
                             <Badge color={isPublic ? "green" : "red"} variant="light">
@@ -175,7 +175,7 @@ export const EditOrganization = () => {
                             <IconUserPlus
                                 size={30}
                                 onClick={() => setUserModalOpen(true)}
-                                style={{ cursor: "pointer", color: "#105385" }}
+                                style={{ cursor: "pointer", color: "#199ff4" }}
                             />
                         </Flex>
                         <MembershipList members={organization.memberships} />
@@ -219,7 +219,7 @@ export const EditOrganization = () => {
                                     mt="md"
                                     onClick={handleAddUsers}
                                     variant="filled"
-                                    color="blue"
+                                    color="#199ff4"
                                 >
                                     {t("header.addSelectedUser")}
                                 </Button>
@@ -248,12 +248,11 @@ export const EditOrganization = () => {
                             onChange={handleSwitchChange}
                         />
                         <Button
-                            fullWidth
                             onClick={handleUpdateOrganization}
                             mt="lg"
                             disabled={!isModified}
                             variant="filled"
-                            color="blue"
+                            color="#199ff4"
                         >
                             {t("userprofile.saveChanges")}
                         </Button>

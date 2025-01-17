@@ -54,6 +54,7 @@ export const SensorList: React.FC<{ sensorsToDisplay?: Sensor[], fpfId: string }
                 onClose={() => setSensorModalOpen(false)}
                 title={selectedSensor ? "Edit Sensor" : "Create Sensor"}
                 centered
+                size="40%"
             >
                 <SensorForm toEditSensor={selectedSensor} setClosed={setSensorModalOpen} />
             </Modal>
@@ -64,13 +65,11 @@ export const SensorList: React.FC<{ sensorsToDisplay?: Sensor[], fpfId: string }
                 <IconCirclePlus
                     size={25}
                     stroke={2}
-                    color={"#105385"}
+                    color={"#199ff4"}
                     onClick={() => onClickAddSensor()}
                     style={{ cursor: "pointer" }}
                 />
             </Group>
-
-
             {/* Conditional Rendering of Table */}
             {sensorsToDisplay && sensorsToDisplay.length > 0 ? (
                 <Table highlightOnHover>

@@ -188,11 +188,11 @@ export const FpfForm: React.FC<{ organizationId?: string, toEditFpf?: Fpf }> = (
 
                             {/* Save Button */}
                             <Grid.Col span={12}>
-                                <Box mt="md" style={{ display: "flex", justifyContent: "center" }}>
+                                <Box mt="md" style={{ display: "flex", justifyContent: "flex-start" }}>
                                     <Button
                                         type="submit"
-                                        variant="outline"
-                                        color="#105385"
+                                        variant="filled"
+                                        color="#199ff4"
                                         style={{ margin: "10px" }}
                                         onClick={toEditFpf ? onClickEdit : handleSave}
                                     >

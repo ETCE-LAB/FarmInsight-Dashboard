@@ -81,15 +81,17 @@ export const EditFPF: React.FC = () => {
                             <Title order={2}>
                                 {'FpF-' + t("header.name")}: {fpf.name}
                             </Title>
+                            <Flex align="center" style={{ marginLeft: "auto" }}>
                             <IconEdit
                                 size={24}
                                 onClick={() => setEditModalOpen(true)}
                                 style={{
                                     cursor: 'pointer',
-                                    color: '#105385',
+                                    color: '#199ff4',
                                     marginLeft: 10,
                                 }}
                             />
+                            </Flex>
                         </Flex>
                     </Grid.Col>
                     <Grid.Col span={12}>

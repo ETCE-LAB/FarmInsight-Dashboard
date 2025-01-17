@@ -78,7 +78,7 @@ export const OrganizationForm: React.FC = () => {
                         <Button
                             type="submit"
                             variant="filled"
-                            color="#105385"
+                            color="#199ff4"
                             style={{ margin: '10px' }}
                         >
                             {t('button.create')}

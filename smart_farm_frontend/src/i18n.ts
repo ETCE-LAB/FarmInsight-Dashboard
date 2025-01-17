@@ -74,6 +74,11 @@ i18n
                         }
                     },
                     sensor: {
+                        model: 'Model',
+                        connectionType: 'Connection Type',
+                        parameter: 'Parameter',
+                        unit: 'Unit',
+                        tags: 'Notes',
                         hint: {
                             nameHint: 'Name of the sensor',
                             locationHint: 'Location of the sensor',
@@ -262,6 +267,11 @@ i18n
                         }
                     },
                     sensor: {
+                        model: 'Modell',
+                        connectionType: 'Verbindungstyp',
+                        parameter: 'Parameter',
+                        unit: 'Einheit',
+                        tags: 'Notizen',
                         hint: {
                             nameHint: 'Name des Sensors',
                             locationHint: 'Standort des Sensors',
@@ -449,6 +459,11 @@ i18n
                         }
                     },
                     sensor: {
+                        model: 'Modèle',
+                        connectionType: 'Type de connexion',
+                        parameter: 'Paramètre',
+                        unit: 'Unité',
+                        tags: 'Remarques',
                         hint: {
                             nameHint: 'Nom du capteur',
                             locationHint: 'Emplacement du capteur',
@@ -634,6 +649,11 @@ i18n
                         }
                     },
                     sensor: {
+                        model: 'Modello',
+                        connectionType: 'Tipo di connessione',
+                        parameter: 'Parametro',
+                        unit: 'Unità',
+                        tags: 'Note',
                         hint: {
                             nameHint: 'Nome del sensore',
                             locationHint: 'Posizione del sensore',
@@ -819,6 +839,11 @@ i18n
                         }
                     },
                     sensor: {
+                        model: '型号',
+                        connectionType: '连接类型',
+                        parameter: '参数',
+                        unit: '单位',
+                        tags: '备注',
                         hint: {
                             nameHint: '传感器名称',
                             locationHint: '传感器位置',
@@ -1004,6 +1029,11 @@ i18n
                         }
                     },
                     sensor: {
+                        model: 'Модель',
+                        connectionType: 'Тип соединения',
+                        parameter: 'Параметр',
+                        unit: 'Единица',
+                        tags: 'Теги',
                         hint: {
                             nameHint: 'Имя датчика',
                             locationHint: 'Местоположение датчика',

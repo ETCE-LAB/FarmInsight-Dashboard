@@ -6,7 +6,7 @@ import {
     IconCircleCheck,
     IconCircleMinus,
     IconSearch,
-    IconCirclePlus
+    IconCirclePlus, IconSquareRoundedPlus
 } from "@tabler/icons-react";
 import { Organization } from "../../../../features/organization/models/Organization";
 import {useLocation, useNavigate, useParams} from "react-router-dom";
@@ -145,7 +145,6 @@ export const AppShell_Navbar: React.FC = () => {
             <Modal
                 opened={fpfModalOpen}
                 onClose={() => setFpFModalOpen(false)}
-                title={t("header.addFpf")}
                 centered
             >
                 <FpfForm organizationId={organizationId} />
@@ -269,10 +268,17 @@ export const AppShell_Navbar: React.FC = () => {
                             </Flex>
 
                         ))}
-                <Flex style={{ width: '100%', justifyContent: 'center' }}>
-                    <IconCirclePlus size={20} stroke={2} cursor="pointer" color={"#199ff4"}
-                                    onClick={() => setFpFModalOpen(true)}
+                <Flex style={{ width: '100%', justifyContent: 'center', alignItems: 'center', gap: '10px' }}>
+                    <Divider style={{ flexGrow: 1 }} />
+                    <IconSquareRoundedPlus
+                        title={t("header.addFpf")}
+                        style={{ cursor: 'pointer' }}
+                        size={30}
+                        stroke={2}
+                        color={"#199ff4"}
+                        onClick={() => setFpFModalOpen(true)}
                     />
+                    <Divider style={{ flexGrow: 1 }} />
                 </Flex>
             </Container>
         </Container>

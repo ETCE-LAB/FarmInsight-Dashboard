@@ -87,7 +87,7 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
                 <Button
                     onClick={() => handleTabClick(tab.link)}
                     variant="filled"
-                    color="blue"
+                    color="#199ff4"
                     style={{
                         display: 'flex',
                         alignItems: 'center',
@@ -128,7 +128,7 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
                             <Button
                                 onClick={() => setModalOpen(true)}
                                 variant="filled"
-                                color="blue"
+                                color="#199ff4"
                             >
                                 {t('header.createOrganization')}
                             </Button>
@@ -141,11 +141,11 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
                 <Grid>
                     {paginatedFpfs && paginatedFpfs.map((fpf) => (
                         <Grid.Col span={4}>
-                            <Card p="lg" shadow="sm" radius="md" style={{ height: '20vh', margin: '10px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)', cursor:'pointer' }}
+                            <Card p="lg" radius="md" style={{ height: '20vh', margin: '10px', cursor:'pointer' }}
                             onClick={() => {handleFpfSelect(fpf.organization.id, fpf.id);}}>
                                 <Flex justify="space-between" align="center" mb="sm">
-                                    <Title order={3} style={{ fontSize: '1rem', color: '#199ff4', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{fpf.name}</Title>
-                                    <Text c="blue">{fpf.organization.name}</Text>
+                                    <Title order={3} style={{ fontSize: '1rem', color: '#ccc', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{fpf.name}</Title>
+                                    <Text c="#ccc">{fpf.organization.name}</Text>
                                     {/*{fpf.sensor ? (<Text size="xs" style={{ fontWeight: 'bold', color: '#105385' }}>PPM</Text>):("")}
                                     {fpf.sensor ? (<IconTemperature style={{ color: '#105385' }}/>):("")}
                                     {fpf.sensor ? (<IconSunHigh style={{ color: '#105385' }}/>):("")}

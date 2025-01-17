@@ -1,34 +1,49 @@
-import React, {useState, useEffect, useMemo} from "react";
-import {Table, ScrollArea, TextInput, Text, HoverCard} from "@mantine/core";
-import { HardwareConfiguration} from "../models/HardwareConfiguration";
-import {getAvailableHardwareConfiguration} from "../useCase/getAvailableHardwareConfiguration";
-import {getSensor} from "../../sensor/useCase/getSensor";
+import React, { useState, useEffect } from "react";
+import { Table, ScrollArea, TextInput, Text, HoverCard, Loader, Box } from "@mantine/core";
+import { HardwareConfiguration } from "../models/HardwareConfiguration";
+import { getAvailableHardwareConfiguration } from "../useCase/getAvailableHardwareConfiguration";
+import { getSensor } from "../../sensor/useCase/getSensor";
+import { t } from "i18next";
 
 function capitalizeFirstLetter(str: string): string {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 interface SelectHardwareConfigurationProps {
-    fpfId: string,
-    postHardwareConfiguration(data: { sensorClassId: string, additionalInformation: Record<string, any>}): any,
-    sensorId?:string,
-    setUnit(data: string): any,
-    setModel(data: string): any
+    fpfId: string;
+    postHardwareConfiguration(data: { sensorClassId: string, additionalInformation: Record<string, any> }): any;
+    sensorId?: string;
+    setUnit(data: string): any;
+    setModel(data: string): any;
 }
 
-const SelectHardwareConfiguration:React.FC<SelectHardwareConfigurationProps> = ({fpfId, postHardwareConfiguration, sensorId, setUnit, setModel}) => {
+const SelectHardwareConfiguration: React.FC<SelectHardwareConfigurationProps> = ({
+                                                                                     fpfId,
+                                                                                     postHardwareConfiguration,
+                                                                                     sensorId,
+                                                                                     setUnit,
+                                                                                     setModel,
+                                                                                 }) => {
     const [hardwareConfiguration, setHardwareConfiguration] = useState<HardwareConfiguration[]>([]);
-    const [selectedSensorClassId, setSelectedSensorClassId] = useState<string|undefined>(undefined);
+    const [selectedSensorClassId, setSelectedSensorClassId] = useState<string | undefined>(undefined);
     const [additionalInformation, setAdditionalInformation] = useState<Record<string, any>>({});
+    const [isLoading, setIsLoading] = useState<boolean>(true); // Loading state
 
     useEffect(() => {
-        getAvailableHardwareConfiguration(fpfId).then((resp) => {
-            setHardwareConfiguration(resp);
-        });
+        setIsLoading(true); // Set loading state before fetching
+        getAvailableHardwareConfiguration(fpfId)
+            .then((resp) => {
+                setHardwareConfiguration(resp);
+                setIsLoading(false); // Set loading state to false after fetching
+            })
+            .catch(() => {
+                setIsLoading(false); // In case of an error, stop the loading state
+                console.error("Failed to fetch hardware configurations.");
+            });
     }, [fpfId]);
 
     useEffect(() => {
-        if (sensorId && hardwareConfiguration) {
+        if (sensorId && hardwareConfiguration.length > 0) {
             getSensor(sensorId).then((sensor) => {
                 if (sensor) {
                     const matchingConfig = hardwareConfiguration.find(
@@ -44,9 +59,7 @@ const SelectHardwareConfiguration:React.FC<SelectHardwareConfigurationProps> = (
                         setSelectedSensorClassId(sensor.hardwareConfiguration.sensorClassId);
                         setAdditionalInformation(sensor.hardwareConfiguration.additionalInformation);
                     } else {
-                        console.warn(
-                            `No matching hardware configuration found for sensorClassId: ${sensor.hardwareConfiguration.sensorClassId}`
-                        );
+                        console.warn(`No matching hardware configuration found for sensorClassId: ${sensor.hardwareConfiguration.sensorClassId}`);
                     }
                 }
             });
@@ -54,22 +67,23 @@ const SelectHardwareConfiguration:React.FC<SelectHardwareConfigurationProps> = (
     }, [sensorId, hardwareConfiguration, postHardwareConfiguration]);
 
     const handleSensorClassSelected = (sensorClassId: string) => {
-        const config = hardwareConfiguration[hardwareConfiguration.findIndex((x) => x.sensorClassId === sensorClassId)]
-        let info: Record<string, any> = {};
-        for (const field of config.fields) {
-            info[field.name] = undefined;
+        const config = hardwareConfiguration.find((x) => x.sensorClassId === sensorClassId);
+        if (config) {
+            let info: Record<string, any> = {};
+            for (const field of config.fields) {
+                info[field.name] = undefined;
+            }
+            setAdditionalInformation(info);
+            if (config.unit !== 'manual') setUnit(config.unit);
+            setModel(config.model);
+            postHardwareConfiguration({ sensorClassId: sensorClassId, additionalInformation: info });
+            setSelectedSensorClassId(sensorClassId);
         }
-        setAdditionalInformation(info);
-        if (config.unit !== 'manual')
-            setUnit(config.unit);
-        setModel(config.model);
-        postHardwareConfiguration({sensorClassId: sensorClassId, additionalInformation: info});
-        setSelectedSensorClassId(sensorClassId);
-    }
+    };
 
     const handleFieldInputChanged = (name: string, value: string) => {
         if (selectedSensorClassId) {
-            const updatedInfo = {...additionalInformation, [name]: value};
+            const updatedInfo = { ...additionalInformation, [name]: value };
             setAdditionalInformation(updatedInfo);
             postHardwareConfiguration({
                 sensorClassId: selectedSensorClassId,
@@ -80,67 +94,87 @@ const SelectHardwareConfiguration:React.FC<SelectHardwareConfigurationProps> = (
 
     return (
         <ScrollArea>
-            <Table striped highlightOnHover withColumnBorders>
-                <Table.Thead>
-                <Table.Tr>
-                    <Table.Th>Model</Table.Th>
-                    <Table.Th>Connection</Table.Th>
-                    <Table.Th>Parameter</Table.Th>
-                    <Table.Th>Unit</Table.Th>
-                    <Table.Th>Tags</Table.Th>
-                </Table.Tr>
-                </Table.Thead>
-                <Table.Tbody>
-                {additionalInformation && hardwareConfiguration && hardwareConfiguration.map((configuration) => (
-                    <>
-                        <Table.Tr key={configuration.sensorClassId} onClick={() => handleSensorClassSelected(configuration.sensorClassId)} style={{ cursor: "pointer" }}>
-                            <Table.Td>{configuration.model}</Table.Td>
-                            <Table.Td>{configuration.connection}</Table.Td>
-                            <Table.Td>{configuration.parameter}</Table.Td>
-                            <Table.Td>{configuration.unit}</Table.Td>
-                            <Table.Td>
-                                {Object.entries(configuration.tags).map((tag) => (
-                                    <HoverCard width={280} shadow="md">
-                                        <HoverCard.Target>
-                                            <Text>{tag[1]}</Text>
-                                        </HoverCard.Target>
-                                        <HoverCard.Dropdown>
-                                            <Text size="sm">
-                                                {tag[0]}
-                                            </Text>
-                                        </HoverCard.Dropdown>
-                                    </HoverCard>
-                                ))}
-                            </Table.Td>
-                        </Table.Tr>
-                        {configuration.sensorClassId === selectedSensorClassId &&
-                            <>
-                                <Table.Tr key='details'>
-                                    <Table.Td colSpan={5}>
-                                        {configuration.fields.map((field) => (
-                                            <TextInput label={`${capitalizeFirstLetter(field.name)}`}
-                                                type={field.type}
-                                                       value={additionalInformation[field.name]}
-                                                onChange={(e) => handleFieldInputChanged(field.name, e.target.value)}
-                                            />
-                                        ))}
+            {isLoading ? (
+                <Box style={{ display: "flex", justifyContent: "center", alignItems: "center" ,marginTop: "30px" }}>
+                    <Loader size="lg" />
+                </Box>
+            ) : (
+                <Box>
+                    <Table striped highlightOnHover withColumnBorders>
+                        <Table.Thead>
+                            <Table.Tr>
+                                <Table.Th>{t("sensor.model")}</Table.Th>
+                                <Table.Th>{t("sensor.connectionType")}</Table.Th>
+                                <Table.Th>{t("sensor.parameter")}</Table.Th>
+                                <Table.Th>{t("sensor.unit")}</Table.Th>
+                                <Table.Th>{t("sensor.tags")}</Table.Th>
+                            </Table.Tr>
+                        </Table.Thead>
+                        <Table.Tbody>
+                            {hardwareConfiguration.length === 0 ? (
+                                <Table.Tr>
+                                    <Table.Td colSpan={5} style={{ textAlign: "center" }}>
+                                        <Text>No hardware configurations available.</Text>
                                     </Table.Td>
                                 </Table.Tr>
-                                {configuration.unit === 'manual' &&
-                                    <Table.Tr key='unit-input'>
-                                        <Table.Td colSpan={5}>
-                                            <TextInput label="Unit" type='text'
-                                                onChange={(e) => setUnit(e.target.value)}
-                                            />
-                                        </Table.Td>
-                                    </Table.Tr>
-                                }
-                            </>
-                        }
-                    </>
-                ))}
-                </Table.Tbody>
-            </Table>
+                            ) : (
+                                hardwareConfiguration.map((configuration) => (
+                                    <React.Fragment key={configuration.sensorClassId}>
+                                        <Table.Tr onClick={() => handleSensorClassSelected(configuration.sensorClassId)} style={{ cursor: "pointer" }}>
+                                            <Table.Td>{configuration.model}</Table.Td>
+                                            <Table.Td>{configuration.connection}</Table.Td>
+                                            <Table.Td>{configuration.parameter}</Table.Td>
+                                            <Table.Td>{configuration.unit}</Table.Td>
+                                            <Table.Td>
+                                                {Object.entries(configuration.tags).map(([key, value]) => (
+                                                    <HoverCard key={key} width={280} shadow="md">
+                                                        <HoverCard.Target>
+                                                            <Text>{value}</Text>
+                                                        </HoverCard.Target>
+                                                        <HoverCard.Dropdown>
+                                                            <Text size="sm">{key}</Text>
+                                                        </HoverCard.Dropdown>
+                                                    </HoverCard>
+                                                ))}
+                                            </Table.Td>
+                                        </Table.Tr>
+                                        {configuration.sensorClassId === selectedSensorClassId && (
+                                            <Table.Tr>
+                                                <Table.Td colSpan={5}>
+                                                    <Box style={{ display: "flex", gap: "16px" }}>
+                                                        {configuration.fields.map((field) => (
+                                                            <TextInput
+                                                                key={field.name}
+                                                                label={`${capitalizeFirstLetter(field.name)}`}
+                                                                type={field.type}
+                                                                value={additionalInformation[field.name]}
+                                                                onChange={(e) => handleFieldInputChanged(field.name, e.target.value)}
+                                                                style={{ flex: 0.5 }}
+                                                            />
+                                                        ))}
+                                                    </Box>
+                                                </Table.Td>
+                                            </Table.Tr>
+                                        )}
+                                        {configuration.unit === 'manual' && (
+                                            <Table.Tr>
+                                                <Table.Td colSpan={5}>
+                                                    <TextInput
+                                                        label="Unit"
+                                                        type="text"
+                                                        onChange={(e) => setUnit(e.target.value)}
+                                                        style={{ flex: 0.5 }}
+                                                    />
+                                                </Table.Td>
+                                            </Table.Tr>
+                                        )}
+                                    </React.Fragment>
+                                ))
+                            )}
+                        </Table.Tbody>
+                    </Table>
+                </Box>
+            )}
         </ScrollArea>
     );
 };

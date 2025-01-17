@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "react-oidc-context";
 import { useNavigate, useParams } from "react-router-dom";
 import { AppRoutes } from "../../../utils/appRoutes";
-import { Box, Button, Grid, NumberInput, Switch, TextInput } from "@mantine/core";
+import {Box, Button, Grid, NumberInput, Switch, Text, TextInput} from "@mantine/core";
 import { useAppDispatch } from "../../../utils/Hooks";
 import { EditCamera } from "../models/camera";
 import { createCamera } from "../useCase/createCamera";
@@ -10,6 +10,7 @@ import { updateCamera } from "../useCase/updateCamera";
 import { createdCamera } from "../state/CameraSlice";
 import { useTranslation } from "react-i18next";
 import { notifications } from "@mantine/notifications";
+import {IconMobiledata, IconMobiledataOff} from "@tabler/icons-react";
 
 export const CameraForm: React.FC<{ toEditCamera?: EditCamera, setClosed: React.Dispatch<React.SetStateAction<boolean>> }> = ({ toEditCamera, setClosed }) => {
     const auth = useAuth();
@@ -220,15 +221,20 @@ export const CameraForm: React.FC<{ toEditCamera?: EditCamera, setClosed: React.
                                 required
                                 value={snapshotUrl}
                                 onChange={(e) => setSnapshotUrl(e.currentTarget.value)}
-                                description={t("camera.hint.snapshotUrlHint")} // Add hint for the snapshot URL field
+                                description={t("camera.hint.snapshotUrlHint")}
                             />
                         </Grid.Col>
 
-                        {/* Active Switch */}
-                        <Grid.Col span={12}
-                                  style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                        {/* Active Switch next to Snapshot URL */}
+                        <Grid.Col span={6} style={{ display: "flex", flexDirection: "column", alignItems: "center" ,justifyContent: "center" }}>
+                            {/* Active Text */}
+                            <Text style={{ marginBottom: '8px' }}>
+                                {t("header.isActive")}
+                            </Text>
+                            {/* Switch */}
                             <Switch
-                                label={t("header.isActive")}
+                                onLabel={<IconMobiledata size={16} />}
+                                offLabel={<IconMobiledataOff size={16} />}
                                 size="md"
                                 checked={isActive}
                                 onChange={() => setIsActive(!isActive)}
@@ -245,6 +251,7 @@ export const CameraForm: React.FC<{ toEditCamera?: EditCamera, setClosed: React.
                         </Grid.Col>
 
                     </Grid>
+
                 </form>
             )}
         </>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Grid, NumberInput, Switch, TextInput } from "@mantine/core";
+import { Box, Button, Grid, Loader, NumberInput, Switch, TextInput } from "@mantine/core";
 import { useAuth } from "react-oidc-context";
 import { EditSensor } from "../models/Sensor";
 import SelectHardwareConfiguration from "../../hardwareConfiguration/ui/SelectHardwareConfiguration";
@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { updateSensor } from "../useCase/updateSensor";
 import { notifications } from "@mantine/notifications";
 import { useTranslation } from "react-i18next";
+import { IconMobiledata, IconMobiledataOff } from "@tabler/icons-react";
 
 export const SensorForm: React.FC<{ toEditSensor?: EditSensor, setClosed: React.Dispatch<React.SetStateAction<boolean>> }> = ({ toEditSensor, setClosed }) => {
     const auth = useAuth();
@@ -171,13 +172,25 @@ export const SensorForm: React.FC<{ toEditSensor?: EditSensor, setClosed: React.
                             />
                         </Grid.Col>
                         {/*Active Switch*/}
-                        <Grid.Col span={12} style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                            <Switch
-                                label={t("header.isActive")}
-                                size="md"
-                                checked={isActive}
-                                onChange={() => setIsActive(!isActive)}
-                            />
+                        <Grid.Col span={6}>
+                            <Box
+                                style={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    alignItems: "center",
+                                    justifyContent: "flex-end",
+                                    height: "100%",
+                                }}
+                            >
+                                <span style={{ marginBottom: 5 }}>{t("header.isActive")}</span>
+                                <Switch
+                                    onLabel={<IconMobiledata size={16} />}
+                                    offLabel={<IconMobiledataOff size={16} />}
+                                    size="md"
+                                    checked={isActive}
+                                    onChange={() => setIsActive(!isActive)}
+                                />
+                            </Box>
                         </Grid.Col>
                         {/*Hardware Configuration*/}
                         <Grid.Col span={12}>

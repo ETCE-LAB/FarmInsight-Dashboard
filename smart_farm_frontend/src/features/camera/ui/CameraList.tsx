@@ -50,7 +50,7 @@ export const CameraList: React.FC<{ camerasToDisplay?: Camera[] }> = ({ camerasT
                 <IconCirclePlus
                     size={25}
                     stroke={2}
-                    color={"#105385"}
+                    color={"#199ff4"}
                     onClick={() => setCameraModalOpen(true)}
                     style={{ cursor: "pointer" }}
                 />
