@@ -52,7 +52,7 @@ export const SensorList: React.FC<{ sensorsToDisplay?: Sensor[], fpfId: string }
             <Modal
                 opened={sensorModalOpen}
                 onClose={() => setSensorModalOpen(false)}
-                title={selectedSensor ? "Edit Sensor" : "Create Sensor"}
+                title={selectedSensor ? t("sensor.addSensor") : t("sensor.editSensor")}
                 centered
                 size="40%"
             >

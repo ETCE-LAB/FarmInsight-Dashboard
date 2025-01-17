@@ -74,6 +74,9 @@ i18n
                         }
                     },
                     sensor: {
+                        addSensor: 'Add Sensor',
+                        editSensor: 'Edit Sensor',
+                        noConfig: 'No Configuration available',
                         model: 'Model',
                         connectionType: 'Connection Type',
                         parameter: 'Parameter',
@@ -267,9 +270,12 @@ i18n
                         }
                     },
                     sensor: {
+                        addSensor: 'Sensor hinzufügen',
+                        editSensor: 'Sensor bearbeiten',
+                        noConfig: 'Keine Konfiguration verfügbar',
                         model: 'Modell',
                         connectionType: 'Verbindungstyp',
-                        parameter: 'Parameter',
+                        parameter: 'Kennwert',
                         unit: 'Einheit',
                         tags: 'Notizen',
                         hint: {
@@ -459,6 +465,9 @@ i18n
                         }
                     },
                     sensor: {
+                        addSensor: 'Ajouter un capteur',
+                        editSensor: 'Modifier le capteur',
+                        noConfig: 'Aucune configuration disponible',
                         model: 'Modèle',
                         connectionType: 'Type de connexion',
                         parameter: 'Paramètre',
@@ -649,6 +658,9 @@ i18n
                         }
                     },
                     sensor: {
+                        addSensor: 'Aggiungi sensore',
+                        editSensor: 'Modifica sensore',
+                        noConfig: 'Nessuna configurazione disponibile',
                         model: 'Modello',
                         connectionType: 'Tipo di connessione',
                         parameter: 'Parametro',
@@ -839,6 +851,9 @@ i18n
                         }
                     },
                     sensor: {
+                        addSensor: '添加传感器',
+                        editSensor: '编辑传感器',
+                        noConfig: '没有可用的配置',
                         model: '型号',
                         connectionType: '连接类型',
                         parameter: '参数',
@@ -1029,6 +1044,9 @@ i18n
                         }
                     },
                     sensor: {
+                        addSensor: 'Добавить датчик',
+                        editSensor: 'Редактировать датчик',
+                        noConfig: 'Нет доступной конфигурации',
                         model: 'Модель',
                         connectionType: 'Тип соединения',
                         parameter: 'Параметр',

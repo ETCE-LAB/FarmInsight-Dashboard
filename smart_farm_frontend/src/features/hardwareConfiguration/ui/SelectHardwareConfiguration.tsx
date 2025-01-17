@@ -95,10 +95,10 @@ const SelectHardwareConfiguration: React.FC<SelectHardwareConfigurationProps> = 
     return (
         <ScrollArea>
             {isLoading ? (
-                <Box style={{ display: "flex", justifyContent: "center", alignItems: "center" ,marginTop: "30px" }}>
+                <Box style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "30px" }}>
                     <Loader size="lg" />
                 </Box>
-            ) : (
+            ) : hardwareConfiguration && hardwareConfiguration.length > 0 ? (
                 <Box>
                     <Table striped highlightOnHover withColumnBorders>
                         <Table.Thead>
@@ -111,72 +111,73 @@ const SelectHardwareConfiguration: React.FC<SelectHardwareConfigurationProps> = 
                             </Table.Tr>
                         </Table.Thead>
                         <Table.Tbody>
-                            {hardwareConfiguration.length === 0 ? (
-                                <Table.Tr>
-                                    <Table.Td colSpan={5} style={{ textAlign: "center" }}>
-                                        <Text>No hardware configurations available.</Text>
-                                    </Table.Td>
-                                </Table.Tr>
-                            ) : (
-                                hardwareConfiguration.map((configuration) => (
-                                    <React.Fragment key={configuration.sensorClassId}>
-                                        <Table.Tr onClick={() => handleSensorClassSelected(configuration.sensorClassId)} style={{ cursor: "pointer" }}>
-                                            <Table.Td>{configuration.model}</Table.Td>
-                                            <Table.Td>{configuration.connection}</Table.Td>
-                                            <Table.Td>{configuration.parameter}</Table.Td>
-                                            <Table.Td>{configuration.unit}</Table.Td>
-                                            <Table.Td>
-                                                {Object.entries(configuration.tags).map(([key, value]) => (
-                                                    <HoverCard key={key} width={280} shadow="md">
-                                                        <HoverCard.Target>
-                                                            <Text>{value}</Text>
-                                                        </HoverCard.Target>
-                                                        <HoverCard.Dropdown>
-                                                            <Text size="sm">{key}</Text>
-                                                        </HoverCard.Dropdown>
-                                                    </HoverCard>
-                                                ))}
+                            {hardwareConfiguration.map((configuration) => (
+                                <React.Fragment key={configuration.sensorClassId}>
+                                    <Table.Tr
+                                        onClick={() => handleSensorClassSelected(configuration.sensorClassId)}
+                                        style={{ cursor: "pointer" }}
+                                    >
+                                        <Table.Td>{capitalizeFirstLetter(configuration.model)}</Table.Td>
+                                        <Table.Td>{capitalizeFirstLetter(configuration.connection)}</Table.Td>
+                                        <Table.Td>{capitalizeFirstLetter(configuration.parameter)}</Table.Td>
+                                        <Table.Td>{capitalizeFirstLetter(configuration.unit)}</Table.Td>
+                                        <Table.Td>
+                                            {Object.entries(configuration.tags).map(([key, value]) => (
+                                                <HoverCard key={key} width={280} shadow="md">
+                                                    <HoverCard.Target>
+                                                        <Text>{capitalizeFirstLetter(value)}</Text>
+                                                    </HoverCard.Target>
+                                                </HoverCard>
+                                            ))}
+                                        </Table.Td>
+                                    </Table.Tr>
+                                    {configuration.sensorClassId === selectedSensorClassId && (
+                                        <Table.Tr>
+                                            <Table.Td colSpan={5}>
+                                                <Box style={{ display: "flex", gap: "16px" }}>
+                                                    {configuration.fields.map((field) => (
+                                                        <TextInput
+                                                            required
+                                                            placeholder={capitalizeFirstLetter(field.name)}
+                                                            key={field.name}
+                                                            label={`${capitalizeFirstLetter(field.name)}`}
+                                                            type={field.type}
+                                                            value={additionalInformation[field.name]}
+                                                            onChange={(e) =>
+                                                                handleFieldInputChanged(field.name, e.target.value)
+                                                            }
+                                                            style={{ width: "100%" }}
+                                                        />
+                                                    ))}
+                                                </Box>
                                             </Table.Td>
                                         </Table.Tr>
-                                        {configuration.sensorClassId === selectedSensorClassId && (
-                                            <Table.Tr>
-                                                <Table.Td colSpan={5}>
-                                                    <Box style={{ display: "flex", gap: "16px" }}>
-                                                        {configuration.fields.map((field) => (
-                                                            <TextInput
-                                                                key={field.name}
-                                                                label={`${capitalizeFirstLetter(field.name)}`}
-                                                                type={field.type}
-                                                                value={additionalInformation[field.name]}
-                                                                onChange={(e) => handleFieldInputChanged(field.name, e.target.value)}
-                                                                style={{ flex: 0.5 }}
-                                                            />
-                                                        ))}
-                                                    </Box>
-                                                </Table.Td>
-                                            </Table.Tr>
-                                        )}
-                                        {configuration.unit === 'manual' && (
-                                            <Table.Tr>
-                                                <Table.Td colSpan={5}>
-                                                    <TextInput
-                                                        label="Unit"
-                                                        type="text"
-                                                        onChange={(e) => setUnit(e.target.value)}
-                                                        style={{ flex: 0.5 }}
-                                                    />
-                                                </Table.Td>
-                                            </Table.Tr>
-                                        )}
-                                    </React.Fragment>
-                                ))
-                            )}
+                                    )}
+                                    {configuration.unit === "manual" && (
+                                        <Table.Tr>
+                                            <Table.Td colSpan={5}>
+                                                <TextInput
+                                                    label="Unit"
+                                                    type="text"
+                                                    onChange={(e) => setUnit(e.target.value)}
+                                                    style={{ flex: 0.5 }}
+                                                />
+                                            </Table.Td>
+                                        </Table.Tr>
+                                    )}
+                                </React.Fragment>
+                            ))}
                         </Table.Tbody>
                     </Table>
+                </Box>
+            ) : (
+                <Box style={{ textAlign: "center", marginTop: "30px" }}>
+                    <Text>{t("sensor.noConfig")}</Text>
                 </Box>
             )}
         </ScrollArea>
     );
+
 };
 
 export default SelectHardwareConfiguration;

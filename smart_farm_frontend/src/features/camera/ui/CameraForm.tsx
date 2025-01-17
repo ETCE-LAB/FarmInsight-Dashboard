@@ -10,7 +10,7 @@ import { updateCamera } from "../useCase/updateCamera";
 import { createdCamera } from "../state/CameraSlice";
 import { useTranslation } from "react-i18next";
 import { notifications } from "@mantine/notifications";
-import {IconMobiledata, IconMobiledataOff} from "@tabler/icons-react";
+import { IconVideo, IconVideoOff } from "@tabler/icons-react";
 
 export const CameraForm: React.FC<{ toEditCamera?: EditCamera, setClosed: React.Dispatch<React.SetStateAction<boolean>> }> = ({ toEditCamera, setClosed }) => {
     const auth = useAuth();
@@ -233,8 +233,8 @@ export const CameraForm: React.FC<{ toEditCamera?: EditCamera, setClosed: React.
                             </Text>
                             {/* Switch */}
                             <Switch
-                                onLabel={<IconMobiledata size={16} />}
-                                offLabel={<IconMobiledataOff size={16} />}
+                                onLabel={<IconVideo size={16} />}
+                                offLabel={<IconVideoOff size={16} />}
                                 size="md"
                                 checked={isActive}
                                 onChange={() => setIsActive(!isActive)}
