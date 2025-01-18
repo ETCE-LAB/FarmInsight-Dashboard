@@ -73,7 +73,6 @@ export const CameraCarousel: React.FC<{ camerasToDisplay: Camera[] }> = ({camera
             {auth.isAuthenticated && objectToDisplay.isLiveStream && (
                 <Livestream src={objectToDisplay}/>
             )}
-
         </Carousel.Slide>
     ))
 
@@ -82,7 +81,14 @@ export const CameraCarousel: React.FC<{ camerasToDisplay: Camera[] }> = ({camera
 
     return (
         <>
-        <Switch label={t("label.setCameraCarousel")} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '2vw' }}  onChange={(e) => setShowLivestream(e.currentTarget.checked)}/>
+            {auth.isAuthenticated && (
+                <>
+                    <Switch
+                        label={t("label.setCameraCarousel")}
+                        style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '2vw' }}
+                        onChange={(e) => setShowLivestream(e.currentTarget.checked)}/>
+                </>
+            )}
          <Card
             padding="md"
             radius="md"
