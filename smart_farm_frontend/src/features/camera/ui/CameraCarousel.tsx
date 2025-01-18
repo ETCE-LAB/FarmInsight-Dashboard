@@ -33,6 +33,7 @@ export const CameraCarousel: React.FC<{ camerasToDisplay: Camera[] }> = ({camera
             camerasToDisplay.map((camera) => {
                 //If the camera has a SnapShot URL
                 if(camera.isActive){
+                    console.log(auth)
 
                     if(showLivestream)
                     {

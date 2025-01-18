@@ -47,7 +47,7 @@ export const FpfOverview = () => {
                 </Box>
                 <Box style={{ flex: 1, Width: '50vw', height: 'auto' }}>
                         {/* Camera-Feed */}
-                        {fpf && (
+                        {fpf && (fpf.Cameras.length > 0) &&  (
                             <>
                                 <CameraCarousel camerasToDisplay={fpf.Cameras} />
                             </>
