@@ -36,7 +36,7 @@ export const FpfOverview = () => {
                 cols={2}
                 spacing={{ base: 10, '300px': 'xl' }}
               >
-                <Box style={{ flex: 1, marginRight: '20px', overflowY: "scroll", scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch', height:'85vh', maxWidth: "50vw", width:"100%" }}>
+                <Box style={{ flex: 1, marginRight: '20px', overflowY: "scroll", scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch', maxHeight:'85vh', maxWidth: "50vw", width:"100%", padding: '10px' }}>
                     {fpf && fpf.Sensors.map((sensor) => (
                         <Box key={sensor.id}>
                             {sensor && (
