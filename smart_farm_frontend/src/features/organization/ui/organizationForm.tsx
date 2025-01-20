@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import {AppRoutes} from "../../../utils/appRoutes";
 import {Organization} from "../models/Organization";
 import { useTranslation } from 'react-i18next';
+import {IconEye, IconEyeOff} from "@tabler/icons-react";
 
 export const OrganizationForm: React.FC = () => {
     const auth = useAuth();
@@ -66,6 +67,8 @@ export const OrganizationForm: React.FC = () => {
                     </Popover>
                     <Switch
                         label={t('label.setPublic')}
+                        onLabel={<IconEye size={16} stroke={2.5} />}
+                        offLabel={<IconEyeOff size={16} stroke={2.5} />}
                         checked={isPublic}
                         onChange={(e) => setIsPublic(e.currentTarget.checked)}
                         mt="sm"
@@ -75,7 +78,7 @@ export const OrganizationForm: React.FC = () => {
                         <Button
                             type="submit"
                             variant="filled"
-                            color="#105385"
+                            color="#199ff4"
                             style={{ margin: '10px' }}
                         >
                             {t('button.create')}

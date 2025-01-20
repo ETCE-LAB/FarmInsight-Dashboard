@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card, Flex, Group, Text, Menu, Button } from '@mantine/core';
+import {Card, Flex, Group, Text, Menu, Button, Image} from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { AppRoutes } from '../../../../utils/appRoutes';
 import { UserProfileComponent } from '../../../../features/userProfile/ui/UserProfileComponent';
@@ -77,8 +77,8 @@ export const AppShell_Header: React.FC = () => {
                         <Menu.Target>
                             <Button variant="subtle">
                                 <Flex align="center" gap="sm">
-                                    <img
-                                        src={`https://flagcdn.com/w20/${currentFlag}.png`} // Example flag CDN
+                                    <Image
+                                        src={`/assets/flags/${currentFlag}.png`}
                                         alt={currentFlag}
                                         style={{ width: "auto", height: "auto" }}
                                     />
@@ -93,8 +93,8 @@ export const AppShell_Header: React.FC = () => {
                                     onClick={() => handleLanguageChange(lang)}
                                 >
                                     <Flex align="center" gap="sm">
-                                        <img
-                                            src={`https://flagcdn.com/w20/${lang.flag}.png`} // Example flag CDN
+                                        <Image
+                                            src={`/assets/flags/${lang.flag}.png`}
                                             alt={lang.flag}
                                             style={{ width: "auto", height: "auto" }}
                                         />

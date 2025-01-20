@@ -34,7 +34,8 @@ export const CameraCarousel: React.FC<{ camerasToDisplay: Camera[] }> = ({camera
             camerasToDisplay.map((camera) => {
                 //If the camera has a SnapShot URL
                 if(camera.isActive){
-                    if(showLivestream) {
+                    if(showLivestream)
+                    {
                         setObjectsToDisplay((prevObjects) => [
                             ...prevObjects,
                             { url: `${BACKEND_URL}/api/cameras/${camera.id}/livestream`, title: `${camera.name} LiveStream`, isLiveStream: true },
@@ -72,12 +73,19 @@ export const CameraCarousel: React.FC<{ camerasToDisplay: Camera[] }> = ({camera
 
     return (
         <>
-        <Switch label={t("label.setCameraCarousel")} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '2vw' }}  onChange={(e) => setShowLivestream(e.currentTarget.checked)}/>
+            {auth.isAuthenticated && (
+                <>
+                    <Switch
+                        label={t("label.setCameraCarousel")}
+                        style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '2vw' }}
+                        onChange={(e) => setShowLivestream(e.currentTarget.checked)}/>
+                </>
+            )}
          <Card
-            shadow="sm"
             padding="md"
             radius="md"
-            style={{ boxShadow: "0 2px 8px rgba(0, 0, 0, 0.3)", position: "static", marginBottom: "30px"}}>
+            style={{position: "static", marginBottom: "30px"}}
+            >
              <Center>
                 {camerasToDisplay && camerasToDisplay.length > 0 ? (
                     <Carousel withIndicators>
