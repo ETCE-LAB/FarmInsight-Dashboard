@@ -10,7 +10,7 @@ export const BasicAppShell: React.FC<PropsWithChildren<{}>> = ({ children }) => 
     const auth = useAuth();
     const location = useLocation();
     const noNavbarRoutes = [AppRoutes.base];
-    const showNavbar = !noNavbarRoutes.includes(location.pathname);
+    const showNavbar = auth.isAuthenticated && !noNavbarRoutes.includes(location.pathname);
 
     return (
         <AppShell
