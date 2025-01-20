@@ -1,6 +1,7 @@
 import {getUser} from "../../../utils/getUser";
 import APIClient from "../../../utils/APIClient";
 import {UserProfile} from "../models/UserProfile";
+import {BACKEND_URL} from "../../../env-config";
 
 
 export const receiveUserProfile = () => {
@@ -12,7 +13,7 @@ export const receiveUserProfile = () => {
     const headers =
         {'Authorization': `Bearer ${token}`}
 
-    const url = `${process.env.REACT_APP_BACKEND_URL}/api/userprofiles`;
+    const url = `${BACKEND_URL}/api/userprofiles`;
     const result:  Promise<UserProfile> = apiClient.get(url, headers)
 
     return result

@@ -10,6 +10,7 @@ import {Livestream} from "./Livestream";
 import NoCameraPlaceholder from './NoCameraPlaceholder.png';
 import {IconVideoOff} from "@tabler/icons-react";
 import {t} from "i18next";
+import {BACKEND_URL} from "../../../env-config";
 
 export interface displayObject {
     url:string,
@@ -33,20 +34,15 @@ export const CameraCarousel: React.FC<{ camerasToDisplay: Camera[] }> = ({camera
             camerasToDisplay.map((camera) => {
                 //If the camera has a SnapShot URL
                 if(camera.isActive){
-                    console.log(auth)
-
                     if(showLivestream)
                     {
                         setObjectsToDisplay((prevObjects) => [
                             ...prevObjects,
-                            { url: `${process.env.REACT_APP_BACKEND_URL}/api/cameras/${camera.id}/livestream`, title: `${camera.name} LiveStream`, isLiveStream: true },
+                            { url: `${BACKEND_URL}/api/cameras/${camera.id}/livestream`, title: `${camera.name} LiveStream`, isLiveStream: true },
                         ]);
-
-                    }
-                    else {
+                    } else {
                         getImages(camera.id).then(resp => {
                             if (resp && resp.length > 0) {
-
                                 for (let i = 0; i < resp.length; i++) {
                                     setObjectsToDisplay((prevObjects) => [
                                         ...prevObjects,
@@ -63,7 +59,6 @@ export const CameraCarousel: React.FC<{ camerasToDisplay: Camera[] }> = ({camera
 
     const slides = objectsToDisplay.map((objectToDisplay, index) => (
         <Carousel.Slide key={index}>
-
             {!objectToDisplay.isLiveStream && (
                 <>
                     <Image src={objectToDisplay.url} alt="Last Received Image" fit="contain" />
@@ -75,9 +70,6 @@ export const CameraCarousel: React.FC<{ camerasToDisplay: Camera[] }> = ({camera
             )}
         </Carousel.Slide>
     ))
-
-
-
 
     return (
         <>

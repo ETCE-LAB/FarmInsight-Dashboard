@@ -6,12 +6,11 @@ import {WebStorageStateStore} from "oidc-client-ts";
 import {AuthProvider} from "react-oidc-context";
 import {Notifications} from "@mantine/notifications";
 import '@mantine/notifications/styles.css';
-//import {SocketProvider} from "./SocketProvider";
 import '@mantine/carousel/styles.css';
 
 export const oidcConfig = {
-    authority: "https://development-isse-identityserver.azurewebsites.net",
-    client_id: "interactive",
+    authority: "https://development-isse-identity-backend.azurewebsites.net", //process.env.REACT_APP_IDENTITY_SERVER_URL || 'https://development-isse-identityserver.azurewebsites.net',
+    client_id: "farmingisht.interactive",
     redirect_uri: window.location.origin + "/auth/callback",
     post_logout_redirect_uri: window.location.origin + "/auth/signout-callback",
     scopes: "profile openId offline_access",
@@ -26,12 +25,10 @@ const MainAppProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
         //Redux Provider
         <AuthProvider {...oidcConfig}>
             <Provider store={store}>
-                {/* <SocketProvider> */}
                 <MantineProvider defaultColorScheme="auto">
                     <Notifications position="bottom-right" zIndex={3000} limit={5}/>
                     {children}
                     </MantineProvider>
-               {/* </SocketProvider>*/}
             </Provider>
         </AuthProvider>
     );
