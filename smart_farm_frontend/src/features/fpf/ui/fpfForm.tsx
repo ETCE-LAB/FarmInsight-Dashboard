@@ -42,7 +42,7 @@ export const FpfForm: React.FC<{ organizationId?: string, toEditFpf?: Fpf }> = (
     };
 
     const handleSave = () => {
-        console.log(organizationId)
+        console.log("Handle Save")
         if (validateIps() && organizationId) {
             const id = notifications.show({
                 loading: true,
@@ -126,7 +126,7 @@ export const FpfForm: React.FC<{ organizationId?: string, toEditFpf?: Fpf }> = (
                             {t("fpf.createFpF")}
                         </Title>
                     )}
-                    <form onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
+                    <form onSubmit={(e) => { e.preventDefault(); }}>
                         <Grid gutter="md">
                             {/* Name Input */}
                             <Grid.Col span={6}>
