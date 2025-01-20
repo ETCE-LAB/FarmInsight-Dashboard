@@ -9,14 +9,13 @@ import '@mantine/notifications/styles.css';
 import '@mantine/carousel/styles.css';
 
 export const oidcConfig = {
-    authority: "https://development-isse-identity-backend.azurewebsites.net", //process.env.REACT_APP_IDENTITY_SERVER_URL || 'https://development-isse-identityserver.azurewebsites.net',
-    client_id: "farmingisht.interactive",
+    authority: "https://farminsight-backend.etce.isse.tu-clausthal.de/o",
+    client_id: "farmingisht",
     redirect_uri: window.location.origin + "/auth/callback",
     post_logout_redirect_uri: window.location.origin + "/auth/signout-callback",
     scopes: "profile openId offline_access",
     userStore: new WebStorageStateStore({ store: window.localStorage }),
     automaticSilentRenew: true
-// ...
 };
 
 const MainAppProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
