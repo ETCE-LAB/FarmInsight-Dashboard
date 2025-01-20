@@ -4,4 +4,5 @@ export class AppRoutes {
     static editFpf = "/organization/:organizationId/fpf/:fpfId/edit"
     static displayFpf = "/organization/:organizationId/fpf/:fpfId"
     static editUserProfile = "/userprofile/edit"
+    static legalNotice = "/legal-notice"
 }
