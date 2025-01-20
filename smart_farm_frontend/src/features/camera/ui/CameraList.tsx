@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import {ActionIcon, Box, Group, Modal, Switch, Table, Text} from "@mantine/core";
-import {IconCirclePlus, IconEdit, IconPlus} from "@tabler/icons-react";
+import { Badge, Box, Group, Modal, Table, Text } from "@mantine/core";
+import { IconCirclePlus, IconEdit, IconVideo, IconVideoOff, IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import { Camera, EditCamera } from "../models/camera";
 import { CameraForm } from "./CameraForm";
 import { useParams } from "react-router-dom";
@@ -9,8 +9,13 @@ import { useTranslation } from "react-i18next";
 export const CameraList: React.FC<{ camerasToDisplay?: Camera[] }> = ({ camerasToDisplay }) => {
     const [CameraModalOpen, setCameraModalOpen] = useState(false);
     const [selectedCamera, setSelectedCamera] = useState<EditCamera | undefined>(undefined);
+    const [expandedUrls, setExpandedUrls] = useState<Record<number, boolean>>({});
     const { organizationId, fpfId } = useParams();
     const { t } = useTranslation();
+
+    const toggleUrlExpansion = (index: number) => {
+        setExpandedUrls((prev) => ({ ...prev, [index]: !prev[index] }));
+    };
 
     const onClickEdit = (camera: Camera) => {
         if (fpfId) {
@@ -58,48 +63,97 @@ export const CameraList: React.FC<{ camerasToDisplay?: Camera[] }> = ({ camerasT
 
             {/* Conditional Rendering of Table */}
             {camerasToDisplay && camerasToDisplay.length > 0 ? (
-                <Table highlightOnHover>
-                    <thead>
-                    <tr>
-                        <Table.Th>{t("header.name")}</Table.Th>
-                        <Table.Th>{t("camera.location")}</Table.Th>
-                        <Table.Th>{t("camera.resolution")}</Table.Th>
-                        <Table.Th>{t("camera.modelNr")}</Table.Th>
-                        <Table.Th>{t("camera.intervalSeconds")}</Table.Th>
-                        <Table.Th>{t("camera.snapshotUrl")}</Table.Th>
-                        <Table.Th>{t("camera.livestreamUrl")}</Table.Th>
-                        <Table.Th>{t("header.isActive")}</Table.Th>
-                        <Table.Th>{t("header.actions")}</Table.Th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {camerasToDisplay.map((camera, index) => (
-                        <Table.Tr key={index}>
-                            <Table.Td>{camera.name}</Table.Td>
-                            <Table.Td>{camera.location}</Table.Td>
-                            <Table.Td>{camera.resolution}</Table.Td>
-                            <Table.Td>{camera.modelNr}</Table.Td>
-                            <Table.Td>{camera.intervalSeconds}</Table.Td>
-                            <Table.Td>{camera.snapshotUrl}</Table.Td>
-                            <Table.Td>{camera.livestreamUrl}</Table.Td>
-                            <Table.Td>
-                                <Switch checked={camera.isActive} />
-                            </Table.Td>
-                            <Table.Td>
-                                <Group>
-                                    <ActionIcon color="blue">
+                <Table highlightOnHover withColumnBorders>
+                    <Table.Thead>
+                        <Table.Tr>
+                            <Table.Th>{t("header.name")}</Table.Th>
+                            <Table.Th>{t("camera.location")}</Table.Th>
+                            <Table.Th>{t("camera.resolution")}</Table.Th>
+                            <Table.Th>{t("camera.modelNr")}</Table.Th>
+                            <Table.Th>{t("camera.intervalSeconds")}</Table.Th>
+                            <Table.Th>{t("camera.snapshotUrl")}</Table.Th>
+                            <Table.Th>{t("camera.livestreamUrl")}</Table.Th>
+                            <Table.Th>{t("header.status")}</Table.Th>
+                            <Table.Th>{}</Table.Th>
+                        </Table.Tr>
+                    </Table.Thead>
+                    <Table.Tbody>
+                        {camerasToDisplay.map((camera, index) => (
+                            <Table.Tr key={index}>
+                                <Table.Td>{camera.name}</Table.Td>
+                                <Table.Td>{camera.location}</Table.Td>
+                                <Table.Td>{camera.resolution}</Table.Td>
+                                <Table.Td>{camera.modelNr}</Table.Td>
+                                <Table.Td>{camera.intervalSeconds}</Table.Td>
+                                <Table.Td>
+                                    {expandedUrls[index] ? (
+                                        <Group>
+                                            <Text>{camera.snapshotUrl}</Text>
+                                                <IconChevronUp
+                                                    color={"#199ff4"}
+                                                    cursor={"pointer"}
+                                                    size={16}
+                                                    onClick={() => toggleUrlExpansion(index)}
+                                                />
+                                        </Group>
+                                    ) : (
+                                        <Group>
+                                            <Text>{camera.snapshotUrl?.slice(0, 20) + "..."}</Text>
+                                                <IconChevronDown
+                                                    color={"#199ff4"}
+                                                    cursor={"pointer"}
+                                                    size={16}
+                                                    onClick={() => toggleUrlExpansion(index)}
+                                                />
+                                        </Group>
+                                    )}
+                                </Table.Td>
+                                <Table.Td>
+                                    {expandedUrls[index] ? (
+                                        <Group>
+                                            <Text>{camera.livestreamUrl}</Text>
+                                                <IconChevronUp
+                                                    color={"#199ff4"}
+                                                    cursor={"pointer"}
+                                                    size={16}
+                                                    onClick={() => toggleUrlExpansion(index)}
+                                                />
+                                        </Group>
+                                    ) : (
+                                        <Group>
+                                            <Text>{camera.livestreamUrl?.slice(0, 20) + "..."}</Text>
+                                                <IconChevronDown
+                                                    color={"#199ff4"}
+                                                    cursor={"pointer"}
+                                                    size={16}
+                                                    onClick={() => toggleUrlExpansion(index)}
+                                                />
+                                        </Group>
+                                    )}
+                                </Table.Td>
+                                <Table.Td>
+                                    <Badge
+                                        color={camera.isActive ? "green.9" : "red.9"}
+                                        variant="light"
+                                        leftSection={camera.isActive ? <IconVideo size={16} /> : <IconVideoOff size={16} />}
+                                    >
+                                        {camera.isActive ? t("camera.active") : t("camera.inactive")}
+                                    </Badge>
+                                </Table.Td>
+                                <Table.Td style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                                    <Group>
                                         <IconEdit
-                                            size={16}
+                                            color={"#199ff4"}
+                                            size={20}
                                             stroke={2}
                                             onClick={() => onClickEdit(camera)}
                                             style={{ cursor: "pointer" }}
                                         />
-                                    </ActionIcon>
-                                </Group>
-                            </Table.Td>
-                        </Table.Tr>
-                    ))}
-                    </tbody>
+                                    </Group>
+                                </Table.Td>
+                            </Table.Tr>
+                        ))}
+                    </Table.Tbody>
                 </Table>
             ) : (
                 <Text>{t("camera.noCamerasFound")}</Text>

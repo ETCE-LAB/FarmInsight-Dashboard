@@ -156,6 +156,8 @@ i18n
 
                     },
                     camera: {
+                        active: 'Active',
+                        inactive: 'Inactive',
                         cameras: 'Cameras',
                         hint: {
                                 nameHint: 'Name of the camera',
@@ -351,6 +353,8 @@ i18n
                         saveChanges: 'Änderungen speichern',
                     },
                     camera: {
+                        active: 'Aktiv',
+                        inactive: 'Inaktiv',
                         cameras: 'Kameras',
                         hint: {
                                 nameHint: 'Name der Kamera',
@@ -544,6 +548,8 @@ i18n
                         saveChanges: 'Enregistrer les modifications',
                     },
                     camera: {
+                        active: 'Actif',
+                        inactive: 'Inactif',
                         cameras: 'Caméras',
                         hint: {
                                 nameHint: 'Nom de la caméra',
@@ -737,6 +743,8 @@ i18n
                         saveChanges: 'Salva le modifiche',
                     },
                     camera: {
+                        active: 'Attivo',
+                        inactive: 'Inattivo',
                         cameras: 'Fotocamere',
                         hint: {
                                 nameHint: 'Nome della fotocamera',
@@ -930,6 +938,8 @@ i18n
                         saveChanges: '保存更改',
                     },
                     camera: {
+                        active: '活跃',
+                        inactive: '不活跃',
                         cameras: '摄像头',
                         hint: {
                                 nameHint: '摄像头名称',
@@ -1123,6 +1133,8 @@ i18n
                         saveChanges: 'Сохранить изменения',
                     },
                     camera: {
+                        active: 'Активный',
+                        inactive: 'Неактивный',
                         cameras: 'Камеры',
                         hint: {
                                 nameHint: 'Название камеры',

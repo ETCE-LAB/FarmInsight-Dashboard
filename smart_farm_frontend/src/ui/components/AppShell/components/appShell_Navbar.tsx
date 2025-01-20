@@ -6,7 +6,7 @@ import {
     IconCircleCheck,
     IconCircleMinus,
     IconSearch,
-    IconCirclePlus, IconSquareRoundedPlus
+    IconCirclePlus, IconSquareRoundedPlus, IconSquareRoundedCheck, IconSquareRoundedMinus
 } from "@tabler/icons-react";
 import { Organization } from "../../../../features/organization/models/Organization";
 import {useLocation, useNavigate, useParams} from "react-router-dom";
@@ -255,14 +255,14 @@ export const AppShell_Navbar: React.FC = () => {
                                     </Flex>
                                 </Text>
                                 {selectedFPFId === fpf.id ? (
-                                    <IconCircleCheck
+                                    <IconSquareRoundedCheck
                                         size={20}
-                                        style={{ marginRight: '5px', color: '#16A34A', verticalAlign: 'middle' }}
+                                        style={{ marginRight: '10px', color: '#16A34A', verticalAlign: 'middle' }}
                                     />
                                 ) : (
-                                    <IconCircleMinus
+                                    <IconSquareRoundedMinus
                                         size={20}
-                                        style={{ marginRight: '5px', color: '#D97400', verticalAlign: 'middle' }}
+                                        style={{ marginRight: '10px', color: '#D97400', verticalAlign: 'middle' }}
                                     />
                                 )}
                             </Flex>
