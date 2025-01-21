@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {Box, Button, Grid, NumberInput, Switch, Text, TextInput} from "@mantine/core";
+import { Box, Button, Grid, NumberInput, Switch, TextInput, Text } from "@mantine/core";
 import { useAuth } from "react-oidc-context";
 import { EditSensor } from "../models/Sensor";
 import SelectHardwareConfiguration from "../../hardwareConfiguration/ui/SelectHardwareConfiguration";
@@ -12,8 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { updateSensor } from "../useCase/updateSensor";
 import { notifications } from "@mantine/notifications";
 import { useTranslation } from "react-i18next";
-import {IconMobiledata, IconMobiledataOff} from "@tabler/icons-react";
-
+import { IconMobiledata, IconMobiledataOff } from "@tabler/icons-react";
 
 export const SensorForm: React.FC<{ toEditSensor?: EditSensor, setClosed: React.Dispatch<React.SetStateAction<boolean>> }> = ({ toEditSensor, setClosed }) => {
     const auth = useAuth();
@@ -138,7 +137,7 @@ export const SensorForm: React.FC<{ toEditSensor?: EditSensor, setClosed: React.
                     toEditSensor ? handleEdit() : handleSave();
                 }}>
                     <Grid gutter="md">
-                        {/*Name*/}
+                        {/* Name */}
                         <Grid.Col span={6}>
                             <TextInput
                                 label={t("header.name")}
@@ -149,7 +148,8 @@ export const SensorForm: React.FC<{ toEditSensor?: EditSensor, setClosed: React.
                                 description={t("sensor.hint.nameHint")}
                             />
                         </Grid.Col>
-                        {/*Location*/}
+
+                        {/* Location */}
                         <Grid.Col span={6}>
                             <TextInput
                                 label={t("header.location")}
@@ -160,7 +160,8 @@ export const SensorForm: React.FC<{ toEditSensor?: EditSensor, setClosed: React.
                                 description={t("sensor.hint.locationHint")}
                             />
                         </Grid.Col>
-                        {/*Interval*/}
+
+                        {/* Interval */}
                         <Grid.Col span={6}>
                             <NumberInput
                                 label={t("camera.intervalSeconds")}
@@ -171,18 +172,21 @@ export const SensorForm: React.FC<{ toEditSensor?: EditSensor, setClosed: React.
                                 description={t("sensor.hint.intervalSecondsHint")}
                             />
                         </Grid.Col>
-                        {/*Active Switch*/}
-                        <Grid.Col span={12} style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+
+                        {/* Active Switch */}
+                        <Grid.Col span={6} style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+                            <Text style={{marginTop:"1rem"}}>{t("header.isActive")}</Text>
                             <Switch
                                 onLabel={<IconMobiledata size={16} />}
                                 offLabel={<IconMobiledataOff size={16} />}
-                                label={t("header.isActive")}
                                 size="md"
                                 checked={isActive}
                                 onChange={() => setIsActive(!isActive)}
                             />
                         </Grid.Col>
-                        {/*Hardware Configuration*/}
+
+
+                        {/* Hardware Configuration */}
                         <Grid.Col span={12}>
                             {fpfId && (
                                 <SelectHardwareConfiguration
@@ -194,7 +198,8 @@ export const SensorForm: React.FC<{ toEditSensor?: EditSensor, setClosed: React.
                                 />
                             )}
                         </Grid.Col>
-                        {/*Submit Button*/}
+
+                        {/* Submit Button */}
                         <Grid.Col span={12}>
                             <Box mt="md" style={{ display: 'flex', justifyContent: 'flex-end', margin: '10px' }}>
                                 <Button type="submit" variant="filled" color="#105385" style={{ margin: '10px' }}>

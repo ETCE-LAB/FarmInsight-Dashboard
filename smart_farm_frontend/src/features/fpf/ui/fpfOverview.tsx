@@ -3,21 +3,16 @@ import TimeseriesGraph from "../../measurements/ui/timeseriesGraph";
 import { useParams } from "react-router-dom";
 import { Fpf } from "../models/Fpf";
 import { getFpf } from "../useCase/getFpf";
-import {Container, Box, SimpleGrid, Switch} from '@mantine/core';
+import { Container, Box, SimpleGrid } from '@mantine/core';
 import GrowingCycleList from "../../growthCycle/ui/growingCycleList";
-import {CameraCarousel} from "../../camera/ui/CameraCarousel";
-import {useAppDispatch} from "../../../utils/Hooks";
-import {setGrowingCycles} from "../../growthCycle/state/GrowingCycleSlice";
-import {t} from "i18next";
-
-
+import { CameraCarousel } from "../../camera/ui/CameraCarousel";
+import { useAppDispatch } from "../../../utils/Hooks";
+import { setGrowingCycles } from "../../growthCycle/state/GrowingCycleSlice";
 
 export const FpfOverview = () => {
     const [fpf, setFpf] = useState<Fpf>();
     const dispatch = useAppDispatch();
     const params = useParams();
-
-
 
     useEffect(() => {
         if (params?.fpfId) {
@@ -28,33 +23,47 @@ export const FpfOverview = () => {
         }
     }, [params]);
 
-
     return (
-        <Container fluid style={{ width: '100%', height:'100%', margin: 0}}>
+        <Container fluid style={{ width: '100%', height: '100%', margin: 0 }}>
             <SimpleGrid
-                type="container"
                 cols={2}
-                spacing={{ base: 10, '300px': 'xl' }}
-              >
-                <Box style={{ flex: 1, marginRight: '20px', overflowY: "scroll", scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch', height:'85vh', maxWidth: "50vw", width:"100%" }}>
+                spacing="lg"
+                style={{ height: '100vh', overflow: 'hidden' }}
+            >
+                {/* Scrollable Graph Section */}
+                <Box
+                    style={{
+                        flex: 1,
+                        overflowY: 'auto',
+                        scrollbarWidth: 'thin',
+                        WebkitOverflowScrolling: 'touch',
+                        height: '100%',
+                        paddingRight: '20px',
+                    }}
+                >
                     {fpf && fpf.Sensors.map((sensor) => (
-                        <Box key={sensor.id}>
-                            {sensor && (
-                                <TimeseriesGraph sensor={sensor} />
-                            )}
+                        <Box key={sensor.id} mb="lg">
+                            {sensor && <TimeseriesGraph sensor={sensor} />}
                         </Box>
                     ))}
                 </Box>
-                <Box style={{ flex: 1, Width: '50vw', height: 'auto' }}>
-                        {/* Camera-Feed */}
-                        {fpf && (fpf.Cameras.length > 0) &&  (
-                            <>
-                                <CameraCarousel camerasToDisplay={fpf.Cameras} />
-                            </>
-                        )}
-                        {fpf &&
-                            <GrowingCycleList fpfId={fpf.id} />
-                        }
+
+                {/* Scrollable Camera and Growing Cycle Section */}
+                <Box
+                    style={{
+                        flex: 1,
+                        overflowY: 'auto',
+                        scrollbarWidth: 'thin',
+                        WebkitOverflowScrolling: 'touch',
+                        height: '100%',
+                    }}
+                >
+                    {fpf && fpf.Cameras.length > 0 && (
+                        <Box mb="lg">
+                            <CameraCarousel camerasToDisplay={fpf.Cameras} />
+                        </Box>
+                    )}
+                    {fpf && <GrowingCycleList fpfId={fpf.id} />}
                 </Box>
             </SimpleGrid>
         </Container>
