@@ -109,15 +109,6 @@ useEffect(() => {
         <Card p="lg" shadow="sm" radius="md" style={{ marginBottom: '30px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)' }}>
             <Flex justify="space-between" align="center" mb="md">
                 <Title order={3} style={{ color: '#199ff4' }}>{sensor?.name}</Title>
-                <Button
-                    variant="filled"
-                    color="blue"
-                    style={{ backgroundColor: '#105385' }}
-                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#0c4065'}
-                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#105385'}
-                >
-                    <IconZoomScan size={20} />
-                </Button>
             </Flex>
 
             <LineChart
