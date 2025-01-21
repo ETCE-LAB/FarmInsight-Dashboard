@@ -55,7 +55,7 @@ The dashboard provides:
    The development server will run by default at [http://localhost:3000](http://localhost:3000).
 
 4. **Set up the backend:**
-   Please follow the instructions in the [Backend Repository](#) to set up the API.
+   Please follow the instructions in the [Backend Repository](https://github.com/ETCE-LAB/FarmInsight-Dashboard-Backend) to set up the API.
 
 ## 💡 **Usage**
 ### Access
