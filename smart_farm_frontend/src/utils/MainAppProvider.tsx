@@ -10,7 +10,7 @@ import '@mantine/notifications/styles.css';
 import '@mantine/carousel/styles.css';
 
 export const oidcConfig = {
-    authority: "https://development-isse-identityserver.azurewebsites.net",
+    authority: "http://localhost:8000/o",
     client_id: "interactive",
     redirect_uri: window.location.origin + "/auth/callback",
     post_logout_redirect_uri: window.location.origin + "/auth/signout-callback",
