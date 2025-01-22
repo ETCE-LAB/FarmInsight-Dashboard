@@ -28,7 +28,7 @@ export const FpfOverview = () => {
             <SimpleGrid
                 cols={2}
                 spacing="lg"
-                style={{ height: '100vh', overflow: 'hidden' }}
+                style={{ height: '95vh', overflow: 'hidden' }}
             >
                 {/* Scrollable Graph Section */}
                 <Box
@@ -37,7 +37,7 @@ export const FpfOverview = () => {
                         overflowY: 'auto',
                         scrollbarWidth: 'thin',
                         WebkitOverflowScrolling: 'touch',
-                        height: '100%',
+                        height: '90%',
                         paddingRight: '20px',
                     }}
                 >
@@ -55,7 +55,7 @@ export const FpfOverview = () => {
                         overflowY: 'auto',
                         scrollbarWidth: 'thin',
                         WebkitOverflowScrolling: 'touch',
-                        height: '100%',
+                        height: '90%',
                     }}
                 >
                     {fpf && fpf.Cameras.length > 0 && (
