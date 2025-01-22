@@ -7,15 +7,12 @@ import { useAuth } from "react-oidc-context";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../utils/store";
 import { OrganizationForm } from "../../../features/organization/ui/organizationForm";
-import {useNavigate, useParams} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../../utils/appRoutes";
-import {Fpf} from "../../../features/fpf/models/Fpf";
-import placeholderImage from "../../../placeholder.png";
-import {getFpf} from "../../../features/fpf/useCase/getFpf";
-import {Sensor} from "../../../features/sensor/models/Sensor";
 import {receiveVisibleFpfs} from "../../../features/fpf/useCase/receiveVisibleFpfs";
 import {BasicFPF} from "../../../features/fpf/models/BasicFPF";
 import { useTranslation } from 'react-i18next';
+import Footer from "../footer/footer";
 
 const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     const auth = useAuth();
@@ -66,7 +63,7 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     const tabs = [
         {
             name: t('header.organizations'),
-            color: '#000000',
+            //color: '#000000',
             link: './my-organizations',
             submenu: organizations.map((org) => ({ name: org.name, id: org.id }))
         },
@@ -90,7 +87,7 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
                 <Button
                     onClick={() => handleTabClick(tab.link)}
                     variant="filled"
-                    color="blue"
+                    color="#199ff4"
                     style={{
                         display: 'flex',
                         alignItems: 'center',
@@ -131,7 +128,7 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
                             <Button
                                 onClick={() => setModalOpen(true)}
                                 variant="filled"
-                                color="blue"
+                                color="#199ff4"
                             >
                                 {t('header.createOrganization')}
                             </Button>
@@ -144,11 +141,11 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
                 <Grid>
                     {paginatedFpfs && paginatedFpfs.map((fpf) => (
                         <Grid.Col span={4}>
-                            <Card p="lg" shadow="sm" radius="md" style={{ height: '20vh', margin: '10px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)', cursor:'pointer', borderBottom: '2px solid #ffffff' }}
+                            <Card p="lg" radius="md" style={{ height: '20vh', margin: '10px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)', cursor:'pointer', borderBottom: '2px solid #ffffff' }}
                             onClick={() => {handleFpfSelect(fpf.organization.id, fpf.id);}}>
                                 <Flex justify="space-between" align="center" mb="sm">
-                                    <Title order={3} style={{ fontSize: '1rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{fpf.name}</Title>
-                                    <Text>{fpf.organization.name}</Text>
+                                    <Title order={3} style={{ fontSize: '1rem', color: '#ccc', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{fpf.name}</Title>
+                                    <Text c="#ccc">{fpf.organization.name}</Text>
                                     {/*{fpf.sensor ? (<Text size="xs" style={{ fontWeight: 'bold', color: '#105385' }}>PPM</Text>):("")}
                                     {fpf.sensor ? (<IconTemperature style={{ color: '#105385' }}/>):("")}
                                     {fpf.sensor ? (<IconSunHigh style={{ color: '#105385' }}/>):("")}
@@ -171,6 +168,7 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
                 />
                 </Flex>
             </Container>
+            <Footer />
             <Modal
                 opened={modalOpen}
                 onClose={() => setModalOpen(false)}

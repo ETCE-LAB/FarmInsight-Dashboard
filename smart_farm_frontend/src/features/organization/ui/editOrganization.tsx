@@ -1,21 +1,32 @@
-import { useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { getOrganization } from "../useCase/getOrganization";
 import { Organization } from "../models/Organization";
-import { Button, Card, Modal, TextInput, Switch, Flex, Title, Text, Box } from "@mantine/core";
+import {
+    Button,
+    Card,
+    Modal,
+    TextInput,
+    Switch,
+    Flex,
+    Title,
+    Text,
+    Box,
+    Badge,
+} from "@mantine/core";
+import { IconEdit, IconUserPlus, IconSquareRoundedMinus, IconEye, IconEyeOff, IconPlus } from "@tabler/icons-react";
+import { MembershipList } from "../../membership/ui/MembershipList";
 import { SearchUserProfile } from "../../userProfile/ui/searchUserProfile";
 import { UserProfile } from "../../userProfile/models/UserProfile";
 import { addUserToOrganization } from "../useCase/addUserToOrganization";
-import {IconCircleMinus, IconEdit, IconPlus, IconSquareRoundedMinus} from '@tabler/icons-react';
-import { FpfForm } from "../../fpf/ui/fpfForm";
-import { MembershipList } from "../../membership/ui/MembershipList";
-import { useAppDispatch } from "../../../utils/Hooks";
-import { changedMembership } from "../../membership/state/MembershipSlice";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../utils/store";
-import { useTranslation } from 'react-i18next';
 import { showNotification } from "@mantine/notifications";
-import { editOrganization } from "../useCase/editOrganization";
+import { useTranslation } from "react-i18next";
+import { FpfForm } from "../../fpf/ui/fpfForm";
+import {useDispatch, useSelector} from "react-redux";
+import {changedMembership} from "../../membership/state/MembershipSlice";
+import {editOrganization} from "../useCase/editOrganization";
+import {useAppDispatch} from "../../../utils/Hooks";
+import {RootState} from "../../../utils/store";
 
 export const EditOrganization = () => {
     const { organizationId } = useParams();
@@ -130,53 +141,56 @@ export const EditOrganization = () => {
                 console.error("Error updating organization:", error);
             });
     };
-
     return (
         <>
             {organization ? (
                 <>
-                    <Flex align="center" style={{ marginBottom: "10px" }}>
-                        <Title order={2} style={{ display: 'inline-block' }}>
-                            {t("header.organization")}: {organization.name}
-                        </Title>
-                        <IconEdit
-                            size={24}
-                            onClick={() => setEditModalOpen(true)}  // Open the modal when clicked
-                            style={{
-                                cursor: 'pointer',
-                                color: '#105385',
-                                marginLeft: 10,
-                            }}
-                        />
-                    </Flex>
-                    <Flex gap={20} align="center">
-                        <Text style={{ fontWeight: 'bold' }}>
-                            {t("header.members")}
-                        </Text>
-                        <Button
-                            onClick={() => setUserModalOpen(true)}
-                            variant="outline"
-                            color="#105385"
-                            style={{ margin: '10px' }}
-                        >
-                            <IconPlus size={18} style={{ marginRight: "8px" }} />
-                            {t("header.addUser")}
-                        </Button>
-                    </Flex>
-                    <MembershipList members={organization.memberships} />
+                    <Card padding="lg" radius="md">
+                        <Flex align="center" justify="space-between" mb="lg">
+                            <Title order={2}>
+                                {t("header.organization")}: {organization.name}
+                            </Title>
+                            <IconEdit
+                                size={24}
+                                onClick={() => setEditModalOpen(true)}
+                                style={{ cursor: "pointer", color: "#199ff4" }}
+                            />
+                        </Flex>
+                        <Flex align="center" gap={10}>
+                            <Text fw="bold" size="lg" c="dimmed">
+                                {t("header.status")}:
+                            </Text>
+                            <Badge color={isPublic ? "green" : "red"} variant="light">
+                                {t(isPublic ? "header.public" : "header.private")}
+                            </Badge>
+                        </Flex>
+                    </Card>
 
-                    <Button
-                        onClick={() => setFpFModalOpen(true)}
-                        variant="filled"
-                        color="#105385"
-                        style={{ margin: '10px' }}
+                    <Card padding="lg" radius="md" mt="lg">
+                    <Box mt="xl">
+                        <Flex justify="space-between" align="center" mb="lg">
+                            <Text size="xl" fw="bold">
+                                {t("header.members")}
+                            </Text>
+                            <IconUserPlus
+                                size={30}
+                                onClick={() => setUserModalOpen(true)}
+                                style={{ cursor: "pointer", color: "#199ff4" }}
+                            />
+                        </Flex>
+                        <MembershipList members={organization.memberships} />
+                    </Box>
+                    </Card>
+                    {/* FpF Modal */}
+                    <Modal
+                        opened={fpfModalOpen}
+                        onClose={() => setFpFModalOpen(false)}
+                        title={t("header.addFpf")}
+                        centered
                     >
-                        <IconPlus size={18} style={{ marginRight: "8px" }} />
-                        {t("header.addFpf")}
-                    </Button>
+                        <FpfForm organizationId={organizationId} />
+                    </Modal>
 
-                    {/* Add User Modal */}
-                    {/* Add User Modal */}
                     <Modal
                         opened={userModalOpen}
                         onClose={() => setUserModalOpen(false)}
@@ -184,78 +198,69 @@ export const EditOrganization = () => {
                         centered
                     >
                         <SearchUserProfile onUserSelected={userSelected} />
-                        <Card withBorder style={{ marginTop: '20px' }}>
+                        <Box mt="lg">
                             {usersToAdd.length > 0 ? (
-                                usersToAdd.map((user, index) => (
-                                    <Flex key={index} justify="space-between" align="center" style={{ padding: '5px 0' }}>
+                                usersToAdd.map((user) => (
+                                    <Flex key={user.id} justify="space-between" align="center" py="xs">
                                         <Text>{user.name || user.email}</Text>
                                         <IconSquareRoundedMinus
                                             size={18}
-                                            style={{ cursor: 'pointer', color: "#a53737" }}
+                                            style={{ cursor: "pointer", color: "#a53737" }}
                                             onClick={() => handleRemoveUser(user)}
                                         />
                                     </Flex>
                                 ))
                             ) : (
-                                <Text>
-                                    {t("header.noUserSelected")}
-                                </Text>
+                                <Text>{t("header.noUserSelected")}</Text>
                             )}
                             {usersToAdd.length > 0 && (
                                 <Button
-                                    onClick={handleAddUsers}
                                     fullWidth
-                                    style={{ marginTop: '15px' }}
+                                    mt="md"
+                                    onClick={handleAddUsers}
                                     variant="filled"
+                                    color="#199ff4"
                                 >
                                     {t("header.addSelectedUser")}
                                 </Button>
                             )}
-                        </Card>
+                        </Box>
                     </Modal>
 
-                    {/* Add FpF Modal */}
-                    <Modal
-                        opened={fpfModalOpen}
-                        onClose={() => setFpFModalOpen(false)}
-                        title={t("header.addFpf")}
-                        centered
-                    >
-                        <FpfForm inputOrganization={organization}></FpfForm>
-                    </Modal>
-
-                    {/* Edit Organization Modal */}
                     <Modal
                         opened={editModalOpen}
-                        onClose={() => setEditModalOpen(false)}  // Close modal on cancel
-                        title={t("header.organization") + ": " + organization.name}
+                        onClose={() => setEditModalOpen(false)}
+                        title={t("header.organization")}
                         centered
                     >
                         <TextInput
                             label={t("header.table.name")}
-                            placeholder={organization.name}
                             value={newOrganizationName}
                             onChange={handleNameChange}
                         />
                         <Switch
+                            style={{ marginTop: "20px" }}
                             label={t("header.public")}
-                            style={{ marginTop: '20px' }}
+                            onLabel={<IconEye size={16} stroke={2.5} />}
+                            offLabel={<IconEyeOff size={16} stroke={2.5} />}
+                            size="md"
                             checked={isPublic}
                             onChange={handleSwitchChange}
                         />
                         <Button
                             onClick={handleUpdateOrganization}
-                            fullWidth
-                            style={{ marginTop: '20px' }}
+                            mt="lg"
+                            disabled={!isModified}
                             variant="filled"
-                            disabled={!isModified} // Save button only active when there are changes
+                            color="#199ff4"
                         >
-                            {t("growingCycleForm.saveButton")}
+                            {t("userprofile.saveChanges")}
                         </Button>
                     </Modal>
-
                 </>
-            ) : null}
+            ) : (
+                <Text>{t("header.loading")}</Text>
+            )}
         </>
     );
 };

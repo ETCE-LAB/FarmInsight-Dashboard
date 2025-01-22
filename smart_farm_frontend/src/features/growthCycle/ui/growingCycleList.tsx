@@ -190,7 +190,7 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
                 </Group>
             </Modal>
 
-            <Card shadow="sm" radius="md" style={{ height: "45vh", overflowY: "scroll" }}>
+            <Card radius="md" padding="md" style={{ height: "45vh", overflowY: "hidden" }}>
                 <IconCirclePlus
                     size={25}
                     aria-disabled={!auth.user}

@@ -4,13 +4,10 @@ import { DateInput } from "@mantine/dates";
 import { useTranslation } from "react-i18next";
 import { createGrowingCycle } from "../useCase/createGrowingCycle";
 import { GrowingCycle } from "../models/growingCycle";
-import {getFpf} from "../../fpf/useCase/getFpf";
-import {modifyGrowingCycle} from "../useCase/modifyGrowingCycle";
-import {useAppDispatch} from "../../../utils/Hooks";
-import {addGrowingCycle, changedGrowingCycle, deleteGrowingCycle, updateGrowingCycle} from "../state/GrowingCycleSlice";
-import {showNotification} from "@mantine/notifications";
-import {useSelector} from "react-redux";
-import {RootState} from "../../../utils/store";
+import { modifyGrowingCycle } from "../useCase/modifyGrowingCycle";
+import { useAppDispatch } from "../../../utils/Hooks";
+import { addGrowingCycle, updateGrowingCycle } from "../state/GrowingCycleSlice";
+import { showNotification } from "@mantine/notifications";
 
 export const GrowingCycleForm: React.FC<{
     fpfId: string;
@@ -18,14 +15,13 @@ export const GrowingCycleForm: React.FC<{
     closeForm: () => void;
 }> = ({ fpfId, toEditGrowingCycle, closeForm }) => {
     const { t } = useTranslation();
-    const [dateError, setDateError] = useState<string | null>(null); // For error message
+    const [dateError, setDateError] = useState<string | null>(null);
     const [growingCycle, setGrowingCycle] = useState<GrowingCycle>({ fpfId: fpfId } as GrowingCycle);
-    const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch();
 
     const handleInputChange = (field: string, value: any) => {
         setGrowingCycle((prev) => ({ ...prev, [field]: value }));
 
-        // Validate date order
         if (field === "endDate" && growingCycle.startDate && value) {
             if (new Date(value) < new Date(growingCycle.startDate)) {
                 setDateError(t("header.dateError"));
@@ -41,7 +37,6 @@ export const GrowingCycleForm: React.FC<{
         }
     };
 
-
     const handleSubmit = async () => {
         if (dateError) {
             showNotification({
@@ -53,7 +48,7 @@ export const GrowingCycleForm: React.FC<{
         }
 
         try {
-            if(toEditGrowingCycle){
+            if (toEditGrowingCycle) {
                 const updatedCycle = await modifyGrowingCycle(growingCycle.id, growingCycle);
                 dispatch(updateGrowingCycle(updatedCycle));
                 showNotification({
@@ -68,7 +63,7 @@ export const GrowingCycleForm: React.FC<{
                     title: 'Success',
                     message: 'Growing cycle saved successfully!',
                     color: 'green',
-                })
+                });
             }
         } catch (error) {
             showNotification({
@@ -79,7 +74,6 @@ export const GrowingCycleForm: React.FC<{
         }
         closeForm();
     };
-
 
     const isFormValid = useMemo(() => {
         return growingCycle.plants?.trim() && growingCycle.startDate && !dateError;
@@ -100,6 +94,7 @@ export const GrowingCycleForm: React.FC<{
                 value={growingCycle.plants || ""}
                 onChange={(e) => handleInputChange("plants", e.currentTarget.value)}
                 style={{ width: "100%" }}
+                description={t("growingCycleForm.hint.plantTypeHint")}
             />
             <Flex gap="50px" style={{ marginTop: "15px" }}>
                 <DateInput
@@ -110,6 +105,7 @@ export const GrowingCycleForm: React.FC<{
                     value={growingCycle.startDate ? new Date(growingCycle.startDate) : null}
                     onChange={(date) => handleInputChange("startDate", date)}
                     style={{ flex: 1 }}
+                    description={t("growingCycleForm.hint.startDateHint")}
                 />
                 <DateInput
                     label={t("growingCycleForm.endDateLabel")}
@@ -118,6 +114,7 @@ export const GrowingCycleForm: React.FC<{
                     value={growingCycle.endDate ? new Date(growingCycle.endDate) : null}
                     onChange={(date) => handleInputChange("endDate", date)}
                     style={{ flex: 1 }}
+                    description={t("growingCycleForm.hint.endDateHint")}
                 />
             </Flex>
             {dateError && (
@@ -131,6 +128,7 @@ export const GrowingCycleForm: React.FC<{
                 value={growingCycle.note || ""}
                 onChange={(e) => handleInputChange("note", e.currentTarget.value)}
                 style={{ width: "100%", marginTop: "15px" }}
+                description={t("growingCycleForm.hint.notesHint")}
             />
             <Flex justify="flex-end">
                 <Button

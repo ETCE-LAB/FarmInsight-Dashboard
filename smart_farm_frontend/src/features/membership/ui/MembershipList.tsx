@@ -29,7 +29,7 @@ export  const MembershipList: React.FC<{members:Membership[]}> = ( {members} ) =
                 <Table.Tr>
                     <th style={{ textAlign: "left"}}>{t("header.name")}</th>
                     <th style={{ textAlign: "left"}}>{t("header.email")}</th>
-                    <th style={{ textAlign: "center"}}>{t("header.role")}</th>
+                    <th style={{ textAlign: "left"}}>{t("header.role")}</th>
                     {isAdmin &&
                         <>
                             <th style={{ textAlign: "center"}}></th>
@@ -43,7 +43,7 @@ export  const MembershipList: React.FC<{members:Membership[]}> = ( {members} ) =
                     <Table.Tr key={member.id}>
                         <Table.Td style={{ textAlign: "left"}}>{member.userprofile.name}</Table.Td>
                         <Table.Td style={{ textAlign: "left"}}>{member.userprofile.email}</Table.Td>
-                        <Table.Td style={{ textAlign: "center" }}>
+                        <Table.Td style={{ textAlign: "left" }}>
                             {member.membershipRole.charAt(0).toUpperCase() + member.membershipRole.slice(1)}
                         </Table.Td>
                         {isAdmin &&
