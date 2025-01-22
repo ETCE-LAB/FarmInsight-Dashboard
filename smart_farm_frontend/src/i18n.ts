@@ -139,7 +139,8 @@ i18n
                         enterOrganizationName: 'Enter organization name'
                     },
                     error: {
-                        organizationNameTaken: 'Organization Name already taken'
+                        organizationNameTaken: 'Organization Name already taken',
+                        fireFoxError: 'Graphs are not supported in Firefox.\nPlease use a different browser.'
                     },
                     userprofile: {
                         notifications: {
@@ -337,7 +338,8 @@ i18n
                         enterOrganizationName: 'Geben Sie den Organisationsnamen ein'
                     },
                     error: {
-                        organizationNameTaken: 'Organisationsname bereits vergeben'
+                        organizationNameTaken: 'Organisationsname bereits vergeben',
+                        fireFoxError: 'Grafiken werden in Firefox nicht unterstützt.\nBitte verwenden Sie einen anderen Browser.'
                     },
                     userprofile: {
                         notifications: {
@@ -532,7 +534,8 @@ i18n
                         enterOrganizationName: 'Entrez le nom de l’organisation'
                     },
                     error: {
-                        organizationNameTaken: 'Le nom de l’organisation est déjà pris'
+                        organizationNameTaken: 'Le nom de l’organisation est déjà pris',
+                        fireFoxError: 'Les graphiques ne sont pas pris en charge dans Firefox.\nVeuillez utiliser un navigateur différent.'
                     },
                     userprofile: {
                         notifications: {
@@ -728,7 +731,8 @@ i18n
                         enterOrganizationName: 'Inserisci il nome dell’organizzazione'
                     },
                     error: {
-                        organizationNameTaken: 'Il nome dell’organizzazione è già preso'
+                        organizationNameTaken: 'Il nome dell’organizzazione è già preso',
+                        fireFoxError: 'I grafici non sono supportati in Firefox.\nSi prega di utilizzare un browser diverso.'
                     },
                     userprofile: {
                         notifications: {
@@ -924,7 +928,8 @@ i18n
                         enterOrganizationName: '输入组织名称'
                     },
                     error: {
-                        organizationNameTaken: '组织名称已被占用'
+                        organizationNameTaken: '组织名称已被占用',
+                        fireFoxError: 'Firefox 不支持图形\n请使用其他浏览器。'
                     },
                     userprofile: {
                         notifications: {
@@ -1120,7 +1125,8 @@ i18n
                         enterOrganizationName: 'Введите название организации'
                     },
                     error: {
-                        organizationNameTaken: 'Название организации уже занято'
+                        organizationNameTaken: 'Название организации уже занято',
+                        fireFoxError: 'Графики не поддерживаются в Firefox.\nПожалуйста, используйте другой браузер.'
                     },
                     userprofile: {
                         notifications: {
