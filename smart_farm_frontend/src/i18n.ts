@@ -140,7 +140,8 @@ i18n
                     },
                     error: {
                         organizationNameTaken: 'Organization Name already taken',
-                        fireFoxError: 'Graphs are not supported in Firefox.\nPlease use a different browser.'
+                        fireFoxError: "Your browser is not fully supported. Some features, such as graphs and cameras, may not work as expected.\nPlease use a different browser for the best experience."
+
                     },
                     userprofile: {
                         notifications: {
@@ -339,7 +340,7 @@ i18n
                     },
                     error: {
                         organizationNameTaken: 'Organisationsname bereits vergeben',
-                        fireFoxError: 'Grafiken werden in Firefox nicht unterstützt.\nBitte verwenden Sie einen anderen Browser.'
+                        fireFoxError: 'Ihr Browser wird nicht vollständig unterstützt. Einige Funktionen wie Grafiken und Kameras funktionieren möglicherweise nicht wie erwartet.\nBitte verwenden Sie einen anderen Browser für das beste Erlebnis.'
                     },
                     userprofile: {
                         notifications: {
@@ -535,7 +536,7 @@ i18n
                     },
                     error: {
                         organizationNameTaken: 'Le nom de l’organisation est déjà pris',
-                        fireFoxError: 'Les graphiques ne sont pas pris en charge dans Firefox.\nVeuillez utiliser un navigateur différent.'
+                        fireFoxError: 'Votre navigateur n’est pas entièrement pris en charge. Certaines fonctionnalités, telles que les graphiques et les caméras, peuvent ne pas fonctionner comme prévu.\nVeuillez utiliser un autre navigateur pour une meilleure expérience.'
                     },
                     userprofile: {
                         notifications: {
@@ -732,7 +733,7 @@ i18n
                     },
                     error: {
                         organizationNameTaken: 'Il nome dell’organizzazione è già preso',
-                        fireFoxError: 'I grafici non sono supportati in Firefox.\nSi prega di utilizzare un browser diverso.'
+                        fireFoxError: 'Il tuo browser non è completamente supportato. Alcune funzionalità, come grafici e telecamere, potrebbero non funzionare come previsto.\nSi prega di utilizzare un browser diverso per un’esperienza ottimale.'
                     },
                     userprofile: {
                         notifications: {
@@ -929,7 +930,7 @@ i18n
                     },
                     error: {
                         organizationNameTaken: '组织名称已被占用',
-                        fireFoxError: 'Firefox 不支持图形\n请使用其他浏览器。'
+                        fireFoxError: '您的浏览器不完全支持。某些功能，如图表和摄像头，可能无法按预期工作。\n请使用其他浏览器以获得最佳体验。'
                     },
                     userprofile: {
                         notifications: {
@@ -1126,7 +1127,7 @@ i18n
                     },
                     error: {
                         organizationNameTaken: 'Название организации уже занято',
-                        fireFoxError: 'Графики не поддерживаются в Firefox.\nПожалуйста, используйте другой браузер.'
+                        fireFoxError: 'Ваш браузер не полностью поддерживается. Некоторые функции, такие как графики и камеры, могут не работать должным образом.\nПожалуйста, используйте другой браузер для лучшего опыта.'
                     },
                     userprofile: {
                         notifications: {
