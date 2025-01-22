@@ -3,13 +3,12 @@ import {Camera, EditCamera} from "../models/camera";
 import {useParams} from "react-router-dom";
 import { Carousel } from '@mantine/carousel';
 import {getImages} from "../useCase/getImages";
-import {Card, Center, Image, Switch, Title} from '@mantine/core';
-import {getUser} from "../../../utils/getUser";
+import {Box, Card, Center, Image, Switch, Title, Text} from '@mantine/core';
 import {useAuth} from "react-oidc-context";
 import {Livestream} from "./Livestream";
 import NoCameraPlaceholder from './NoCameraPlaceholder.png';
-import {IconVideoOff} from "@tabler/icons-react";
-import {t} from "i18next";
+import {IconCamera, IconVideo, IconVideoOff} from "@tabler/icons-react";
+import {useTranslation} from "react-i18next";
 
 export interface displayObject {
     url:string,
@@ -23,6 +22,7 @@ export const CameraCarousel: React.FC<{ camerasToDisplay: Camera[] }> = ({camera
    // const [slides, setSlides] = useState<JSX.Element[]| null>();
     const [showLivestream, setShowLivestream] = useState<boolean >(false)
     const auth = useAuth();
+    const { t } = useTranslation();
 
     useEffect(() => {
         setObjectsToDisplay([])
@@ -81,19 +81,33 @@ export const CameraCarousel: React.FC<{ camerasToDisplay: Camera[] }> = ({camera
 
     return (
         <>
-            {auth.isAuthenticated && (
-                <>
-                    <Switch
-                        label={t("label.setCameraCarousel")}
-                        style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '2vw' }}
-                        onChange={(e) => setShowLivestream(e.currentTarget.checked)}/>
-                </>
-            )}
          <Card
             padding="md"
             radius="md"
             style={{position: "static", marginBottom: "30px"}}
             >
+             {auth.isAuthenticated && (
+                 <>
+                     <Box
+                         style={{
+                             display: 'flex',
+                             flexDirection: 'column',
+                             alignItems: 'center',
+                             marginBottom: '10px'
+                         }}
+                     >
+                         <Text size="sm" fw={500} style={{ marginBottom: '5px' }}>
+                             {t("label.setCameraCarousel")}
+                         </Text>
+                         <Switch
+                             offLabel={<IconCamera size={16} />}
+                             onLabel={<IconVideo size={16} />}
+                             size="md"
+                             onChange={(e) => setShowLivestream(e.currentTarget.checked)}
+                         />
+                     </Box>
+                 </>
+             )}
              <Center>
                 {camerasToDisplay && camerasToDisplay.length > 0 ? (
                     <Carousel withIndicators>

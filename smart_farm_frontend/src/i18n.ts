@@ -721,7 +721,8 @@ i18n
                     },
                     label: {
                         organizationName: 'Nome dell’organizzazione',
-                        setPublic: 'Imposta come pubblico'
+                        setPublic: 'Imposta come pubblico',
+                        setCameraCarousel: 'Immagine o live stream'
                     },
                     placeholder: {
                         enterOrganizationName: 'Inserisci il nome dell’organizzazione'
@@ -916,7 +917,8 @@ i18n
                     },
                     label: {
                         organizationName: '组织名称',
-                        setPublic: '设置公开'
+                        setPublic: '设置公开',
+                        setCameraCarousel: '图片或直播流'
                     },
                     placeholder: {
                         enterOrganizationName: '输入组织名称'
@@ -1111,7 +1113,8 @@ i18n
                     },
                     label: {
                         organizationName: 'Название организации',
-                        setPublic: 'Установить как публичное'
+                        setPublic: 'Установить как публичное',
+                        setCameraCarousel: 'Изображение или прямой эфир'
                     },
                     placeholder: {
                         enterOrganizationName: 'Введите название организации'

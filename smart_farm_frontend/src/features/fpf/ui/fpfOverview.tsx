@@ -24,11 +24,11 @@ export const FpfOverview = () => {
     }, [params]);
 
     return (
-        <Container fluid style={{ width: '100%', height: '100%', margin: 0 }}>
+        <Container fluid style={{ width: '100%', height: '100%' }}>
             <SimpleGrid
                 cols={2}
                 spacing="lg"
-                style={{ height: '95vh', overflow: 'hidden' }}
+                style={{ height: '88vh', overflow: 'hidden' }}
             >
                 {/* Scrollable Graph Section */}
                 <Box
@@ -37,8 +37,8 @@ export const FpfOverview = () => {
                         overflowY: 'auto',
                         scrollbarWidth: 'thin',
                         WebkitOverflowScrolling: 'touch',
-                        height: '90%',
-                        paddingRight: '20px',
+                        height: '100%',
+                        paddingRight: '10px',
                     }}
                 >
                     {fpf && fpf.Sensors.map((sensor) => (
@@ -55,7 +55,8 @@ export const FpfOverview = () => {
                         overflowY: 'auto',
                         scrollbarWidth: 'thin',
                         WebkitOverflowScrolling: 'touch',
-                        height: '90%',
+                        height: '100%',
+                        paddingRight: '10px',
                     }}
                 >
                     {fpf && fpf.Cameras.length > 0 && (
