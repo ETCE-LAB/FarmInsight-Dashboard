@@ -15,8 +15,8 @@ const LegalNoticePage: React.FC = () => {
                 <Text>38102 Braunschweig, Germany</Text>
                 <Text>
                     Email:{' '}
-                    <Anchor href="mailto:bejamin.leiding@tu-clausthal.de">
-                        bejamin.leiding@tu-clausthal.de
+                    <Anchor href="mailto:mail@benjaminleiding.de">
+                        mail@benjaminleiding.de
                     </Anchor>
                 </Text>
                 <Text>Phone: +49 170 76 77 606</Text>
@@ -91,8 +91,8 @@ const LegalNoticePage: React.FC = () => {
                 <Text>38102 Braunschweig, Germany</Text>
                 <Text>
                     Email:{' '}
-                    <Anchor href="mailto:bejamin.leiding@tu-clausthal.de">
-                        bejamin.leiding@tu-clausthal.de
+                    <Anchor href="mailto:mail@benjaminleiding.de">
+                        mail@benjaminleiding.de
                     </Anchor>
                 </Text>
                 <Text>Phone: +49 170 76 77 606</Text>
