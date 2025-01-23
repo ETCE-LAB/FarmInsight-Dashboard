@@ -7,7 +7,7 @@ import {AppRoutes} from "../../../utils/appRoutes"; // Import the navbar compone
 
 export const BasicAppShell: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     const location = useLocation();
-    const noNavbarRoutes = [AppRoutes.base];
+    const noNavbarRoutes = [AppRoutes.base, AppRoutes.legalNotice];
     const showNavbar = !noNavbarRoutes.includes(location.pathname);
 
     return (

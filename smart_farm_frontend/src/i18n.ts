@@ -139,7 +139,9 @@ i18n
                         enterOrganizationName: 'Enter organization name'
                     },
                     error: {
-                        organizationNameTaken: 'Organization Name already taken'
+                        organizationNameTaken: 'Organization Name already taken',
+                        fireFoxError: "Your browser is not fully supported. Some features, such as graphs and cameras, may not work as expected.\nPlease use a different browser for the best experience."
+
                     },
                     userprofile: {
                         notifications: {
@@ -156,6 +158,8 @@ i18n
 
                     },
                     camera: {
+                        active: 'Active',
+                        inactive: 'Inactive',
                         cameras: 'Cameras',
                         hint: {
                                 nameHint: 'Name of the camera',
@@ -335,7 +339,8 @@ i18n
                         enterOrganizationName: 'Geben Sie den Organisationsnamen ein'
                     },
                     error: {
-                        organizationNameTaken: 'Organisationsname bereits vergeben'
+                        organizationNameTaken: 'Organisationsname bereits vergeben',
+                        fireFoxError: 'Ihr Browser wird nicht vollständig unterstützt. Einige Funktionen wie Grafiken und Kameras funktionieren möglicherweise nicht wie erwartet.\nBitte verwenden Sie einen anderen Browser für das beste Erlebnis.'
                     },
                     userprofile: {
                         notifications: {
@@ -351,6 +356,8 @@ i18n
                         saveChanges: 'Änderungen speichern',
                     },
                     camera: {
+                        active: 'Aktiv',
+                        inactive: 'Inaktiv',
                         cameras: 'Kameras',
                         hint: {
                                 nameHint: 'Name der Kamera',
@@ -528,7 +535,8 @@ i18n
                         enterOrganizationName: 'Entrez le nom de l’organisation'
                     },
                     error: {
-                        organizationNameTaken: 'Le nom de l’organisation est déjà pris'
+                        organizationNameTaken: 'Le nom de l’organisation est déjà pris',
+                        fireFoxError: 'Votre navigateur n’est pas entièrement pris en charge. Certaines fonctionnalités, telles que les graphiques et les caméras, peuvent ne pas fonctionner comme prévu.\nVeuillez utiliser un autre navigateur pour une meilleure expérience.'
                     },
                     userprofile: {
                         notifications: {
@@ -544,6 +552,8 @@ i18n
                         saveChanges: 'Enregistrer les modifications',
                     },
                     camera: {
+                        active: 'Actif',
+                        inactive: 'Inactif',
                         cameras: 'Caméras',
                         hint: {
                                 nameHint: 'Nom de la caméra',
@@ -715,13 +725,15 @@ i18n
                     },
                     label: {
                         organizationName: 'Nome dell’organizzazione',
-                        setPublic: 'Imposta come pubblico'
+                        setPublic: 'Imposta come pubblico',
+                        setCameraCarousel: 'Immagine o live stream'
                     },
                     placeholder: {
                         enterOrganizationName: 'Inserisci il nome dell’organizzazione'
                     },
                     error: {
-                        organizationNameTaken: 'Il nome dell’organizzazione è già preso'
+                        organizationNameTaken: 'Il nome dell’organizzazione è già preso',
+                        fireFoxError: 'Il tuo browser non è completamente supportato. Alcune funzionalità, come grafici e telecamere, potrebbero non funzionare come previsto.\nSi prega di utilizzare un browser diverso per un’esperienza ottimale.'
                     },
                     userprofile: {
                         notifications: {
@@ -737,6 +749,8 @@ i18n
                         saveChanges: 'Salva le modifiche',
                     },
                     camera: {
+                        active: 'Attivo',
+                        inactive: 'Inattivo',
                         cameras: 'Fotocamere',
                         hint: {
                                 nameHint: 'Nome della fotocamera',
@@ -908,13 +922,15 @@ i18n
                     },
                     label: {
                         organizationName: '组织名称',
-                        setPublic: '设置公开'
+                        setPublic: '设置公开',
+                        setCameraCarousel: '图片或直播流'
                     },
                     placeholder: {
                         enterOrganizationName: '输入组织名称'
                     },
                     error: {
-                        organizationNameTaken: '组织名称已被占用'
+                        organizationNameTaken: '组织名称已被占用',
+                        fireFoxError: '您的浏览器不完全支持。某些功能，如图表和摄像头，可能无法按预期工作。\n请使用其他浏览器以获得最佳体验。'
                     },
                     userprofile: {
                         notifications: {
@@ -930,6 +946,8 @@ i18n
                         saveChanges: '保存更改',
                     },
                     camera: {
+                        active: '活跃',
+                        inactive: '不活跃',
                         cameras: '摄像头',
                         hint: {
                                 nameHint: '摄像头名称',
@@ -1101,13 +1119,15 @@ i18n
                     },
                     label: {
                         organizationName: 'Название организации',
-                        setPublic: 'Установить как публичное'
+                        setPublic: 'Установить как публичное',
+                        setCameraCarousel: 'Изображение или прямой эфир'
                     },
                     placeholder: {
                         enterOrganizationName: 'Введите название организации'
                     },
                     error: {
-                        organizationNameTaken: 'Название организации уже занято'
+                        organizationNameTaken: 'Название организации уже занято',
+                        fireFoxError: 'Ваш браузер не полностью поддерживается. Некоторые функции, такие как графики и камеры, могут не работать должным образом.\nПожалуйста, используйте другой браузер для лучшего опыта.'
                     },
                     userprofile: {
                         notifications: {
@@ -1123,6 +1143,8 @@ i18n
                         saveChanges: 'Сохранить изменения',
                     },
                     camera: {
+                        active: 'Активный',
+                        inactive: 'Неактивный',
                         cameras: 'Камеры',
                         hint: {
                                 nameHint: 'Название камеры',
