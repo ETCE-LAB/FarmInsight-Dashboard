@@ -65,12 +65,12 @@ export const FpfOverview = () => {
                             scrollbarWidth: 'thin',
                             WebkitOverflowScrolling: 'touch',
                             height: '100%',
-                            paddingRight: '10px',
+                            padding: '10px',
                         }}
                     >
                         {fpf &&
                             fpf.Sensors.map((sensor) => (
-                                <Box key={sensor.id} mb="lg">
+                                <Box key={sensor.id} style={{boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)', borderRadius: '10px', marginBottom: '20px' }}>
                                     <TimeseriesGraph sensor={sensor} />
                                 </Box>
                             ))
@@ -85,15 +85,27 @@ export const FpfOverview = () => {
                             scrollbarWidth: 'thin',
                             WebkitOverflowScrolling: 'touch',
                             height: '100%',
-                            paddingRight: '10px',
+                            padding: '10px',
                         }}
                     >
                         {fpf && fpf.Cameras.length > 0 && (
-                            <Box mb="lg">
+                            <Box style={{
+                                borderRadius: '10px',
+                                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                            }}>
                                 <CameraCarousel camerasToDisplay={fpf.Cameras} />
                             </Box>
                         )}
-                        {fpf && <GrowingCycleList fpfId={fpf.id} />}
+                        {fpf && (
+                            <Box
+                                style={{
+                                    borderRadius: '10px',
+                                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                                }}
+                            >
+                            <GrowingCycleList fpfId={fpf.id} />
+                            </Box>
+                        )}
                     </Box>
                 </SimpleGrid>
             )}
