@@ -3,7 +3,8 @@ import { Table, ScrollArea, TextInput, Text, HoverCard, Loader, Box } from "@man
 import { HardwareConfiguration } from "../models/HardwareConfiguration";
 import { getAvailableHardwareConfiguration } from "../useCase/getAvailableHardwareConfiguration";
 import { getSensor } from "../../sensor/useCase/getSensor";
-import { t } from "i18next";
+import {getBackendTranslation} from "../../../utils/getBackendTranlation";
+import {useTranslation} from "react-i18next";
 
 function capitalizeFirstLetter(str: string): string {
     return str.charAt(0).toUpperCase() + str.slice(1);
@@ -28,6 +29,7 @@ const SelectHardwareConfiguration: React.FC<SelectHardwareConfigurationProps> = 
     const [selectedSensorClassId, setSelectedSensorClassId] = useState<string | undefined>(undefined);
     const [additionalInformation, setAdditionalInformation] = useState<Record<string, any>>({});
     const [isLoading, setIsLoading] = useState<boolean>(true); // Loading state
+    const { t, i18n } = useTranslation();
 
     useEffect(() => {
         setIsLoading(true); // Set loading state before fetching
@@ -119,7 +121,7 @@ const SelectHardwareConfiguration: React.FC<SelectHardwareConfigurationProps> = 
                                     >
                                         <Table.Td>{capitalizeFirstLetter(configuration.model)}</Table.Td>
                                         <Table.Td>{capitalizeFirstLetter(configuration.connection)}</Table.Td>
-                                        <Table.Td>{capitalizeFirstLetter(configuration.parameter)}</Table.Td>
+                                        <Table.Td>{capitalizeFirstLetter(getBackendTranslation(configuration.parameter, i18n.language))}</Table.Td>
                                         <Table.Td>{capitalizeFirstLetter(configuration.unit)}</Table.Td>
                                         <Table.Td>
                                             {Object.entries(configuration.tags).map(([key, value]) => (
