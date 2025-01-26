@@ -155,7 +155,7 @@ i18n
                         },
                         enterName: 'Enter your display name',
                         saveChanges: 'Save Changes',
-
+                        changePassword: 'Change Password',
                     },
                     camera: {
                         active: 'Active',
@@ -354,6 +354,7 @@ i18n
                         },
                         enterName: 'Geben Sie Ihren Anzeigenamen ein',
                         saveChanges: 'Änderungen speichern',
+                        changePassword: 'Passwort ändern',
                     },
                     camera: {
                         active: 'Aktiv',

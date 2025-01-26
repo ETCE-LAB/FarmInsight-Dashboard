@@ -100,6 +100,12 @@ export const EditUserProfile = () => {
                 >
                     {t("userprofile.saveChanges")}
                 </Button>
+                <a
+                    href={`${process.env.REACT_APP_BACKEND_URL}/api/change-password`}
+                >
+                    {t("userprofile.changePassword")}
+                </a>
+
             </Group>
         </>
     );
