@@ -34,7 +34,7 @@ export const FpfOverview = () => {
     return (
         <Container fluid style={{ width: '100%', height: '100%' }}>
             {isFirefox && (
-                <Notification mb='1em' color="red">
+                <Notification mb='1em' color="red" withCloseButton={false}>
                     {t('error.fireFoxError')}
                 </Notification>
             )}

@@ -144,6 +144,7 @@ i18n
 
                     },
                     userprofile: {
+                        changePassword: 'Change Password',
                         notifications: {
                             success: {
                                 title: 'Successfully updated',
@@ -155,7 +156,6 @@ i18n
                         },
                         enterName: 'Enter your display name',
                         saveChanges: 'Save Changes',
-                        changePassword: 'Change Password',
                     },
                     camera: {
                         active: 'Active',
@@ -343,6 +343,7 @@ i18n
                         fireFoxError: 'Ihr Browser wird nicht vollständig unterstützt. Einige Funktionen wie Grafiken und Kameras funktionieren möglicherweise nicht wie erwartet.\nBitte verwenden Sie einen anderen Browser für das beste Erlebnis.'
                     },
                     userprofile: {
+                        changPassword: 'Passwort ändern',
                         notifications: {
                             success: {
                                 title: 'Erfolgreich aktualisiert',
@@ -540,6 +541,7 @@ i18n
                         fireFoxError: 'Votre navigateur n’est pas entièrement pris en charge. Certaines fonctionnalités, telles que les graphiques et les caméras, peuvent ne pas fonctionner comme prévu.\nVeuillez utiliser un autre navigateur pour une meilleure expérience.'
                     },
                     userprofile: {
+                        changePassword: 'Changer le mot de passe',
                         notifications: {
                             success: {
                                 title: 'Mise à jour réussie',
@@ -737,6 +739,7 @@ i18n
                         fireFoxError: 'Il tuo browser non è completamente supportato. Alcune funzionalità, come grafici e telecamere, potrebbero non funzionare come previsto.\nSi prega di utilizzare un browser diverso per un’esperienza ottimale.'
                     },
                     userprofile: {
+                        changePassword: 'Cambia password',
                         notifications: {
                             success: {
                                 title: 'Aggiornamento riuscito',
@@ -934,6 +937,7 @@ i18n
                         fireFoxError: '您的浏览器不完全支持。某些功能，如图表和摄像头，可能无法按预期工作。\n请使用其他浏览器以获得最佳体验。'
                     },
                     userprofile: {
+                        changePassword: '更改密码',
                         notifications: {
                             success: {
                                 title: '更新成功',
@@ -1131,6 +1135,7 @@ i18n
                         fireFoxError: 'Ваш браузер не полностью поддерживается. Некоторые функции, такие как графики и камеры, могут не работать должным образом.\nПожалуйста, используйте другой браузер для лучшего опыта.'
                     },
                     userprofile: {
+                        changePassword: 'Изменить пароль',
                         notifications: {
                             success: {
                                 title: 'Успешно обновлено',
