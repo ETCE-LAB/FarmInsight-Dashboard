@@ -1,5 +1,14 @@
 import { Button, Container, Flex, Group, Menu, rem, TextInput, Modal, Card, Title, Image, Box, Pagination, Text, Grid } from '@mantine/core';
-import {IconChevronDown, IconZoomScan, IconDroplet, IconTemperature, IconSunHigh, IconCircleCheck, IconCircleMinus} from "@tabler/icons-react";
+import {
+    IconChevronDown,
+    IconZoomScan,
+    IconDroplet,
+    IconTemperature,
+    IconSunHigh,
+    IconCircleCheck,
+    IconCircleMinus,
+    IconSeedling, IconWheat
+} from "@tabler/icons-react";
 import React, { PropsWithChildren, useEffect, useState } from "react";
 import { getMyOrganizations } from "../../../features/organization/useCase/getMyOrganizations";
 import { Organization } from "../../../features/organization/models/Organization";
@@ -140,24 +149,72 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
             <Container style={{overflowX: "hidden"}}>
                 <Grid>
                     {paginatedFpfs && paginatedFpfs.map((fpf) => (
-                        <Grid.Col span={4}>
-                            <Card p="lg" radius="md" style={{ height: '20vh', margin: '10px', cursor:'pointer' }}
-                            onClick={() => {handleFpfSelect(fpf.organization.id, fpf.id);}}>
+                        <Grid.Col span={4} key={fpf.id}>
+                            <Card
+                                p="lg"
+                                radius="md"
+                                style={{
+                                    height: '25vh',
+                                    margin: '15px',
+                                    cursor: 'pointer',
+                                    transition: 'transform 0.2s ease',
+                                }}
+                                onClick={() => handleFpfSelect(fpf.organization.id, fpf.id)}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.transform = 'scale(1.02)';
+                                    e.currentTarget.style.boxShadow = '0 8px 16px rgba(0, 0, 0, 0.2)';
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.transform = 'scale(1)';
+                                    e.currentTarget.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
+                                }}
+                            >
+                                {/* Header */}
                                 <Flex justify="space-between" align="center" mb="sm">
-                                    <Title order={3} style={{ fontSize: '1rem', color: '#ccc', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{fpf.name}</Title>
-                                    <Text c="#ccc">{fpf.organization.name}</Text>
-                                    {/*{fpf.sensor ? (<Text size="xs" style={{ fontWeight: 'bold', color: '#105385' }}>PPM</Text>):("")}
-                                    {fpf.sensor ? (<IconTemperature style={{ color: '#105385' }}/>):("")}
-                                    {fpf.sensor ? (<IconSunHigh style={{ color: '#105385' }}/>):("")}
-                                    {fpf.sensor ? (<IconDroplet style={{ color: '#105385' }}/>):("")}
-                                    {fpf.sensor ? (<Text size="xs" style={{ fontWeight: 'bold', color: '#105385' }}>PH</Text>):("")}*/}
+                                    <Title
+                                        order={3}
+                                        style={{
+                                            fontSize: '1.1rem',
+                                            fontWeight: 600,
+                                            whiteSpace: 'nowrap',
+                                            overflow: 'hidden',
+                                            textOverflow: 'ellipsis',
+                                        }}
+                                    >
+                                        {fpf.name}
+                                    </Title>
+                                    <Text style={{ fontSize: '0.9rem', fontWeight: 500}}>
+                                        {fpf.organization.name}
+                                    </Text>
                                 </Flex>
-                                <Box style={{ height: 'auto' }}>
-                                    {fpf.lastImageUrl?.length && fpf.lastImageUrl.length > 0 && (
-                                        <Image src={`${fpf.lastImageUrl}`} alt="Last Received Image" style={{ width: '100%', height: 'auto', objectFit: 'contain' }} />)}
+
+                                {/* Image or Placeholder */}
+                                <Box
+                                    style={{
+                                        height: '80%',
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                    }}
+                                >
+                                    {fpf.lastImageUrl?.length ? (
+                                        <Image
+                                            src={`${fpf.lastImageUrl}`}
+                                            alt="Last Received Image"
+                                            style={{
+                                                width: '100%',
+                                                height: '100%',
+                                                objectFit: 'cover',
+                                                borderRadius: '5px',
+                                            }}
+                                        />
+                                    ) : (
+                                        <IconWheat size={60} stroke={1.5} color="#199ff4" />
+                                    )}
                                 </Box>
                             </Card>
-                        </Grid.Col>))}
+                        </Grid.Col>
+                    ))}
                 </Grid>
                 <Flex justify="center" mt="lg">
                     <Pagination
