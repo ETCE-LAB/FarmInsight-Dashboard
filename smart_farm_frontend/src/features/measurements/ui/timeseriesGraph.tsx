@@ -32,7 +32,6 @@ const TimeseriesGraph: React.FC<{ sensor: Sensor }> = ({ sensor }) => {
     }, !isFirefox);
 
     const reconnectSocket = async (): Promise<void> => {
-        console.log(isFirefox)
         try {
             const resp = await getWebSocketToken();
             if (!resp) {

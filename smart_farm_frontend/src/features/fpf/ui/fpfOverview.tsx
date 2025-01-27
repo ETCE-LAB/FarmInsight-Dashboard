@@ -16,6 +16,7 @@ export const FpfOverview = () => {
     const params = useParams();
     const { t } = useTranslation();
     const [isFirefox, setIsFirefox] = useState(true);
+    const [isCameraActive, setCameraActive] = useState(false)
     useEffect(() => {
         // Detect if the browser is Firefox
         const userAgent = navigator.userAgent.toLowerCase();
@@ -28,8 +29,26 @@ export const FpfOverview = () => {
                 setFpf(resp);
                 dispatch(setGrowingCycles(resp.GrowingCycles));
             });
+            if(fpf?.Cameras && fpf.Cameras.length > 0) {
+
+            }
+
         }
     }, [params]);
+
+    useEffect( () => {
+        if(fpf) {
+            if (fpf.Cameras) {
+                fpf.Cameras.map(camera => {
+                    console.log(fpf.Cameras)
+                    console.log(camera)
+                    if (camera.isActive && !isCameraActive) {
+                        setCameraActive(true)
+                    }
+                })
+            }
+        }
+    },[fpf])
 
     return (
         <Container fluid style={{ width: '100%', height: '100%' }}>
@@ -74,7 +93,7 @@ export const FpfOverview = () => {
                         paddingRight: '10px',
                     }}
                 >
-                    {fpf && fpf.Cameras.length > 0 && (
+                    {fpf && fpf.Cameras.length > 0 && isCameraActive && (
                         <Box mb="lg">
                             <CameraCarousel camerasToDisplay={fpf.Cameras} />
                         </Box>
