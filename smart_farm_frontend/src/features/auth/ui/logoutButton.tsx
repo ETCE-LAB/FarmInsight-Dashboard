@@ -11,7 +11,7 @@ export const LogoutButton = () => {
         <>
         {
             auth.isAuthenticated &&
-            (<Button onClick={() => { void auth.signoutRedirect()}} variant="filled" color="red">{t('header.logout')}</Button>)
+            (<Button onClick={() => { void auth.removeUser(); window.location.href = `${process.env.REACT_APP_BACKEND_URL}/api/logout` }} variant="filled" color="red">{t('header.logout')}</Button>)
         }
         </>
     )

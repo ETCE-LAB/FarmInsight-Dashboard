@@ -20,11 +20,19 @@ const TimeseriesGraph: React.FC<{ sensor: Sensor }> = ({ sensor }) => {
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
 
+    const [isFirefox, setIsFirefox] = useState(true);
+    useEffect(() => {
+        // Detect if the browser is Firefox
+        const userAgent = navigator.userAgent.toLowerCase();
+        setIsFirefox(userAgent.includes('firefox'));
+    }, []);
+
     let { lastMessage, readyState } = useWebSocket(socketURL || "", {
         shouldReconnect: () => shouldReconnect,
-    });
+    }, !isFirefox);
 
     const reconnectSocket = async (): Promise<void> => {
+        console.log(isFirefox)
         try {
             const resp = await getWebSocketToken();
             if (!resp) {
@@ -75,13 +83,13 @@ const TimeseriesGraph: React.FC<{ sensor: Sensor }> = ({ sensor }) => {
     }, [lastMessage]);
 
     useEffect(() => {
-        if (sensor) {
+        if (!isFirefox && sensor) {
             reconnectSocket().catch((err) => console.error("Error during WebSocket connection:", err));
         } else {
             setSocketUrl(null);
             setShouldReconnect(false);
         }
-    }, [sensor]);
+    }, [sensor, isFirefox]);
 
     useEffect(() => {
         setLoading(true);
