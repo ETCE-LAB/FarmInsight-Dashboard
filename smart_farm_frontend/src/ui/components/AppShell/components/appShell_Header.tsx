@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {Card, Flex, Group, Text, Menu, Button, Image} from '@mantine/core';
+import { Card, Flex, Group, Text, Menu, Button, Image } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { AppRoutes } from '../../../../utils/appRoutes';
 import { UserProfileComponent } from '../../../../features/userProfile/ui/UserProfileComponent';
@@ -22,26 +22,32 @@ export const AppShell_Header: React.FC = () => {
         { code: 'ru', label: 'Russian', flag: 'ru' },
     ];
 
-    // Detect browser language and set it as default language
+    // Detect and set the default language based on the browser's language
     useEffect(() => {
         const browserLanguage = navigator.language.split('-')[0];
         const matchedLanguage =
-            languageOptions.find((lang) => lang.code === browserLanguage) ||
-            languageOptions[0];
+            languageOptions.find((lang) => lang.code === browserLanguage) || languageOptions[0];
 
         setSelectedLanguage(matchedLanguage.label);
         setCurrentFlag(matchedLanguage.flag);
-        i18n.changeLanguage(matchedLanguage.code);  // Automatically set browser language
-
-        console.log(`Browser language detected: ${matchedLanguage.label}`);
+        i18n.changeLanguage(matchedLanguage.code);
     }, [i18n]);
 
     const handleLanguageChange = (lang: { code: string; label: string; flag: string }) => {
         setSelectedLanguage(lang.label);
         setCurrentFlag(lang.flag);
         i18n.changeLanguage(lang.code);
-        console.log(`Language switched to: ${lang.label}`);
     };
+
+    const renderFlagImage = (flag: string, alt: string) => (
+        <Image
+            src={`/assets/flags/${flag}.png`}
+            alt={alt}
+            width={24}
+            height={16}
+            onError={(e) => (e.currentTarget.src = '/assets/flags/us.png')} // Fallback if image fails to load
+        />
+    );
 
     return (
         <Group h="100%" px="md" style={{ width: '100%' }}>
@@ -72,16 +78,12 @@ export const AppShell_Header: React.FC = () => {
                             </Text>
                         </Card.Section>
                     </Card>
-                    {/* Language Switcher Button */}
+                    {/* Language Switcher */}
                     <Menu width={200}>
                         <Menu.Target>
                             <Button variant="subtle">
                                 <Flex align="center" gap="sm">
-                                    <Image
-                                        src={`/assets/flags/${currentFlag}.png`}
-                                        alt={currentFlag}
-                                        style={{ width: "auto", height: "auto" }}
-                                    />
+                                    {renderFlagImage(currentFlag, selectedLanguage)}
                                     <span>{selectedLanguage}</span>
                                 </Flex>
                             </Button>
@@ -93,11 +95,7 @@ export const AppShell_Header: React.FC = () => {
                                     onClick={() => handleLanguageChange(lang)}
                                 >
                                     <Flex align="center" gap="sm">
-                                        <Image
-                                            src={`/assets/flags/${lang.flag}.png`}
-                                            alt={lang.flag}
-                                            style={{ width: "auto", height: "auto" }}
-                                        />
+                                        {renderFlagImage(lang.flag, lang.label)}
                                         <span>{lang.label}</span>
                                     </Flex>
                                 </Menu.Item>

@@ -3,7 +3,7 @@ import TimeseriesGraph from "../../measurements/ui/timeseriesGraph";
 import { useParams } from "react-router-dom";
 import { Fpf } from "../models/Fpf";
 import { getFpf } from "../useCase/getFpf";
-import {Container, Box, SimpleGrid, Notification} from '@mantine/core';
+import {Container, Box, SimpleGrid, Notification, Divider} from '@mantine/core';
 import GrowingCycleList from "../../growthCycle/ui/growingCycleList";
 import { CameraCarousel } from "../../camera/ui/CameraCarousel";
 import { useAppDispatch } from "../../../utils/Hooks";
@@ -60,7 +60,7 @@ export const FpfOverview = () => {
             <SimpleGrid
                 cols={2}
                 spacing="lg"
-                style={{ height: '88vh', overflow: 'hidden' }}
+                style={{ height: '85vh', overflow: 'hidden' }}
             >
                 {/* Scrollable Graph Section */}
                 <Box
@@ -71,6 +71,7 @@ export const FpfOverview = () => {
                         WebkitOverflowScrolling: 'touch',
                         height: '100%',
                         paddingRight: '10px',
+                        scrollBehavior: 'smooth',
                     }}
                 >
                     {fpf &&
@@ -91,6 +92,7 @@ export const FpfOverview = () => {
                         WebkitOverflowScrolling: 'touch',
                         height: '100%',
                         paddingRight: '10px',
+                        scrollBehavior: 'smooth',
                     }}
                 >
                     {fpf && fpf.Cameras.length > 0 && isCameraActive && (
