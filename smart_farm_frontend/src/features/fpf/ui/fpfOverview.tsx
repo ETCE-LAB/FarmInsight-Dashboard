@@ -60,7 +60,7 @@ export const FpfOverview = () => {
             <SimpleGrid
                 cols={2}
                 spacing="lg"
-                style={{ height: '85vh', overflow: 'hidden' }}
+                style={{ height: '88vh', overflow: 'hidden' }}
             >
                 {/* Scrollable Graph Section */}
                 <Box
@@ -70,13 +70,13 @@ export const FpfOverview = () => {
                         scrollbarWidth: 'thin',
                         WebkitOverflowScrolling: 'touch',
                         height: '100%',
-                        paddingRight: '10px',
+                        padding: '10px',
                         scrollBehavior: 'smooth',
                     }}
                 >
                     {fpf &&
                         fpf.Sensors.map((sensor) => (
-                            <Box key={sensor.id} mb="lg">
+                            <Box key={sensor.id} style={{boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)', borderRadius: '10px', marginBottom: '20px' }}>
                                 <TimeseriesGraph sensor={sensor} />
                             </Box>
                         ))
@@ -91,16 +91,27 @@ export const FpfOverview = () => {
                         scrollbarWidth: 'thin',
                         WebkitOverflowScrolling: 'touch',
                         height: '100%',
-                        paddingRight: '10px',
+                        padding: '10px',
                         scrollBehavior: 'smooth',
                     }}
                 >
                     {fpf && fpf.Cameras.length > 0 && isCameraActive && (
-                        <Box mb="lg">
+                        <Box style={{
+                            borderRadius: '10px',
+                            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                        }}>
                             <CameraCarousel camerasToDisplay={fpf.Cameras} />
                         </Box>
                     )}
-                    {fpf && <GrowingCycleList fpfId={fpf.id} />}
+                    {fpf && (
+                        <Box
+                            style={{
+                                borderRadius: '10px',
+                                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                            }}>
+                            <GrowingCycleList fpfId={fpf.id} />
+                        </Box>
+                        )}
                 </Box>
             </SimpleGrid>
         </Container>
