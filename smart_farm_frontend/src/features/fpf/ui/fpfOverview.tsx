@@ -92,26 +92,19 @@ export const FpfOverview = () => {
                         WebkitOverflowScrolling: 'touch',
                         height: '100%',
                         padding: '10px',
-                        scrollBehavior: 'smooth',
+                        scrollBehavior: 'smooth'
                     }}
                 >
                     {fpf && fpf.Cameras.length > 0 && isCameraActive && (
-                        <Box style={{
-                            borderRadius: '10px',
-                            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-                        }}>
+                        <Box style={{borderRadius: '10px', boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)', marginBottom: '32px' }}>
                             <CameraCarousel camerasToDisplay={fpf.Cameras} />
                         </Box>
                     )}
                     {fpf && (
-                        <Box
-                            style={{
-                                borderRadius: '10px',
-                                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-                            }}>
+                        <Box style={{borderRadius: '10px', boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)' }}>
                             <GrowingCycleList fpfId={fpf.id} />
                         </Box>
-                        )}
+                    )}
                 </Box>
             </SimpleGrid>
         </Container>
