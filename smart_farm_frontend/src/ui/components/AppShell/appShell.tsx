@@ -15,21 +15,6 @@ export const BasicAppShell: React.FC<PropsWithChildren<{}>> = ({ children }) => 
     const showNavbar = auth.isAuthenticated && !noNavbarRoutes.includes(location.pathname);
     const navigate = useNavigate();
 
-    // TODO: this block for first redirect
-    /*useEffect(() => {
-        // Check for the last visited organization in localStorage when the user logs in
-        if (auth.isAuthenticated) {
-            const lastVisitedOrganization = localStorage.getItem("lastVisitedOrganization");
-            const hasRedirected = localStorage.getItem("redirected");
-            // Redirect to the last visited organization page if it exists
-            if (lastVisitedOrganization && !hasRedirected) {
-                navigate(AppRoutes.organization.replace(':organizationId', lastVisitedOrganization));
-                // Mark redirection as done
-                localStorage.setItem("redirected", "true");
-            }
-        }
-    }, [auth.isAuthenticated, navigate]);*/
-
     return (
         <AppShell
             header={{ height: 60 }}
