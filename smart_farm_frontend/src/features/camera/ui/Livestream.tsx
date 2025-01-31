@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import {getUser} from "../../../utils/getUser";
-import {Title} from "@mantine/core";
+import {Badge, rem, Title} from "@mantine/core";
 import {displayObject} from "./CameraCarousel";
 
 export const Livestream: React.FC<{ src : displayObject }> = ({src}) => {
@@ -96,7 +96,18 @@ export const Livestream: React.FC<{ src : displayObject }> = ({src}) => {
                 height={360}
                 style={{ height: "100%", width: "100%"}}
             ></canvas>
-            <Title order={6} style={{position: 'absolute', top: '5px', left: '5px'}}> {src.title} </Title>
+            <Badge
+                color="dark"
+                variant="filled"
+                size="md"
+                style={{
+                    position: "absolute",
+                    top: rem(10),
+                    left: rem(10),
+                }}
+            >
+                {src.title}
+            </Badge>
         </>
     );
 };
