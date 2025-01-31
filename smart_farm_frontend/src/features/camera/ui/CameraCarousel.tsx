@@ -142,6 +142,7 @@ export const CameraCarousel: React.FC<{ camerasToDisplay: Camera[] }> = ({
                             withIndicators
                             loop
                             controlSize={32}
+                            slideSize="100%"
                             styles={{
                                 controls: {
                                     opacity: isHovered ? 1 : 0,
