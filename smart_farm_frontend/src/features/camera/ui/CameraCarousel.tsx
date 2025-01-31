@@ -79,8 +79,13 @@ export const CameraCarousel: React.FC<{ camerasToDisplay: Camera[] }> = ({
                     <Image
                         src={objectToDisplay.url}
                         alt="Last Received Image"
-                        fit="cover"
+                        fit="contain"
                         radius="md"
+                        style={{
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'contain'
+                        }}
                     />
                     <Badge
                         color="dark"
