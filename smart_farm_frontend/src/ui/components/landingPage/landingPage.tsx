@@ -16,7 +16,10 @@ import {
     Grid,
     Loader,
 } from '@mantine/core';
-
+import {
+    IconChevronDown,
+    IconWheat,
+} from '@tabler/icons-react';
 import React, { PropsWithChildren, useEffect, useState } from 'react';
 import { getMyOrganizations } from '../../../features/organization/useCase/getMyOrganizations';
 import { Organization } from '../../../features/organization/models/Organization';
@@ -181,8 +184,8 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
                                                         borderRadius: '5px',
                                                     }}
                                                 />
-                                            ):(
-                                                <Text>Hallo</Text>
+                                            ) : (
+                                                <IconWheat size={60} stroke={1.5} color="#199ff4" />
                                             )}
                                         </Box>
                                     </Card>
