@@ -34,15 +34,8 @@ export const FpfForm: React.FC<{ organizationId?: string, toEditFpf?: Fpf }> = (
         }
     }, [toEditFpf]);
 
-    const validateIps = () => {
-        const newErrors: { sensorServiceIp?: string; cameraServiceIp?: string } = {};
-        setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
-    };
-
     const handleSave = () => {
-        console.log("Handle Save")
-        if (validateIps() && organizationId) {
+        if (organizationId) {
             const id = notifications.show({
                 loading: true,
                 title: 'Loading',

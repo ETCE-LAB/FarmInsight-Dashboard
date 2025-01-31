@@ -104,7 +104,6 @@ export const AppShell_Navbar: React.FC = () => {
 
     const handleOrganizationSelect = (name: string, id: string) => {
         setSelectedOrganization({ name, id });
-        navigate(AppRoutes.organization.replace(':organizationId', id));
     };
 
     const handleFpfSelect = (id: string) => {

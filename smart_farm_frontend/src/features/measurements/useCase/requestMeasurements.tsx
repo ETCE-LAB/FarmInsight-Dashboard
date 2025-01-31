@@ -23,6 +23,5 @@ export const requestMeasuremnt = (sensorID:string, from:string, to?:string) => {
     }
 
     const result:  Promise<Measurement[]> = apiClient.get(url, headers)
-    console.log(result)
     return result
 }

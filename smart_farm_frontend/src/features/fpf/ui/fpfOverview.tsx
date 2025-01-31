@@ -3,7 +3,7 @@ import TimeseriesGraph from "../../measurements/ui/timeseriesGraph";
 import { useParams } from "react-router-dom";
 import { Fpf } from "../models/Fpf";
 import { getFpf } from "../useCase/getFpf";
-import {Container, Box, SimpleGrid, Notification} from '@mantine/core';
+import {Container, Box, SimpleGrid, Notification, Divider} from '@mantine/core';
 import GrowingCycleList from "../../growthCycle/ui/growingCycleList";
 import { CameraCarousel } from "../../camera/ui/CameraCarousel";
 import { useAppDispatch } from "../../../utils/Hooks";
@@ -16,6 +16,7 @@ export const FpfOverview = () => {
     const params = useParams();
     const { t } = useTranslation();
     const [isFirefox, setIsFirefox] = useState(true);
+    const [isCameraActive, setCameraActive] = useState(false)
     useEffect(() => {
         // Detect if the browser is Firefox
         const userAgent = navigator.userAgent.toLowerCase();
@@ -28,13 +29,31 @@ export const FpfOverview = () => {
                 setFpf(resp);
                 dispatch(setGrowingCycles(resp.GrowingCycles));
             });
+            if(fpf?.Cameras && fpf.Cameras.length > 0) {
+
+            }
+
         }
     }, [params]);
+
+    useEffect( () => {
+        if(fpf) {
+            if (fpf.Cameras) {
+                fpf.Cameras.map(camera => {
+                    console.log(fpf.Cameras)
+                    console.log(camera)
+                    if (camera.isActive && !isCameraActive) {
+                        setCameraActive(true)
+                    }
+                })
+            }
+        }
+    },[fpf])
 
     return (
         <Container fluid style={{ width: '100%', height: '100%' }}>
             {isFirefox && (
-                <Notification mb='1em' color="red">
+                <Notification mb='1em' color="red" withCloseButton={false}>
                     {t('error.fireFoxError')}
                 </Notification>
             )}
@@ -51,12 +70,13 @@ export const FpfOverview = () => {
                         scrollbarWidth: 'thin',
                         WebkitOverflowScrolling: 'touch',
                         height: '100%',
-                        paddingRight: '10px',
+                        padding: '10px',
+                        scrollBehavior: 'smooth',
                     }}
                 >
                     {fpf &&
                         fpf.Sensors.map((sensor) => (
-                            <Box key={sensor.id} mb="lg">
+                            <Box key={sensor.id} style={{boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)', borderRadius: '10px', marginBottom: '20px' }}>
                                 <TimeseriesGraph sensor={sensor} />
                             </Box>
                         ))
@@ -71,15 +91,20 @@ export const FpfOverview = () => {
                         scrollbarWidth: 'thin',
                         WebkitOverflowScrolling: 'touch',
                         height: '100%',
-                        paddingRight: '10px',
+                        padding: '10px',
+                        scrollBehavior: 'smooth'
                     }}
                 >
-                    {fpf && fpf.Cameras.length > 0 && (
-                        <Box mb="lg">
+                    {fpf && fpf.Cameras.length > 0 && isCameraActive && (
+                        <Box style={{borderRadius: '10px', boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)', marginBottom: '32px' }}>
                             <CameraCarousel camerasToDisplay={fpf.Cameras} />
                         </Box>
                     )}
-                    {fpf && <GrowingCycleList fpfId={fpf.id} />}
+                    {fpf && (
+                        <Box style={{borderRadius: '10px', boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)' }}>
+                            <GrowingCycleList fpfId={fpf.id} />
+                        </Box>
+                    )}
                 </Box>
             </SimpleGrid>
         </Container>
