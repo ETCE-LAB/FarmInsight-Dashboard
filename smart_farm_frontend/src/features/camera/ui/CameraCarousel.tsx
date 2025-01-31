@@ -59,7 +59,7 @@ export const CameraCarousel: React.FC<{ camerasToDisplay: Camera[] }> = ({
                                 setObjectsToDisplay((prevObjects) => [
                                     ...prevObjects,
                                     {
-                                        url: resp[resp.length - 1].url,
+                                        url: resp[0].url,
                                         title: `${camera.name}`,
                                         isLiveStream: false,
                                     },
