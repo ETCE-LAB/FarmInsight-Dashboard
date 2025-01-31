@@ -21,6 +21,7 @@ import { useAuth } from "react-oidc-context";
 import { Livestream } from "./Livestream";
 import { IconCamera, IconVideo, IconVideoOff } from "@tabler/icons-react";
 import { useTranslation } from "react-i18next";
+import {BACKEND_URL} from "../../../env-config";
 
 export interface displayObject {
     url: string;
@@ -48,7 +49,7 @@ export const CameraCarousel: React.FC<{ camerasToDisplay: Camera[] }> = ({
                         setObjectsToDisplay((prevObjects) => [
                             ...prevObjects,
                             {
-                                url: `${process.env.REACT_APP_BACKEND_URL}/api/cameras/${camera.id}/livestream`,
+                                url: `${BACKEND_URL}/api/cameras/${camera.id}/livestream`,
                                 title: `${camera.name} LiveStream`,
                                 isLiveStream: true,
                             },
