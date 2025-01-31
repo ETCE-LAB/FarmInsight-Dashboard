@@ -10,7 +10,7 @@ export const getImages = (cameraId:string, from?:string) => {
     if (!from) {
         const currentDate = new Date();
         const pastDate = new Date();
-        pastDate.setDate(currentDate.getDate() - 30);
+        pastDate.setDate(currentDate.getDate() - 10);
 
         // Formatierung des Datums im Format YYYY-MM-DD
         const year = pastDate.getFullYear();
