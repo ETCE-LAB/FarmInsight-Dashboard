@@ -18,6 +18,7 @@ i18n
                         },
                     },
                     header: {
+                        loading: 'Loading...',
                         title: 'FARMINSIGHT',
                         noFpfAvailable: 'No FPF available',
                         organizations: 'Organizations',
@@ -219,6 +220,7 @@ i18n
                         },
                     },
                     header: {
+                        loading: 'Laden...',
                         title: 'FARMINSIGHT',
                         noFpfAvailable: 'Kein FPF verfügbar',
                         organizations: 'Organisationen',
@@ -419,6 +421,7 @@ i18n
                         },
                     },
                     header: {
+                        loading: 'Chargement...',
                         title: 'FARMINSIGHT',
                         noFpfAvailable: 'Aucun FPF disponible',
                         organizations: 'Organisations',
@@ -616,6 +619,7 @@ i18n
                         },
                     },
                     header: {
+                        loading: 'Caricamento...',
                         title: 'FARMINSIGHT',
                         noFpfAvailable: 'Nessun FPF disponibile',
                         organizations: 'Organizzazioni',
@@ -814,6 +818,7 @@ i18n
                         },
                     },
                     header: {
+                        loading: '加载中...',
                         title: 'FARMINSIGHT',
                         noFpfAvailable: '没有可用的 FPF',
                         organizations: '组织',
@@ -1012,6 +1017,7 @@ i18n
                         },
                     },
                     header: {
+                        loading: 'Загрузка...',
                         title: 'FARMINSIGHT',
                         noFpfAvailable: 'Нет доступных FPF',
                         organizations: 'Организации',
