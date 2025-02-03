@@ -14,6 +14,7 @@ import { CameraList } from "../../camera/ui/CameraList";
 import { Camera } from "../../camera/models/camera";
 import { useTranslation } from "react-i18next";
 import { IconEdit } from "@tabler/icons-react";
+import { receiveUserProfile } from "../../userProfile/useCase/receiveUserProfile";
 
 export const EditFPF: React.FC = () => {
     const { organizationId, fpfId } = useParams();
@@ -29,6 +30,7 @@ export const EditFPF: React.FC = () => {
 
     const SensorEventListener = useSelector((state: RootState) => state.sensor.receivedSensorEvent);
     const CameraEventListener = useSelector((state: RootState) => state.camera.createdCameraEvent);
+    const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
     useEffect(() => {
         if (fpfId) {
@@ -68,6 +70,17 @@ export const EditFPF: React.FC = () => {
         }
     }, [CameraEventListener]);
 
+    useEffect(() => {
+        if (fpf && organization) {
+            receiveUserProfile().then((user) => {
+                const userIsAdmin = organization.memberships.some(
+                    (member) => member.userprofile.id === user.id && member.membershipRole === "admin"
+                );
+                setIsAdmin(userIsAdmin);
+            });
+        }
+    }, [fpf, organization]);
+
     const togglePublic = () => {
         setFpf((prevFpf) => ({ ...prevFpf, isPublic: !prevFpf.isPublic }));
     };
@@ -82,15 +95,17 @@ export const EditFPF: React.FC = () => {
                                 {'FpF-' + t("header.name")}: {fpf.name}
                             </Title>
                             <Flex align="center" style={{ marginLeft: "auto" }}>
-                            <IconEdit
-                                size={24}
-                                onClick={() => setEditModalOpen(true)}
-                                style={{
-                                    cursor: 'pointer',
-                                    color: '#199ff4',
-                                    marginLeft: 10,
-                                }}
-                            />
+                                {isAdmin && (
+                                    <IconEdit
+                                        size={24}
+                                        onClick={() => setEditModalOpen(true)}
+                                        style={{
+                                            cursor: 'pointer',
+                                            color: '#199ff4',
+                                            marginLeft: 10,
+                                        }}
+                                    />
+                                )}
                             </Flex>
                         </Flex>
                     </Grid.Col>
@@ -126,7 +141,7 @@ export const EditFPF: React.FC = () => {
                     <Accordion.Control>{t('sensor.title')}</Accordion.Control>
                     <Accordion.Panel>
                         <Card padding="lg" radius="md">
-                            <SensorList sensorsToDisplay={sensors} fpfId={fpf.id} />
+                            <SensorList sensorsToDisplay={sensors} fpfId={fpf.id} isAdmin={isAdmin} />
                         </Card>
                     </Accordion.Panel>
                 </Accordion.Item>
@@ -138,7 +153,7 @@ export const EditFPF: React.FC = () => {
                     <Accordion.Control>{t('camera.cameras')}</Accordion.Control>
                     <Accordion.Panel>
                         <Card padding="lg" radius="md">
-                            <CameraList camerasToDisplay={cameras} />
+                            <CameraList camerasToDisplay={cameras} isAdmin={isAdmin} />
                         </Card>
                     </Accordion.Panel>
                 </Accordion.Item>

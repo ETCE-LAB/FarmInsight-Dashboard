@@ -12,7 +12,7 @@ import { useAppSelector } from "../../../utils/Hooks";
 import { receivedSensorEvent } from "../state/SensorSlice";
 import { useTranslation } from "react-i18next";
 
-export const SensorList: React.FC<{ sensorsToDisplay?: Sensor[], fpfId: string }> = ({ sensorsToDisplay, fpfId }) => {
+export const SensorList: React.FC<{ sensorsToDisplay?: Sensor[], fpfId: string, isAdmin:Boolean }> = ({ sensorsToDisplay, fpfId, isAdmin }) => {
     const [sensor, setSensor] = useState<Sensor[]>([]);
     const [sensorModalOpen, setSensorModalOpen] = useState(false);
     const [selectedSensor, setSelectedSensor] = useState<EditSensor | undefined>(undefined);
@@ -67,6 +67,7 @@ export const SensorList: React.FC<{ sensorsToDisplay?: Sensor[], fpfId: string }
             {/* Header with Add Button */}
             <Group mb="md" justify="space-between">
                 <h2>{t('sensor.title')}</h2>
+                {isAdmin &&
                 <IconCirclePlus
                     size={25}
                     stroke={2}
@@ -74,6 +75,7 @@ export const SensorList: React.FC<{ sensorsToDisplay?: Sensor[], fpfId: string }
                     onClick={() => onClickAddSensor()}
                     style={{ cursor: "pointer" }}
                 />
+                }
             </Group>
             {/* Conditional Rendering of Table */}
             {sensorsToDisplay && sensorsToDisplay.length > 0 ? (

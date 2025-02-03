@@ -6,7 +6,7 @@ import { CameraForm } from "./CameraForm";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-export const CameraList: React.FC<{ camerasToDisplay?: Camera[] }> = ({ camerasToDisplay }) => {
+export const CameraList: React.FC<{ camerasToDisplay?: Camera[], isAdmin:Boolean }> = ({ camerasToDisplay, isAdmin }) => {
     const [CameraModalOpen, setCameraModalOpen] = useState(false);
     const [selectedCamera, setSelectedCamera] = useState<EditCamera | undefined>(undefined);
     const { organizationId, fpfId } = useParams();
@@ -47,6 +47,7 @@ export const CameraList: React.FC<{ camerasToDisplay?: Camera[] }> = ({ camerasT
             {/* Header with Add Button */}
             <Group mb="md" justify="space-between">
                 <h2>{t('camera.cameras')}</h2>
+                {isAdmin &&
                 <IconCirclePlus
                     size={25}
                     stroke={2}
@@ -54,6 +55,7 @@ export const CameraList: React.FC<{ camerasToDisplay?: Camera[] }> = ({ camerasT
                     onClick={() => setCameraModalOpen(true)}
                     style={{ cursor: "pointer" }}
                 />
+                }
             </Group>
 
             {/* Conditional Rendering of Table */}
