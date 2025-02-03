@@ -14,22 +14,15 @@ const TimeseriesGraph: React.FC<{ sensor: Sensor }> = ({ sensor }) => {
     const measurementReceivedEventListener = useAppSelector(receivedMeasurementEvent);
     const [measurements, setMeasurements] = useState<Measurement[]>([]);
     const [shouldReconnect, setShouldReconnect] = useState<boolean>(false);
-    const [socketURL, setSocketUrl] = useState<string | null>(null);
+    const [socketURL, setSocketUrl] = useState<string | null>("ws://localhost");
     const [minXValue, setMinXValue] = useState<number>(10);
     const [maxXValue, setMaxXValue] = useState<number>(10);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
 
-    const [isFirefox, setIsFirefox] = useState(true);
-    useEffect(() => {
-        // Detect if the browser is Firefox
-        const userAgent = navigator.userAgent.toLowerCase();
-        setIsFirefox(userAgent.includes('firefox'));
-    }, []);
-
     let { lastMessage, readyState } = useWebSocket(socketURL || "", {
         shouldReconnect: () => shouldReconnect,
-    }, !isFirefox);
+    });
 
     const reconnectSocket = async (): Promise<void> => {
         try {
@@ -82,13 +75,13 @@ const TimeseriesGraph: React.FC<{ sensor: Sensor }> = ({ sensor }) => {
     }, [lastMessage]);
 
     useEffect(() => {
-        if (!isFirefox && sensor) {
+        if (sensor) {
             reconnectSocket().catch((err) => console.error("Error during WebSocket connection:", err));
         } else {
             setSocketUrl(null);
             setShouldReconnect(false);
         }
-    }, [sensor, isFirefox]);
+        }, [sensor]);
 
     useEffect(() => {
         setLoading(true);

@@ -18,7 +18,6 @@ import {
 } from '@mantine/core';
 import {
     IconChevronDown,
-    IconWheat,
 } from '@tabler/icons-react';
 import React, { PropsWithChildren, useEffect, useState } from 'react';
 import { getMyOrganizations } from '../../../features/organization/useCase/getMyOrganizations';
@@ -185,7 +184,7 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
                                                     }}
                                                 />
                                             ) : (
-                                                <IconWheat size={60} stroke={1.5} color="#199ff4" />
+                                                <p>hi</p>
                                             )}
                                         </Box>
                                     </Card>
