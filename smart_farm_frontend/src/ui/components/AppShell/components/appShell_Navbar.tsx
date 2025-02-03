@@ -223,12 +223,10 @@ export const AppShell_Navbar: React.FC = () => {
                                     }}
                                 >
                                     <IconSettings
-                                        size={20}
+                                        size={22}
                                         style={{
                                             verticalAlign: 'middle',
                                             display: 'flex',
-                                            marginLeft: 'auto',
-                                            marginRight: '5px',
                                         }}
                                         stroke={2}
                                         cursor="pointer"
@@ -252,17 +250,6 @@ export const AppShell_Navbar: React.FC = () => {
                                         <DynamicFontText text={fpf.name} maxWidth={150} />
                                     </Flex>
                                 </Text>
-                                {selectedFPFId === fpf.id ? (
-                                    <IconSquareRoundedCheck
-                                        size={20}
-                                        style={{ marginRight: '10px', color: '#16A34A', verticalAlign: 'middle' }}
-                                    />
-                                ) : (
-                                    <IconSquareRoundedMinus
-                                        size={20}
-                                        style={{ marginRight: '10px', color: '#D97400', verticalAlign: 'middle' }}
-                                    />
-                                )}
                             </Flex>
 
                         ))}

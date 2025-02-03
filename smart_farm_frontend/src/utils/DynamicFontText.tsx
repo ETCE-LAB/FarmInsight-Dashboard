@@ -1,63 +1,33 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 
-interface DynamicFontTextProps {
+interface FixedFontTextProps {
   text: string;
   maxWidth: number;
-  minFontSize?: number;
-  maxFontSize?: number;
+  fontSize?: number;
 }
 
-const DynamicFontText: React.FC<DynamicFontTextProps> = ({
-  text,
-  maxWidth,
-  minFontSize = 12,
-  maxFontSize = 24,
-}) => {
-  const textRef = useRef<HTMLSpanElement | null>(null);
-  const [fontSize, setFontSize] = useState(maxFontSize);
-
-  useEffect(() => {
-    const adjustFontSize = () => {
-      const element = textRef.current;
-      if (element) {
-        let currentFontSize = maxFontSize;
-        element.style.fontSize = `${currentFontSize}px`;
-
-        // Decrease font size until it fits or reaches the minimum font size
-        while (element.scrollWidth > maxWidth && currentFontSize > minFontSize) {
-          currentFontSize -= 1;
-          element.style.fontSize = `${currentFontSize}px`;
-        }
-
-        setFontSize(currentFontSize);
-      }
-    };
-
-    adjustFontSize();
-    window.addEventListener('resize', adjustFontSize);
-
-    return () => {
-      window.removeEventListener('resize', adjustFontSize);
-    };
-  }, [text, maxWidth, minFontSize, maxFontSize]);
-
+const FixedFontText: React.FC<FixedFontTextProps> = ({
+                                                       text,
+                                                       maxWidth,
+                                                       fontSize = 24,
+                                                     }) => {
   return (
-    <span
-      ref={textRef}
-      style={{
-        fontSize: `${fontSize}px`,
-        whiteSpace: 'nowrap',
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-
-        maxWidth: `${maxWidth}px`,
-        display: 'inline-flex',
-         alignItems: 'center',
-      }}
-    >
+      <span
+          style={{
+            fontSize: `${fontSize}px`,
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            maxWidth: `${maxWidth}px`,
+            display: 'inline-block',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+          title={text}
+      >
       {text}
     </span>
   );
 };
 
-export default DynamicFontText;
+export default FixedFontText;
