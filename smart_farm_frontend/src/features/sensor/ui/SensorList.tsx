@@ -12,7 +12,7 @@ import { useAppSelector } from "../../../utils/Hooks";
 import { receivedSensorEvent } from "../state/SensorSlice";
 import { useTranslation } from "react-i18next";
 
-export const SensorList: React.FC<{ sensorsToDisplay?: Sensor[], fpfId: string }> = ({ sensorsToDisplay, fpfId }) => {
+export const SensorList: React.FC<{ sensorsToDisplay?: Sensor[], fpfId: string, isAdmin:Boolean }> = ({ sensorsToDisplay, fpfId, isAdmin }) => {
     const [sensor, setSensor] = useState<Sensor[]>([]);
     const [sensorModalOpen, setSensorModalOpen] = useState(false);
     const [selectedSensor, setSelectedSensor] = useState<EditSensor | undefined>(undefined);
@@ -67,6 +67,7 @@ export const SensorList: React.FC<{ sensorsToDisplay?: Sensor[], fpfId: string }
             {/* Header with Add Button */}
             <Group mb="md" justify="space-between">
                 <h2>{t('sensor.title')}</h2>
+                {isAdmin &&
                 <IconCirclePlus
                     size={25}
                     stroke={2}
@@ -74,6 +75,7 @@ export const SensorList: React.FC<{ sensorsToDisplay?: Sensor[], fpfId: string }
                     onClick={() => onClickAddSensor()}
                     style={{ cursor: "pointer" }}
                 />
+                }
             </Group>
             {/* Conditional Rendering of Table */}
             {sensorsToDisplay && sensorsToDisplay.length > 0 ? (
@@ -86,7 +88,9 @@ export const SensorList: React.FC<{ sensorsToDisplay?: Sensor[], fpfId: string }
                         <Table.Th>{t('sensorList.modelNr')}</Table.Th>
                         <Table.Th>{t('sensorList.intervalSeconds')}</Table.Th>
                         <Table.Th>{t('header.status')}</Table.Th>
+                        {isAdmin &&
                         <Table.Th>{}</Table.Th>
+                        }
                     </Table.Tr>
                     </Table.Thead>
                     <Table.Tbody>
@@ -106,7 +110,8 @@ export const SensorList: React.FC<{ sensorsToDisplay?: Sensor[], fpfId: string }
                                         {sensor.isActive ? t("camera.active") : t("camera.inactive")}
                                     </Badge>
                                 </Table.Td>
-                            <Table.Td style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                            {isAdmin &&
+                                <Table.Td style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
                                 <Group>
                                         <IconEdit
                                             color={"#199ff4"}
@@ -117,6 +122,7 @@ export const SensorList: React.FC<{ sensorsToDisplay?: Sensor[], fpfId: string }
                                         />
                                 </Group>
                             </Table.Td>
+                            }
                         </Table.Tr>
                     ))}
                     </Table.Tbody>

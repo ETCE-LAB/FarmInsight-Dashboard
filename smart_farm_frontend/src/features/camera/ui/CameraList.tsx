@@ -6,7 +6,7 @@ import { CameraForm } from "./CameraForm";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-export const CameraList: React.FC<{ camerasToDisplay?: Camera[] }> = ({ camerasToDisplay }) => {
+export const CameraList: React.FC<{ camerasToDisplay?: Camera[], isAdmin:Boolean }> = ({ camerasToDisplay, isAdmin }) => {
     const [CameraModalOpen, setCameraModalOpen] = useState(false);
     const [selectedCamera, setSelectedCamera] = useState<EditCamera | undefined>(undefined);
     const { organizationId, fpfId } = useParams();
@@ -47,6 +47,7 @@ export const CameraList: React.FC<{ camerasToDisplay?: Camera[] }> = ({ camerasT
             {/* Header with Add Button */}
             <Group mb="md" justify="space-between">
                 <h2>{t('camera.cameras')}</h2>
+                {isAdmin &&
                 <IconCirclePlus
                     size={25}
                     stroke={2}
@@ -54,6 +55,7 @@ export const CameraList: React.FC<{ camerasToDisplay?: Camera[] }> = ({ camerasT
                     onClick={() => setCameraModalOpen(true)}
                     style={{ cursor: "pointer" }}
                 />
+                }
             </Group>
 
             {/* Conditional Rendering of Table */}
@@ -70,7 +72,9 @@ export const CameraList: React.FC<{ camerasToDisplay?: Camera[] }> = ({ camerasT
                                 <Table.Th>{t("camera.snapshotUrl")}</Table.Th>
                                 <Table.Th>{t("camera.livestreamUrl")}</Table.Th>
                                 <Table.Th>{t("header.status")}</Table.Th>
+                                { isAdmin &&
                                 <Table.Th>{}</Table.Th>
+                                }
                             </Table.Tr>
                         </Table.Thead>
                         <Table.Tbody>
@@ -101,6 +105,7 @@ export const CameraList: React.FC<{ camerasToDisplay?: Camera[] }> = ({ camerasT
                                             {camera.isActive ? t("camera.active") : t("camera.inactive")}
                                         </Badge>
                                     </Table.Td>
+                                    { isAdmin &&
                                     <Table.Td style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
                                         <Group>
                                             <IconEdit
@@ -112,6 +117,7 @@ export const CameraList: React.FC<{ camerasToDisplay?: Camera[] }> = ({ camerasT
                                             />
                                         </Group>
                                     </Table.Td>
+                                    }
                                 </Table.Tr>
                             ))}
                         </Table.Tbody>

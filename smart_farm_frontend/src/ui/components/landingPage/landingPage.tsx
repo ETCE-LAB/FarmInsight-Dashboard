@@ -17,7 +17,8 @@ import {
     Loader,
 } from '@mantine/core';
 import {
-    IconChevronDown, IconPlant
+    IconChevronDown, 
+    IconPlant,
 } from '@tabler/icons-react';
 import React, { PropsWithChildren, useEffect, useState } from 'react';
 import { getMyOrganizations } from '../../../features/organization/useCase/getMyOrganizations';

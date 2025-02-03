@@ -15,13 +15,8 @@ export const FpfOverview = () => {
     const dispatch = useAppDispatch();
     const params = useParams();
     const { t } = useTranslation();
-    const [isFirefox, setIsFirefox] = useState(true);
     const [isCameraActive, setCameraActive] = useState(false)
-    useEffect(() => {
-        // Detect if the browser is Firefox
-        const userAgent = navigator.userAgent.toLowerCase();
-        setIsFirefox(userAgent.includes('firefox'));
-    }, []);
+
 
     useEffect(() => {
         if (params?.fpfId) {
@@ -32,7 +27,6 @@ export const FpfOverview = () => {
             if(fpf?.Cameras && fpf.Cameras.length > 0) {
 
             }
-
         }
     }, [params]);
 
@@ -52,11 +46,6 @@ export const FpfOverview = () => {
 
     return (
         <Container fluid style={{ width: '100%', height: '100%' }}>
-            {isFirefox && (
-                <Notification mb='1em' color="red" withCloseButton={false}>
-                    {t('error.fireFoxError')}
-                </Notification>
-            )}
             <SimpleGrid
                 cols={2}
                 spacing="lg"

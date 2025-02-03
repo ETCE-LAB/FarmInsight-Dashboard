@@ -14,7 +14,7 @@ import {
     Box,
     Badge,
 } from "@mantine/core";
-import { IconEdit, IconUserPlus, IconSquareRoundedMinus, IconEye, IconEyeOff, IconPlus } from "@tabler/icons-react";
+import { IconEdit, IconUserPlus, IconSquareRoundedMinus, IconEye, IconEyeOff } from "@tabler/icons-react";
 import { MembershipList } from "../../membership/ui/MembershipList";
 import { SearchUserProfile } from "../../userProfile/ui/searchUserProfile";
 import { UserProfile } from "../../userProfile/models/UserProfile";
@@ -38,14 +38,9 @@ export const EditOrganization = () => {
     const [newOrganizationName, setNewOrganizationName] = useState<string>(organization?.name || "");
     const [isPublic, setIsPublic] = useState<boolean>(organization?.isPublic || false);
     const [isModified, setIsModified] = useState<boolean>(false);
-    const [editModalOpen, setEditModalOpen] = useState(false);  // State to control the edit modal visibility
+    const [editModalOpen, setEditModalOpen] = useState(false);
     const membershipEventListener = useSelector((state: RootState) => state.membership.changeMembershipEvent);
     const dispatch = useAppDispatch();
-
-    const handleRemoveUser = (user: UserProfile) => {
-        setUsersToAdd((prevUsers) => prevUsers.filter((u) => u.id !== user.id));
-    };
-
 
     useEffect(() => {
         if (organizationId)
@@ -60,6 +55,12 @@ export const EditOrganization = () => {
                     console.error("Failed to fetch organization:", error);
                 });
     }, [organizationId, membershipEventListener]);
+
+    const isAdmin = organization?.memberships.some((membership) => membership.membershipRole === "admin");
+
+    const handleRemoveUser = (user: UserProfile) => {
+        setUsersToAdd((prevUsers) => prevUsers.filter((u) => u.id !== user.id));
+    };
 
     const userSelected = (user: UserProfile) => {
         if (!usersToAdd.includes(user)) {
@@ -83,7 +84,6 @@ export const EditOrganization = () => {
                     message: `${usersToAdd.length} ${t("header.userAdded")}`,
                     color: 'green',
                 });
-                // Clear the user list
                 setUsersToAdd([]);
                 dispatch(changedMembership());
                 setUserModalOpen(false);
@@ -130,7 +130,7 @@ export const EditOrganization = () => {
                 });
                 setOrganization(updatedOrganization);
                 setIsModified(false);
-                setEditModalOpen(false);  // Close modal after saving
+                setEditModalOpen(false);
             })
             .catch((error) => {
                 showNotification({
@@ -141,6 +141,7 @@ export const EditOrganization = () => {
                 console.error("Error updating organization:", error);
             });
     };
+
     return (
         <>
             {organization ? (
@@ -150,11 +151,13 @@ export const EditOrganization = () => {
                             <Title order={2}>
                                 {t("header.organization")}: {organization.name}
                             </Title>
-                            <IconEdit
-                                size={24}
-                                onClick={() => setEditModalOpen(true)}
-                                style={{ cursor: "pointer", color: "#199ff4" }}
-                            />
+                            {isAdmin && (
+                                <IconEdit
+                                    size={24}
+                                    onClick={() => setEditModalOpen(true)}
+                                    style={{ cursor: "pointer", color: "#199ff4" }}
+                                />
+                            )}
                         </Flex>
                         <Flex align="center" gap={10}>
                             <Text fw="bold" size="lg" c="dimmed">
@@ -167,21 +170,23 @@ export const EditOrganization = () => {
                     </Card>
 
                     <Card padding="lg" radius="md" mt="lg">
-                    <Box mt="xl">
-                        <Flex justify="space-between" align="center" mb="lg">
-                            <Text size="xl" fw="bold">
-                                {t("header.members")}
-                            </Text>
-                            <IconUserPlus
-                                size={30}
-                                onClick={() => setUserModalOpen(true)}
-                                style={{ cursor: "pointer", color: "#199ff4" }}
-                            />
-                        </Flex>
-                        <MembershipList members={organization.memberships} />
-                    </Box>
+                        <Box mt="xl">
+                            <Flex justify="space-between" align="center" mb="lg">
+                                <Text size="xl" fw="bold">
+                                    {t("header.members")}
+                                </Text>
+                                {isAdmin && (
+                                    <IconUserPlus
+                                        size={30}
+                                        onClick={() => setUserModalOpen(true)}
+                                        style={{ cursor: "pointer", color: "#199ff4" }}
+                                    />
+                                )}
+                            </Flex>
+                            <MembershipList members={organization.memberships} />
+                        </Box>
                     </Card>
-                    {/* FpF Modal */}
+
                     <Modal
                         opened={fpfModalOpen}
                         onClose={() => setFpFModalOpen(false)}
@@ -237,6 +242,7 @@ export const EditOrganization = () => {
                             label={t("header.table.name")}
                             value={newOrganizationName}
                             onChange={handleNameChange}
+                            disabled={!isAdmin}  // Disable if not admin
                         />
                         <Switch
                             style={{ marginTop: "20px" }}
@@ -246,11 +252,12 @@ export const EditOrganization = () => {
                             size="md"
                             checked={isPublic}
                             onChange={handleSwitchChange}
+                            disabled={!isAdmin}  // Disable if not admin
                         />
                         <Button
                             onClick={handleUpdateOrganization}
                             mt="lg"
-                            disabled={!isModified}
+                            disabled={!isModified || !isAdmin}
                             variant="filled"
                             color="#199ff4"
                         >
