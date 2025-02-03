@@ -17,7 +17,7 @@ import {
     Loader,
 } from '@mantine/core';
 import {
-    IconChevronDown, 
+    IconChevronDown,
     IconPlant,
 } from '@tabler/icons-react';
 import React, { PropsWithChildren, useEffect, useState } from 'react';
@@ -185,7 +185,7 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
                                                     }}
                                                 />
                                             ) : (
-                                                <IconPlant size={60} stroke={1.5} color="#199ff4" />
+                                                <p>hi</p>
                                             )}
                                         </Box>
                                     </Card>

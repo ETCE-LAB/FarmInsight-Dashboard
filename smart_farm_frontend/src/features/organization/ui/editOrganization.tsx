@@ -27,6 +27,7 @@ import {changedMembership} from "../../membership/state/MembershipSlice";
 import {editOrganization} from "../useCase/editOrganization";
 import {useAppDispatch} from "../../../utils/Hooks";
 import {RootState} from "../../../utils/store";
+import {receiveUserProfile} from "../../userProfile/useCase/receiveUserProfile";
 
 export const EditOrganization = () => {
     const { organizationId } = useParams();
@@ -40,6 +41,7 @@ export const EditOrganization = () => {
     const [isModified, setIsModified] = useState<boolean>(false);
     const [editModalOpen, setEditModalOpen] = useState(false);
     const membershipEventListener = useSelector((state: RootState) => state.membership.changeMembershipEvent);
+    const [isAdmin, setIsAdmin] = useState<boolean>(false);
     const dispatch = useAppDispatch();
 
     useEffect(() => {
@@ -56,7 +58,17 @@ export const EditOrganization = () => {
                 });
     }, [organizationId, membershipEventListener]);
 
-    const isAdmin = organization?.memberships.some((membership) => membership.membershipRole === "admin");
+
+    useEffect(() => {
+        if (organization) {
+            receiveUserProfile().then((user) => {
+                const userIsAdmin = organization.memberships.some(
+                    (member) => member.userprofile.id === user.id && member.membershipRole === "admin"
+                );
+                setIsAdmin(userIsAdmin);
+            });
+        }
+    }, [organization]);
 
     const handleRemoveUser = (user: UserProfile) => {
         setUsersToAdd((prevUsers) => prevUsers.filter((u) => u.id !== user.id));
