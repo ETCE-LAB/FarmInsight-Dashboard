@@ -1,6 +1,7 @@
 import APIClient from "../../../utils/APIClient";
 import {getUser} from "../../../utils/getUser";
 import {HarvestEntity} from "../models/harvestEntity";
+import {BACKEND_URL} from "../../../env-config";
 
 //8250f7569a3047ea8decf4cc101003da
 //"2017-07-21T17:32:28Z
@@ -16,7 +17,7 @@ export const deleteHarvestEntity = async (harvestEntityID:string) => {
         'Content-Type': 'application/json', // Ensure proper content type for JSON payload
     };
 
-    const url = `${process.env.REACT_APP_BACKEND_URL}/api/harvests/${harvestEntityID}`;
+    const url = `${BACKEND_URL}/api/harvests/${harvestEntityID}`;
     try {
         const response = await apiClient.delete(url, headers);
         if(response)

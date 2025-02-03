@@ -39,7 +39,6 @@ export const AppShell_Navbar: React.FC = () => {
     const [organizationId, setOrganizationId] = useState<string>()
 
     useEffect(() => {
-        console.log(organizationId)
     }, [organizationId]);
 
     useEffect(() => {

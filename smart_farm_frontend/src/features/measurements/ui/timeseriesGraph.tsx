@@ -9,6 +9,8 @@ import { Card, Flex, Title, Notification, LoadingOverlay, Center } from "@mantin
 import { Sensor } from "../../sensor/models/Sensor";
 import useWebSocket from "react-use-websocket";
 import { getWebSocketToken } from "../../../utils/WebSocket/getWebSocketToken";
+import {format} from "node:url";
+import {BACKEND_URL} from "../../../env-config";
 
 const TimeseriesGraph: React.FC<{ sensor: Sensor }> = ({ sensor }) => {
     const measurementReceivedEventListener = useAppSelector(receivedMeasurementEvent);
@@ -31,7 +33,7 @@ const TimeseriesGraph: React.FC<{ sensor: Sensor }> = ({ sensor }) => {
                 throw new Error("No WebSocket token received.");
             }
 
-            let baseUrl = process.env.REACT_APP_BACKEND_URL;
+            let baseUrl = BACKEND_URL;
             if (!baseUrl) {
                 throw new Error("REACT_APP_BACKEND_URL is not configured.");
             }
@@ -47,9 +49,8 @@ const TimeseriesGraph: React.FC<{ sensor: Sensor }> = ({ sensor }) => {
             setSocketUrl(`${baseUrl}/ws/sensor/${sensor?.id}?token=${encodeURIComponent(resp.token)}`);
             setShouldReconnect(true);
         } catch (err) {
-            console.error(err);
             setError(err instanceof Error ? err.message : "Failed to reconnect WebSocket.");
-            setShouldReconnect(false);
+            setShouldReconnect(false); // Verbindung verhindern
         }
     };
 
