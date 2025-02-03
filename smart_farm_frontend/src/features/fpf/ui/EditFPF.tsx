@@ -92,7 +92,7 @@ export const EditFPF: React.FC = () => {
                     <Grid.Col span={12}>
                         <Flex align="center" style={{ marginBottom: "10px" }}>
                             <Title order={2}>
-                                {'FpF-' + t("header.name")}: {fpf.name}
+                                {'FPF-' + t("header.name")}: {fpf.name}
                             </Title>
                             <Flex align="center" style={{ marginLeft: "auto" }}>
                                 {isAdmin && (
