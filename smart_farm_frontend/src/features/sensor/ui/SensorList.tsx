@@ -88,7 +88,9 @@ export const SensorList: React.FC<{ sensorsToDisplay?: Sensor[], fpfId: string, 
                         <Table.Th>{t('sensorList.modelNr')}</Table.Th>
                         <Table.Th>{t('sensorList.intervalSeconds')}</Table.Th>
                         <Table.Th>{t('header.status')}</Table.Th>
+                        {isAdmin &&
                         <Table.Th>{}</Table.Th>
+                        }
                     </Table.Tr>
                     </Table.Thead>
                     <Table.Tbody>
@@ -108,7 +110,8 @@ export const SensorList: React.FC<{ sensorsToDisplay?: Sensor[], fpfId: string, 
                                         {sensor.isActive ? t("camera.active") : t("camera.inactive")}
                                     </Badge>
                                 </Table.Td>
-                            <Table.Td style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                            {isAdmin &&
+                                <Table.Td style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
                                 <Group>
                                         <IconEdit
                                             color={"#199ff4"}
@@ -119,6 +122,7 @@ export const SensorList: React.FC<{ sensorsToDisplay?: Sensor[], fpfId: string, 
                                         />
                                 </Group>
                             </Table.Td>
+                            }
                         </Table.Tr>
                     ))}
                     </Table.Tbody>

@@ -72,7 +72,9 @@ export const CameraList: React.FC<{ camerasToDisplay?: Camera[], isAdmin:Boolean
                                 <Table.Th>{t("camera.snapshotUrl")}</Table.Th>
                                 <Table.Th>{t("camera.livestreamUrl")}</Table.Th>
                                 <Table.Th>{t("header.status")}</Table.Th>
+                                { isAdmin &&
                                 <Table.Th>{}</Table.Th>
+                                }
                             </Table.Tr>
                         </Table.Thead>
                         <Table.Tbody>
@@ -103,6 +105,7 @@ export const CameraList: React.FC<{ camerasToDisplay?: Camera[], isAdmin:Boolean
                                             {camera.isActive ? t("camera.active") : t("camera.inactive")}
                                         </Badge>
                                     </Table.Td>
+                                    { isAdmin &&
                                     <Table.Td style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
                                         <Group>
                                             <IconEdit
@@ -114,6 +117,7 @@ export const CameraList: React.FC<{ camerasToDisplay?: Camera[], isAdmin:Boolean
                                             />
                                         </Group>
                                     </Table.Td>
+                                    }
                                 </Table.Tr>
                             ))}
                         </Table.Tbody>
