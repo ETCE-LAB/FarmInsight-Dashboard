@@ -10,8 +10,8 @@ i18n
                     fpf: {
                         address: 'Location',
                         noAddress: 'No Standort',
-                        editFpF: 'Edit FpF',
-                        createFpF: 'Create FpF',
+                        editFpF: 'Edit FPF',
+                        createFpF: 'Create FPF',
                         hint: {
                             publicHint: 'Set the FPF to public or private',
                             sensorServiceIpHint: 'IP or URL of the FPF Backend',
@@ -212,10 +212,10 @@ i18n
                     fpf: {
                         address: 'Standort',
                         noAddress: 'Kein Adresse',
-                        editFpF: 'FpF bearbeiten',
-                        createFpF: 'FpF erstellen',
+                        editFpF: 'FPF bearbeiten',
+                        createFpF: 'FPF erstellen',
                         hint: {
-                            publicHint: 'FpF öffentlich oder privat einstellen.',
+                            publicHint: 'FPF öffentlich oder privat einstellen.',
                             sensorServiceIpHint: 'IP oder URL des FPF-Backends',
                         },
                     },
@@ -413,8 +413,8 @@ i18n
                     fpf: {
                         address: 'Emplacement',
                         noAddress: 'Pas d’adresse',
-                        editFpF: 'Modifier FpF' ,
-                        createFpF: 'Créer FpF',
+                        editFpF: 'Modifier FPF' ,
+                        createFpF: 'Créer FPF',
                         hint: {
                             publicHint: 'Définir le FPF comme public ou privé',
                             sensorServiceIpHint: 'IP ou URL du backend FPF',
@@ -611,8 +611,8 @@ i18n
                     fpf: {
                         address: 'Posizione',
                         noAddress: 'Nessuna posizione',
-                        editFpF: 'Modifica FpF',
-                        createFpF: 'Crea FpF',
+                        editFpF: 'Modifica FPF',
+                        createFpF: 'Crea FPF',
                         hint: {
                             publicHint: 'Imposta il FPF su pubblico o privato',
                             sensorServiceIpHint: 'IP o URL del backend FPF',
@@ -810,8 +810,8 @@ i18n
                     fpf: {
                         address: '位置',
                         noAddress: '没有位置',
-                        editFpF: '編輯 FpF',
-                        createFpF: '创建 FpF',
+                        editFpF: '編輯 FPF',
+                        createFpF: '创建 FPF',
                         hint: {
                             publicHint: '将 FPF 设置为公共或私有',
                             sensorServiceIpHint: 'FPF 后端的 IP 或 URL',
@@ -1009,8 +1009,8 @@ i18n
                     fpf: {
                         address: 'Местоположение',
                         noAddress: 'Нет адреса',
-                        editFpF: 'редактировать FpF',
-                        createFpF: 'Создать FpF',
+                        editFpF: 'редактировать FPF',
+                        createFpF: 'Создать FPF',
                         hint: {
                             publicHint: 'Установить FPF как общедоступный или частный',
                             sensorServiceIpHint: 'IP или URL FPF-бэкенда',
