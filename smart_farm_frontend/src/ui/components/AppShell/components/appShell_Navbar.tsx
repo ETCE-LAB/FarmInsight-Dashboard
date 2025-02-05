@@ -57,6 +57,7 @@ export const AppShell_Navbar: React.FC = () => {
             if (organizationPathIndex !== -1 && path.length > organizationPathIndex + 1) {
                 const organizationId = path[organizationPathIndex + 1];
                 setOrganizationId(organizationId)
+                localStorage.setItem("lastVisitedOrganization", organizationId);
                 getOrganization(organizationId).then(resp => {
                     if (resp) {
                         setFpfList(resp.FPFs);
@@ -78,7 +79,7 @@ export const AppShell_Navbar: React.FC = () => {
                 });
             }
         }
-    }, [location, t]);
+    }, [location, t, auth.isAuthenticated]);
 
     useEffect(() => {
         const handleLanguageChange = () => {
@@ -104,6 +105,8 @@ export const AppShell_Navbar: React.FC = () => {
 
     const handleOrganizationSelect = (name: string, id: string) => {
         setSelectedOrganization({ name, id });
+        localStorage.setItem("lastVisitedOrganization", id);
+        navigate(AppRoutes.organization.replace(":organizationId", id));
     };
 
     const handleFpfSelect = (id: string) => {

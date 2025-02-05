@@ -15,6 +15,18 @@ export const BasicAppShell: React.FC<PropsWithChildren<{}>> = ({ children }) => 
     const showNavbar = auth.isAuthenticated && !noNavbarRoutes.includes(location.pathname);
     const navigate = useNavigate();
 
+    useEffect(() => {
+        if (auth.isAuthenticated) {
+            const lastVisitedOrganization = localStorage.getItem("lastVisitedOrganization");
+            const redirectedFlag = sessionStorage.getItem("redirectedOnce");
+
+            if (lastVisitedOrganization && !redirectedFlag) {
+                navigate(AppRoutes.organization.replace(":organizationId", lastVisitedOrganization));
+                sessionStorage.setItem("redirectedOnce", "true");
+            }
+        }
+    }, [auth.isAuthenticated, navigate]);
+
     return (
         <AppShell
             header={{ height: 60 }}
