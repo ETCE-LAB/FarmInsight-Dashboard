@@ -73,7 +73,7 @@ const TimeseriesGraph: React.FC<{ sensor: Sensor }> = ({ sensor }) => {
 
     useEffect(() => {
         setLoading(true);
-        requestMeasuremnt(sensor.id, "2024-10-10")
+        requestMeasuremnt(sensor.id)
             .then((resp) => {
                 if (!resp) throw new Error("Failed to fetch measurements.");
                 const roundedMeasurements = resp.map(m => ({ ...m, value: parseFloat(m.value.toFixed(2)) }));
@@ -89,8 +89,9 @@ const TimeseriesGraph: React.FC<{ sensor: Sensor }> = ({ sensor }) => {
     useEffect(() => {
         if (measurements.length > 0) {
             const values = measurements.map(m => m.value);
-            setMinXValue(Math.min(...values) - 5);
-            setMaxXValue(Math.max(...values) + 5);
+
+            setMinXValue(parseFloat((Math.min(...values) - 5).toFixed(2)));
+            setMaxXValue(parseFloat((Math.max(...values) + 5).toFixed(2)));
         }
     }, [measurements]);
 
@@ -123,6 +124,23 @@ const TimeseriesGraph: React.FC<{ sensor: Sensor }> = ({ sensor }) => {
                         yAxisProps={{ domain: [minXValue, maxXValue] }}
                         h={250}
                         tooltipAnimationDuration={200}
+                        tooltipProps={{
+                            content: ({ label, payload }) => {
+                                if (payload && payload.length > 0) {
+                                    return (
+                                        <Card color="grey" style={{}}>
+                                            <strong>{new Date(label).toLocaleDateString([], { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}</strong>
+                                            {payload.map((item) => (
+                                                <Flex key={item.name}>
+                                                    {item.value}{sensor.unit}
+                                                </Flex>
+                                            ))}
+                                        </Card>
+                                    );
+                                }
+                                return null;
+                            },
+                        }}
                     />
                 )}
             </Card>
