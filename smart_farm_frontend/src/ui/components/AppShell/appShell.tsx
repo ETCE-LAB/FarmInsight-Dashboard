@@ -1,28 +1,51 @@
-import { AppShell } from '@mantine/core';
+import {AppShell, Burger, Flex} from '@mantine/core';
 import { useLocation } from 'react-router-dom';
-import React, { PropsWithChildren } from "react";
+import React, {PropsWithChildren, useEffect, useState} from "react";
 import { AppShell_Header } from "./components/appShell_Header"; // Import the header component
 import { AppShell_Navbar } from "./components/appShell_Navbar";
 import {AppRoutes} from "../../../utils/appRoutes"; // Import the navbar component
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import {useMediaQuery} from "@mantine/hooks";
 import {useAuth} from "react-oidc-context";
 
 export const BasicAppShell: React.FC<PropsWithChildren<{}>> = ({ children }) => {
+    const auth = useAuth();
     const location = useLocation();
     const noNavbarRoutes = [AppRoutes.base];
-    const auth = useAuth();
     const showNavbar = auth.isAuthenticated && !noNavbarRoutes.includes(location.pathname);
     const navigate = useNavigate();
+    const [opened, setOpened] = useState(false);
+
+    const isMobile = useMediaQuery('(max-width: 768px)');
+
+    useEffect(() => {
+        if (auth.isAuthenticated) {
+            const lastVisitedOrganization = localStorage.getItem("lastVisitedOrganization");
+            const redirectedFlag = sessionStorage.getItem("redirectedOnce");
+
+            if (lastVisitedOrganization && !redirectedFlag) {
+                navigate(AppRoutes.organization.replace(":organizationId", lastVisitedOrganization));
+                sessionStorage.setItem("redirectedOnce", "true");
+            }
+        }
+    }, [auth.isAuthenticated, navigate]);
 
     return (
         <AppShell
             header={{ height: 60 }}
-            navbar={{ width: "15vw", breakpoint: 'sm' }}
+            navbar={{ width: "15vw", breakpoint: 'sm', collapsed: { mobile: !opened }, }}
             padding="md"
         >
             <AppShell.Header>
-                <AppShell_Header />
+                <Flex style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%',  height: '60px' }}>
+                    {/* Burger Menu auf mobilen Geräten */}
+                    {isMobile && showNavbar &&  (
+                        <Burger opened={opened} onClick={() => setOpened((o) => !o)} />
+                    )}
+                    {/* Der Header bleibt an Ort und Stelle */}
+                    <AppShell_Header />
+                </Flex>
+
             </AppShell.Header>
 
             {showNavbar && (

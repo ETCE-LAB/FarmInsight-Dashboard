@@ -15,14 +15,14 @@ import { Camera } from "../../camera/models/camera";
 import { useTranslation } from "react-i18next";
 import { IconEdit } from "@tabler/icons-react";
 import { receiveUserProfile } from "../../userProfile/useCase/receiveUserProfile";
+import {useAppDispatch} from "../../../utils/Hooks";
+import {updatedFpf} from "../state/FpfSlice";
 
 export const EditFPF: React.FC = () => {
     const { organizationId, fpfId } = useParams();
     const { t } = useTranslation();
     const [organization, setOrganization] = useState<Organization>();
-    const [fpf, setFpf] = useState<Fpf>({
-        id: "0", name: "", isPublic: true, Sensors: [], Cameras: [], sensorServiceIp: "", address: "", GrowingCycles: []
-    });
+
     const [sensors, setSensor] = useState<Sensor[]>();
     const [cameras, setCamera] = useState<Camera[]>();
 
@@ -32,10 +32,15 @@ export const EditFPF: React.FC = () => {
     const CameraEventListener = useSelector((state: RootState) => state.camera.createdCameraEvent);
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
+    const fpf = useSelector((state: RootState) => state.fpf.fpf);
+
+
+    const dispatch = useAppDispatch();
+
     useEffect(() => {
         if (fpfId) {
             getFpf(fpfId).then(resp => {
-                setFpf(resp);
+                dispatch(updatedFpf(resp));
             });
         }
     }, [fpfId]);
@@ -81,9 +86,6 @@ export const EditFPF: React.FC = () => {
         }
     }, [fpf, organization]);
 
-    const togglePublic = () => {
-        setFpf((prevFpf) => ({ ...prevFpf, isPublic: !prevFpf.isPublic }));
-    };
 
     return (
         <Stack gap={"md"}>
@@ -132,7 +134,7 @@ export const EditFPF: React.FC = () => {
                 title={t('fpf.editFpF')}
                 centered
             >
-                <FpfForm toEditFpf={fpf} />
+                <FpfForm toEditFpf={fpf} close={setEditModalOpen} />
             </Modal>
 
             {/* Accordion for Sensor List */}

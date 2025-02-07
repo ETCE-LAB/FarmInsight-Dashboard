@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card, Flex, Group, Text, Menu, Button, Image } from '@mantine/core';
+import { Card, Flex, Group, Text, Menu, Button, Image, Burger, Drawer } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { AppRoutes } from '../../../../utils/appRoutes';
 import { UserProfileComponent } from '../../../../features/userProfile/ui/UserProfileComponent';
 import { LoginButton } from '../../../../features/auth/ui/loginButton';
 import { LogoutButton } from '../../../../features/auth/ui/logoutButton';
+import { useMediaQuery } from '@mantine/hooks';
 
 export const AppShell_Header: React.FC = () => {
     const navigate = useNavigate();
     const { t, i18n } = useTranslation();
     const [selectedLanguage, setSelectedLanguage] = useState('English');
     const [currentFlag, setCurrentFlag] = useState('us');
+    const [drawerOpened, setDrawerOpened] = useState(false); // State to manage Drawer visibility
+
+    // Detect mobile devices (viewport widths 768px or less)
+    const isMobile = useMediaQuery('(max-width: 768px)');
 
     const languageOptions = [
         { code: 'en', label: 'English', flag: 'us' },
@@ -22,7 +27,7 @@ export const AppShell_Header: React.FC = () => {
         { code: 'ru', label: 'Russian', flag: 'ru' },
     ];
 
-    // Detect and set the default language based on the browser's language
+    // Set default language based on the browser's language
     useEffect(() => {
         const browserLanguage = navigator.language.split('-')[0];
         const matchedLanguage =
@@ -50,13 +55,13 @@ export const AppShell_Header: React.FC = () => {
     );
 
     return (
-        <Group h="100%" px="md" style={{ width: '100%' }}>
+        <Group h="100%" px={isMobile ? 'sm' : 'md'} style={{ width: '100%' }}>
             <Flex w="100%" justify="space-between" align="center">
-                {/* Left Side: FARMINSIGHT */}
-                <Flex align="center" gap="sm">
+                {/* Left Side: FARMINSIGHT and Language Switcher */}
+                <Flex align="center" gap={isMobile ? 'xs' : 'sm'}>
                     <Card
                         shadow="sm"
-                        padding="lg"
+                        padding={isMobile ? 'sm' : 'lg'}
                         radius="md"
                         withBorder
                         style={{ cursor: 'pointer' }}
@@ -68,8 +73,8 @@ export const AppShell_Header: React.FC = () => {
                                     display: 'flex',
                                     justifyContent: 'center',
                                     alignItems: 'center',
-                                    padding: '8px 16px',
-                                    fontSize: '20px',
+                                    padding: isMobile ? '4px 8px' : '8px 16px',
+                                    fontSize: isMobile ? '16px' : '20px',
                                     fontFamily: 'Open Sans, sans-serif',
                                     fontWeight: 'bold',
                                 }}
@@ -79,36 +84,59 @@ export const AppShell_Header: React.FC = () => {
                         </Card.Section>
                     </Card>
                     {/* Language Switcher */}
-                    <Menu width={200}>
+                    <Menu width={isMobile ? 150 : 200}>
                         <Menu.Target>
-                            <Button variant="subtle">
-                                <Flex align="center" gap="sm">
+                            <Button variant="subtle" size={isMobile ? 'xs' : 'sm'} style={{ padding: isMobile ? '4px 8px' : '8px 12px' }}>
+                                <Flex align="center" gap={isMobile ? 'xs' : 'sm'}>
                                     {renderFlagImage(currentFlag, selectedLanguage)}
-                                    <span>{selectedLanguage}</span>
+                                    <span style={{ fontSize: isMobile ? '14px' : 'inherit' }}>
+                                        {selectedLanguage}
+                                    </span>
                                 </Flex>
                             </Button>
                         </Menu.Target>
                         <Menu.Dropdown>
                             {languageOptions.map((lang) => (
-                                <Menu.Item
-                                    key={lang.code}
-                                    onClick={() => handleLanguageChange(lang)}
-                                >
-                                    <Flex align="center" gap="sm">
+                                <Menu.Item key={lang.code} onClick={() => handleLanguageChange(lang)}>
+                                    <Flex align="center" gap={isMobile ? 'xs' : 'sm'}>
                                         {renderFlagImage(lang.flag, lang.label)}
-                                        <span>{lang.label}</span>
+                                        <span style={{ fontSize: isMobile ? '14px' : 'inherit' }}>
+                                            {lang.label}
+                                        </span>
                                     </Flex>
                                 </Menu.Item>
                             ))}
                         </Menu.Dropdown>
                     </Menu>
                 </Flex>
-                {/* Right Side: Profile & Auth Buttons */}
-                <Group gap="md">
-                    <UserProfileComponent />
-                    <LoginButton />
-                    <LogoutButton />
-                </Group>
+
+                {/* Right Side: Conditionally render Burger or User Profile & Auth Buttons */}
+                {isMobile ? (
+                    <>
+                        <Burger
+                            opened={drawerOpened}
+                            onClick={() => setDrawerOpened((prev) => !prev)}
+                            aria-label="Toggle menu"
+                        />
+                        <Drawer
+                            opened={drawerOpened}
+                            onClose={() => setDrawerOpened(false)}
+                            padding="md"
+                        >
+                            <Flex direction="column" gap="md">
+                                <UserProfileComponent />
+                                <LoginButton />
+                                <LogoutButton />
+                            </Flex>
+                        </Drawer>
+                    </>
+                ) : (
+                    <Group gap={isMobile ? 'xs' : 'md'}>
+                        <UserProfileComponent />
+                        <LoginButton />
+                        <LogoutButton />
+                    </Group>
+                )}
             </Flex>
         </Group>
     );

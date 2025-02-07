@@ -123,7 +123,7 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
                 ) : (
                     <>
                         <Grid>
-                            {paginatedFpfs.map((fpf) => (
+                            {paginatedFpfs && paginatedFpfs.map((fpf) => (
                                 <Grid.Col span={4} key={fpf.id}>
                                     <Card
                                         p="lg"
@@ -173,7 +173,7 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
                                                 alignItems: 'center',
                                             }}
                                         >
-                                            {fpf.lastImageUrl?.length ? (
+                                            {fpf &&  fpf.lastImageUrl?.length ? (
                                                 <Image
                                                     src={`${fpf.lastImageUrl}`}
                                                     alt="Last Received Image"
@@ -193,12 +193,14 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
                             ))}
                         </Grid>
                         <Flex justify="center" mt="lg">
-                            <Pagination
-                                total={Math.ceil(filteredFpfs.length / ITEMS_PER_PAGE) || 1}
-                                siblings={2}
-                                defaultValue={currentPage}
-                                onChange={handlePageChange}
-                            />
+                            {filteredFpfs && (
+                                <Pagination
+                                    total={Math.ceil(filteredFpfs.length / ITEMS_PER_PAGE) || 1}
+                                    siblings={2}
+                                    defaultValue={currentPage}
+                                    onChange={handlePageChange}
+                                />
+                            )}
                         </Flex>
                     </>
                 )}
