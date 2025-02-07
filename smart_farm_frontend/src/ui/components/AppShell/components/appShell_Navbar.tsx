@@ -163,7 +163,45 @@ export const AppShell_Navbar: React.FC = () => {
                             }}
                             onClick={() => handleFpfSelect(fpf.id)}
                         >
-                            <Text>{fpf.name}</Text>
+                            <Text
+                                style={{
+                                    display: 'flex',
+                                    width: '100%',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    color: selectedFPFId === fpf.id ? '#199ff4' : '',
+                                    paddingLeft: '5px',
+                                    paddingRight: '5px',
+                                }}
+                            >
+                                <IconSettings
+                                    size={22}
+                                    style={{
+                                        verticalAlign: 'middle',
+                                        display: 'flex',
+                                    }}
+                                    stroke={2}
+                                    cursor="pointer"
+                                    onClick={(event) => {
+                                        event.stopPropagation();
+                                        navigate(
+                                            AppRoutes.editFpf
+                                                .replace(':organizationId', selectedOrganization.id)
+                                                .replace(':fpfId', fpf.id)
+                                        );
+                                    }}
+                                />
+                                <Flex
+                                    style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        width: '100%',
+                                    }}
+                                >
+                                    <DynamicFontText text={fpf.name} maxWidth={150} />
+                                </Flex>
+                            </Text>
                         </Flex>
                     ))}
                 <Flex style={{ width: '100%', justifyContent: 'center', alignItems: 'center', gap: '10px' }}>
