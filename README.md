@@ -88,7 +88,7 @@ The dashboard provides:
 
 2. **Install dependencies:**
    ```bash
-   npm install --force
+   npm install
    ```
 
 3. **Start the development server:**
@@ -108,8 +108,24 @@ After starting the frontend, you can either create or log in with a user account
 to create your own organizations and FPFs or manage existing ones.
 
 
-## 🎨 Screenshots and UI Design
-*Please insert screenshots or mockups here.*
+## 🎨 Architecture
+
+Current System Architecture:
+
+<img src="/.documentation/FarmInsightSystemArchitecture.jpg">
+
+
+Current Frontend File Structure:
+
+<img src="/.documentation/FarmInsightFileStructure.jpg">
+
+All normal Features are located in the Feature directory. 
+
+Special UI-Components (navbar, header. landingPage) are located under ./ui/components/...
+
+Special functions like WebSocket, APIClient, Redux Store are all located in ./utils/...
+
+Translation: ./i18n.ts
 
 ## ⚖️ License
 This project is licensed under the [AGPL-3.0](https://www.gnu.org/licenses/agpl-3.0.html) license.
