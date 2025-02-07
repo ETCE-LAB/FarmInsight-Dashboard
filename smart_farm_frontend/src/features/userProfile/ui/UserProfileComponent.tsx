@@ -9,6 +9,7 @@ import {receiveUserProfile} from "../useCase/receiveUserProfile";
 // @ts-ignore
 import {IconUserCog} from "@tabler/icons-react";
 import {useNavigate} from "react-router-dom";
+import {useMediaQuery} from "@mantine/hooks";
 
 
 
@@ -19,6 +20,7 @@ const UserProfileComponent = () => {
     const userProfileReceivedEventListener = useAppSelector(receivedUserProfileEvent);
     const changedUserProfile = useAppSelector(changedUserProfileEvent);
     const navigate = useNavigate();
+    const isMobile = useMediaQuery('(max-width: 768px)');
 
     useEffect(() => {
         if (auth.user) {
@@ -57,7 +59,7 @@ const UserProfileComponent = () => {
                         variant="filled"
                         style={{
                             backgroundColor: '#199ff4',
-                            borderRadius: '6px',
+                            borderRadius: "6px" ,
                             padding: '6px 10px',
                             color: 'white',
                         }}

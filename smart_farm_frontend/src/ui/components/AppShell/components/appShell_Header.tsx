@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card, Flex, Group, Text, Menu, Button, Image } from '@mantine/core';
+import { Card, Flex, Group, Text, Menu, Button, Image, Burger, Drawer } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { AppRoutes } from '../../../../utils/appRoutes';
 import { UserProfileComponent } from '../../../../features/userProfile/ui/UserProfileComponent';
@@ -13,6 +13,7 @@ export const AppShell_Header: React.FC = () => {
     const { t, i18n } = useTranslation();
     const [selectedLanguage, setSelectedLanguage] = useState('English');
     const [currentFlag, setCurrentFlag] = useState('us');
+    const [drawerOpened, setDrawerOpened] = useState(false); // State to manage Drawer visibility
 
     // Detect mobile devices (viewport widths 768px or less)
     const isMobile = useMediaQuery('(max-width: 768px)');
@@ -89,8 +90,8 @@ export const AppShell_Header: React.FC = () => {
                                 <Flex align="center" gap={isMobile ? 'xs' : 'sm'}>
                                     {renderFlagImage(currentFlag, selectedLanguage)}
                                     <span style={{ fontSize: isMobile ? '14px' : 'inherit' }}>
-                    {selectedLanguage}
-                </span>
+                                        {selectedLanguage}
+                                    </span>
                                 </Flex>
                             </Button>
                         </Menu.Target>
@@ -100,20 +101,42 @@ export const AppShell_Header: React.FC = () => {
                                     <Flex align="center" gap={isMobile ? 'xs' : 'sm'}>
                                         {renderFlagImage(lang.flag, lang.label)}
                                         <span style={{ fontSize: isMobile ? '14px' : 'inherit' }}>
-                      {lang.label}
-                    </span>
+                                            {lang.label}
+                                        </span>
                                     </Flex>
                                 </Menu.Item>
                             ))}
                         </Menu.Dropdown>
                     </Menu>
                 </Flex>
-                {/* Right Side: Profile & Auth Buttons */}
-                <Group gap={isMobile ? 'xs' : 'md'}>
-                    <UserProfileComponent />
-                    <LoginButton />
-                    <LogoutButton />
-                </Group>
+
+                {/* Right Side: Conditionally render Burger or User Profile & Auth Buttons */}
+                {isMobile ? (
+                    <>
+                        <Burger
+                            opened={drawerOpened}
+                            onClick={() => setDrawerOpened((prev) => !prev)}
+                            aria-label="Toggle menu"
+                        />
+                        <Drawer
+                            opened={drawerOpened}
+                            onClose={() => setDrawerOpened(false)}
+                            padding="md"
+                        >
+                            <Flex direction="column" gap="md">
+                                <UserProfileComponent />
+                                <LoginButton />
+                                <LogoutButton />
+                            </Flex>
+                        </Drawer>
+                    </>
+                ) : (
+                    <Group gap={isMobile ? 'xs' : 'md'}>
+                        <UserProfileComponent />
+                        <LoginButton />
+                        <LogoutButton />
+                    </Group>
+                )}
             </Flex>
         </Group>
     );

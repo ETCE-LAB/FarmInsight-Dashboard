@@ -194,12 +194,12 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
                         </Grid>
                         <Flex justify="center" mt="lg">
                             {filteredFpfs && (
-                            <Pagination
-                                total={Math.ceil(filteredFpfs.length / ITEMS_PER_PAGE) || 1}
-                                siblings={2}
-                                defaultValue={currentPage}
-                                onChange={handlePageChange}
-                            />
+                                <Pagination
+                                    total={Math.ceil(filteredFpfs.length / ITEMS_PER_PAGE) || 1}
+                                    siblings={2}
+                                    defaultValue={currentPage}
+                                    onChange={handlePageChange}
+                                />
                             )}
                         </Flex>
                     </>
