@@ -121,20 +121,15 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
             </Container>
 
             <Container style={{ overflowX: 'hidden' }}>
-                {loading ? (
-                    // Show loader while data is loading
+                {loading ? ( // Show loader while data is loading
                     <Flex justify="center" align="center" style={{ height: '50vh' }}>
                         <Loader size="lg" />
                     </Flex>
                 ) : (
                     <>
                         <Grid>
-                            {paginatedFpfs.map((fpf) => (
-                                // Adjust grid columns for responsiveness:
-                                // - xs: full width on extra small devices
-                                // - sm: half width on small devices
-                                // - md: one-third width on medium and larger devices
-                                <Grid.Col key={fpf.id}>
+                            {paginatedFpfs && paginatedFpfs.map((fpf) => (
+                                <Grid.Col span={4} key={fpf.id}>
                                     <Card
                                         p="lg"
                                         radius="md"
@@ -186,7 +181,7 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
                                                 alignItems: 'center',
                                             }}
                                         >
-                                            {fpf.lastImageUrl?.length ? (
+                                            {fpf &&  fpf.lastImageUrl?.length ? (
                                                 <Image
                                                     src={fpf.lastImageUrl}
                                                     alt="Last Received Image"
@@ -206,12 +201,14 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
                             ))}
                         </Grid>
                         <Flex justify="center" mt="lg">
-                            <Pagination
-                                total={Math.ceil(filteredFpfs.length / ITEMS_PER_PAGE) || 1}
-                                siblings={2}
-                                defaultValue={currentPage}
-                                onChange={handlePageChange}
-                            />
+                            {filteredFpfs && (
+                                <Pagination
+                                    total={Math.ceil(filteredFpfs.length / ITEMS_PER_PAGE) || 1}
+                                    siblings={2}
+                                    defaultValue={currentPage}
+                                    onChange={handlePageChange}
+                                />
+                            )}
                         </Flex>
                     </>
                 )}
@@ -221,7 +218,7 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
                 opened={modalOpen}
                 onClose={() => setModalOpen(false)}
                 title={t('header.addOrganization')}
-                centered
+                centered={true}
             >
                 <OrganizationForm />
             </Modal>
