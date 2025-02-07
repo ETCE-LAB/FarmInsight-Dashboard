@@ -23,7 +23,6 @@ import { GrowingCycle } from "../models/growingCycle";
 import { removeGrowingCycle } from "../useCase/removeGrowingCycle";
 import { changedGrowingCycle, deleteGrowingCycle } from "../state/GrowingCycleSlice";
 import { useAppDispatch } from "../../../utils/Hooks";
-
 import HarvestEntityList from "../../harvestEntity/ui/harvestEntityList";
 import { HarvestEntityForm } from "../../harvestEntity/ui/harvestEntityForm";
 import { showNotification } from "@mantine/notifications";

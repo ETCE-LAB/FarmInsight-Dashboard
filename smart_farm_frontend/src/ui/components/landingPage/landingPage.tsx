@@ -3,8 +3,6 @@ import {
     Container,
     Flex,
     Group,
-    Menu,
-    rem,
     TextInput,
     Modal,
     Card,
@@ -16,10 +14,7 @@ import {
     Grid,
     Loader,
 } from '@mantine/core';
-import {
-    IconChevronDown,
-    IconPlant,
-} from '@tabler/icons-react';
+import { IconPlant } from '@tabler/icons-react';
 import React, { PropsWithChildren, useEffect, useState } from 'react';
 import { getMyOrganizations } from '../../../features/organization/useCase/getMyOrganizations';
 import { Organization } from '../../../features/organization/models/Organization';
@@ -33,6 +28,7 @@ import { receiveVisibleFpfs } from '../../../features/fpf/useCase/receiveVisible
 import { BasicFPF } from '../../../features/fpf/models/BasicFPF';
 import { useTranslation } from 'react-i18next';
 import Footer from '../footer/footer';
+import { useMediaQuery } from '@mantine/hooks';
 
 const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     const auth = useAuth();
@@ -47,9 +43,12 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     const [searchTerm, setSearchTerm] = useState('');
     const ITEMS_PER_PAGE = 6;
     const [currentPage, setCurrentPage] = useState(1);
-    const [loading, setLoading] = useState(true); // NEW: Loading state
+    const [loading, setLoading] = useState(true); // Loading state
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     const endIndex = startIndex + ITEMS_PER_PAGE;
+
+    // Detect mobile devices (viewport widths 768px or less)
+    const isMobile = useMediaQuery('(max-width: 768px)');
 
     const filteredFpfs = fpfs?.filter(
         (fpf) =>
@@ -95,10 +94,14 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
         <>
             <Container>
                 <Flex justify="center">
-                    <Group>
+                    <Group
+                        align="center"
+                        gap="sm"
+                        style={{ flexDirection: isMobile ? 'column' : 'row' }}
+                    >
                         <TextInput
                             placeholder={t('header.search')}
-                            style={{ width: '30vw' }}
+                            style={{ width: isMobile ? '90vw' : '30vw' }}
                             value={searchTerm}
                             onChange={handleSearchChange}
                         />
@@ -107,16 +110,19 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
                                 onClick={() => setModalOpen(true)}
                                 variant="filled"
                                 color="#199ff4"
+                                style={{ marginTop: isMobile ? '1rem' : '0' }}
                             >
                                 {t('header.createOrganization')}
                             </Button>
                         )}
                     </Group>
                 </Flex>
+
             </Container>
 
             <Container style={{ overflowX: 'hidden' }}>
-                {loading ? ( // Show loader while data is loading
+                {loading ? (
+                    // Show loader while data is loading
                     <Flex justify="center" align="center" style={{ height: '50vh' }}>
                         <Loader size="lg" />
                     </Flex>
@@ -124,12 +130,18 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
                     <>
                         <Grid>
                             {paginatedFpfs.map((fpf) => (
-                                <Grid.Col span={4} key={fpf.id}>
+                                // Adjust grid columns for responsiveness:
+                                // - xs: full width on extra small devices
+                                // - sm: half width on small devices
+                                // - md: one-third width on medium and larger devices
+                                <Grid.Col key={fpf.id}>
                                     <Card
                                         p="lg"
                                         radius="md"
                                         style={{
-                                            height: '25vh',
+                                            // Use auto height on mobile and a fixed viewport height on larger screens
+                                            height: isMobile ? 'auto' : '25vh',
+                                            width: isMobile ? 'auto' : '15vw',
                                             margin: '15px',
                                             cursor: 'pointer',
                                             transition: 'transform 0.2s ease',
@@ -167,7 +179,8 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
                                         </Flex>
                                         <Box
                                             style={{
-                                                height: '80%',
+                                                // Adjust image container height for mobile devices
+                                                height: isMobile ? 'auto' : '80%',
                                                 display: 'flex',
                                                 justifyContent: 'center',
                                                 alignItems: 'center',
@@ -175,7 +188,7 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
                                         >
                                             {fpf.lastImageUrl?.length ? (
                                                 <Image
-                                                    src={`${fpf.lastImageUrl}`}
+                                                    src={fpf.lastImageUrl}
                                                     alt="Last Received Image"
                                                     style={{
                                                         width: '100%',
@@ -208,7 +221,7 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
                 opened={modalOpen}
                 onClose={() => setModalOpen(false)}
                 title={t('header.addOrganization')}
-                centered={true}
+                centered
             >
                 <OrganizationForm />
             </Modal>
