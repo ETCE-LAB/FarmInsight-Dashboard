@@ -9,7 +9,6 @@ import { Card, Flex, Title, Notification, LoadingOverlay, Center, useMantineThem
 import { Sensor } from "../../sensor/models/Sensor";
 import useWebSocket from "react-use-websocket";
 import { getWebSocketToken } from "../../../utils/WebSocket/getWebSocketToken";
-import {format} from "node:url";
 import {BACKEND_URL} from "../../../env-config";
 
 const TimeseriesGraph: React.FC<{ sensor: Sensor }> = ({ sensor }) => {
@@ -32,7 +31,7 @@ const TimeseriesGraph: React.FC<{ sensor: Sensor }> = ({ sensor }) => {
             const resp = await getWebSocketToken();
             if (!resp) throw new Error("No WebSocket token received.");
 
-            let baseUrl = process.env.REACT_APP_BACKEND_URL;
+            let baseUrl = BACKEND_URL;
             if (!baseUrl) throw new Error("REACT_APP_BACKEND_URL is not configured.");
 
             baseUrl = baseUrl.replace(/^https?/, "wss").replace(/^http?/, "ws");
