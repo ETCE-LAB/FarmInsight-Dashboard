@@ -5,7 +5,7 @@ import { createFpf } from "../useCase/createFpf";
 import { Organization } from "../../organization/models/Organization";
 import { useDispatch } from "react-redux";
 import { AppRoutes } from "../../../utils/appRoutes";
-import { createdFpf } from "../state/FpfSlice";
+import {createdFpf, updatedFpf} from "../state/FpfSlice";
 import {useNavigate, useParams} from "react-router-dom";
 import { Fpf } from "../models/Fpf";
 import { useTranslation } from 'react-i18next';
@@ -14,7 +14,7 @@ import { notifications } from "@mantine/notifications";
 import {IconEye, IconEyeOff} from "@tabler/icons-react";
 import organizationSlice from "../../organization/state/OrganizationSlice";
 
-export const FpfForm: React.FC<{ organizationId?: string, toEditFpf?: Fpf }> = ({ organizationId, toEditFpf }) => {
+export const FpfForm: React.FC<{ organizationId?: string, toEditFpf?: Fpf, close: React.Dispatch<React.SetStateAction<boolean>>; }> = ({ organizationId, toEditFpf , close}) => {
     const auth = useAuth();
     const { t } = useTranslation();
     const [name, setName] = useState("");
@@ -48,6 +48,8 @@ export const FpfForm: React.FC<{ organizationId?: string, toEditFpf?: Fpf }> = (
             createFpf({ name, isPublic, sensorServiceIp, address, organizationId }).then(fpf => {
                 if (fpf) {
                     dispatch(createdFpf());
+
+                    dispatch(updatedFpf(fpf));
                     navigate(AppRoutes.editFpf.replace(":organizationId", organizationId).replace(":fpfId", fpf.id));
                     notifications.update({
                         id,
@@ -69,6 +71,7 @@ export const FpfForm: React.FC<{ organizationId?: string, toEditFpf?: Fpf }> = (
                 }
             });
         }
+        close(false);
     };
 
     const onClickEdit = () => {
@@ -83,7 +86,7 @@ export const FpfForm: React.FC<{ organizationId?: string, toEditFpf?: Fpf }> = (
 
             updateFpf(toEditFpf.id, { name, isPublic, sensorServiceIp, address }).then(fpf => {
                 if (fpf) {
-                    dispatch(createdFpf());
+                    dispatch(updatedFpf(fpf));
                     notifications.update({
                         id,
                         title: 'Success',
@@ -104,6 +107,7 @@ export const FpfForm: React.FC<{ organizationId?: string, toEditFpf?: Fpf }> = (
                 }
             });
         }
+        close(false);
     };
 
     return (

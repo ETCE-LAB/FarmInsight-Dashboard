@@ -149,7 +149,7 @@ export const AppShell_Navbar: React.FC = () => {
                 onClose={() => setFpFModalOpen(false)}
                 centered
             >
-                <FpfForm organizationId={organizationId} />
+                <FpfForm organizationId={organizationId} close={setFpFModalOpen}/>
             </Modal>
 
             <Flex
