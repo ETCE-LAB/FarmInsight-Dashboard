@@ -35,7 +35,7 @@ const TimeseriesGraph: React.FC<{ sensor: Sensor }> = ({ sensor }) => {
             let baseUrl = process.env.REACT_APP_BACKEND_URL;
             if (!baseUrl) throw new Error("REACT_APP_BACKEND_URL is not configured.");
 
-            baseUrl = baseUrl.replace(/^https?/, "ws");
+            baseUrl = baseUrl.replace(/^https?/, "wss").replace(/^http?/, "ws");
             setSocketUrl(`${baseUrl}/ws/sensor/${sensor?.id}?token=${encodeURIComponent(resp.token)}`);
             setShouldReconnect(true);
         } catch (err) {
