@@ -33,6 +33,7 @@ import { receiveVisibleFpfs } from '../../../features/fpf/useCase/receiveVisible
 import { BasicFPF } from '../../../features/fpf/models/BasicFPF';
 import { useTranslation } from 'react-i18next';
 import Footer from '../footer/footer';
+import {useMediaQuery} from "@mantine/hooks";
 
 const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     const auth = useAuth();
@@ -50,6 +51,8 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     const [loading, setLoading] = useState(true); // NEW: Loading state
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     const endIndex = startIndex + ITEMS_PER_PAGE;
+
+    const isMobile = useMediaQuery('(max-width: 768px)');
 
     const filteredFpfs = fpfs?.filter(
         (fpf) =>
@@ -124,12 +127,13 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
                     <>
                         <Grid>
                             {paginatedFpfs && paginatedFpfs.map((fpf) => (
-                                <Grid.Col span={4} key={fpf.id}>
+                                <Grid.Col span={isMobile? 12 : 4}  key={fpf.id}>
                                     <Card
                                         p="lg"
                                         radius="md"
                                         style={{
                                             height: '25vh',
+                                            width: isMobile? "auto": "10vw",
                                             margin: '15px',
                                             cursor: 'pointer',
                                             transition: 'transform 0.2s ease',
