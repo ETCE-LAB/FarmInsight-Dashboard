@@ -7,6 +7,7 @@ import { UserProfileComponent } from '../../../../features/userProfile/ui/UserPr
 import { LoginButton } from '../../../../features/auth/ui/loginButton';
 import { LogoutButton } from '../../../../features/auth/ui/logoutButton';
 import { useMediaQuery } from '@mantine/hooks';
+import {IconUserCircle} from "@tabler/icons-react";
 
 export const AppShell_Header: React.FC = () => {
     const navigate = useNavigate();
@@ -112,11 +113,11 @@ export const AppShell_Header: React.FC = () => {
 
                 {/* Right Side: Conditionally render Burger or User Profile & Auth Buttons */}
                 {isMobile ? (
-                    <>
+                    <Flex align="center" gap="sm">
                         <Burger
                             opened={drawerOpened}
                             onClick={() => setDrawerOpened((prev) => !prev)}
-                            aria-label="Toggle menu"
+                            aria-label="Toggle user menu"
                         />
                         <Drawer
                             opened={drawerOpened}
@@ -129,7 +130,7 @@ export const AppShell_Header: React.FC = () => {
                                 <LogoutButton />
                             </Flex>
                         </Drawer>
-                    </>
+                    </Flex>
                 ) : (
                     <Group gap={isMobile ? 'xs' : 'md'}>
                         <UserProfileComponent />
