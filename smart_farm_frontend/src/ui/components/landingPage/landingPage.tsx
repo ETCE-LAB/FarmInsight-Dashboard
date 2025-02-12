@@ -133,7 +133,7 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
                                         radius="md"
                                         style={{
                                             height: '25vh',
-                                            width: isMobile? "auto": "10vw",
+                                            width: "auto",
                                             margin: '15px',
                                             cursor: 'pointer',
                                             transition: 'transform 0.2s ease',
