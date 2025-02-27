@@ -83,7 +83,7 @@ export const CameraCarousel: React.FC<{ camerasToDisplay: Camera[] }> = ({
     const slides = objectsToDisplay.map((objectToDisplay, index) => (
         <Carousel.Slide key={index}>
             <Box
-                style={{ position: "relative", cursor: "pointer" }}
+                style={{ position: "relative" }}
             >
                 {!objectToDisplay.isLiveStream && (
                     <>
@@ -122,6 +122,7 @@ export const CameraCarousel: React.FC<{ camerasToDisplay: Camera[] }> = ({
                         bottom: rem(10),
                         right: rem(10),
                         backgroundColor: "rgba(0, 0, 0, 0.4)",
+                        cursor: "pointer",
                     }}
                     onClick={() => handleOpenFullscreen(objectToDisplay)}
                 >
@@ -203,8 +204,8 @@ export const CameraCarousel: React.FC<{ camerasToDisplay: Camera[] }> = ({
                         fit="contain"
                         radius="md"
                         style={{
-                            width: "100%",
-                            height: "100%",
+                            width: "90%",
+                            height: "90%",
                             objectFit: "contain",
                         }}
                     />

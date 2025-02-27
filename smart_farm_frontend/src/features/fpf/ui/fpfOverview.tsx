@@ -49,7 +49,19 @@ export const FpfOverview = () => {
             {isMobile ? (
                 // Single scrollable container for mobile devices
                 <Box style={{ ...scrollableStyle, height: '88vh' }}>
-                    {/* Sensor graphs */}
+                    {/* Camera Carousel comes first */}
+                    {fpf?.Cameras && fpf.Cameras.length > 0 && isCameraActive && (
+                        <Box
+                            style={{
+                                borderRadius: '10px',
+                                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                                marginBottom: '32px'
+                            }}
+                        >
+                            <CameraCarousel camerasToDisplay={fpf?.Cameras ?? []} />
+                        </Box>
+                    )}
+                    {/* Sensor graphs come next */}
                     {fpf?.Sensors?.map((sensor) => (
                         <Box
                             key={sensor.id}
@@ -62,19 +74,7 @@ export const FpfOverview = () => {
                             <TimeseriesGraph sensor={sensor} />
                         </Box>
                     ))}
-                    {/* Camera Carousel */}
-                    {fpf?.Cameras && fpf.Cameras.length > 0 && isCameraActive && (
-                        <Box
-                            style={{
-                                borderRadius: '10px',
-                                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-                                marginBottom: '32px'
-                            }}
-                        >
-                            <CameraCarousel camerasToDisplay={fpf?.Cameras ?? []} />
-                        </Box>
-                    )}
-                    {/* Growing Cycle List */}
+                    {/* Growing Cycle List comes last */}
                     {fpf && (
                         <Box
                             style={{
