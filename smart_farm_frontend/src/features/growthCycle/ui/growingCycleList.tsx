@@ -29,6 +29,7 @@ import { showNotification } from "@mantine/notifications";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../utils/store";
 import { useAuth } from "react-oidc-context";
+import { useMediaQuery } from "@mantine/hooks";
 
 const truncateText = (text: string, limit: number): string => {
     if (text.length > limit) {
@@ -40,13 +41,16 @@ const truncateText = (text: string, limit: number): string => {
 const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
     const [showGrowingCycleForm, setShowGrowingCycleForm] = useState(false);
     const { t } = useTranslation();
-    const [activeModal, setActiveModal] = useState<"growingCycleForm" | "harvestForm" | "details" | "deleteConfirmation" | null>(null);
+    const [activeModal, setActiveModal] = useState<
+        "growingCycleForm" | "harvestForm" | "details" | "deleteConfirmation" | null
+    >(null);
     const [toEditGrowingCycle, setToEditGrowingCycle] = useState<GrowingCycle | null>(null);
     const [cycleToDelete, setCycleToDelete] = useState<GrowingCycle | null>(null);
     const [selectedCycle, setSelectedCycle] = useState<GrowingCycle | null>(null);
     const dispatch = useAppDispatch();
     const growingCycles = useSelector((state: RootState) => state.growingCycle.growingCycles);
     const auth = useAuth();
+    const isMobile = useMediaQuery("(max-width: 768px)");
 
     const closeAllModals = () => {
         setActiveModal(null);
@@ -57,7 +61,7 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
 
     const handleDelete = (cycle: GrowingCycle) => {
         setCycleToDelete(cycle);
-        console.log(cycle)
+        console.log(cycle);
         setActiveModal("deleteConfirmation");
     };
 
@@ -119,8 +123,8 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
                         growingCycleId={selectedCycle.id}
                         toEditHarvestEntity={null}
                         onSuccess={() => {
-                            setActiveModal(null)
-                            setActiveModal("details")
+                            setActiveModal(null);
+                            setActiveModal("details");
                             dispatch(changedGrowingCycle());
                         }}
                     />
@@ -189,7 +193,17 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
                 </Group>
             </Modal>
 
-            <Card radius="md" padding="md" style={{ height: "auto", overflowY: "auto" }}>
+            <Card
+                radius="md"
+                padding="md"
+                style={{
+                    height: "auto",
+                    overflowX: isMobile ? "auto" : "visible",
+                    width: isMobile ? "90vw" : "auto",
+                    marginLeft: isMobile ? "auto" : undefined,
+                    marginRight: isMobile ? "auto" : undefined,
+                }}
+            >
                 <IconCirclePlus
                     size={25}
                     aria-disabled={!auth.user}
@@ -207,7 +221,11 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
                     }}
                 />
                 <Flex>
-                    <Table striped highlightOnHover>
+                    <Table
+                        striped
+                        highlightOnHover
+                        style={{ minWidth: isMobile ? "550px" : "auto" }}
+                    >
                         <Table.Thead>
                             <Table.Tr>
                                 <Table.Th />
@@ -238,9 +256,13 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
                                     </Table.Td>
                                     <Table.Td>
                                         {(() => {
-                                            const totalHarvest = cycle.harvests?.reduce((sum, harvest) => sum + harvest.amountInKg, 0) || 0;
+                                            const totalHarvest =
+                                                cycle.harvests?.reduce(
+                                                    (sum, harvest) => sum + harvest.amountInKg,
+                                                    0
+                                                ) || 0;
                                             if (totalHarvest < 1) {
-                                                const grams = totalHarvest * 1000; // Umrechnung in Gramm
+                                                const grams = totalHarvest * 1000;
                                                 return `${grams} g`;
                                             } else {
                                                 return `${totalHarvest} kg`;
@@ -262,7 +284,7 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
                                                 setToEditGrowingCycle(cycle);
                                             }}
                                             size={25}
-                                            style={{ cursor: "pointer", color: "#105385"}}
+                                            style={{ cursor: "pointer", color: "#105385" }}
                                         />
                                     </Table.Td>
                                     <Table.Td>
