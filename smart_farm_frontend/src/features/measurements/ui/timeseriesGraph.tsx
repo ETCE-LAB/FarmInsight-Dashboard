@@ -112,7 +112,7 @@ const TimeseriesGraph: React.FC<{ sensor: Sensor }> = ({ sensor }) => {
                     <>
                         {isMobile ? (
                             // Mobile view: display only the last measurement value
-                            <Center style={{ height: '150px', flexDirection: 'column' }}>
+                            <Center style={{ height: '150px', flexDirection: 'column', width: 'auto' }}>
                                 <Text size="xl" fw={700}>
                                     {measurements.length > 0 ? measurements[measurements.length - 1].value : "No data"}
                                 </Text>
