@@ -9,9 +9,7 @@ import {
     Center,
     Image,
     Switch,
-    Title,
     Text,
-    Flex,
     Divider,
     Stack,
     Badge,
@@ -86,7 +84,6 @@ export const CameraCarousel: React.FC<{ camerasToDisplay: Camera[] }> = ({
         <Carousel.Slide key={index}>
             <Box
                 style={{ position: "relative", cursor: "pointer" }}
-                onClick={() => handleOpenFullscreen(objectToDisplay)}
             >
                 {!objectToDisplay.isLiveStream && (
                     <>
@@ -124,8 +121,9 @@ export const CameraCarousel: React.FC<{ camerasToDisplay: Camera[] }> = ({
                         position: "absolute",
                         bottom: rem(10),
                         right: rem(10),
-                        backgroundColor: "rgba(0, 0, 0, 0.5)",
+                        backgroundColor: "rgba(0, 0, 0, 0.4)",
                     }}
+                    onClick={() => handleOpenFullscreen(objectToDisplay)}
                 >
                     <IconMaximize color="white" />
                 </ActionIcon>
@@ -196,6 +194,7 @@ export const CameraCarousel: React.FC<{ camerasToDisplay: Camera[] }> = ({
                 size="100%"
                 withCloseButton
                 centered
+                title={selectedObject?.title}
             >
                 {selectedObject && !selectedObject.isLiveStream && (
                     <Image

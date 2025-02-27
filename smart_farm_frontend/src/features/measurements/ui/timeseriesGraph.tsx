@@ -139,10 +139,9 @@ const TimeseriesGraph: React.FC<{ sensor: Sensor }> = ({ sensor }) => {
                                                         key={index}
                                                         p="sm"
                                                         style={{
-                                                            minWidth: 100,
+                                                            margin: '0 5px',
+                                                            minWidth: 85,
                                                             textAlign: 'center',
-                                                            border: `1px solid ${theme.colors.gray[3]}`,
-                                                            borderRadius: theme.radius.sm,
                                                         }}
                                                     >
                                                         <Text size="md" fw={500}>
