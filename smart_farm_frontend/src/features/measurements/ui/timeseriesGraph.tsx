@@ -5,11 +5,11 @@ import { requestMeasuremnt } from "../useCase/requestMeasurements";
 import { receivedMeasurementEvent } from "../state/measurementSlice";
 import { useAppSelector } from "../../../utils/Hooks";
 import { Measurement } from "../models/measurement";
-import { Card, Flex, Title, Notification, LoadingOverlay, Center, useMantineTheme } from "@mantine/core";
+import { Card, Flex, Title, Notification, LoadingOverlay, Center, Text, useMantineTheme } from "@mantine/core";
 import { Sensor } from "../../sensor/models/Sensor";
 import useWebSocket from "react-use-websocket";
 import { getWebSocketToken } from "../../../utils/WebSocket/getWebSocketToken";
-import {BACKEND_URL} from "../../../env-config";
+import { useMediaQuery } from '@mantine/hooks';
 
 const TimeseriesGraph: React.FC<{ sensor: Sensor }> = ({ sensor }) => {
     const theme = useMantineTheme();
@@ -21,6 +21,7 @@ const TimeseriesGraph: React.FC<{ sensor: Sensor }> = ({ sensor }) => {
     const [maxXValue, setMaxXValue] = useState<number>(10);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
+    const isMobile = useMediaQuery('(max-width: 768px)');
 
     let { lastMessage } = useWebSocket(socketURL || "", {
         shouldReconnect: () => shouldReconnect,
@@ -31,7 +32,7 @@ const TimeseriesGraph: React.FC<{ sensor: Sensor }> = ({ sensor }) => {
             const resp = await getWebSocketToken();
             if (!resp) throw new Error("No WebSocket token received.");
 
-            let baseUrl = BACKEND_URL;
+            let baseUrl = process.env.REACT_APP_BACKEND_URL;
             if (!baseUrl) throw new Error("REACT_APP_BACKEND_URL is not configured.");
 
             baseUrl = baseUrl.replace(/^https?/, "wss").replace(/^http?/, "ws");
@@ -89,14 +90,13 @@ const TimeseriesGraph: React.FC<{ sensor: Sensor }> = ({ sensor }) => {
     useEffect(() => {
         if (measurements.length > 0) {
             const values = measurements.map(m => m.value);
-
             setMinXValue(parseFloat((Math.min(...values) - 5).toFixed(2)));
             setMaxXValue(parseFloat((Math.max(...values) + 5).toFixed(2)));
         }
     }, [measurements]);
 
     return (
-        <div style={{ position: 'relative' }}>
+        <Flex style={{ position: 'relative' }}>
             <LoadingOverlay visible={loading} overlayProps={{ radius: "sm", blur: 2 }} />
             <Card p="md" radius="md" style={{ marginBottom: '20px' }}>
                 <Flex justify="space-between" align="center" mb="md" direction={{ base: "column", sm: "row" }}>
@@ -109,42 +109,61 @@ const TimeseriesGraph: React.FC<{ sensor: Sensor }> = ({ sensor }) => {
                         </Notification>
                     </Center>
                 ) : (
-                    <LineChart
-                        key={measurements.length}
-                        activeDotProps={{ r: 6, strokeWidth: 1 }}
-                        data={measurements.slice(-50)}
-                        dataKey="measuredAt"
-                        series={[{ name: "value", color: theme.colors.blue[6], label: sensor?.unit }]}
-                        curveType="monotone"
-                        style={{ borderRadius: '5px', padding: '10px', width: "100%" }}
-                        xAxisProps={{ tickFormatter: (dateString) => {
-                                const date = new Date(dateString);
-                                return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                            }}}
-                        yAxisProps={{ domain: [minXValue, maxXValue] }}
-                        h={250}
-                        tooltipAnimationDuration={200}
-                        tooltipProps={{
-                            content: ({ label, payload }) => {
-                                if (payload && payload.length > 0) {
-                                    return (
-                                        <Card color="grey" style={{}}>
-                                            <strong>{new Date(label).toLocaleDateString([], { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}</strong>
-                                            {payload.map((item) => (
-                                                <Flex key={item.name}>
-                                                    {item.value}{sensor.unit}
-                                                </Flex>
-                                            ))}
-                                        </Card>
-                                    );
-                                }
-                                return null;
-                            },
-                        }}
-                    />
+                    <>
+                        {isMobile ? (
+                            // Mobile view: display only the last measurement value
+                            <Center style={{ height: '150px', flexDirection: 'column' }}>
+                                <Text size="xl" fw={700}>
+                                    {measurements.length > 0 ? measurements[measurements.length - 1].value : "No data"}
+                                </Text>
+                                {measurements.length > 0 && (
+                                    <Text size="sm" c="dimmed">
+                                        {new Date(measurements[measurements.length - 1].measuredAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                    </Text>
+                                )}
+                            </Center>
+                        ) : (
+                            // Desktop view: show full line chart
+                            <LineChart
+                                key={measurements.length}
+                                activeDotProps={{ r: 6, strokeWidth: 1 }}
+                                data={measurements.slice(-50)}
+                                dataKey="measuredAt"
+                                series={[{ name: "value", color: theme.colors.blue[6], label: sensor?.unit }]}
+                                curveType="monotone"
+                                style={{ borderRadius: '5px', padding: '10px', width: "100%" }}
+                                xAxisProps={{
+                                    tickFormatter: (dateString) => {
+                                        const date = new Date(dateString);
+                                        return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                                    }
+                                }}
+                                yAxisProps={{ domain: [minXValue, maxXValue] }}
+                                h={250}
+                                tooltipAnimationDuration={200}
+                                tooltipProps={{
+                                    content: ({ label, payload }) => {
+                                        if (payload && payload.length > 0) {
+                                            return (
+                                                <Card color="grey">
+                                                    <strong>{new Date(label).toLocaleDateString([], { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}</strong>
+                                                    {payload.map((item) => (
+                                                        <Flex key={item.name}>
+                                                            {item.value}{sensor.unit}
+                                                        </Flex>
+                                                    ))}
+                                                </Card>
+                                            );
+                                        }
+                                        return null;
+                                    },
+                                }}
+                            />
+                        )}
+                    </>
                 )}
             </Card>
-        </div>
+        </Flex>
     );
 };
 
