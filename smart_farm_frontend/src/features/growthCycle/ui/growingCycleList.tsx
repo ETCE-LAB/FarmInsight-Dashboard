@@ -39,14 +39,13 @@ const truncateText = (text: string, limit: number): string => {
 };
 
 const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
-    const [showGrowingCycleForm, setShowGrowingCycleForm] = useState(false);
-    const { t } = useTranslation();
     const [activeModal, setActiveModal] = useState<
         "growingCycleForm" | "harvestForm" | "details" | "deleteConfirmation" | null
     >(null);
     const [toEditGrowingCycle, setToEditGrowingCycle] = useState<GrowingCycle | null>(null);
     const [cycleToDelete, setCycleToDelete] = useState<GrowingCycle | null>(null);
     const [selectedCycle, setSelectedCycle] = useState<GrowingCycle | null>(null);
+    const { t } = useTranslation();
     const dispatch = useAppDispatch();
     const growingCycles = useSelector((state: RootState) => state.growingCycle.growingCycles);
     const auth = useAuth();
@@ -61,7 +60,6 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
 
     const handleDelete = (cycle: GrowingCycle) => {
         setCycleToDelete(cycle);
-        console.log(cycle);
         setActiveModal("deleteConfirmation");
     };
 
@@ -98,20 +96,17 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
 
     return (
         <>
+            {/* Growing Cycle Form Modal */}
             <Modal
                 opened={activeModal === "growingCycleForm"}
                 onClose={closeAllModals}
                 centered
                 title={toEditGrowingCycle ? "Edit Growing Cycle" : "Add Growing Cycle"}
             >
-                <GrowingCycleForm
-                    fpfId={fpfId}
-                    toEditGrowingCycle={toEditGrowingCycle}
-                    closeForm={closeAllModals}
-                />
+                <GrowingCycleForm fpfId={fpfId} toEditGrowingCycle={toEditGrowingCycle} closeForm={closeAllModals} />
             </Modal>
 
-            {/* Modal for Harvest Entity Form */}
+            {/* Harvest Entity Form Modal */}
             <Modal
                 opened={activeModal === "harvestForm"}
                 onClose={() => setActiveModal("details")}
@@ -131,6 +126,7 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
                 )}
             </Modal>
 
+            {/* Details Modal */}
             <Modal
                 opened={activeModal === "details"}
                 onClose={closeAllModals}
@@ -166,14 +162,12 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
                             </Grid>
                         </Paper>
 
-                        {selectedCycle.harvests && (
-                            <HarvestEntityList growingCycleID={selectedCycle.id} />
-                        )}
+                        {selectedCycle.harvests && <HarvestEntityList growingCycleID={selectedCycle.id} />}
                     </>
                 )}
             </Modal>
 
-            {/* Modal for Delete Confirmation */}
+            {/* Delete Confirmation Modal */}
             <Modal
                 opened={activeModal === "deleteConfirmation"}
                 onClose={closeAllModals}
@@ -193,12 +187,13 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
                 </Group>
             </Modal>
 
+            {/* Main Content */}
             <Card
                 radius="md"
                 padding="md"
                 style={{
                     height: "auto",
-                    overflowX: isMobile ? "auto" : "visible",
+                    overflowX: "auto",
                     width: isMobile ? "90vw" : "auto",
                     marginLeft: isMobile ? "auto" : undefined,
                     marginRight: isMobile ? "auto" : undefined,
@@ -220,88 +215,145 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
                         color: auth.user ? "#105385" : "#a1a1a1",
                     }}
                 />
-                <Flex>
-                    <Table
-                        striped
-                        highlightOnHover
-                        style={{ minWidth: isMobile ? "550px" : "auto" }}
-                    >
-                        <Table.Thead>
-                            <Table.Tr>
-                                <Table.Th />
-                                <Table.Th>{t("header.table.name")}</Table.Th>
-                                <Table.Th>{t("header.table.planted")}</Table.Th>
-                                <Table.Th>{t("header.totalHarvestAmount")}</Table.Th>
-                                <Table.Th>{t("header.table.notes")}</Table.Th>
-                                <Table.Th />
-                                <Table.Th />
-                            </Table.Tr>
-                        </Table.Thead>
-                        <Table.Tbody>
-                            {growingCycles.map((cycle) => (
-                                <Table.Tr key={cycle.id}>
-                                    <Table.Td>
-                                        <IconSeeding
-                                            style={{
-                                                marginRight: "0.5rem",
-                                                color: "green",
-                                            }}
-                                        />
-                                    </Table.Td>
-                                    <Table.Td>{truncateText(cycle.plants, 12)}</Table.Td>
-                                    <Table.Td>
-                                        {cycle.startDate
-                                            ? new Date(cycle.startDate).toLocaleDateString()
-                                            : ""}
-                                    </Table.Td>
-                                    <Table.Td>
-                                        {(() => {
-                                            const totalHarvest =
-                                                cycle.harvests?.reduce(
-                                                    (sum, harvest) => sum + harvest.amountInKg,
-                                                    0
-                                                ) || 0;
-                                            if (totalHarvest < 1) {
-                                                const grams = totalHarvest * 1000;
-                                                return `${grams} g`;
-                                            } else {
-                                                return `${totalHarvest} kg`;
-                                            }
-                                        })()}
-                                    </Table.Td>
-                                    <Table.Td>
-                                        {cycle.note ? truncateText(cycle.note, 12) : ""}
-                                    </Table.Td>
-                                    <Table.Td>
+
+                {/* Render Table for desktop, Cards for mobile */}
+                {isMobile ? (
+                    // Mobile-friendly vertical list
+                    <Flex direction="column" gap="sm" mt="md">
+                        {growingCycles.map((cycle) => (
+                            <Card key={cycle.id} shadow="sm" p="sm" withBorder>
+                                <Flex justify="space-between" align="center">
+                                    <Text fw={600}>{truncateText(cycle.plants, 20)}</Text>
+                                    <Flex gap="xs">
                                         <IconSquareRoundedMinus
                                             onClick={() => handleDelete(cycle)}
-                                            size={25}
-                                            style={{ cursor: "pointer", color: "#a53737", marginRight: "1rem" }}
+                                            size={20}
+                                            style={{ cursor: "pointer", color: "#a53737" }}
                                         />
                                         <IconEdit
                                             onClick={() => {
                                                 setActiveModal("growingCycleForm");
                                                 setToEditGrowingCycle(cycle);
                                             }}
-                                            size={25}
+                                            size={20}
                                             style={{ cursor: "pointer", color: "#105385" }}
                                         />
-                                    </Table.Td>
-                                    <Table.Td>
                                         <IconInfoSquareRounded
                                             onClick={() => {
                                                 setSelectedCycle(cycle);
                                                 setActiveModal("details");
                                             }}
-                                            size={25}
+                                            size={20}
                                             style={{ cursor: "pointer", color: "#2D6A4F" }}
                                         />
-                                    </Table.Td>
+                                    </Flex>
+                                </Flex>
+                                <Text size="xs" color="dimmed">
+                                    Planted:{" "}
+                                    {cycle.startDate ? new Date(cycle.startDate).toLocaleDateString() : "N/A"}
+                                </Text>
+                                <Text size="xs" color="dimmed">
+                                    Harvest:{" "}
+                                    {(() => {
+                                        const totalHarvest =
+                                            cycle.harvests?.reduce((sum, harvest) => sum + harvest.amountInKg, 0) || 0;
+                                        return totalHarvest < 1
+                                            ? `${totalHarvest * 1000} g`
+                                            : `${totalHarvest} kg`;
+                                    })()}
+                                </Text>
+                                <Text size="xs" color="dimmed">
+                                    Note: {cycle.note ? truncateText(cycle.note, 20) : "None"}
+                                </Text>
+                            </Card>
+                        ))}
+                    </Flex>
+                ) : (
+                    // Desktop table view
+                    <Flex style={{ overflowX: "auto" }}>
+                        <Table
+                            striped
+                            highlightOnHover
+                            style={{ width: "100%", tableLayout: "fixed" }}
+                        >
+                            <Table.Thead>
+                                <Table.Tr>
+                                    <Table.Th style={{ width: "5%" }} />
+                                    <Table.Th style={{ width: "25%" }}>{t("header.table.name")}</Table.Th>
+                                    <Table.Th style={{ width: "20%" }}>{t("header.table.planted")}</Table.Th>
+                                    <Table.Th style={{ width: "20%" }}>{t("header.totalHarvestAmount")}</Table.Th>
+                                    <Table.Th style={{ width: "20%" }}>{t("header.table.notes")}</Table.Th>
+                                    <Table.Th style={{ width: "10%" }} />
+                                    <Table.Th style={{ width: "10%" }} />
                                 </Table.Tr>
-                            ))}
-                        </Table.Tbody>
-                    </Table>
-                </Flex>
+                            </Table.Thead>
+                            <Table.Tbody>
+                                {growingCycles.map((cycle) => (
+                                    <Table.Tr key={cycle.id}>
+                                        <Table.Td>
+                                            <IconSeeding
+                                                style={{ marginRight: "0.5rem", color: "green" }}
+                                            />
+                                        </Table.Td>
+                                        <Table.Td>{truncateText(cycle.plants, 12)}</Table.Td>
+                                        <Table.Td>
+                                            {cycle.startDate
+                                                ? new Date(cycle.startDate).toLocaleDateString()
+                                                : ""}
+                                        </Table.Td>
+                                        <Table.Td>
+                                            {(() => {
+                                                const totalHarvest =
+                                                    cycle.harvests?.reduce(
+                                                        (sum, harvest) => sum + harvest.amountInKg,
+                                                        0
+                                                    ) || 0;
+                                                if (totalHarvest < 1) {
+                                                    const grams = totalHarvest * 1000;
+                                                    return `${grams} g`;
+                                                } else {
+                                                    return `${totalHarvest} kg`;
+                                                }
+                                            })()}
+                                        </Table.Td>
+                                        <Table.Td>
+                                            {cycle.note ? truncateText(cycle.note, 12) : ""}
+                                        </Table.Td>
+                                        <Table.Td>
+                                            <IconSquareRoundedMinus
+                                                onClick={() => handleDelete(cycle)}
+                                                size={25}
+                                                style={{
+                                                    cursor: "pointer",
+                                                    color: "#a53737",
+                                                    marginRight: "1rem",
+                                                }}
+                                            />
+                                            <IconEdit
+                                                onClick={() => {
+                                                    setActiveModal("growingCycleForm");
+                                                    setToEditGrowingCycle(cycle);
+                                                }}
+                                                size={25}
+                                                style={{ cursor: "pointer", color: "#105385" }}
+                                            />
+                                        </Table.Td>
+                                        <Table.Td>
+                                            <IconInfoSquareRounded
+                                                onClick={() => {
+                                                    setSelectedCycle(cycle);
+                                                    setActiveModal("details");
+                                                }}
+                                                size={25}
+                                                style={{ cursor: "pointer", color: "#2D6A4F" }}
+                                            />
+                                        </Table.Td>
+                                    </Table.Tr>
+                                ))}
+                            </Table.Tbody>
+                        </Table>
+                    </Flex>
+                )}
             </Card>
         </>
     );
