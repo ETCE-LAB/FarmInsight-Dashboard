@@ -92,116 +92,123 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     };
 
     return (
-        <>
-            <Container size={isMobile ? 'xs' : 'lg'} py={isMobile ? 'md' : 'xl'}>
-                <Flex direction={isMobile ? 'column' : 'row'} align="center" justify="center" gap="md">
-                    <TextInput
-                        placeholder={t('header.search')}
-                        value={searchTerm}
-                        onChange={handleSearchChange}
-                        style={{ width: isMobile ? '90%' : '30vw' }}
-                    />
-                    {auth.isAuthenticated && (
-                        <Button
-                            onClick={() => setModalOpen(true)}
-                            variant="filled"
-                            color="#199ff4"
-                            style={{ width: isMobile ? '90%' : 'auto' }}
-                        >
-                            {t('header.createOrganization')}
-                        </Button>
-                    )}
-                </Flex>
-            </Container>
-
-            <Container style={{ overflowX: 'hidden' }} size={isMobile ? 'xs' : 'lg'}>
-                {loading ? (
-                    <Flex justify="center" align="center" style={{ height: '50vh' }}>
-                        <Loader size="lg" />
+        // Outer container using flex to push the footer to the bottom
+        <Box style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+            {/* Main content area */}
+            <Box style={{ flex: 1 }}>
+                <Container size={isMobile ? 'xs' : 'lg'} py={isMobile ? 'md' : 'xl'}>
+                    <Flex direction={isMobile ? 'column' : 'row'} align="center" justify="center" gap="md">
+                        <TextInput
+                            placeholder={t('header.search')}
+                            value={searchTerm}
+                            onChange={handleSearchChange}
+                            style={{ width: isMobile ? '90%' : '30vw' }}
+                        />
+                        {auth.isAuthenticated && (
+                            <Button
+                                onClick={() => setModalOpen(true)}
+                                variant="filled"
+                                color="#199ff4"
+                                style={{ width: isMobile ? '90%' : 'auto' }}
+                            >
+                                {t('header.createOrganization')}
+                            </Button>
+                        )}
                     </Flex>
-                ) : (
-                    <>
-                        <Grid gutter={isMobile ? 'sm' : 'md'}>
-                            {paginatedFpfs &&
-                                paginatedFpfs.map((fpf) => (
-                                    <Grid.Col span={isMobile ? 12 : 4} key={fpf.id}>
-                                        <Card
-                                            p="lg"
-                                            radius="md"
-                                            style={{
-                                                height: '25vh',
-                                                margin: isMobile ? '10px 0' : '15px',
-                                                cursor: 'pointer',
-                                                transition: 'transform 0.2s ease',
-                                            }}
-                                            onClick={() => handleFpfSelect(fpf.organization.id, fpf.id)}
-                                            onMouseEnter={(e) => {
-                                                e.currentTarget.style.transform = 'scale(1.02)';
-                                                e.currentTarget.style.boxShadow = '0 8px 16px rgba(0, 0, 0, 0.2)';
-                                            }}
-                                            onMouseLeave={(e) => {
-                                                e.currentTarget.style.transform = 'scale(1)';
-                                                e.currentTarget.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
-                                            }}
-                                        >
-                                            <Flex justify="space-between" align="center" mb="sm">
-                                                <Title
-                                                    order={3}
-                                                    style={{
-                                                        fontSize: '1.1rem',
-                                                        fontWeight: 600,
-                                                        whiteSpace: 'nowrap',
-                                                        overflow: 'hidden',
-                                                        textOverflow: 'ellipsis',
-                                                    }}
-                                                >
-                                                    {fpf.name}
-                                                </Title>
-                                                <Text style={{ fontSize: '0.9rem', fontWeight: 500 }}>
-                                                    {fpf.organization.name}
-                                                </Text>
-                                            </Flex>
-                                            <Box
+                </Container>
+
+                <Container style={{ overflowX: 'hidden' }} size={isMobile ? 'xs' : 'lg'}>
+                    {loading ? (
+                        <Flex justify="center" align="center" style={{ height: '50vh' }}>
+                            <Loader size="lg" />
+                        </Flex>
+                    ) : (
+                        <>
+                            <Grid gutter={isMobile ? 'sm' : 'md'}>
+                                {paginatedFpfs &&
+                                    paginatedFpfs.map((fpf) => (
+                                        <Grid.Col span={isMobile ? 12 : 4} key={fpf.id}>
+                                            <Card
+                                                p="lg"
+                                                radius="md"
                                                 style={{
-                                                    height: '80%',
-                                                    display: 'flex',
-                                                    justifyContent: 'center',
-                                                    alignItems: 'center',
+                                                    height: '25vh',
+                                                    margin: isMobile ? '10px 0' : '15px',
+                                                    cursor: 'pointer',
+                                                    transition: 'transform 0.2s ease',
+                                                }}
+                                                onClick={() => handleFpfSelect(fpf.organization.id, fpf.id)}
+                                                onMouseEnter={(e) => {
+                                                    e.currentTarget.style.transform = 'scale(1.02)';
+                                                    e.currentTarget.style.boxShadow = '0 8px 16px rgba(0, 0, 0, 0.2)';
+                                                }}
+                                                onMouseLeave={(e) => {
+                                                    e.currentTarget.style.transform = 'scale(1)';
+                                                    e.currentTarget.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
                                                 }}
                                             >
-                                                {fpf && fpf.lastImageUrl?.length ? (
-                                                    <Image
-                                                        src={`${fpf.lastImageUrl}`}
-                                                        alt="Last Received Image"
+                                                <Flex justify="space-between" align="center" mb="sm">
+                                                    <Title
+                                                        order={3}
                                                         style={{
-                                                            width: '100%',
-                                                            height: '100%',
-                                                            objectFit: 'cover',
-                                                            borderRadius: '5px',
+                                                            fontSize: '1.1rem',
+                                                            fontWeight: 600,
+                                                            whiteSpace: 'nowrap',
+                                                            overflow: 'hidden',
+                                                            textOverflow: 'ellipsis',
                                                         }}
-                                                    />
-                                                ) : (
-                                                    <IconPlant size={rem(40)} color="gray" style={{ opacity: 0.5 }} />
-                                                )}
-                                            </Box>
-                                        </Card>
-                                    </Grid.Col>
-                                ))}
-                        </Grid>
-                        <Flex justify="center" mt="lg">
-                            {filteredFpfs && (
-                                <Pagination
-                                    total={Math.ceil(filteredFpfs.length / ITEMS_PER_PAGE) || 1}
-                                    siblings={isMobile ? 1 : 2}
-                                    defaultValue={currentPage}
-                                    onChange={handlePageChange}
-                                />
-                            )}
-                        </Flex>
-                    </>
-                )}
-            </Container>
+                                                    >
+                                                        {fpf.name}
+                                                    </Title>
+                                                    <Text style={{ fontSize: '0.9rem', fontWeight: 500 }}>
+                                                        {fpf.organization.name}
+                                                    </Text>
+                                                </Flex>
+                                                <Box
+                                                    style={{
+                                                        height: '80%',
+                                                        display: 'flex',
+                                                        justifyContent: 'center',
+                                                        alignItems: 'center',
+                                                    }}
+                                                >
+                                                    {fpf && fpf.lastImageUrl?.length ? (
+                                                        <Image
+                                                            src={`${fpf.lastImageUrl}`}
+                                                            alt="Last Received Image"
+                                                            style={{
+                                                                width: '100%',
+                                                                height: '100%',
+                                                                objectFit: 'cover',
+                                                                borderRadius: '5px',
+                                                            }}
+                                                        />
+                                                    ) : (
+                                                        <IconPlant size={rem(40)} color="gray" style={{ opacity: 0.5 }} />
+                                                    )}
+                                                </Box>
+                                            </Card>
+                                        </Grid.Col>
+                                    ))}
+                            </Grid>
+                            <Flex justify="center" mt="lg">
+                                {filteredFpfs && (
+                                    <Pagination
+                                        total={Math.ceil(filteredFpfs.length / ITEMS_PER_PAGE) || 1}
+                                        siblings={isMobile ? 1 : 2}
+                                        defaultValue={currentPage}
+                                        onChange={handlePageChange}
+                                    />
+                                )}
+                            </Flex>
+                        </>
+                    )}
+                </Container>
+            </Box>
+
+            {/* Footer is placed here to always appear at the bottom */}
             <Footer />
+
             <Modal
                 opened={modalOpen}
                 onClose={() => setModalOpen(false)}
@@ -210,7 +217,7 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
             >
                 <OrganizationForm />
             </Modal>
-        </>
+        </Box>
     );
 };
 

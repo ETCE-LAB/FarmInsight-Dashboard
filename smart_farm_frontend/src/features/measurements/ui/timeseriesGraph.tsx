@@ -117,27 +117,33 @@ const TimeseriesGraph: React.FC<{ sensor: Sensor }> = ({ sensor }) => {
                 ) : (
                     <>
                         {isMobile ? (
-                            // Mobile view: current value and last three measurements below
+                            // Mobile view: current value and last three measurements below, with unit appended
                             <Center style={{ flexDirection: 'column', width: '100%' }}>
                                 {currentMeasurement ? (
                                     <>
                                         <Text size="xl" fw={700}>
-                                            {currentMeasurement.value}
+                                            {currentMeasurement.value} {sensor?.unit}
                                         </Text>
                                         <Text size="sm" c="dimmed">
                                             {new Date(currentMeasurement.measuredAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                         </Text>
                                         {previousMeasurements.length > 0 && (
-                                            <Flex gap="xs" mt="sm">
+                                            <Flex gap="xs" mt="sm" justify="center">
                                                 {previousMeasurements.map((m, index) => (
                                                     <Box
                                                         key={index}
-                                                        p="xs"
+                                                        p="sm"
+                                                        style={(theme) => ({
+                                                            minWidth: 80,
+                                                            textAlign: 'center',
+                                                            border: `1px solid ${theme.colors.gray[3]}`,
+                                                            borderRadius: theme.radius.sm,
+                                                        })}
                                                     >
-                                                        <Text size="sm" fw={500}>
-                                                            {m.value}
+                                                        <Text size="md" fw={500}>
+                                                            {m.value} {sensor?.unit}
                                                         </Text>
-                                                        <Text size="xs" c="dimmed">
+                                                        <Text size="sm" c="dimmed">
                                                             {new Date(m.measuredAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                                         </Text>
                                                     </Box>
