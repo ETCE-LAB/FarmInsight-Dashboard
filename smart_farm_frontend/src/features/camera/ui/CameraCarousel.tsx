@@ -111,21 +111,22 @@ export const CameraCarousel: React.FC<{ camerasToDisplay: Camera[] }> = ({
     return (
         <Card p="lg" radius="md">
             {auth.isAuthenticated && (
-                <Stack align="center" mb="xs">
-                    <Text size="sm" fw={500}>
-                        {t("label.setCameraCarousel")}
-                    </Text>
-                    <Switch
-                        offLabel={<IconCamera size={16} />}
-                        onLabel={<IconVideo size={16} />}
-                        size="md"
-                        checked={showLivestream}
-                        onChange={(e) => setShowLivestream(e.currentTarget.checked)}
-                    />
-                </Stack>
+                <>
+                    <Stack align="center" mb="xs">
+                        <Text size="sm" fw={500}>
+                            {t("label.setCameraCarousel")}
+                        </Text>
+                        <Switch
+                            offLabel={<IconCamera size={16} />}
+                            onLabel={<IconVideo size={16} />}
+                            size="md"
+                            checked={showLivestream}
+                            onChange={(e) => setShowLivestream(e.currentTarget.checked)}
+                        />
+                    </Stack>
+                    <Divider my="xs" />
+                </>
             )}
-
-            <Divider my="xs"/>
 
             <Center>
                 {camerasToDisplay && camerasToDisplay.length > 0 ? (

@@ -189,7 +189,11 @@ const LandingPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
                                                     }}
                                                 />
                                             ) : (
-                                                <p>hi</p>
+                                                <IconPlant
+                                                    size={rem(40)}
+                                                    color="gray"
+                                                    style={{ opacity: 0.5 }}
+                                                />
                                             )}
                                         </Box>
                                     </Card>
