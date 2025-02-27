@@ -191,8 +191,6 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
                 padding="md"
                 style={{
                     height: "auto",
-                    width: isMobile ? "calc(100vw - 2rem)" : "auto",
-                    margin: "0 auto",
                 }}
             >
                 <IconCirclePlus
@@ -218,7 +216,7 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
                     // Mobile-friendly vertical list
                     <Flex direction="column" gap="sm" mt="md">
                         {growingCycles.map((cycle) => (
-                            <Card key={cycle.id} shadow="sm" p="sm" withBorder>
+                            <Card key={cycle.id} shadow="sm" p="sm" withBorder style={{width: 'fit-content'}}>
                                 <Flex direction="row" align="center" gap="xs">
                                     {/* Icons placed to the far left */}
                                     <Flex gap="xs">
@@ -250,7 +248,7 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
                                 </Flex>
                                 <Text size="xs" c="dimmed">
                                     {t("header.table.planted")}:{" "}
-                                    {cycle.startDate ? new Date(cycle.startDate).toLocaleDateString() : "N/A"}
+                                    {cycle.startDate ? new Date(cycle.startDate).toLocaleDateString() : ""}
                                 </Text>
                                 <Text size="xs" c="dimmed">
                                     {t("header.totalHarvestAmount")}:{" "}
@@ -263,7 +261,7 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
                                     })()}
                                 </Text>
                                 <Text size="xs" c="dimmed">
-                                    {t("header.table.notes")}: {cycle.note ? truncateText(cycle.note, 20) : "None"}
+                                    {t("header.table.notes")}: {cycle.note ? truncateText(cycle.note, 20) : ""}
                                 </Text>
                             </Card>
                         ))}

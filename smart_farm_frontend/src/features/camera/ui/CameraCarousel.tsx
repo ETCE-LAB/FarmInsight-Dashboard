@@ -195,14 +195,7 @@ export const CameraCarousel: React.FC<{ camerasToDisplay: Camera[] }> = ({
                 onClose={() => setFullscreenView(false)}
                 size="100%"
                 withCloseButton
-                style={{
-                    modal: {
-                        margin: 0,
-                        padding: 0,
-                        width: "100vw",
-                        height: "100vh",
-                    },
-                }}
+                centered
             >
                 {selectedObject && !selectedObject.isLiveStream && (
                     <Image
