@@ -5,7 +5,7 @@ import { requestMeasuremnt } from "../useCase/requestMeasurements";
 import { receivedMeasurementEvent } from "../state/measurementSlice";
 import { useAppSelector } from "../../../utils/Hooks";
 import { Measurement } from "../models/measurement";
-import { Card, Flex, Title, Notification, LoadingOverlay, Center, Text, useMantineTheme } from "@mantine/core";
+import { Card, Flex, Title, Notification, LoadingOverlay, Center, Text, Box, useMantineTheme } from "@mantine/core";
 import { Sensor } from "../../sensor/models/Sensor";
 import useWebSocket from "react-use-websocket";
 import { getWebSocketToken } from "../../../utils/WebSocket/getWebSocketToken";
@@ -95,6 +95,12 @@ const TimeseriesGraph: React.FC<{ sensor: Sensor }> = ({ sensor }) => {
         }
     }, [measurements]);
 
+    // Current measurement and previous three values
+    const currentMeasurement = measurements.length > 0 ? measurements[measurements.length - 1] : null;
+    const previousMeasurements = measurements.length > 1
+        ? measurements.slice(Math.max(0, measurements.length - 4), measurements.length - 1)
+        : [];
+
     return (
         <Flex style={{ position: 'relative' }}>
             <LoadingOverlay visible={loading} overlayProps={{ radius: "sm", blur: 2 }} />
@@ -111,19 +117,40 @@ const TimeseriesGraph: React.FC<{ sensor: Sensor }> = ({ sensor }) => {
                 ) : (
                     <>
                         {isMobile ? (
-                            // Mobile view: display only the last measurement value
-                            <Center style={{ height: '150px', flexDirection: 'column', width: 'auto' }}>
-                                <Text size="xl" fw={700}>
-                                    {measurements.length > 0 ? measurements[measurements.length - 1].value : "No data"}
-                                </Text>
-                                {measurements.length > 0 && (
-                                    <Text size="sm" c="dimmed">
-                                        {new Date(measurements[measurements.length - 1].measuredAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                    </Text>
+                            // Mobile view: current value and last three measurements below
+                            <Center style={{ flexDirection: 'column', width: '100%' }}>
+                                {currentMeasurement ? (
+                                    <>
+                                        <Text size="xl" fw={700}>
+                                            {currentMeasurement.value}
+                                        </Text>
+                                        <Text size="sm" c="dimmed">
+                                            {new Date(currentMeasurement.measuredAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                        </Text>
+                                        {previousMeasurements.length > 0 && (
+                                            <Flex gap="xs" mt="sm">
+                                                {previousMeasurements.map((m, index) => (
+                                                    <Box
+                                                        key={index}
+                                                        p="xs"
+                                                    >
+                                                        <Text size="sm" fw={500}>
+                                                            {m.value}
+                                                        </Text>
+                                                        <Text size="xs" c="dimmed">
+                                                            {new Date(m.measuredAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                                        </Text>
+                                                    </Box>
+                                                ))}
+                                            </Flex>
+                                        )}
+                                    </>
+                                ) : (
+                                    <Text>No data</Text>
                                 )}
                             </Center>
                         ) : (
-                            // Desktop view: show full line chart
+                            // Desktop view: full line chart
                             <LineChart
                                 key={measurements.length}
                                 activeDotProps={{ r: 6, strokeWidth: 1 }}

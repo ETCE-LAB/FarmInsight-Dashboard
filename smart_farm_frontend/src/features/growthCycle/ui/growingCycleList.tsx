@@ -148,9 +148,7 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
                                         <strong>{t("header.table.planted")}</strong>
                                     </Text>
                                     <Text size="sm">
-                                        {selectedCycle.startDate
-                                            ? new Date(selectedCycle.startDate).toLocaleDateString()
-                                            : "N/A"}
+                                        {selectedCycle.startDate ? new Date(selectedCycle.startDate).toLocaleDateString() : "N/A"}
                                     </Text>
                                 </Grid.Col>
                                 <Grid.Col span={6}>
@@ -193,10 +191,8 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
                 padding="md"
                 style={{
                     height: "auto",
-                    overflowX: "auto",
-                    width: isMobile ? "90vw" : "auto",
-                    marginLeft: isMobile ? "auto" : undefined,
-                    marginRight: isMobile ? "auto" : undefined,
+                    width: isMobile ? "calc(100vw - 2rem)" : "auto",
+                    margin: "0 auto",
                 }}
             >
                 <IconCirclePlus
@@ -213,6 +209,7 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
                     style={{
                         cursor: auth.user ? "pointer" : "not-allowed",
                         color: auth.user ? "#105385" : "#a1a1a1",
+                        marginBottom: "1rem",
                     }}
                 />
 
@@ -222,8 +219,8 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
                     <Flex direction="column" gap="sm" mt="md">
                         {growingCycles.map((cycle) => (
                             <Card key={cycle.id} shadow="sm" p="sm" withBorder>
-                                <Flex justify="space-between" align="center">
-                                    <Text fw={600}>{truncateText(cycle.plants, 20)}</Text>
+                                <Flex direction="row" align="center" gap="xs">
+                                    {/* Icons placed to the far left */}
                                     <Flex gap="xs">
                                         <IconSquareRoundedMinus
                                             onClick={() => handleDelete(cycle)}
@@ -247,13 +244,16 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
                                             style={{ cursor: "pointer", color: "#2D6A4F" }}
                                         />
                                     </Flex>
+                                    <Text fw={600} ml="sm">
+                                        {truncateText(cycle.plants, 20)}
+                                    </Text>
                                 </Flex>
-                                <Text size="xs" color="dimmed">
-                                    Planted:{" "}
+                                <Text size="xs" c="dimmed">
+                                    {t("header.table.planted")}:{" "}
                                     {cycle.startDate ? new Date(cycle.startDate).toLocaleDateString() : "N/A"}
                                 </Text>
-                                <Text size="xs" color="dimmed">
-                                    Harvest:{" "}
+                                <Text size="xs" c="dimmed">
+                                    {t("header.totalHarvestAmount")}:{" "}
                                     {(() => {
                                         const totalHarvest =
                                             cycle.harvests?.reduce((sum, harvest) => sum + harvest.amountInKg, 0) || 0;
@@ -262,8 +262,8 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
                                             : `${totalHarvest} kg`;
                                     })()}
                                 </Text>
-                                <Text size="xs" color="dimmed">
-                                    Note: {cycle.note ? truncateText(cycle.note, 20) : "None"}
+                                <Text size="xs" c="dimmed">
+                                    {t("header.table.notes")}: {cycle.note ? truncateText(cycle.note, 20) : "None"}
                                 </Text>
                             </Card>
                         ))}
@@ -271,11 +271,7 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
                 ) : (
                     // Desktop table view
                     <Flex style={{ overflowX: "auto" }}>
-                        <Table
-                            striped
-                            highlightOnHover
-                            style={{ width: "100%", tableLayout: "fixed" }}
-                        >
+                        <Table striped highlightOnHover style={{ width: "100%", tableLayout: "fixed" }}>
                             <Table.Thead>
                                 <Table.Tr>
                                     <Table.Th style={{ width: "5%" }} />
@@ -291,23 +287,16 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
                                 {growingCycles.map((cycle) => (
                                     <Table.Tr key={cycle.id}>
                                         <Table.Td>
-                                            <IconSeeding
-                                                style={{ marginRight: "0.5rem", color: "green" }}
-                                            />
+                                            <IconSeeding style={{ marginRight: "0.5rem", color: "green" }} />
                                         </Table.Td>
                                         <Table.Td>{truncateText(cycle.plants, 12)}</Table.Td>
                                         <Table.Td>
-                                            {cycle.startDate
-                                                ? new Date(cycle.startDate).toLocaleDateString()
-                                                : ""}
+                                            {cycle.startDate ? new Date(cycle.startDate).toLocaleDateString() : ""}
                                         </Table.Td>
                                         <Table.Td>
                                             {(() => {
                                                 const totalHarvest =
-                                                    cycle.harvests?.reduce(
-                                                        (sum, harvest) => sum + harvest.amountInKg,
-                                                        0
-                                                    ) || 0;
+                                                    cycle.harvests?.reduce((sum, harvest) => sum + harvest.amountInKg, 0) || 0;
                                                 if (totalHarvest < 1) {
                                                     const grams = totalHarvest * 1000;
                                                     return `${grams} g`;
@@ -316,18 +305,12 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
                                                 }
                                             })()}
                                         </Table.Td>
-                                        <Table.Td>
-                                            {cycle.note ? truncateText(cycle.note, 12) : ""}
-                                        </Table.Td>
+                                        <Table.Td>{cycle.note ? truncateText(cycle.note, 12) : ""}</Table.Td>
                                         <Table.Td>
                                             <IconSquareRoundedMinus
                                                 onClick={() => handleDelete(cycle)}
                                                 size={25}
-                                                style={{
-                                                    cursor: "pointer",
-                                                    color: "#a53737",
-                                                    marginRight: "1rem",
-                                                }}
+                                                style={{ cursor: "pointer", color: "#a53737", marginRight: "1rem" }}
                                             />
                                             <IconEdit
                                                 onClick={() => {

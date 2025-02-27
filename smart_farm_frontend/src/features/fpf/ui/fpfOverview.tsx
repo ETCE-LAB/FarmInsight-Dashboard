@@ -71,7 +71,7 @@ export const FpfOverview = () => {
                                 marginBottom: '32px'
                             }}
                         >
-                            <CameraCarousel camerasToDisplay={fpf.Cameras} />
+                            <CameraCarousel camerasToDisplay={fpf?.Cameras ?? []} />
                         </Box>
                     )}
                     {/* Growing Cycle List */}
