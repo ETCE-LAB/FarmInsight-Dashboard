@@ -31,10 +31,8 @@ const TimeseriesGraph: React.FC<{ sensor: Sensor }> = ({ sensor }) => {
         try {
             const resp = await getWebSocketToken();
             if (!resp) throw new Error("No WebSocket token received.");
-
             let baseUrl = process.env.REACT_APP_BACKEND_URL;
             if (!baseUrl) throw new Error("REACT_APP_BACKEND_URL is not configured.");
-
             baseUrl = baseUrl.replace(/^https?/, "wss").replace(/^http?/, "ws");
             setSocketUrl(`${baseUrl}/ws/sensor/${sensor?.id}?token=${encodeURIComponent(resp.token)}`);
             setShouldReconnect(true);
@@ -50,7 +48,6 @@ const TimeseriesGraph: React.FC<{ sensor: Sensor }> = ({ sensor }) => {
             try {
                 const data = JSON.parse(lastMessage.data);
                 if (!data.measurement) throw new Error("Invalid WebSocket message format.");
-
                 const newMeasurements = data.measurement.map((m: Measurement) => ({
                     value: Math.round(m.value * 100) / 100,
                     measuredAt: m.measuredAt,
@@ -102,9 +99,17 @@ const TimeseriesGraph: React.FC<{ sensor: Sensor }> = ({ sensor }) => {
         : [];
 
     return (
-        <Flex style={{ position: 'relative' }}>
+        <Flex style={{ position: 'relative', width: '100%', boxSizing: 'border-box' }}>
             <LoadingOverlay visible={loading} overlayProps={{ radius: "sm", blur: 2 }} />
-            <Card p="md" radius="md" style={{ marginBottom: '20px' }}>
+            <Card
+                p="md"
+                radius="md"
+                style={{
+                    marginBottom: '20px',
+                    width: "100%",
+                    boxSizing: 'border-box'
+                }}
+            >
                 <Flex justify="space-between" align="center" mb="md" direction={{ base: "column", sm: "row" }}>
                     <Title order={4} c={theme.colors.blue[6]}>{sensor?.name}</Title>
                 </Flex>
@@ -133,12 +138,12 @@ const TimeseriesGraph: React.FC<{ sensor: Sensor }> = ({ sensor }) => {
                                                     <Box
                                                         key={index}
                                                         p="sm"
-                                                        style={(theme) => ({
-                                                            minWidth: 80,
+                                                        style={{
+                                                            minWidth: 100,
                                                             textAlign: 'center',
                                                             border: `1px solid ${theme.colors.gray[3]}`,
                                                             borderRadius: theme.radius.sm,
-                                                        })}
+                                                        }}
                                                     >
                                                         <Text size="md" fw={500}>
                                                             {m.value} {sensor?.unit}

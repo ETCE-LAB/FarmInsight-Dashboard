@@ -216,7 +216,7 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
                     // Mobile-friendly vertical list
                     <Flex direction="column" gap="sm" mt="md">
                         {growingCycles.map((cycle) => (
-                            <Card key={cycle.id} shadow="sm" p="sm" withBorder style={{width: 'fit-content'}}>
+                            <Card key={cycle.id} shadow="sm" p="sm" withBorder style={{width: 'auto'}}>
                                 <Flex direction="row" align="center" gap="xs">
                                     {/* Icons placed to the far left */}
                                     <Flex gap="xs">
