@@ -23,6 +23,14 @@ const TimeseriesGraph: React.FC<{ sensor: Sensor }> = ({ sensor }) => {
     const [loading, setLoading] = useState<boolean>(true);
     const isMobile = useMediaQuery('(max-width: 768px)');
 
+    // Helper function to format date as dd.mm
+    const formatDate = (dateString: string) => {
+        const date = new Date(dateString);
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        return `${day}.${month}`;
+    };
+
     let { lastMessage } = useWebSocket(socketURL || "", {
         shouldReconnect: () => shouldReconnect,
     });
@@ -122,7 +130,7 @@ const TimeseriesGraph: React.FC<{ sensor: Sensor }> = ({ sensor }) => {
                 ) : (
                     <>
                         {isMobile ? (
-                            // Mobile view: current value and last three measurements below, with unit appended
+                            // Mobile view: current value with time and date, and last three measurements with time and date
                             <Center style={{ flexDirection: 'column', width: '100%' }}>
                                 {currentMeasurement ? (
                                     <>
@@ -131,6 +139,9 @@ const TimeseriesGraph: React.FC<{ sensor: Sensor }> = ({ sensor }) => {
                                         </Text>
                                         <Text size="sm" c="dimmed">
                                             {new Date(currentMeasurement.measuredAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                        </Text>
+                                        <Text size="sm" c="dimmed">
+                                            {formatDate(currentMeasurement.measuredAt)}
                                         </Text>
                                         {previousMeasurements.length > 0 && (
                                             <Flex gap="xs" mt="sm" justify="center">
@@ -149,6 +160,9 @@ const TimeseriesGraph: React.FC<{ sensor: Sensor }> = ({ sensor }) => {
                                                         </Text>
                                                         <Text size="sm" c="dimmed">
                                                             {new Date(m.measuredAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                                        </Text>
+                                                        <Text size="sm" c="dimmed">
+                                                            {formatDate(m.measuredAt)}
                                                         </Text>
                                                     </Box>
                                                 ))}

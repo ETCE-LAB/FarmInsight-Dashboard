@@ -3,8 +3,9 @@ import TimeseriesGraph from "../../measurements/ui/timeseriesGraph";
 import { useParams } from "react-router-dom";
 import { Fpf } from "../models/Fpf";
 import { getFpf } from "../useCase/getFpf";
-import { Container, Box, SimpleGrid } from '@mantine/core';
+import { Container, Box, SimpleGrid, Button, Modal } from '@mantine/core';
 import GrowingCycleList from "../../growthCycle/ui/growingCycleList";
+import { GrowingCycleForm } from "../../growthCycle/ui/growingCycleForm";
 import { CameraCarousel } from "../../camera/ui/CameraCarousel";
 import { useAppDispatch } from "../../../utils/Hooks";
 import { setGrowingCycles } from "../../growthCycle/state/GrowingCycleSlice";
@@ -18,6 +19,7 @@ export const FpfOverview = () => {
     const { t } = useTranslation();
     const [isCameraActive, setCameraActive] = useState(false);
     const isMobile = useMediaQuery('(max-width: 768px)');
+    const [showGrowingCycleForm, setShowGrowingCycleForm] = useState(false);
 
     useEffect(() => {
         if (params?.fpfId) {
@@ -46,6 +48,19 @@ export const FpfOverview = () => {
 
     return (
         <Container fluid style={{ width: '100%', height: '100%' }}>
+            {/* Modal for Adding a Growing Cycle */}
+            <Modal
+                opened={showGrowingCycleForm}
+                onClose={() => setShowGrowingCycleForm(false)}
+                centered
+                title={t("Add Growing Cycle")}
+            >
+                <GrowingCycleForm
+                    fpfId={fpf?.id ?? ""}
+                    toEditGrowingCycle={null}
+                    closeForm={() => setShowGrowingCycleForm(false)}
+                />
+            </Modal>
             {isMobile ? (
                 // Single scrollable container for mobile devices
                 <Box style={{ ...scrollableStyle, height: '88vh' }}>
@@ -74,15 +89,22 @@ export const FpfOverview = () => {
                             <TimeseriesGraph sensor={sensor} />
                         </Box>
                     ))}
-                    {/* Growing Cycle List comes last */}
+                    {/* Growing Cycle Section */}
                     {fpf && (
                         <Box
                             style={{
                                 borderRadius: '10px',
-                                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
+                                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                                padding: '1rem'
                             }}
                         >
-                            <GrowingCycleList fpfId={fpf.id} />
+                            {(fpf.GrowingCycles ?? []).length > 0 ? (
+                                <GrowingCycleList fpfId={fpf.id} />
+                            ) : (
+                                <Button variant="outline" onClick={() => setShowGrowingCycleForm(true)}>
+                                    {t("Add Growing Cycle")}
+                                </Button>
+                            )}
                         </Box>
                     )}
                 </Box>
@@ -105,7 +127,7 @@ export const FpfOverview = () => {
                         ))}
                     </Box>
 
-                    {/* Right section: Camera Carousel & Growing Cycle List */}
+                    {/* Right section: Camera Carousel & Growing Cycle Section */}
                     <Box style={scrollableStyle}>
                         {fpf?.Cameras && fpf.Cameras.length > 0 && isCameraActive && (
                             <Box
@@ -122,10 +144,17 @@ export const FpfOverview = () => {
                             <Box
                                 style={{
                                     borderRadius: '10px',
-                                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
+                                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                                    padding: '1rem'
                                 }}
                             >
-                                <GrowingCycleList fpfId={fpf.id} />
+                                {(fpf.GrowingCycles ?? []).length > 0 ? (
+                                    <GrowingCycleList fpfId={fpf.id} />
+                                ) : (
+                                    <Button variant="outline" onClick={() => setShowGrowingCycleForm(true)}>
+                                        {t("growingCycleForm.addCycle")}
+                                    </Button>
+                                )}
                             </Box>
                         )}
                     </Box>

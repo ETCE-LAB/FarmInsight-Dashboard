@@ -193,30 +193,27 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
                     height: "auto",
                 }}
             >
-                <IconCirclePlus
-                    size={25}
-                    aria-disabled={!auth.user}
-                    onClick={
-                        auth.user
-                            ? () => {
-                                setActiveModal("growingCycleForm");
-                                setToEditGrowingCycle(null);
-                            }
-                            : undefined
-                    }
-                    style={{
-                        cursor: auth.user ? "pointer" : "not-allowed",
-                        color: auth.user ? "#105385" : "#a1a1a1",
-                        marginBottom: "1rem",
-                    }}
-                />
+                {auth.user && (
+                    <IconCirclePlus
+                        size={25}
+                        onClick={() => {
+                            setActiveModal("growingCycleForm");
+                            setToEditGrowingCycle(null);
+                        }}
+                        style={{
+                            cursor: "pointer",
+                            color: "#105385",
+                            marginBottom: "1rem",
+                        }}
+                    />
+                )}
 
                 {/* Render Table for desktop, Cards for mobile */}
                 {isMobile ? (
                     // Mobile-friendly vertical list
                     <Flex direction="column" gap="sm" mt="md">
                         {growingCycles.map((cycle) => (
-                            <Card key={cycle.id} shadow="sm" p="sm" withBorder style={{width: 'auto'}}>
+                            <Card key={cycle.id} shadow="sm" p="sm" withBorder style={{ width: 'auto' }}>
                                 <Flex direction="row" align="center" gap="xs">
                                     <Flex gap="xs">
                                         <IconSquareRoundedMinus
