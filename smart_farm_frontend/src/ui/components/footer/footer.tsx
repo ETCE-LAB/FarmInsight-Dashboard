@@ -18,7 +18,7 @@ const Footer: React.FC = () => {
             style={{
                 height: "50px",
                 padding: '0 20px',
-                backgroundColor: colorScheme === 'dark' ? '#1a1b1e' : '#fff',
+                backgroundColor: "transparent",
             }}
         >
             <Text
