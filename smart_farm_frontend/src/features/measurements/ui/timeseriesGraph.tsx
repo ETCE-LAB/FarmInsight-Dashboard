@@ -100,6 +100,13 @@ const TimeseriesGraph: React.FC<{ sensor: Sensor }> = ({ sensor }) => {
         }
     }, [measurements]);
 
+    useEffect(() => {
+        if (error) {
+            const timer = setTimeout(() => setError(null), 5000);
+            return () => clearTimeout(timer);
+        }
+    }, [error]);
+
     // Current measurement and previous three values
     const currentMeasurement = measurements.length > 0 ? measurements[measurements.length - 1] : null;
     const previousMeasurements = measurements.length > 1
@@ -161,7 +168,7 @@ const TimeseriesGraph: React.FC<{ sensor: Sensor }> = ({ sensor }) => {
                                                         <Text size="sm" c="dimmed">
                                                             {new Date(m.measuredAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                                         </Text>
-                                                        <Text size="sm" c="dimmed">
+                                                        <Text size="xs" c="dimmed">
                                                             {formatDate(m.measuredAt)}
                                                         </Text>
                                                     </Box>

@@ -3,7 +3,7 @@ import TimeseriesGraph from "../../measurements/ui/timeseriesGraph";
 import { useParams } from "react-router-dom";
 import { Fpf } from "../models/Fpf";
 import { getFpf } from "../useCase/getFpf";
-import { Container, Box, SimpleGrid, Button, Modal } from '@mantine/core';
+import {Container, Box, SimpleGrid, Button, Modal, useMantineTheme} from '@mantine/core';
 import GrowingCycleList from "../../growthCycle/ui/growingCycleList";
 import { GrowingCycleForm } from "../../growthCycle/ui/growingCycleForm";
 import { CameraCarousel } from "../../camera/ui/CameraCarousel";
@@ -11,8 +11,10 @@ import { useAppDispatch } from "../../../utils/Hooks";
 import { setGrowingCycles } from "../../growthCycle/state/GrowingCycleSlice";
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "@mantine/hooks";
+import {IconPlant} from "@tabler/icons-react";
 
 export const FpfOverview = () => {
+    const theme = useMantineTheme();
     const [fpf, setFpf] = useState<Fpf | null>(null);
     const dispatch = useAppDispatch();
     const params = useParams();
@@ -154,7 +156,11 @@ export const FpfOverview = () => {
                                     <GrowingCycleList fpfId={fpf.id} />
                                 ) : (
                                     <Box style={{ display: 'flex', justifyContent: 'center' }}>
-                                        <Button variant="outline" onClick={() => setShowGrowingCycleForm(true)}>
+                                        <Button variant="light"
+                                                leftSection={<IconPlant/>}
+                                                onClick={() => setShowGrowingCycleForm(true)}
+                                                color= {theme.colors.blue[6]}
+                                        >
                                             {t("growingCycleForm.addCycle")}
                                         </Button>
                                     </Box>
