@@ -153,7 +153,7 @@ const TimeseriesGraph: React.FC<{ sensor: Sensor }> = ({ sensor }) => {
                                         {previousMeasurements.length > 0 && (
                                             <Flex gap="xs" mt="sm" justify="center">
                                                 {previousMeasurements.map((m, index) => (
-                                                    <Box
+                                                    <Flex
                                                         key={index}
                                                         p="sm"
                                                         style={{
@@ -171,7 +171,7 @@ const TimeseriesGraph: React.FC<{ sensor: Sensor }> = ({ sensor }) => {
                                                         <Text size="xs" c="dimmed">
                                                             {formatDate(m.measuredAt)}
                                                         </Text>
-                                                    </Box>
+                                                    </Flex>
                                                 ))}
                                             </Flex>
                                         )}
