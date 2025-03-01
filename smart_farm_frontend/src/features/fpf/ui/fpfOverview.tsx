@@ -3,7 +3,14 @@ import TimeseriesGraph from "../../measurements/ui/timeseriesGraph";
 import { useParams } from "react-router-dom";
 import { Fpf } from "../models/Fpf";
 import { getFpf } from "../useCase/getFpf";
-import {Container, Box, SimpleGrid, Button, Modal, useMantineTheme} from '@mantine/core';
+import {
+    Container,
+    Box,
+    SimpleGrid,
+    Button,
+    Modal,
+    useMantineTheme,
+} from '@mantine/core';
 import GrowingCycleList from "../../growthCycle/ui/growingCycleList";
 import { GrowingCycleForm } from "../../growthCycle/ui/growingCycleForm";
 import { CameraCarousel } from "../../camera/ui/CameraCarousel";
@@ -11,7 +18,8 @@ import { useAppDispatch } from "../../../utils/Hooks";
 import { setGrowingCycles } from "../../growthCycle/state/GrowingCycleSlice";
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "@mantine/hooks";
-import {IconPlant} from "@tabler/icons-react";
+import { IconPlant } from "@tabler/icons-react";
+import { useAuth } from 'react-oidc-context';
 
 export const FpfOverview = () => {
     const theme = useMantineTheme();
@@ -22,6 +30,7 @@ export const FpfOverview = () => {
     const [isCameraActive, setCameraActive] = useState(false);
     const isMobile = useMediaQuery('(max-width: 768px)');
     const [showGrowingCycleForm, setShowGrowingCycleForm] = useState(false);
+    const auth = useAuth();
 
     useEffect(() => {
         if (params?.fpfId) {
@@ -45,7 +54,7 @@ export const FpfOverview = () => {
         WebkitOverflowScrolling: 'touch',
         height: '100%',
         padding: '10px',
-        scrollBehavior: 'smooth'
+        scrollBehavior: 'smooth',
     };
 
     return (
@@ -72,7 +81,7 @@ export const FpfOverview = () => {
                             style={{
                                 borderRadius: '10px',
                                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-                                marginBottom: '32px'
+                                marginBottom: '32px',
                             }}
                         >
                             <CameraCarousel camerasToDisplay={fpf?.Cameras ?? []} />
@@ -85,7 +94,7 @@ export const FpfOverview = () => {
                             style={{
                                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
                                 borderRadius: '10px',
-                                marginBottom: '20px'
+                                marginBottom: '20px',
                             }}
                         >
                             <TimeseriesGraph sensor={sensor} />
@@ -97,17 +106,26 @@ export const FpfOverview = () => {
                             style={{
                                 borderRadius: '10px',
                                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-                                padding: '1rem'
+                                padding: '1rem',
                             }}
                         >
                             {(fpf.GrowingCycles ?? []).length > 0 ? (
                                 <GrowingCycleList fpfId={fpf.id} />
                             ) : (
-                                <Box style={{ display: 'flex', justifyContent: 'center' }}>
-                                    <Button variant="outline" onClick={() => setShowGrowingCycleForm(true)}>
-                                        {t("growingCycleForm.addCycle")}
-                                    </Button>
-                                </Box>
+                                <>
+                                    {auth.user && (
+                                        <Box style={{ display: 'flex', justifyContent: 'center' }}>
+                                            <Button
+                                                variant="light"
+                                                leftSection={<IconPlant />}
+                                                onClick={() => setShowGrowingCycleForm(true)}
+                                                color={theme.colors.blue[6]}
+                                            >
+                                                {t("growingCycleForm.addCycle")}
+                                            </Button>
+                                        </Box>
+                                    )}
+                                </>
                             )}
                         </Box>
                     )}
@@ -123,7 +141,7 @@ export const FpfOverview = () => {
                                 style={{
                                     boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
                                     borderRadius: '10px',
-                                    marginBottom: '20px'
+                                    marginBottom: '20px',
                                 }}
                             >
                                 <TimeseriesGraph sensor={sensor} />
@@ -138,7 +156,7 @@ export const FpfOverview = () => {
                                 style={{
                                     borderRadius: '10px',
                                     boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-                                    marginBottom: '32px'
+                                    marginBottom: '32px',
                                 }}
                             >
                                 <CameraCarousel camerasToDisplay={fpf.Cameras} />
@@ -149,21 +167,26 @@ export const FpfOverview = () => {
                                 style={{
                                     borderRadius: '10px',
                                     boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-                                    padding: '1rem'
+                                    padding: '1rem',
                                 }}
                             >
                                 {(fpf.GrowingCycles ?? []).length > 0 ? (
                                     <GrowingCycleList fpfId={fpf.id} />
                                 ) : (
-                                    <Box style={{ display: 'flex', justifyContent: 'center' }}>
-                                        <Button variant="light"
-                                                leftSection={<IconPlant/>}
-                                                onClick={() => setShowGrowingCycleForm(true)}
-                                                color= {theme.colors.blue[6]}
-                                        >
-                                            {t("growingCycleForm.addCycle")}
-                                        </Button>
-                                    </Box>
+                                    <>
+                                        {auth.user && (
+                                            <Box style={{ display: 'flex', justifyContent: 'center' }}>
+                                                <Button
+                                                    variant="light"
+                                                    leftSection={<IconPlant />}
+                                                    onClick={() => setShowGrowingCycleForm(true)}
+                                                    color={theme.colors.blue[6]}
+                                                >
+                                                    {t("growingCycleForm.addCycle")}
+                                                </Button>
+                                            </Box>
+                                        )}
+                                    </>
                                 )}
                             </Box>
                         )}
