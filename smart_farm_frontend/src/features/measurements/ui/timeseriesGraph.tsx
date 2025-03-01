@@ -177,46 +177,52 @@ const TimeseriesGraph: React.FC<{ sensor: Sensor }> = ({ sensor }) => {
                                         )}
                                     </>
                                 ) : (
-                                    <Text>No data</Text>
+                                    <Text c="dimmed">No data</Text>
                                 )}
                             </Center>
                         ) : (
-                            // Desktop view: full line chart
-                            <LineChart
-                                key={measurements.length}
-                                activeDotProps={{ r: 6, strokeWidth: 1 }}
-                                data={measurements.slice(-50)}
-                                dataKey="measuredAt"
-                                series={[{ name: "value", color: theme.colors.blue[6], label: sensor?.unit }]}
-                                curveType="monotone"
-                                style={{ borderRadius: '5px', padding: '10px', width: "100%" }}
-                                xAxisProps={{
-                                    tickFormatter: (dateString) => {
-                                        const date = new Date(dateString);
-                                        return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                                    }
-                                }}
-                                yAxisProps={{ domain: [minXValue, maxXValue] }}
-                                h={250}
-                                tooltipAnimationDuration={200}
-                                tooltipProps={{
-                                    content: ({ label, payload }) => {
-                                        if (payload && payload.length > 0) {
-                                            return (
-                                                <Card color="grey">
-                                                    <strong>{new Date(label).toLocaleDateString([], { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}</strong>
-                                                    {payload.map((item) => (
-                                                        <Flex key={item.name}>
-                                                            {item.value}{sensor.unit}
-                                                        </Flex>
-                                                    ))}
-                                                </Card>
-                                            );
+                            // Desktop view: show chart only if there are measurements, else show text
+                            measurements.length === 0 ? (
+                                <Center style={{ height: '250px' }}>
+                                    <Text c="dimmed">No data</Text>
+                                </Center>
+                            ) : (
+                                <LineChart
+                                    key={measurements.length}
+                                    activeDotProps={{ r: 6, strokeWidth: 1 }}
+                                    data={measurements.slice(-50)}
+                                    dataKey="measuredAt"
+                                    series={[{ name: "value", color: theme.colors.blue[6], label: sensor?.unit }]}
+                                    curveType="monotone"
+                                    style={{ borderRadius: '5px', padding: '10px', width: "100%" }}
+                                    xAxisProps={{
+                                        tickFormatter: (dateString) => {
+                                            const date = new Date(dateString);
+                                            return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                                         }
-                                        return null;
-                                    },
-                                }}
-                            />
+                                    }}
+                                    yAxisProps={{ domain: [minXValue, maxXValue] }}
+                                    h={250}
+                                    tooltipAnimationDuration={200}
+                                    tooltipProps={{
+                                        content: ({ label, payload }) => {
+                                            if (payload && payload.length > 0) {
+                                                return (
+                                                    <Card color="grey">
+                                                        <strong>{new Date(label).toLocaleDateString([], { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}</strong>
+                                                        {payload.map((item) => (
+                                                            <Flex key={item.name}>
+                                                                {item.value}{sensor.unit}
+                                                            </Flex>
+                                                        ))}
+                                                    </Card>
+                                                );
+                                            }
+                                            return null;
+                                        },
+                                    }}
+                                />
+                            )
                         )}
                     </>
                 )}
