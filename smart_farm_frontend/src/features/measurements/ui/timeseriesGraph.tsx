@@ -38,7 +38,7 @@ const TimeseriesGraph: React.FC<{ sensor: Sensor }> = ({ sensor }) => {
             setShouldReconnect(true);
         } catch (err) {
             console.error(err);
-            setError("Failed to reconnect WebSocket.");
+            //setError("Failed to reconnect WebSocket.");
             setShouldReconnect(false);
         }
     };
