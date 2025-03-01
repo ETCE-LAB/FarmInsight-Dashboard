@@ -186,13 +186,7 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
             </Modal>
 
             {/* Main Content */}
-            <Card
-                radius="md"
-                padding="md"
-                style={{
-                    height: "auto",
-                }}
-            >
+            <Card radius="md" padding="md" style={{ height: "auto" }}>
                 {auth.user && (
                     <IconCirclePlus
                         size={25}
@@ -208,39 +202,38 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
                     />
                 )}
 
-                {/* Render Table for desktop, Cards for mobile */}
                 {isMobile ? (
-                    // Mobile-friendly vertical list
+                    // Mobile-friendly vertical list with updated layout
                     <Flex direction="column" gap="sm" mt="md">
                         {growingCycles.map((cycle) => (
-                            <Card key={cycle.id} shadow="sm" p="sm" withBorder style={{ width: 'auto' }}>
-                                <Flex direction="row" align="center" gap="xs">
-                                    <Flex gap="xs">
-                                        <IconSquareRoundedMinus
-                                            onClick={() => handleDelete(cycle)}
-                                            size={20}
-                                            style={{ cursor: "pointer", color: "#a53737" }}
-                                        />
-                                        <IconEdit
-                                            onClick={() => {
-                                                setActiveModal("growingCycleForm");
-                                                setToEditGrowingCycle(cycle);
-                                            }}
-                                            size={20}
-                                            style={{ cursor: "pointer", color: "#105385" }}
-                                        />
-                                        <IconInfoSquareRounded
-                                            onClick={() => {
-                                                setSelectedCycle(cycle);
-                                                setActiveModal("details");
-                                            }}
-                                            size={20}
-                                            style={{ cursor: "pointer", color: "#2D6A4F" }}
-                                        />
-                                    </Flex>
-                                    <Text fw={600} ml="sm">
-                                        {truncateText(cycle.plants, 20)}
-                                    </Text>
+                            <Card key={cycle.id} shadow="sm" p="sm" withBorder style={{ width: "auto" }}>
+                                {/* Plant name centered */}
+                                <Text fw={600} ta="center" mb="xs" tt="capitalize">
+                                    {truncateText(cycle.plants, 20)}
+                                </Text>
+                                {/* Action buttons evenly distributed */}
+                                <Flex justify="space-around" align="center" mb="xs">
+                                    <IconSquareRoundedMinus
+                                        onClick={() => handleDelete(cycle)}
+                                        size={20}
+                                        style={{ cursor: "pointer", color: "#a53737" }}
+                                    />
+                                    <IconEdit
+                                        onClick={() => {
+                                            setActiveModal("growingCycleForm");
+                                            setToEditGrowingCycle(cycle);
+                                        }}
+                                        size={20}
+                                        style={{ cursor: "pointer", color: "#105385" }}
+                                    />
+                                    <IconInfoSquareRounded
+                                        onClick={() => {
+                                            setSelectedCycle(cycle);
+                                            setActiveModal("details");
+                                        }}
+                                        size={20}
+                                        style={{ cursor: "pointer", color: "#2D6A4F" }}
+                                    />
                                 </Flex>
                                 <Text size="xs" c="dimmed">
                                     {t("header.table.planted")}:{" "}
@@ -251,9 +244,7 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
                                     {(() => {
                                         const totalHarvest =
                                             cycle.harvests?.reduce((sum, harvest) => sum + harvest.amountInKg, 0) || 0;
-                                        return totalHarvest < 1
-                                            ? `${totalHarvest * 1000} g`
-                                            : `${totalHarvest} kg`;
+                                        return totalHarvest < 1 ? `${totalHarvest * 1000} g` : `${totalHarvest} kg`;
                                     })()}
                                 </Text>
                                 <Text size="xs" c="dimmed">
@@ -263,7 +254,7 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
                         ))}
                     </Flex>
                 ) : (
-                    // Desktop table view
+                    // Desktop table view remains unchanged
                     <Flex style={{ overflowX: "auto" }}>
                         <Table striped highlightOnHover style={{ width: "100%", tableLayout: "fixed" }}>
                             <Table.Thead>

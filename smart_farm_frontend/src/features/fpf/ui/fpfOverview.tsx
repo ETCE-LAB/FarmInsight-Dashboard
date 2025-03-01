@@ -101,9 +101,11 @@ export const FpfOverview = () => {
                             {(fpf.GrowingCycles ?? []).length > 0 ? (
                                 <GrowingCycleList fpfId={fpf.id} />
                             ) : (
-                                <Button variant="outline" onClick={() => setShowGrowingCycleForm(true)}>
-                                    {t("Add Growing Cycle")}
-                                </Button>
+                                <Box style={{ display: 'flex', justifyContent: 'center' }}>
+                                    <Button variant="outline" onClick={() => setShowGrowingCycleForm(true)}>
+                                        {t("growingCycleForm.addCycle")}
+                                    </Button>
+                                </Box>
                             )}
                         </Box>
                     )}
@@ -151,9 +153,11 @@ export const FpfOverview = () => {
                                 {(fpf.GrowingCycles ?? []).length > 0 ? (
                                     <GrowingCycleList fpfId={fpf.id} />
                                 ) : (
-                                    <Button variant="outline" onClick={() => setShowGrowingCycleForm(true)}>
-                                        {t("growingCycleForm.addCycle")}
-                                    </Button>
+                                    <Box style={{ display: 'flex', justifyContent: 'center' }}>
+                                        <Button variant="outline" onClick={() => setShowGrowingCycleForm(true)}>
+                                            {t("growingCycleForm.addCycle")}
+                                        </Button>
+                                    </Box>
                                 )}
                             </Box>
                         )}

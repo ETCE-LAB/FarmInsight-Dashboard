@@ -140,7 +140,7 @@ const TimeseriesGraph: React.FC<{ sensor: Sensor }> = ({ sensor }) => {
                                         <Text size="sm" c="dimmed">
                                             {new Date(currentMeasurement.measuredAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                         </Text>
-                                        <Text size="sm" c="dimmed">
+                                        <Text size="xs" c="dimmed">
                                             {formatDate(currentMeasurement.measuredAt)}
                                         </Text>
                                         {previousMeasurements.length > 0 && (
