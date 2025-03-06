@@ -244,7 +244,9 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
                                     {(() => {
                                         const totalHarvest =
                                             cycle.harvests?.reduce((sum, harvest) => sum + harvest.amountInKg, 0) || 0;
-                                        return totalHarvest < 1 ? `${totalHarvest * 1000} g` : `${totalHarvest} kg`;
+                                        return totalHarvest < 1
+                                            ? `${(totalHarvest * 1000).toFixed(2)} g`
+                                            : `${totalHarvest.toFixed(2)} kg`;
                                     })()}
                                 </Text>
                                 <Text size="xs" c="dimmed">
