@@ -10,6 +10,8 @@ import {
     Button,
     Modal,
     useMantineTheme,
+    Center,
+    Text,
 } from '@mantine/core';
 import GrowingCycleList from "../../growthCycle/ui/growingCycleList";
 import { GrowingCycleForm } from "../../growthCycle/ui/growingCycleForm";
@@ -88,18 +90,25 @@ export const FpfOverview = () => {
                         </Box>
                     )}
                     {/* Sensor graphs come next */}
-                    {fpf?.Sensors?.map((sensor) => (
-                        <Box
-                            key={sensor.id}
-                            style={{
-                                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-                                borderRadius: '10px',
-                                marginBottom: '20px',
-                            }}
-                        >
-                            <TimeseriesGraph sensor={sensor} />
-                        </Box>
-                    ))}
+                    {fpf?.Sensors && fpf.Sensors.length > 0 ? (
+                        fpf.Sensors.map((sensor) => (
+                            <Box
+                                key={sensor.id}
+                                style={{
+                                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                                    borderRadius: '10px',
+                                    marginBottom: '20px',
+                                }}
+                            >
+                                <TimeseriesGraph sensor={sensor} />
+                            </Box>
+                        ))
+                    ) : (
+                        <Center style={{ padding: '20px', minHeight: '100px' }}>
+                            <IconPlant size={24} style={{ marginRight: '8px' }} />
+                            <Text c="dimmed">{t("No sensors added yet")}</Text>
+                        </Center>
+                    )}
                     {/* Growing Cycle Section: only render if cycles exist or user is signed in */}
                     {fpf && (((fpf.GrowingCycles ?? []).length > 0) || auth.user) && (
                         <Box
@@ -131,18 +140,25 @@ export const FpfOverview = () => {
                 <SimpleGrid cols={2} spacing="lg" style={{ height: '88vh', overflow: 'hidden' }}>
                     {/* Left section: Sensor Graphs */}
                     <Box style={scrollableStyle}>
-                        {fpf?.Sensors?.map((sensor) => (
-                            <Box
-                                key={sensor.id}
-                                style={{
-                                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-                                    borderRadius: '10px',
-                                    marginBottom: '20px',
-                                }}
-                            >
-                                <TimeseriesGraph sensor={sensor} />
-                            </Box>
-                        ))}
+                        {fpf?.Sensors && fpf.Sensors.length > 0 ? (
+                            fpf.Sensors.map((sensor) => (
+                                <Box
+                                    key={sensor.id}
+                                    style={{
+                                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                                        borderRadius: '10px',
+                                        marginBottom: '20px',
+                                    }}
+                                >
+                                    <TimeseriesGraph sensor={sensor} />
+                                </Box>
+                            ))
+                        ) : (
+                            <Center style={{ padding: '20px', minHeight: '100px' }}>
+                                <IconPlant size={24} style={{ marginRight: '8px' }} />
+                                <Text c="dimmed">{t("No sensors added yet")}</Text>
+                            </Center>
+                        )}
                     </Box>
 
                     {/* Right section: Camera Carousel & Growing Cycle Section */}

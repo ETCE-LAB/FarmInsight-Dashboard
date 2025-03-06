@@ -23,6 +23,13 @@ const TimeseriesGraph: React.FC<{ sensor: Sensor }> = ({ sensor }) => {
     const [loading, setLoading] = useState<boolean>(true);
     const isMobile = useMediaQuery('(max-width: 768px)');
 
+    // Helper function to format the harvest amount
+    // If the value has a fractional part, display with two decimals;
+    // otherwise display as an integer.
+    const formatHarvestAmount = (value: number): string => {
+        return value % 1 === 0 ? value.toString() : value.toFixed(2);
+    };
+
     // Helper function to format date as dd.mm
     const formatDate = (dateString: string) => {
         const date = new Date(dateString);
@@ -46,7 +53,6 @@ const TimeseriesGraph: React.FC<{ sensor: Sensor }> = ({ sensor }) => {
             setShouldReconnect(true);
         } catch (err) {
             console.error(err);
-            //setError("Failed to reconnect WebSocket.");
             setShouldReconnect(false);
         }
     };
@@ -82,7 +88,10 @@ const TimeseriesGraph: React.FC<{ sensor: Sensor }> = ({ sensor }) => {
         requestMeasuremnt(sensor.id)
             .then((resp) => {
                 if (!resp) throw new Error("Failed to fetch measurements.");
-                const roundedMeasurements = resp.map(m => ({ ...m, value: parseFloat(m.value.toFixed(2)) }));
+                const roundedMeasurements = resp.map(m => ({
+                    ...m,
+                    value: parseFloat(m.value.toFixed(2))
+                }));
                 setMeasurements(roundedMeasurements);
             })
             .catch(err => {
@@ -142,7 +151,7 @@ const TimeseriesGraph: React.FC<{ sensor: Sensor }> = ({ sensor }) => {
                                 {currentMeasurement ? (
                                     <>
                                         <Text size="xl" fw={700}>
-                                            {currentMeasurement.value} {sensor?.unit}
+                                            {formatHarvestAmount(currentMeasurement.value)} {sensor?.unit}
                                         </Text>
                                         <Text size="sm" c="dimmed">
                                             {new Date(currentMeasurement.measuredAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
@@ -163,7 +172,7 @@ const TimeseriesGraph: React.FC<{ sensor: Sensor }> = ({ sensor }) => {
                                                         }}
                                                     >
                                                         <Text size="md" fw={500}>
-                                                            {m.value} {sensor?.unit}
+                                                            {formatHarvestAmount(m.value)} {sensor?.unit}
                                                         </Text>
                                                         <Text size="sm" c="dimmed">
                                                             {new Date(m.measuredAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
@@ -209,10 +218,18 @@ const TimeseriesGraph: React.FC<{ sensor: Sensor }> = ({ sensor }) => {
                                             if (payload && payload.length > 0) {
                                                 return (
                                                     <Card color="grey">
-                                                        <strong>{new Date(label).toLocaleDateString([], { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}</strong>
+                                                        <strong>
+                                                            {new Date(label).toLocaleDateString([], {
+                                                                year: 'numeric',
+                                                                month: '2-digit',
+                                                                day: '2-digit',
+                                                                hour: '2-digit',
+                                                                minute: '2-digit'
+                                                            })}
+                                                        </strong>
                                                         {payload.map((item) => (
                                                             <Flex key={item.name}>
-                                                                {item.value}{sensor.unit}
+                                                                {formatHarvestAmount(item.value)}{sensor?.unit}
                                                             </Flex>
                                                         ))}
                                                     </Card>
