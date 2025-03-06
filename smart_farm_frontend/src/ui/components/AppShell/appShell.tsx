@@ -1,12 +1,11 @@
-import {AppShell, Burger, Flex} from '@mantine/core';
-import { useLocation } from 'react-router-dom';
-import React, {PropsWithChildren, useEffect, useState} from "react";
+import { AppShell, Burger, Flex } from '@mantine/core';
+import { useLocation, useNavigate } from 'react-router-dom';
+import React, { PropsWithChildren, useEffect, useState } from "react";
 import { AppShell_Header } from "./components/appShell_Header"; // Import the header component
 import { AppShell_Navbar } from "./components/appShell_Navbar";
-import {AppRoutes} from "../../../utils/appRoutes"; // Import the navbar component
-import { useNavigate } from "react-router-dom";
-import {useMediaQuery} from "@mantine/hooks";
-import {useAuth} from "react-oidc-context";
+import { AppRoutes } from "../../../utils/appRoutes"; // Import the navbar component
+import { useMediaQuery } from "@mantine/hooks";
+import { useAuth } from "react-oidc-context";
 
 export const BasicAppShell: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     const auth = useAuth();
@@ -33,16 +32,15 @@ export const BasicAppShell: React.FC<PropsWithChildren<{}>> = ({ children }) => 
     return (
         <AppShell
             header={{ height: 60 }}
-            navbar={{ width: "15vw", breakpoint: 'sm', collapsed: { mobile: !opened }, }}
+            // Only provide the navbar prop if showNavbar is true
+            navbar={showNavbar ? { width: "15vw", breakpoint: 'sm', collapsed: { mobile: !opened } } : undefined}
             padding="md"
         >
             <AppShell.Header>
-                <Flex style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%',  height: '60px' }}>
-                    {/* Burger Menu auf mobilen Geräten */}
-                    {isMobile && showNavbar &&  (
+                <Flex style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', height: '60px' }}>
+                    {isMobile && showNavbar && (
                         <Burger opened={opened} onClick={() => setOpened((o) => !o)} />
                     )}
-                    {/* Der Header bleibt an Ort und Stelle */}
                     <AppShell_Header />
                 </Flex>
 

@@ -206,7 +206,7 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
                     // Mobile-friendly vertical list with updated layout
                     <Flex direction="column" gap="sm" mt="md">
                         {growingCycles.map((cycle) => (
-                            <Card key={cycle.id} shadow="sm" p="sm" withBorder style={{ width: "auto" }}>
+                            <Card key={cycle.id} p="sm" withBorder style={{ width: "auto" }}>
                                 {/* Plant name centered */}
                                 <Text fw={600} ta="center" mb="xs" tt="capitalize">
                                     {truncateText(cycle.plants, 20)}

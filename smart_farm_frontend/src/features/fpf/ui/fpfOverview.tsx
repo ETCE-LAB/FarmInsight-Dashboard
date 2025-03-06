@@ -82,7 +82,6 @@ export const FpfOverview = () => {
                         <Box
                             style={{
                                 borderRadius: '10px',
-                                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
                                 marginBottom: '32px',
                             }}
                         >
@@ -95,7 +94,6 @@ export const FpfOverview = () => {
                             <Box
                                 key={sensor.id}
                                 style={{
-                                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
                                     borderRadius: '10px',
                                     marginBottom: '20px',
                                 }}
@@ -114,7 +112,6 @@ export const FpfOverview = () => {
                         <Box
                             style={{
                                 borderRadius: '10px',
-                                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
                                 padding: '1rem',
                             }}
                         >
@@ -145,7 +142,6 @@ export const FpfOverview = () => {
                                 <Box
                                     key={sensor.id}
                                     style={{
-                                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
                                         borderRadius: '10px',
                                         marginBottom: '20px',
                                     }}
@@ -167,7 +163,6 @@ export const FpfOverview = () => {
                             <Box
                                 style={{
                                     borderRadius: '10px',
-                                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
                                     marginBottom: '32px',
                                 }}
                             >
@@ -178,7 +173,6 @@ export const FpfOverview = () => {
                             <Box
                                 style={{
                                     borderRadius: '10px',
-                                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
                                     padding: '1rem',
                                 }}
                             >
