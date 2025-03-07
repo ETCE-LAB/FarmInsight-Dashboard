@@ -9,6 +9,7 @@ import {
     Flex,
     Paper,
     Grid,
+    Center,
 } from "@mantine/core";
 import { useTranslation } from "react-i18next";
 import {
@@ -31,11 +32,17 @@ import { RootState } from "../../../utils/store";
 import { useAuth } from "react-oidc-context";
 import { useMediaQuery } from "@mantine/hooks";
 
-const truncateText = (text: string, limit: number): string => {
-    if (text.length > limit) {
-        return `${text.slice(0, limit)}...`;
+const truncateText = (text: string, limit: number): string =>
+    text.length > limit ? `${text.slice(0, limit)}...` : text;
+
+// Helper to format the total harvest amount
+const formatTotalHarvest = (cycle: GrowingCycle): string => {
+    const totalHarvest =
+        cycle.harvests?.reduce((sum, harvest) => sum + harvest.amountInKg, 0) || 0;
+    if (totalHarvest < 1) {
+        return `${(totalHarvest * 1000).toFixed(2)} g`;
     }
-    return text;
+    return `${totalHarvest.toFixed(2)} kg`;
 };
 
 const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
@@ -103,7 +110,11 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
                 centered
                 title={toEditGrowingCycle ? "Edit Growing Cycle" : "Add Growing Cycle"}
             >
-                <GrowingCycleForm fpfId={fpfId} toEditGrowingCycle={toEditGrowingCycle} closeForm={closeAllModals} />
+                <GrowingCycleForm
+                    fpfId={fpfId}
+                    toEditGrowingCycle={toEditGrowingCycle}
+                    closeForm={closeAllModals}
+                />
             </Modal>
 
             {/* Harvest Entity Form Modal */}
@@ -148,7 +159,9 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
                                         <strong>{t("header.table.planted")}</strong>
                                     </Text>
                                     <Text size="sm">
-                                        {selectedCycle.startDate ? new Date(selectedCycle.startDate).toLocaleDateString() : "N/A"}
+                                        {selectedCycle.startDate
+                                            ? new Date(selectedCycle.startDate).toLocaleDateString()
+                                            : "N/A"}
                                     </Text>
                                 </Grid.Col>
                                 <Grid.Col span={6}>
@@ -159,7 +172,6 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
                                 </Grid.Col>
                             </Grid>
                         </Paper>
-
                         {selectedCycle.harvests && <HarvestEntityList growingCycleID={selectedCycle.id} />}
                     </>
                 )}
@@ -175,7 +187,7 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
                 <Text style={{ fontSize: "14px", textAlign: "center", marginBottom: "1rem" }}>
                     {t("header.confirmDialog")}
                 </Text>
-                <Group gap="center" justify={"center"}>
+                <Group gap="center" justify="center">
                     <Button color="red" onClick={confirmDelete}>
                         {t("header.yesDelete")}
                     </Button>
@@ -186,7 +198,7 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
             </Modal>
 
             {/* Main Content */}
-            <Card radius="md" padding="md" style={{ height: "auto" }}>
+            <Card radius="md" padding="md">
                 {auth.user && (
                     <IconCirclePlus
                         size={25}
@@ -203,15 +215,13 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
                 )}
 
                 {isMobile ? (
-                    // Mobile-friendly vertical list with updated layout
+                    // Mobile-friendly vertical list
                     <Flex direction="column" gap="sm" mt="md">
                         {growingCycles.map((cycle) => (
-                            <Card key={cycle.id} p="sm" withBorder style={{ width: "auto" }}>
-                                {/* Plant name centered */}
+                            <Card key={cycle.id} p="sm" withBorder>
                                 <Text fw={600} ta="center" mb="xs" tt="capitalize">
                                     {truncateText(cycle.plants, 20)}
                                 </Text>
-                                {/* Action buttons evenly distributed */}
                                 <Flex justify="space-around" align="center" mb="xs">
                                     <IconSquareRoundedMinus
                                         onClick={() => handleDelete(cycle)}
@@ -240,23 +250,17 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
                                     {cycle.startDate ? new Date(cycle.startDate).toLocaleDateString() : ""}
                                 </Text>
                                 <Text size="xs" c="dimmed">
-                                    {t("header.totalHarvestAmount")}:{" "}
-                                    {(() => {
-                                        const totalHarvest =
-                                            cycle.harvests?.reduce((sum, harvest) => sum + harvest.amountInKg, 0) || 0;
-                                        return totalHarvest < 1
-                                            ? `${(totalHarvest * 1000).toFixed(2)} g`
-                                            : `${totalHarvest.toFixed(2)} kg`;
-                                    })()}
+                                    {t("header.totalHarvestAmount")}: {formatTotalHarvest(cycle)}
                                 </Text>
                                 <Text size="xs" c="dimmed">
-                                    {t("header.table.notes")}: {cycle.note ? truncateText(cycle.note, 20) : ""}
+                                    {t("header.table.notes")}:{" "}
+                                    {cycle.note ? truncateText(cycle.note, 20) : ""}
                                 </Text>
                             </Card>
                         ))}
                     </Flex>
                 ) : (
-                    // Desktop table view remains unchanged
+                    // Desktop table view
                     <Flex style={{ overflowX: "auto" }}>
                         <Table striped highlightOnHover style={{ width: "100%", tableLayout: "fixed" }}>
                             <Table.Thead>
@@ -280,18 +284,7 @@ const GrowingCycleList: React.FC<{ fpfId: string }> = ({ fpfId }) => {
                                         <Table.Td>
                                             {cycle.startDate ? new Date(cycle.startDate).toLocaleDateString() : ""}
                                         </Table.Td>
-                                        <Table.Td>
-                                            {(() => {
-                                                const totalHarvest =
-                                                    cycle.harvests?.reduce((sum, harvest) => sum + harvest.amountInKg, 0) || 0;
-                                                if (totalHarvest < 1) {
-                                                    const grams = totalHarvest * 1000;
-                                                    return `${grams} g`;
-                                                } else {
-                                                    return `${totalHarvest} kg`;
-                                                }
-                                            })()}
-                                        </Table.Td>
+                                        <Table.Td>{formatTotalHarvest(cycle)}</Table.Td>
                                         <Table.Td>{cycle.note ? truncateText(cycle.note, 12) : ""}</Table.Td>
                                         <Table.Td>
                                             <IconSquareRoundedMinus

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Menu, TextInput, Text, Flex, Divider, Modal, Burger, Drawer } from '@mantine/core';
+import { Container, Menu, TextInput, Text, Flex, Divider, Modal, Burger, Drawer, Collapse } from '@mantine/core';
 import {
     IconSettings,
     IconChevronDown,
@@ -19,25 +19,22 @@ import { FpfForm } from "../../../../features/fpf/ui/fpfForm";
 import { useMediaQuery } from '@mantine/hooks'; // Für media query
 
 export const AppShell_Navbar: React.FC = () => {
+    // New state variable for toggling the navbar open/collapse state
+    const [navbarOpen, setNavbarOpen] = useState(true);
     const [value, setValue] = useState('');
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
     const [selectedOrganization, setSelectedOrganization] = useState<{ name: string, id: string }>({ name: t("header.myOrganizations"), id: '' });
     const [organizations, setMyOrganizations] = useState<Organization[]>([]);
     const [selectedFPFId, setSelectedFPFId] = useState<string | null>(null);
     const [fpfList, setFpfList] = useState<Fpf[]>([]);
-    const [drawerOpened, setDrawerOpened] = useState(false); // Für das Burger Menü
-
+    const [drawerOpened, setDrawerOpened] = useState(false); // Für das Burger Menü (zum Öffnen des FpF-Formulars)
     const navigate = useNavigate();
     const auth = useAuth();
     const location = useLocation();
-
     const [organization, setOrganization] = useState<Organization | null>(null);
     const [fpfModalOpen, setFpFModalOpen] = useState(false);
     const [organizationId, setOrganizationId] = useState<string>()
     const isMobile = useMediaQuery('(max-width: 768px)');
-
-    useEffect(() => {
-    }, [organizationId]);
 
     useEffect(() => {
         if (auth.isAuthenticated) {
@@ -105,123 +102,132 @@ export const AppShell_Navbar: React.FC = () => {
                     padding: '5px'
                 }}
             >
-            <>
-                {/* Desktop Ansicht */}
-                <IconSettings
-                    size={20}
-                    style={{
-                        cursor: 'pointer',
-                        float: 'left',
-                    }}
-                    stroke={2}
-                    onClick={() => navigate(AppRoutes.organization.replace(':organizationId', selectedOrganization.id))}
+                {/* Button to toggle navbar collapse/expand */}
+                <Burger
+                    opened={navbarOpen}
+                    onClick={() => setNavbarOpen((o) => !o)}
+                    mr="md"
                 />
-                <Flex justify="center" style={{ width: '100%' }}>
-                    {organizations.map((org) => (
-                        <Menu key={org.id} trigger="hover" openDelay={100} closeDelay={100} withinPortal>
-                            <Menu.Target>
-                                <Text style={{ margin: 'auto', cursor: 'pointer' }}>{org.name}</Text>
-                            </Menu.Target>
-                            <Menu.Dropdown>
-                                <Menu.Item onClick={() => handleOrganizationSelect(org.name, org.id)}>
-                                    {org.name}
-                                </Menu.Item>
-                            </Menu.Dropdown>
-                        </Menu>
-                    ))}
-                </Flex>
-            </>
 
+                <>
+                    {/* Desktop Ansicht */}
+                    <IconSettings
+                        size={20}
+                        style={{
+                            cursor: 'pointer',
+                            float: 'left',
+                        }}
+                        stroke={2}
+                        onClick={() => navigate(AppRoutes.organization.replace(':organizationId', selectedOrganization.id))}
+                    />
+                    <Flex justify="center" style={{ width: '100%' }}>
+                        {organizations.map((org) => (
+                            <Menu key={org.id} trigger="hover" openDelay={100} closeDelay={100} withinPortal>
+                                <Menu.Target>
+                                    <Text style={{ margin: 'auto', cursor: 'pointer' }}>{org.name}</Text>
+                                </Menu.Target>
+                                <Menu.Dropdown>
+                                    <Menu.Item onClick={() => handleOrganizationSelect(org.name, org.id)}>
+                                        {org.name}
+                                    </Menu.Item>
+                                </Menu.Dropdown>
+                            </Menu>
+                        ))}
+                    </Flex>
+                </>
             </Flex>
 
-            {!isMobile && <Divider my="sm" style={{ width: '100%' }} />}
+            {/* Collapse component wrapping the navbar content */}
+            <Collapse in={navbarOpen}>
+                {!isMobile && <Divider my="sm" style={{ width: '100%' }} />}
 
-            {!isMobile && (
-                <TextInput
-                    variant="unstyled"
-                    style={{
-                        marginBottom: '2vh',
-                        width: '100%',
-                    }}
-                    value={value}
-                    onChange={(event) => setValue(event.currentTarget.value)}
-                    placeholder={t("header.search")}
-                    leftSection={<IconSearch style={{ width: '16px', height: '16px', color: '#ccc' }} />}
-                />
-            )}
+                {!isMobile && (
+                    <TextInput
+                        variant="unstyled"
+                        style={{
+                            marginBottom: '2vh',
+                            width: '100%',
+                        }}
+                        value={value}
+                        onChange={(event) => setValue(event.currentTarget.value)}
+                        placeholder={t("header.search")}
+                        leftSection={<IconSearch style={{ width: '16px', height: '16px', color: '#ccc' }} />}
+                    />
+                )}
 
-            <Container size={"xl"} style={{ width: '100%', padding: '0' }}>
-                {fpfList
-                    .filter((fpf) => fpf.name.toLowerCase().includes(value.toLowerCase()))
-                    .map((fpf, index) => (
-                        <Flex
-                            key={index}
-                            style={{
-                                cursor: 'pointer',
-                                backgroundColor: selectedFPFId === fpf.id ? 'rgba(255, 255, 255, 0.1)' : '',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                width: '100%',
-                                paddingTop: '1vh',
-                                paddingBottom: '1vh',
-                                marginBottom: '16px',
-                            }}
-                            onClick={() => handleFpfSelect(fpf.id)}
-                        >
-                            <Text
+                <Container size={"xl"} style={{ width: '100%', padding: '0' }}>
+                    {fpfList
+                        .filter((fpf) => fpf.name.toLowerCase().includes(value.toLowerCase()))
+                        .map((fpf, index) => (
+                            <Flex
+                                key={index}
                                 style={{
-                                    display: 'flex',
-                                    width: '100%',
+                                    cursor: 'pointer',
+                                    backgroundColor: selectedFPFId === fpf.id ? 'rgba(255, 255, 255, 0.1)' : '',
                                     justifyContent: 'center',
                                     alignItems: 'center',
-                                    color: selectedFPFId === fpf.id ? '#199ff4' : '',
-                                    paddingLeft: '5px',
-                                    paddingRight: '5px',
+                                    width: '100%',
+                                    paddingTop: '1vh',
+                                    paddingBottom: '1vh',
+                                    marginBottom: '16px',
                                 }}
+                                onClick={() => handleFpfSelect(fpf.id)}
                             >
-                                <IconSettings
-                                    size={22}
-                                    style={{
-                                        verticalAlign: 'middle',
-                                        display: 'flex',
-                                    }}
-                                    stroke={2}
-                                    cursor="pointer"
-                                    onClick={(event) => {
-                                        event.stopPropagation();
-                                        navigate(
-                                            AppRoutes.editFpf
-                                                .replace(':organizationId', selectedOrganization.id)
-                                                .replace(':fpfId', fpf.id)
-                                        );
-                                    }}
-                                />
-                                <Flex
+                                <Text
                                     style={{
                                         display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
                                         width: '100%',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        color: selectedFPFId === fpf.id ? '#199ff4' : '',
+                                        paddingLeft: '5px',
+                                        paddingRight: '5px',
                                     }}
                                 >
-                                    <DynamicFontText text={fpf.name} maxWidth={150} />
-                                </Flex>
-                            </Text>
-                        </Flex>
-                    ))}
-                <Flex style={{ width: '100%', justifyContent: 'center', alignItems: 'center', gap: '10px' }}>
-                    <Divider style={{ flexGrow: 1 }} />
-                    <IconSquareRoundedPlus
-                        title={t("header.addFpf")}
-                        style={{ cursor: 'pointer' }}
-                        size={30}
-                        stroke={2}
-                        color={"#199ff4"}
-                        onClick={() => setDrawerOpened(true)}
-                    />
-                    <Divider style={{ flexGrow: 1 }} />
-                </Flex>
-            </Container>
+                                    <IconSettings
+                                        size={22}
+                                        style={{
+                                            verticalAlign: 'middle',
+                                            display: 'flex',
+                                        }}
+                                        stroke={2}
+                                        cursor="pointer"
+                                        onClick={(event) => {
+                                            event.stopPropagation();
+                                            navigate(
+                                                AppRoutes.editFpf
+                                                    .replace(':organizationId', selectedOrganization.id)
+                                                    .replace(':fpfId', fpf.id)
+                                            );
+                                        }}
+                                    />
+                                    <Flex
+                                        style={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            width: '100%',
+                                        }}
+                                    >
+                                        <DynamicFontText text={fpf.name} maxWidth={150} />
+                                    </Flex>
+                                </Text>
+                            </Flex>
+                        ))}
+                    <Flex style={{ width: '100%', justifyContent: 'center', alignItems: 'center', gap: '10px' }}>
+                        <Divider style={{ flexGrow: 1 }} />
+                        <IconSquareRoundedPlus
+                            title={t("header.addFpf")}
+                            style={{ cursor: 'pointer' }}
+                            size={30}
+                            stroke={2}
+                            color={"#199ff4"}
+                            onClick={() => setDrawerOpened(true)}
+                        />
+                        <Divider style={{ flexGrow: 1 }} />
+                    </Flex>
+                </Container>
+            </Collapse>
         </Container>
     );
 };
